@@ -16,8 +16,8 @@ import okhttp3.Response;
  * Handles JWT-based authentication and database operations via PostgREST.
  */
 public class SupabaseClient {
-    private static final String DEFAULT_SUPABASE_URL = "https://your-project.supabase.co";
-    private static final String DEFAULT_SUPABASE_ANON_KEY = "your-anon-key-here";
+    private static final String DEFAULT_SUPABASE_URL = EnvConfig.getSupabaseUrl();
+    private static final String DEFAULT_SUPABASE_ANON_KEY = EnvConfig.getSupabaseAnonKey();
     private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json");
 
     private final String supabaseUrl;
