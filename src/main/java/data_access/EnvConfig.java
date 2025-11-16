@@ -21,13 +21,22 @@ public class EnvConfig {
         return dotenv.get("DATABASE_URL", "");
     }
 
-    // Parse connection string components if needed
+    // Convert PostgreSQL connection string to JDBC format
+    // Handles: postgresql://user:pass@host:port/database
     public static String getDbUrl() {
         String dbUrl = getDatabaseUrl();
-        if (dbUrl.startsWith("postgresql://")) {
-            // Convert postgresql:// to jdbc:postgresql://
-            return "jdbc:" + dbUrl;
+        if (dbUrl.isEmpty()) {
+            return "";
         }
+        
+        // Connection string is already in postgresql:// format
+        // JDBC needs jdbc:postgresql:// prefix
+        if (dbUrl.startsWith("postgresql://")) {
+            return "jdbc:" + dbUrl;
+        } else if (dbUrl.startsWith("jdbc:")) {
+            return dbUrl;  // Already in JDBC format
+        }
+        
         return dbUrl;
     }
 

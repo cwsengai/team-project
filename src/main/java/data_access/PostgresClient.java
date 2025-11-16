@@ -1,22 +1,54 @@
 package data_access;
 
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Client for connecting to PostgreSQL database (including Supabase).
  * Manages database connections using JDBC.
  */
 public class PostgresClient {
-    private final String url;
+    private final String jdbcUrl;
+    private final Properties props;
 
     /**
      * Creates a PostgreSQL client using environment configuration.
-     * Uses DATABASE_URL connection string from .env
+     * Parses DATABASE_URL connection string from .env
      */
     public PostgresClient() {
-        this.url = EnvConfig.getDbUrl();
+        String connectionString = EnvConfig.getDatabaseUrl();
+        this.props = new Properties();
+        
+        try {
+            // Parse: postgresql://user:password@host:port/database
+            URI uri = new URI(connectionString);
+            
+            String userInfo = uri.getUserInfo();
+            String[] credentials = userInfo.split(":", 2);
+            String username = credentials[0];
+            String password = credentials.length > 1 ? credentials[1] : "";
+            
+            String host = uri.getHost();
+            int port = uri.getPort();
+            String database = uri.getPath().substring(1); // Remove leading /
+            
+            // Build JDBC URL without credentials
+            this.jdbcUrl = String.format("jdbc:postgresql://%s:%d/%s", host, port, database);
+            
+            // Set credentials as properties
+            props.setProperty("user", username);
+            props.setProperty("password", password);
+            
+            // Add SSL settings for Supabase
+            props.setProperty("ssl", "true");
+            props.setProperty("sslmode", "require");
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse DATABASE_URL: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -25,7 +57,8 @@ public class PostgresClient {
      * @param url JDBC connection URL (with credentials embedded)
      */
     public PostgresClient(String url) {
-        this.url = url;
+        this.jdbcUrl = url;
+        this.props = new Properties();
     }
 
     /**
@@ -36,7 +69,7 @@ public class PostgresClient {
      * @throws SQLException if connection fails
      */
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url);
+        return DriverManager.getConnection(jdbcUrl, props);
     }
 
     /**
@@ -59,6 +92,6 @@ public class PostgresClient {
      * @return JDBC connection URL
      */
     public String getUrl() {
-        return url;
+        return jdbcUrl;
     }
 }

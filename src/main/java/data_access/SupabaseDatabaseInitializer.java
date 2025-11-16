@@ -33,41 +33,34 @@ public class SupabaseDatabaseInitializer {
         
         try (Connection conn = client.getConnection()) {
             System.out.println("Connected successfully!");
-            System.out.println("Executing schema...");
+            System.out.println("Executing schema...\n");
             
-            // Split SQL into individual statements (separated by semicolons)
-            String[] statements = fullSql.split(";");
             int successCount = 0;
             int errorCount = 0;
             
             try (Statement stmt = conn.createStatement()) {
-                for (String sql : statements) {
-                    String trimmed = sql.trim();
-                    if (trimmed.isEmpty() || trimmed.startsWith("--")) {
-                        continue; // Skip empty or comment-only statements
-                    }
-                    
-                    try {
-                        stmt.execute(trimmed);
-                        successCount++;
-                        System.out.print(".");
-                    } catch (Exception e) {
-                        // Some errors are expected (e.g., "table already exists")
-                        if (e.getMessage().contains("already exists") || 
-                            e.getMessage().contains("does not exist")) {
-                            System.out.print("s"); // skip
-                        } else {
-                            System.err.println("\n[ERROR] " + e.getMessage());
-                            System.err.println("Statement: " + trimmed.substring(0, Math.min(100, trimmed.length())));
-                            errorCount++;
-                        }
+                // Execute entire SQL as one batch - PostgreSQL can handle it
+                try {
+                    stmt.execute(fullSql);
+                    System.out.println("✓ Schema executed successfully");
+                    successCount = 1;
+                } catch (Exception e) {
+                    String msg = e.getMessage();
+                    // Ignore "already exists" errors
+                    if (msg.contains("already exists") || msg.contains("does not exist")) {
+                        System.out.println("⚠ Some objects already exist (this is OK)");
+                    } else {
+                        System.err.println("❌ Error executing schema: " + msg);
+                        errorCount++;
                     }
                 }
             }
             
-            System.out.println("\n\n=== Results ===");
-            System.out.println("Statements executed: " + successCount);
-            System.out.println("Errors encountered: " + errorCount);
+            System.out.println("\n=== Results ===");
+            System.out.println("Success: " + (errorCount == 0));
+            if (errorCount > 0) {
+                System.out.println("Errors encountered: " + errorCount);
+            }
             System.out.println("Schema initialization complete!");
             
         } catch (Exception e) {
