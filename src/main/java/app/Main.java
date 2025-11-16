@@ -13,7 +13,6 @@ import entity.Position;
 import entity.Trade;
 import interface_adapter.controller.TradingController;
 import interface_adapter.presenter.PortfolioPresenter;
-import use_case.track_portfolio.TrackPortfolioInputBoundary;
 import use_case.track_portfolio.TrackPortfolioInteractor;
 import view.PortfolioPage;
 
