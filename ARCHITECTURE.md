@@ -63,9 +63,12 @@ src/main/java/
 │
 ├── interface_adapter/                     # Interface adapters
 │   ├── controller/
-│   │   └── TradingController.java         # Handles UI events
+│   │   ├── PortfolioController.java       # Controller interface (abstraction)
+│   │   └── TradingController.java         # Handles UI events (implements PortfolioController)
 │   ├── presenter/
-│   │   └── PortfolioPresenter.java        # Transforms data for view
+│   │   └── PortfolioPresenter.java        # Transforms data for view (depends on PortfolioView)
+│   ├── view/
+│   │   └── PortfolioView.java             # View interface (abstraction)
 │   └── view_model/
 │       ├── PortfolioViewModel.java        # View-specific data
 │       └── PositionView.java              # Position display data
