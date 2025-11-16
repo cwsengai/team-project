@@ -5,36 +5,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Client for connecting to PostgreSQL database.
+ * Client for connecting to PostgreSQL database (including Supabase).
  * Manages database connections using JDBC.
- * 
- * For local development with pgAdmin.
  */
 public class PostgresClient {
     private final String url;
-    private final String user;
-    private final String password;
 
     /**
      * Creates a PostgreSQL client using environment configuration.
+     * Uses DATABASE_URL connection string from .env
      */
     public PostgresClient() {
         this.url = EnvConfig.getDbUrl();
-        this.user = EnvConfig.getDbUser();
-        this.password = EnvConfig.getDbPassword();
     }
 
     /**
-     * Creates a PostgreSQL client with custom connection details.
+     * Creates a PostgreSQL client with custom connection URL.
      *
-     * @param url JDBC connection URL
-     * @param user database username
-     * @param password database password
+     * @param url JDBC connection URL (with credentials embedded)
      */
-    public PostgresClient(String url, String user, String password) {
+    public PostgresClient(String url) {
         this.url = url;
-        this.user = user;
-        this.password = password;
     }
 
     /**
@@ -45,7 +36,7 @@ public class PostgresClient {
      * @throws SQLException if connection fails
      */
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+        return DriverManager.getConnection(url);
     }
 
     /**

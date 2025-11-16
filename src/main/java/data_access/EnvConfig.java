@@ -17,29 +17,18 @@ public class EnvConfig {
     }
 
     // Database Configuration (PostgreSQL)
-    public static String getDbHost() {
-        return dotenv.get("DB_HOST", "localhost");
+    public static String getDatabaseUrl() {
+        return dotenv.get("DATABASE_URL", "");
     }
 
-    public static int getDbPort() {
-        return Integer.parseInt(dotenv.get("DB_PORT", "5432"));
-    }
-
-    public static String getDbName() {
-        return dotenv.get("DB_NAME", "portfolio_tracker");
-    }
-
-    public static String getDbUser() {
-        return dotenv.get("DB_USER", "postgres");
-    }
-
-    public static String getDbPassword() {
-        return dotenv.get("DB_PASSWORD", "");
-    }
-
+    // Parse connection string components if needed
     public static String getDbUrl() {
-        return String.format("jdbc:postgresql://%s:%d/%s",
-            getDbHost(), getDbPort(), getDbName());
+        String dbUrl = getDatabaseUrl();
+        if (dbUrl.startsWith("postgresql://")) {
+            // Convert postgresql:// to jdbc:postgresql://
+            return "jdbc:" + dbUrl;
+        }
+        return dbUrl;
     }
 
     // Supabase Configuration
