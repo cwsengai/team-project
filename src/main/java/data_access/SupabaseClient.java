@@ -16,9 +16,12 @@ import okhttp3.Response;
  * Handles JWT-based authentication and database operations via PostgREST.
  */
 public class SupabaseClient {
-    private static final String SUPABASE_URL = "https://your-project.supabase.co";
-    private static final String SUPABASE_ANON_KEY = "your-anon-key-here";
+    private static final String DEFAULT_SUPABASE_URL = "https://your-project.supabase.co";
+    private static final String DEFAULT_SUPABASE_ANON_KEY = "your-anon-key-here";
+    private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json");
 
+    private final String supabaseUrl;
+    private final String anonKey;
     private final OkHttpClient httpClient;
     private final Gson gson;
     private String accessToken; // JWT from auth
@@ -27,11 +30,7 @@ public class SupabaseClient {
      * Creates a new Supabase client with default settings.
      */
     public SupabaseClient() {
-        this.httpClient = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build();
-        this.gson = new Gson();
+        this(DEFAULT_SUPABASE_URL, DEFAULT_SUPABASE_ANON_KEY);
     }
 
     /**
@@ -42,6 +41,8 @@ public class SupabaseClient {
      * @param anonKey the anonymous API key
      */
     public SupabaseClient(String supabaseUrl, String anonKey) {
+        this.supabaseUrl = supabaseUrl;
+        this.anonKey = anonKey;
         this.httpClient = new OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -67,22 +68,19 @@ public class SupabaseClient {
             email, password
         );
 
-        RequestBody body = RequestBody.create(
-            json,
-            MediaType.parse("application/json")
-        );
+        RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/auth/v1/signup")
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/auth/v1/signup")
+            .header("apikey", anonKey)
             .post(body)
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Sign up failed: " + response.body().string());
-            }
             String responseBody = response.body().string();
+            if (!response.isSuccessful()) {
+                throw new IOException("Sign up failed: " + responseBody);
+            }
             AuthResponse authResponse = gson.fromJson(responseBody, AuthResponse.class);
             this.accessToken = authResponse.getAccessToken();
             return authResponse;
@@ -103,22 +101,19 @@ public class SupabaseClient {
             email, password
         );
 
-        RequestBody body = RequestBody.create(
-            json,
-            MediaType.parse("application/json")
-        );
+        RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/auth/v1/token?grant_type=password")
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/auth/v1/token?grant_type=password")
+            .header("apikey", anonKey)
             .post(body)
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Sign in failed: " + response.body().string());
-            }
             String responseBody = response.body().string();
+            if (!response.isSuccessful()) {
+                throw new IOException("Sign in failed: " + responseBody);
+            }
             AuthResponse authResponse = gson.fromJson(responseBody, AuthResponse.class);
             this.accessToken = authResponse.getAccessToken();
             return authResponse;
@@ -158,17 +153,18 @@ public class SupabaseClient {
      */
     public <T> T query(String table, Class<T> responseType) throws IOException {
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/rest/v1/" + table)
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/rest/v1/" + table)
+            .header("apikey", anonKey)
             .header("Authorization", "Bearer " + accessToken)
             .get()
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
             if (!response.isSuccessful()) {
-                throw new IOException("Query failed: " + response.body().string());
+                throw new IOException("Query failed: " + responseBody);
             }
-            return gson.fromJson(response.body().string(), responseType);
+            return gson.fromJson(responseBody, responseType);
         }
     }
 
@@ -185,17 +181,18 @@ public class SupabaseClient {
      */
     public <T> T queryWithFilter(String table, String filter, Class<T> responseType) throws IOException {
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/rest/v1/" + table + "?" + filter)
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
+            .header("apikey", anonKey)
             .header("Authorization", "Bearer " + accessToken)
             .get()
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
             if (!response.isSuccessful()) {
-                throw new IOException("Query failed: " + response.body().string());
+                throw new IOException("Query failed: " + responseBody);
             }
-            return gson.fromJson(response.body().string(), responseType);
+            return gson.fromJson(responseBody, responseType);
         }
     }
 
@@ -212,24 +209,22 @@ public class SupabaseClient {
     public <T> T insert(String table, Object data, Class<T> responseType) throws IOException {
         String json = gson.toJson(data);
 
-        RequestBody body = RequestBody.create(
-            json,
-            MediaType.parse("application/json")
-        );
+        RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/rest/v1/" + table)
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/rest/v1/" + table)
+            .header("apikey", anonKey)
             .header("Authorization", "Bearer " + accessToken)
             .header("Prefer", "return=representation")
             .post(body)
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
             if (!response.isSuccessful()) {
-                throw new IOException("Insert failed: " + response.body().string());
+                throw new IOException("Insert failed: " + responseBody);
             }
-            return gson.fromJson(response.body().string(), responseType);
+            return gson.fromJson(responseBody, responseType);
         }
     }
 
@@ -247,24 +242,22 @@ public class SupabaseClient {
     public <T> T update(String table, String filter, Object data, Class<T> responseType) throws IOException {
         String json = gson.toJson(data);
 
-        RequestBody body = RequestBody.create(
-            json,
-            MediaType.parse("application/json")
-        );
+        RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/rest/v1/" + table + "?" + filter)
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
+            .header("apikey", anonKey)
             .header("Authorization", "Bearer " + accessToken)
             .header("Prefer", "return=representation")
             .patch(body)
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
             if (!response.isSuccessful()) {
-                throw new IOException("Update failed: " + response.body().string());
+                throw new IOException("Update failed: " + responseBody);
             }
-            return gson.fromJson(response.body().string(), responseType);
+            return gson.fromJson(responseBody, responseType);
         }
     }
 
@@ -277,15 +270,16 @@ public class SupabaseClient {
      */
     public void delete(String table, String filter) throws IOException {
         Request request = new Request.Builder()
-            .url(SUPABASE_URL + "/rest/v1/" + table + "?" + filter)
-            .header("apikey", SUPABASE_ANON_KEY)
+            .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
+            .header("apikey", anonKey)
             .header("Authorization", "Bearer " + accessToken)
             .delete()
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
             if (!response.isSuccessful()) {
-                throw new IOException("Delete failed: " + response.body().string());
+                throw new IOException("Delete failed: " + responseBody);
             }
         }
     }
@@ -310,5 +304,16 @@ public class SupabaseClient {
      */
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    /**
+     * Shutdown the HTTP client and release resources.
+     * Call this when the client is no longer needed to prevent memory leaks.
+     */
+    public void shutdown() {
+        if (httpClient != null) {
+            httpClient.dispatcher().executorService().shutdown();
+            httpClient.connectionPool().evictAll();
+        }
     }
 }
