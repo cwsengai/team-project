@@ -33,7 +33,7 @@ public class PostgresPriceRepository implements PriceRepository {
     public void savePricePoint(PricePoint pricePoint) {
         String sql = "INSERT INTO public.price_points " +
                      "(id, company_id, timestamp, interval, open, high, low, close, volume, source) " +
-                     "VALUES (?::uuid, ?::uuid, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                     "VALUES (?::uuid, (SELECT id FROM public.companies WHERE ticker = ?), ?, ?, ?, ?, ?, ?, ?, ?) " +
                      "ON CONFLICT (company_id, interval, timestamp) DO UPDATE SET " +
                      "open = EXCLUDED.open, high = EXCLUDED.high, low = EXCLUDED.low, " +
                      "close = EXCLUDED.close, volume = EXCLUDED.volume, source = EXCLUDED.source";
@@ -44,7 +44,7 @@ public class PostgresPriceRepository implements PriceRepository {
             String id = pricePoint.getId() != null ? pricePoint.getId() : UUID.randomUUID().toString();
             
             stmt.setString(1, id);
-            stmt.setString(2, pricePoint.getCompanyId());
+            stmt.setString(2, pricePoint.getCompanyId()); // ticker will be looked up to get UUID
             stmt.setTimestamp(3, Timestamp.valueOf(pricePoint.getTimestamp()));
             stmt.setString(4, pricePoint.getInterval().name());
             setDoubleOrNull(stmt, 5, pricePoint.getOpen());
@@ -65,7 +65,7 @@ public class PostgresPriceRepository implements PriceRepository {
     public void savePricePoints(List<PricePoint> pricePoints) {
         String sql = "INSERT INTO public.price_points " +
                      "(id, company_id, timestamp, interval, open, high, low, close, volume, source) " +
-                     "VALUES (?::uuid, ?::uuid, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                     "VALUES (?::uuid, (SELECT id FROM public.companies WHERE ticker = ?), ?, ?, ?, ?, ?, ?, ?, ?) " +
                      "ON CONFLICT (company_id, interval, timestamp) DO UPDATE SET " +
                      "open = EXCLUDED.open, high = EXCLUDED.high, low = EXCLUDED.low, " +
                      "close = EXCLUDED.close, volume = EXCLUDED.volume, source = EXCLUDED.source";
@@ -77,7 +77,7 @@ public class PostgresPriceRepository implements PriceRepository {
                 String id = pricePoint.getId() != null ? pricePoint.getId() : UUID.randomUUID().toString();
                 
                 stmt.setString(1, id);
-                stmt.setString(2, pricePoint.getCompanyId());
+                stmt.setString(2, pricePoint.getCompanyId()); // ticker will be looked up to get UUID
                 stmt.setTimestamp(3, Timestamp.valueOf(pricePoint.getTimestamp()));
                 stmt.setString(4, pricePoint.getInterval().name());
                 setDoubleOrNull(stmt, 5, pricePoint.getOpen());

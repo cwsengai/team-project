@@ -1,12 +1,12 @@
 package data_access;
 
-import entity.Company;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import entity.Company;
 
 /**
  * Supabase implementation of CompanyRepository.

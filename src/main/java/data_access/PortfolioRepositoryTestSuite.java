@@ -26,15 +26,15 @@ public class PortfolioRepositoryTestSuite {
     private static String testUserId2;
     
     public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════════════════════════╗");
-        System.out.println("║   Portfolio Repository Comprehensive Test Suite       ║");
-        System.out.println("╚════════════════════════════════════════════════════════╝\n");
+        System.out.println("==========================================================");
+        System.out.println("|   Portfolio Repository Comprehensive Test Suite       |");
+        System.out.println("==========================================================\n");
         
         try {
             // Setup
-            System.out.println("📋 Setup: Creating test users and cleaning data...");
+            System.out.println(" Setup: Creating test users and cleaning data...");
             setupTestData();
-            System.out.println("✓ Setup complete\n");
+            System.out.println("[OK] Setup complete\n");
             
             // Run all test categories
             testBasicCRUD();
@@ -53,25 +53,25 @@ public class PortfolioRepositoryTestSuite {
             printSummary();
             
             // Cleanup
-            System.out.println("\n🧹 Cleanup: Removing test data...");
+            System.out.println("\n Cleanup: Removing test data...");
             cleanupTestData();
-            System.out.println("✓ Cleanup complete");
+            System.out.println("[OK] Cleanup complete");
             
             if (testsFailed > 0) {
                 System.exit(1);
             }
             
         } catch (Exception e) {
-            System.err.println("\n❌ Test suite failed with exception: " + e.getMessage());
+            System.err.println("\n[ERROR] Test suite failed with exception: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }
     }
     
     private static void testBasicCRUD() {
-        System.out.println("═══════════════════════════════════════════════════════");
+        System.out.println("=======================================================");
         System.out.println("  1. BASIC CRUD OPERATIONS");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 1.1: Create new portfolio
         runTest("Create new portfolio", () -> {
@@ -126,9 +126,9 @@ public class PortfolioRepositoryTestSuite {
     }
     
     private static void testUserIsolation() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  2. USER ISOLATION (RLS)");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 2.1: Users can only see their own portfolios
         runTest("User isolation - separate user portfolios", () -> {
@@ -160,9 +160,9 @@ public class PortfolioRepositoryTestSuite {
     }
     
     private static void testCashManagement() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  3. CASH MANAGEMENT");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 3.1: Update cash balance
         runTest("Update cash balance", () -> {
@@ -202,9 +202,9 @@ public class PortfolioRepositoryTestSuite {
     }
     
     private static void testUpdates() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  4. PORTFOLIO UPDATES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 4.1: Update portfolio name
         runTest("Update portfolio name", () -> {
@@ -283,9 +283,9 @@ public class PortfolioRepositoryTestSuite {
     }
     
     private static void testEdgeCases() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  5. EDGE CASES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 5.1: Very large cash balance
         runTest("Handle very large cash balance", () -> {
@@ -321,9 +321,9 @@ public class PortfolioRepositoryTestSuite {
     }
     
     private static void testDeletion() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  6. DELETION");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 6.1: Delete portfolio
         runTest("Delete portfolio", () -> {
@@ -407,14 +407,14 @@ public class PortfolioRepositoryTestSuite {
         try {
             test.run();
             testsPassed++;
-            System.out.println("✓ " + testName);
+            System.out.println("[OK] " + testName);
         } catch (AssertionError e) {
             testsFailed++;
-            System.out.println("✗ " + testName);
+            System.out.println("[FAIL] " + testName);
             System.out.println("  Error: " + e.getMessage());
         } catch (Exception e) {
             testsFailed++;
-            System.out.println("✗ " + testName);
+            System.out.println("[FAIL] " + testName);
             System.out.println("  Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -458,19 +458,19 @@ public class PortfolioRepositoryTestSuite {
     }
     
     private static void printSummary() {
-        System.out.println("\n╔════════════════════════════════════════════════════════╗");
-        System.out.println("║                    TEST SUMMARY                        ║");
-        System.out.println("╠════════════════════════════════════════════════════════╣");
-        System.out.printf("║  Total Tests:  %-40d║%n", testsRun);
-        System.out.printf("║  Passed:       %-40d║%n", testsPassed);
-        System.out.printf("║  Failed:       %-40d║%n", testsFailed);
-        System.out.printf("║  Success Rate: %-39.1f%%║%n", (testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0));
-        System.out.println("╚════════════════════════════════════════════════════════╝");
+        System.out.println("\n==========================================================");
+        System.out.println("|                    TEST SUMMARY                        |");
+        System.out.println("==========================================================");
+        System.out.printf("|  Total Tests:  %-40d|%n", testsRun);
+        System.out.printf("|  Passed:       %-40d|%n", testsPassed);
+        System.out.printf("|  Failed:       %-40d|%n", testsFailed);
+        System.out.printf("|  Success Rate: %-39.1f%%|%n", (testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0));
+        System.out.println("==========================================================");
         
         if (testsFailed == 0) {
-            System.out.println("\n🎉 All tests passed!");
+            System.out.println("\n*** All tests passed!");
         } else {
-            System.out.println("\n⚠️  Some tests failed. Please review the output above.");
+            System.out.println("\nWARNING:  Some tests failed. Please review the output above.");
         }
     }
 }

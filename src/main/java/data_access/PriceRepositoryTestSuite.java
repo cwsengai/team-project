@@ -30,15 +30,15 @@ public class PriceRepositoryTestSuite {
     private static String testCompanyId2;
     
     public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════════════════════════╗");
-        System.out.println("║    Price Repository Comprehensive Test Suite          ║");
-        System.out.println("╚════════════════════════════════════════════════════════╝\n");
+        System.out.println("==========================================================");
+        System.out.println("|    Price Repository Comprehensive Test Suite          |");
+        System.out.println("==========================================================\n");
         
         try {
             // Setup
-            System.out.println("📋 Setup: Creating test companies and cleaning data...");
+            System.out.println(" Setup: Creating test companies and cleaning data...");
             setupTestData();
-            System.out.println("✓ Setup complete\n");
+            System.out.println("[OK] Setup complete\n");
             
             // Run all test categories
             testBasicCRUD();
@@ -59,25 +59,25 @@ public class PriceRepositoryTestSuite {
             printSummary();
             
             // Cleanup
-            System.out.println("\n🧹 Cleanup: Removing test data...");
+            System.out.println("\n Cleanup: Removing test data...");
             cleanupTestData();
-            System.out.println("✓ Cleanup complete");
+            System.out.println("[OK] Cleanup complete");
             
             if (testsFailed > 0) {
                 System.exit(1);
             }
             
         } catch (Exception e) {
-            System.err.println("\n❌ Test suite failed with exception: " + e.getMessage());
+            System.err.println("\n[ERROR] Test suite failed with exception: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }
     }
     
     private static void testBasicCRUD() {
-        System.out.println("═══════════════════════════════════════════════════════");
+        System.out.println("=======================================================");
         System.out.println("  1. BASIC CRUD OPERATIONS");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 1.1: Save single price point
         runTest("Save single price point", () -> {
@@ -144,9 +144,9 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void testLatestPriceQueries() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  2. LATEST PRICE QUERIES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 2.1: Get latest price - finds most recent
         runTest("Get latest price - returns most recent", () -> {
@@ -218,9 +218,9 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void testHistoricalQueries() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  3. HISTORICAL PRICE QUERIES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 3.1: Get historical prices - date range
         runTest("Get historical prices - date range", () -> {
@@ -288,9 +288,9 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void testBulkOperations() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  4. BULK OPERATIONS");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 4.1: Bulk save multiple price points
         runTest("Bulk save - multiple price points", () -> {
@@ -326,9 +326,9 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void testEdgeCases() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  5. EDGE CASES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 5.1: Very large prices
         runTest("Handle very large price values", () -> {
@@ -379,9 +379,9 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void testDataIntegrity() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  6. DATA INTEGRITY");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 6.1: Unique constraint (company_id, interval, timestamp)
         runTest("Unique constraint enforcement", () -> {
@@ -434,9 +434,9 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void testCleanup() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  7. CLEANUP OPERATIONS");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 7.1: Cleanup old data
         runTest("Cleanup old price data", () -> {
@@ -535,14 +535,14 @@ public class PriceRepositoryTestSuite {
         try {
             test.run();
             testsPassed++;
-            System.out.println("✓ " + testName);
+            System.out.println("[OK] " + testName);
         } catch (AssertionError e) {
             testsFailed++;
-            System.out.println("✗ " + testName);
+            System.out.println("[FAIL] " + testName);
             System.out.println("  Error: " + e.getMessage());
         } catch (Exception e) {
             testsFailed++;
-            System.out.println("✗ " + testName);
+            System.out.println("[FAIL] " + testName);
             System.out.println("  Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -580,19 +580,19 @@ public class PriceRepositoryTestSuite {
     }
     
     private static void printSummary() {
-        System.out.println("\n╔════════════════════════════════════════════════════════╗");
-        System.out.println("║                    TEST SUMMARY                        ║");
-        System.out.println("╠════════════════════════════════════════════════════════╣");
-        System.out.printf("║  Total Tests:  %-40d║%n", testsRun);
-        System.out.printf("║  Passed:       %-40d║%n", testsPassed);
-        System.out.printf("║  Failed:       %-40d║%n", testsFailed);
-        System.out.printf("║  Success Rate: %-39.1f%%║%n", (testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0));
-        System.out.println("╚════════════════════════════════════════════════════════╝");
+        System.out.println("\n==========================================================");
+        System.out.println("|                    TEST SUMMARY                        |");
+        System.out.println("==========================================================");
+        System.out.printf("|  Total Tests:  %-40d|%n", testsRun);
+        System.out.printf("|  Passed:       %-40d|%n", testsPassed);
+        System.out.printf("|  Failed:       %-40d|%n", testsFailed);
+        System.out.printf("|  Success Rate: %-39.1f%%|%n", (testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0));
+        System.out.println("==========================================================");
         
         if (testsFailed == 0) {
-            System.out.println("\n🎉 All tests passed!");
+            System.out.println("\n*** All tests passed!");
         } else {
-            System.out.println("\n⚠️  Some tests failed. Please review the output above.");
+            System.out.println("\nWARNING:  Some tests failed. Please review the output above.");
         }
     }
 }

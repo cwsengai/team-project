@@ -41,14 +41,14 @@ public class PositionRepositoryTestSuite {
             printSummary();
             cleanup();
         } catch (Exception e) {
-            System.err.println("\n❌ Test suite failed with exception: " + e.getMessage());
+            System.err.println("\n[ERROR] Test suite failed with exception: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }
     }
 
     private static void setup() throws SQLException {
-        System.out.println("📋 Setup: Creating test data and cleaning...");
+        System.out.println(" Setup: Creating test data and cleaning...");
         
         // Initialize repository and client
         positionRepo = new PostgresPositionRepository();
@@ -79,7 +79,7 @@ public class PositionRepositoryTestSuite {
         testCompanyId2 = createTestCompany("GOOGL", "Alphabet Inc.");
         testCompanyId3 = createTestCompany("MSFT", "Microsoft Corporation");
         
-        System.out.println("✓ Setup complete\n");
+        System.out.println("[OK] Setup complete\n");
     }
 
     private static void runAllTests() {
@@ -455,9 +455,9 @@ public class PositionRepositoryTestSuite {
     }
 
     private static void cleanup() throws SQLException {
-        System.out.println("\n🧹 Cleanup: Removing test data...");
+        System.out.println("\n Cleanup: Removing test data...");
         cleanupTestData();
-        System.out.println("✓ Cleanup complete");
+        System.out.println("[OK] Cleanup complete");
     }
 
     private static void runTest(String name, TestCase test) {
@@ -465,14 +465,14 @@ public class PositionRepositoryTestSuite {
         try {
             test.run();
             testsPassed++;
-            System.out.println("✓ " + name);
+            System.out.println("[OK] " + name);
         } catch (AssertionError e) {
             testsFailed++;
-            System.out.println("✗ " + name);
+            System.out.println("[FAIL] " + name);
             System.out.println("  Error: " + e.getMessage());
         } catch (Exception e) {
             testsFailed++;
-            System.out.println("✗ " + name);
+            System.out.println("[FAIL] " + name);
             System.out.println("  Exception: " + e.getMessage());
         }
     }
@@ -515,33 +515,33 @@ public class PositionRepositoryTestSuite {
 
     // UI helpers
     private static void printHeader() {
-        System.out.println("╔════════════════════════════════════════════════════════╗");
-        System.out.println("║    Position Repository Comprehensive Test Suite       ║");
-        System.out.println("╚════════════════════════════════════════════════════════╝\n");
+        System.out.println("==========================================================");
+        System.out.println("|    Position Repository Comprehensive Test Suite       |");
+        System.out.println("==========================================================\n");
     }
 
     private static void printSection(String title) {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  " + title);
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
     }
 
     private static void printSummary() {
         double successRate = testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0;
         
-        System.out.println("\n╔════════════════════════════════════════════════════════╗");
-        System.out.println("║                    TEST SUMMARY                        ║");
-        System.out.println("╠════════════════════════════════════════════════════════╣");
-        System.out.printf("║  Total Tests:  %-36d║%n", testsRun);
-        System.out.printf("║  Passed:       %-36d║%n", testsPassed);
-        System.out.printf("║  Failed:       %-36d║%n", testsFailed);
-        System.out.printf("║  Success Rate: %-35.1f%%║%n", successRate);
-        System.out.println("╚════════════════════════════════════════════════════════╝");
+        System.out.println("\n==========================================================");
+        System.out.println("|                    TEST SUMMARY                        |");
+        System.out.println("==========================================================");
+        System.out.printf("|  Total Tests:  %-36d|%n", testsRun);
+        System.out.printf("|  Passed:       %-36d|%n", testsPassed);
+        System.out.printf("|  Failed:       %-36d|%n", testsFailed);
+        System.out.printf("|  Success Rate: %-35.1f%%|%n", successRate);
+        System.out.println("==========================================================");
         
         if (testsFailed == 0) {
-            System.out.println("\n🎉 All tests passed!");
+            System.out.println("\n*** All tests passed!");
         } else {
-            System.out.println("\n⚠️  Some tests failed. Please review the output above.");
+            System.out.println("\nWARNING:  Some tests failed. Please review the output above.");
             System.exit(1);
         }
     }

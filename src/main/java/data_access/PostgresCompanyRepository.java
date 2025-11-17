@@ -86,23 +86,53 @@ public class PostgresCompanyRepository implements CompanyRepository {
     
     @Override
     public Company save(Company company) {
-        String sql = "INSERT INTO public.companies (id, ticker, name, sector, industry, exchange, market_cap, description) " +
-                     "VALUES (?::uuid, ?, ?, ?, ?, ?, ?, ?) " +
+        // Use INSERT ... ON CONFLICT to handle both insert and update
+        // Let database auto-generate UUID for id
+        String sql = "INSERT INTO public.companies (ticker, name, sector, industry, market_cap, description, country, eps, pe_ratio, dividend_per_share, dividend_yield, beta) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
                      "ON CONFLICT (ticker) DO UPDATE SET " +
                      "name = EXCLUDED.name, sector = EXCLUDED.sector, industry = EXCLUDED.industry, " +
-                     "exchange = EXCLUDED.exchange, market_cap = EXCLUDED.market_cap, description = EXCLUDED.description";
+                     "market_cap = EXCLUDED.market_cap, description = EXCLUDED.description, " +
+                     "country = EXCLUDED.country, eps = EXCLUDED.eps, pe_ratio = EXCLUDED.pe_ratio, " +
+                     "dividend_per_share = EXCLUDED.dividend_per_share, dividend_yield = EXCLUDED.dividend_yield, beta = EXCLUDED.beta";
         
         try (Connection conn = client.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            stmt.setString(1, company.getSymbol());
-            stmt.setString(2, company.getSymbol()); // ticker = symbol
-            stmt.setString(3, company.getName());
-            stmt.setString(4, company.getSector());
-            stmt.setString(5, company.getIndustry());
-            stmt.setString(6, ""); // exchange not in API entity
-            stmt.setDouble(7, company.getMarketCapitalization());
-            stmt.setString(8, company.getDescription());
+            stmt.setString(1, company.getSymbol()); // ticker = symbol
+            stmt.setString(2, company.getName());
+            stmt.setString(3, company.getSector());
+            stmt.setString(4, company.getIndustry());
+            stmt.setDouble(5, company.getMarketCapitalization());
+            stmt.setString(6, company.getDescription());
+            stmt.setString(7, company.getCountry());
+            
+            // Set financial metrics (newly added columns)
+            if (company.getEPS() != 0) {
+                stmt.setFloat(8, company.getEPS());
+            } else {
+                stmt.setNull(8, java.sql.Types.REAL);
+            }
+            
+            if (company.getPeRatio() != 0) {
+                stmt.setFloat(9, company.getPeRatio());
+            } else {
+                stmt.setNull(9, java.sql.Types.REAL);
+            }
+            
+            if (company.getDividendPerShare() != 0) {
+                stmt.setFloat(10, company.getDividendPerShare());
+            } else {
+                stmt.setNull(10, java.sql.Types.REAL);
+            }
+            
+            if (company.getDividendYield() != 0) {
+                stmt.setFloat(11, company.getDividendYield());
+            } else {
+                stmt.setNull(11, java.sql.Types.REAL);
+            }
+            
+            stmt.setFloat(12, company.getBeta());
             
             stmt.executeUpdate();
             return company;
@@ -126,12 +156,23 @@ public class PostgresCompanyRepository implements CompanyRepository {
         String description = rs.getString("description");
         double marketCap = rs.getDouble("market_cap");
         
-        // Create Company using simple constructor (symbol, name, description, marketCap, peRatio)
-        Company company = new Company(symbol, name, description, marketCap, 0.0);
+        // Get financial metrics with NULL handling
+        float peRatio = rs.getObject("pe_ratio") != null ? rs.getFloat("pe_ratio") : 0.0f;
+        float eps = rs.getObject("eps") != null ? rs.getFloat("eps") : 0.0f;
+        float dividendPerShare = rs.getObject("dividend_per_share") != null ? rs.getFloat("dividend_per_share") : 0.0f;
+        float dividendYield = rs.getObject("dividend_yield") != null ? rs.getFloat("dividend_yield") : 0.0f;
+        
+        // Create Company using constructor
+        Company company = new Company(symbol, name, description, marketCap, peRatio);
         
         // Set additional fields
         company.setSector(rs.getString("sector"));
         company.setIndustry(rs.getString("industry"));
+        company.setCountry(rs.getString("country"));
+        company.setEps(eps);
+        company.setDividendPerShare(dividendPerShare);
+        company.setDividendYield(dividendYield);
+        company.setBeta(rs.getFloat("beta"));
         
         return company;
     }

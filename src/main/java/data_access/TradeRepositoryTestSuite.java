@@ -33,15 +33,15 @@ public class TradeRepositoryTestSuite {
     private static String testPositionId2;
     
     public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════════════════════════╗");
-        System.out.println("║     Trade Repository Comprehensive Test Suite         ║");
-        System.out.println("╚════════════════════════════════════════════════════════╝\n");
+        System.out.println("==========================================================");
+        System.out.println("|     Trade Repository Comprehensive Test Suite         |");
+        System.out.println("==========================================================\n");
         
         try {
             // Setup
-            System.out.println("📋 Setup: Creating test data and cleaning...");
+            System.out.println(" Setup: Creating test data and cleaning...");
             setupTestData();
-            System.out.println("✓ Setup complete\n");
+            System.out.println("[OK] Setup complete\n");
             
             // Run all test categories
             testBasicOperations();
@@ -60,25 +60,25 @@ public class TradeRepositoryTestSuite {
             printSummary();
             
             // Cleanup
-            System.out.println("\n🧹 Cleanup: Removing test data...");
+            System.out.println("\n Cleanup: Removing test data...");
             cleanupTestData();
-            System.out.println("✓ Cleanup complete");
+            System.out.println("[OK] Cleanup complete");
             
             if (testsFailed > 0) {
                 System.exit(1);
             }
             
         } catch (Exception e) {
-            System.err.println("\n❌ Test suite failed with exception: " + e.getMessage());
+            System.err.println("\n[ERROR] Test suite failed with exception: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }
     }
     
     private static void testBasicOperations() {
-        System.out.println("═══════════════════════════════════════════════════════");
+        System.out.println("=======================================================");
         System.out.println("  1. BASIC OPERATIONS");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 1.1: Save buy trade
         runTest("Save buy trade", () -> {
@@ -144,9 +144,9 @@ public class TradeRepositoryTestSuite {
     }
     
     private static void testPortfolioQueries() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  2. PORTFOLIO QUERIES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 2.1: Find trades by portfolio ID
         runTest("Find trades by portfolio ID", () -> {
@@ -212,9 +212,9 @@ public class TradeRepositoryTestSuite {
     }
     
     private static void testPositionQueries() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  3. POSITION QUERIES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 3.1: Find trades by position ID
         runTest("Find trades by position ID", () -> {
@@ -257,9 +257,9 @@ public class TradeRepositoryTestSuite {
     }
     
     private static void testDateRangeQueries() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  4. DATE RANGE QUERIES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 4.1: Find trades in date range
         runTest("Find trades in date range", () -> {
@@ -328,9 +328,9 @@ public class TradeRepositoryTestSuite {
     }
     
     private static void testTradeTypes() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  5. TRADE TYPES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 5.1: Buy trade calculations
         runTest("Buy trade - total amount includes fees", () -> {
@@ -367,9 +367,9 @@ public class TradeRepositoryTestSuite {
     }
     
     private static void testEdgeCases() {
-        System.out.println("\n═══════════════════════════════════════════════════════");
+        System.out.println("\n=======================================================");
         System.out.println("  6. EDGE CASES");
-        System.out.println("═══════════════════════════════════════════════════════\n");
+        System.out.println("=======================================================\n");
         
         // Test 6.1: Large quantity
         runTest("Handle large quantity", () -> {
@@ -474,14 +474,14 @@ public class TradeRepositoryTestSuite {
         try {
             test.run();
             testsPassed++;
-            System.out.println("✓ " + testName);
+            System.out.println("[OK] " + testName);
         } catch (AssertionError e) {
             testsFailed++;
-            System.out.println("✗ " + testName);
+            System.out.println("[FAIL] " + testName);
             System.out.println("  Error: " + e.getMessage());
         } catch (Exception e) {
             testsFailed++;
-            System.out.println("✗ " + testName);
+            System.out.println("[FAIL] " + testName);
             System.out.println("  Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -519,19 +519,19 @@ public class TradeRepositoryTestSuite {
     }
     
     private static void printSummary() {
-        System.out.println("\n╔════════════════════════════════════════════════════════╗");
-        System.out.println("║                    TEST SUMMARY                        ║");
-        System.out.println("╠════════════════════════════════════════════════════════╣");
-        System.out.printf("║  Total Tests:  %-40d║%n", testsRun);
-        System.out.printf("║  Passed:       %-40d║%n", testsPassed);
-        System.out.printf("║  Failed:       %-40d║%n", testsFailed);
-        System.out.printf("║  Success Rate: %-39.1f%%║%n", (testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0));
-        System.out.println("╚════════════════════════════════════════════════════════╝");
+        System.out.println("\n==========================================================");
+        System.out.println("|                    TEST SUMMARY                        |");
+        System.out.println("==========================================================");
+        System.out.printf("|  Total Tests:  %-40d|%n", testsRun);
+        System.out.printf("|  Passed:       %-40d|%n", testsPassed);
+        System.out.printf("|  Failed:       %-40d|%n", testsFailed);
+        System.out.printf("|  Success Rate: %-39.1f%%|%n", (testsRun > 0 ? (testsPassed * 100.0 / testsRun) : 0));
+        System.out.println("==========================================================");
         
         if (testsFailed == 0) {
-            System.out.println("\n🎉 All tests passed!");
+            System.out.println("\n*** All tests passed!");
         } else {
-            System.out.println("\n⚠️  Some tests failed. Please review the output above.");
+            System.out.println("\nWARNING:  Some tests failed. Please review the output above.");
         }
     }
 }
