@@ -1,12 +1,11 @@
 package entity;
 
 /**
- * 实体：定义历史价格图表的时间粒度。
+ * Enum representing time intervals for price data.
  */
 public enum TimeInterval {
-
-    FIVE_MINUTES,
+    INTRADAY,
     DAILY,
     WEEKLY,
-
+    MONTHLY
 }

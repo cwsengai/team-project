@@ -17,16 +17,16 @@ public class CompanyDetailViewModel {
     private final List<NewsArticle> recentNews;
 
     public CompanyDetailViewModel(Company company, FinancialStatement financials, List<NewsArticle> news) {
-        this.ticker = company.getTicker();
+        this.ticker = company.getSymbol();
         this.name = company.getName();
         this.sector = company.getSector();
-        this.marketCapFormatted = formatLargeNumber(company.getMarketCap());
+        this.marketCapFormatted = formatLargeNumber(company.getMarketCapitalization());
         this.peRatioFormatted = String.format("%.2f", company.getPeRatio());
 
         if (financials != null) {
-            this.latestRevenue = formatLargeNumber(financials.getRevenue());
+            this.latestRevenue = formatLargeNumber(financials.getTotalRevenue());
             this.latestNetIncome = formatLargeNumber(financials.getNetIncome());
-            this.latestBalanceSheetPeriod = financials.getReportingPeriod();
+            this.latestBalanceSheetPeriod = financials.getFiscalDateEnding().toString();
         } else {
             this.latestRevenue = "N/A";
             this.latestNetIncome = "N/A";

@@ -1,16 +1,27 @@
 package framework_and_driver;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
 import entity.ChartViewModel;
 import interface_adapter.IntervalController;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class ChartWindow extends JFrame {
 
     private final JLabel chartDisplayLabel = new JLabel("<html>Dow Jones Industrial Average<br>📊 CHART DATA HERE 📈</html>", SwingConstants.CENTER);
-    private final JTextArea statusArea = new JTextArea(3, 40); // 用于显示Presenter的输出
+    private final JTextArea statusArea = new JTextArea(3, 40); // Used to display Presenter's output
     private IntervalController controller;
 
     public ChartWindow() {
@@ -62,13 +73,13 @@ public class ChartWindow extends JFrame {
     private JPanel createSouthPanel() {
         JPanel southPanel = new JPanel(new BorderLayout());
 
-        // 按钮组 (5M, 1D, 1W)
+        // Button group (5M, 1D, 1W)
         JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         createIntervalButton(intervalPanel, "5M");
         createIntervalButton(intervalPanel, "1D");
         createIntervalButton(intervalPanel, "1W");
 
-        // 状态信息和 Back 按钮
+        // Status information and Back button
         JPanel controlPanel = new JPanel(new BorderLayout());
         controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -88,7 +99,7 @@ public class ChartWindow extends JFrame {
     private void createIntervalButton(JPanel panel, String text) {
         JButton button = new JButton(text);
         button.addActionListener((ActionEvent e) -> {
-            // 将按钮点击事件委托给 Controller
+            // Delegate button click event to Controller
             if (controller != null) {
                 statusArea.append(">>> Requesting: " + text + "\n");
                 controller.handleTimeChange(text);

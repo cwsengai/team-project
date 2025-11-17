@@ -1,14 +1,18 @@
 package api;
 
-import use_case.CompanyGateway;
-import entity.Company;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
+
+import org.json.JSONObject;
+
+import entity.Company;
+import use_case.CompanyGateway;
 
 public class AlphaVantageCompanyGateway implements CompanyGateway {
 
@@ -42,7 +46,7 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
             }
         } finally {
             if (reader != null) {
-                try { reader.close(); } catch (IOException e) { /* 忽略 */ }
+                try { reader.close(); } catch (IOException e) { /* ignore */ }
             }
             if (connection != null) {
                 connection.disconnect();
@@ -104,16 +108,22 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
 
     private Company parseOverviewToCompany(String jsonResponse) {
         try {
-            // 模拟提取字段值
-            String symbol = "TSLA";
-            String name = "Tesla Inc.";
-            String sector = "Automotive";
-            double marketCap = 800000000000.0; // 800e9
-            double peRatio = 100.0;
+            JSONObject json = new JSONObject(jsonResponse);
+            
+            // Check for API error
+            if (json.has("Error Message")) {
+                throw new RuntimeException("API Error: " + json.getString("Error Message"));
+            }
+            
+            String symbol = json.optString("Symbol", "");
+            String name = json.optString("Name", "");
+            String sector = json.optString("Sector", "Unknown");
+            double marketCap = json.optDouble("MarketCapitalization", 0.0);
+            double peRatio = json.optDouble("PERatio", 0.0);
 
             return new Company(symbol, name, sector, marketCap, peRatio);
         } catch (Exception e) {
-            throw new RuntimeException("Error parsing OVERVIEW JSON: " + e.getMessage());
+            throw new RuntimeException("Error parsing OVERVIEW JSON: " + e.getMessage(), e);
         }
     }
 }

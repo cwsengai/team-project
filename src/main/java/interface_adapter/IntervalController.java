@@ -1,7 +1,7 @@
 package interface_adapter;
 
-import use_case.PriceInputBoundary;
 import entity.TimeInterval;
+import use_case.PriceInputBoundary;
 
 public class IntervalController {
 
@@ -17,7 +17,7 @@ public class IntervalController {
 
         switch (buttonText) {
             case "5M":
-                interval = TimeInterval.FIVE_MINUTES;
+                interval = TimeInterval.INTRADAY;
                 break;
             case "1D":
                 interval = TimeInterval.DAILY;
