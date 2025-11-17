@@ -13,7 +13,6 @@ import entity.PricePoint;
  */
 public class AlphaVantageGateway implements StockDataGateway {
     
-    private final String apiKey;
 
     /**
      * Creates an AlphaVantageGateway using the API key from environment configuration.
@@ -28,7 +27,6 @@ public class AlphaVantageGateway implements StockDataGateway {
      * @param apiKey the Alpha Vantage API key
      */
     public AlphaVantageGateway(String apiKey) {
-        this.apiKey = apiKey;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package data_access;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -33,7 +35,7 @@ public class ApplyPositionsTriggerFix {
                 System.out.println("\nTrigger fix applied successfully!");
             }
             
-        } catch (Exception e) {
+        } catch (IOException | SQLException e) {
             System.err.println("Error applying trigger fix: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
