@@ -88,17 +88,11 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     public Company save(Company company) {
         try {
             // Check if company exists
-            if (company.getId() != null && !company.getId().isEmpty()) {
-                // Check if exists and update
-                Optional<Company> existing = findById(company.getId());
+            if (company.getSymbol() != null && !company.getSymbol().isEmpty()) {
+                // Check if exists and update by symbol (using ticker as alias)
+                Optional<Company> existing = findByTicker(company.getSymbol());
                 if (existing.isPresent()) {
                     return update(company);
-                }
-            } else if (company.getTicker() != null) {
-                // Check if exists by ticker
-                Optional<Company> existing = findByTicker(company.getTicker());
-                if (existing.isPresent()) {
-                    return existing.get(); // Return existing instead of duplicate
                 }
             }
             
@@ -129,7 +123,7 @@ public class SupabaseCompanyRepository implements CompanyRepository {
         // Note: This may fail if user doesn't have UPDATE permission
         Company[] result = client.update(
             "companies",
-            "id=eq." + company.getId(),
+            "symbol=eq." + company.getSymbol(),
             company,
             Company[].class
         );

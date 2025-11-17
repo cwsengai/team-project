@@ -1,45 +1,80 @@
 package entity;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Represents a publicly traded company.
- * Contains metadata about the company including ticker symbol, name, and sector information.
+ * Clean architecture entity combining business logic needs.
+ * Uses symbol as the primary identifier (no database IDs).
  */
 public class Company {
-    private final String id;
-    private final String ticker;
+    private final String symbol;  // Primary key
     private String name;
+    private String description;
     private String sector;
     private String industry;
-    private String exchange;
-    private Double marketCap;
-    private String description;
-    private final LocalDateTime createdAt;
+    private String country;
+    
+    // Financial metrics
+    private long marketCapitalization;
+    private float eps;
+    private float peRatio;
+    private float dividendPerShare;
+    private float dividendYield;
+    private float beta;
+    
+    // Related entities
+    private final List<FinancialStatement> financialStatements;
+    private final List<NewsArticle> newsArticles;
 
-    public Company(String id, String ticker, String name, String sector, String industry,
-                   String exchange, Double marketCap, String description, LocalDateTime createdAt) {
-        this.id = id;
-        this.ticker = ticker;
+    // Full constructor
+    public Company(String symbol, String name, String description, String sector,
+                   String industry, String country, long marketCapitalization,
+                   float eps, float peRatio, float dividendPerShare,
+                   float dividendYield, float beta,
+                   List<FinancialStatement> financialStatements,
+                   List<NewsArticle> newsArticles) {
+        this.symbol = symbol;
         this.name = name;
+        this.description = description;
         this.sector = sector;
         this.industry = industry;
-        this.exchange = exchange;
-        this.marketCap = marketCap;
+        this.country = country;
+        this.marketCapitalization = marketCapitalization;
+        this.eps = eps;
+        this.peRatio = peRatio;
+        this.dividendPerShare = dividendPerShare;
+        this.dividendYield = dividendYield;
+        this.beta = beta;
+        this.financialStatements = financialStatements;
+        this.newsArticles = newsArticles;
+    }
+
+    // Simple constructor for basic company info
+    public Company(String symbol, String name, String description, double marketCap, double peRatio) {
+        this.symbol = symbol;
+        this.name = name;
         this.description = description;
-        this.createdAt = createdAt;
+        this.sector = null;
+        this.industry = null;
+        this.country = null;
+        this.marketCapitalization = (long) marketCap;
+        this.eps = 0.0f;
+        this.peRatio = (float) peRatio;
+        this.dividendPerShare = 0.0f;
+        this.dividendYield = 0.0f;
+        this.beta = 1.0f;
+        this.financialStatements = null;
+        this.newsArticles = null;
     }
 
-    public Company(String id, String ticker, String name) {
-        this(id, ticker, name, null, null, null, null, null, LocalDateTime.now());
+    // Minimal constructor
+    public Company(String symbol, String name) {
+        this(symbol, name, null, 0.0, 0.0);
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getTicker() {
-        return ticker;
+    public String getSymbol() {
+        return symbol;
     }
 
     public String getName() {
@@ -48,6 +83,14 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getSector() {
@@ -66,31 +109,67 @@ public class Company {
         this.industry = industry;
     }
 
-    public String getExchange() {
-        return exchange;
+    public String getCountry() {
+        return country;
     }
 
-    public void setExchange(String exchange) {
-        this.exchange = exchange;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public Double getMarketCap() {
-        return marketCap;
+    public float getMarketCapitalization() {
+        return marketCapitalization;
     }
 
-    public void setMarketCap(Double marketCap) {
-        this.marketCap = marketCap;
+    public void setMarketCapitalization(long value) {
+        this.marketCapitalization = value;
     }
 
-    public String getDescription() {
-        return description;
+    public float getEPS() {
+        return eps;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEps(float value) {
+        this.eps = value;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public float getPeRatio() {
+        return peRatio;
+    }
+
+    public void setPeRatio(float value) {
+        this.peRatio = value;
+    }
+
+    public float getDividendPerShare() {
+        return dividendPerShare;
+    }
+
+    public void setDividendPerShare(float value) {
+        this.dividendPerShare = value;
+    }
+
+    public float getDividendYield() {
+        return dividendYield;
+    }
+
+    public void setDividendYield(float value) {
+        this.dividendYield = value;
+    }
+
+    public float getBeta() {
+        return beta;
+    }
+
+    public void setBeta(float value) {
+        this.beta = value;
+    }
+
+    public List<FinancialStatement> getFinancialStatements() {
+        return financialStatements;
+    }
+
+    public List<NewsArticle> getNewsArticles() {
+        return newsArticles;
     }
 }

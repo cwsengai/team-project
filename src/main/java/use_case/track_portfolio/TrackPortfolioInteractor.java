@@ -77,11 +77,13 @@ public class TrackPortfolioInteractor implements TrackPortfolioInputBoundary {
         // Create output data
         Position[] positions = portfolio.getPositions().toArray(new Position[0]);
         
+        double totalValue = totalRealizedGain + totalUnrealizedGain;
         return new TrackPortfolioOutputData(
                 portfolio.getId(),
                 positions,
                 totalRealizedGain,
                 totalUnrealizedGain,
+                totalValue,
                 LocalDateTime.now()
         );
     }

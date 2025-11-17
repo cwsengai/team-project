@@ -2,7 +2,6 @@ package data_access;
 
 import java.sql.Connection;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +70,7 @@ public class CompanyRepositoryTestSuite {
             Company company = createTestCompany("TEST1", "Test Company 1", "Technology");
             Company saved = repo.save(company);
             assertNotNull(saved, "Saved company should not be null");
-            assertEqualsStr(company.getTicker(), saved.getTicker(), "Ticker should match");
+            assertEqualsStr(company.getSymbol(), saved.getSymbol(), "Symbol should match");
         });
         
         // Test 1.2: Read by ticker
@@ -86,10 +85,11 @@ public class CompanyRepositoryTestSuite {
             Optional<Company> byTicker = repo.findByTicker("TEST1");
             assertTrue(byTicker.isPresent(), "Company should exist");
             
-            String id = byTicker.get().getId();
-            Optional<Company> byId = repo.findById(id);
-            assertTrue(byId.isPresent(), "Company should be found by ID");
-            assertEqualsStr("TEST1", byId.get().getTicker(), "Ticker should match");
+            // Note: API entity uses symbol, not ID
+            String symbol = byTicker.get().getSymbol();
+            Optional<Company> bySymbol = repo.findByTicker(symbol);
+            assertTrue(bySymbol.isPresent(), "Company should be found by symbol");
+            assertEqualsStr("TEST1", bySymbol.get().getSymbol(), "Symbol should match");
         });
         
         // Test 1.4: Update existing company
@@ -98,16 +98,14 @@ public class CompanyRepositoryTestSuite {
             assertTrue(existing.isPresent(), "Company should exist");
             
             Company updated = new Company(
-                existing.get().getId(),
                 "TEST1",
                 "Test Company 1 - Updated",
-                "Technology",
-                "Software",
-                "NYSE",
-                5000000000.0,
                 "Updated description",
-                existing.get().getCreatedAt()
+                5000000000.0,
+                20.0
             );
+            updated.setSector("Technology");
+            updated.setIndustry("Software");
             
             repo.save(updated);
             
@@ -134,8 +132,8 @@ public class CompanyRepositoryTestSuite {
             List<Company> techCompanies = repo.findBySector("Technology");
             assertTrue(techCompanies.size() >= 2, "Should find at least 2 tech companies, found: " + techCompanies.size());
             
-            boolean foundTech1 = techCompanies.stream().anyMatch(c -> c.getTicker().equals("TECH1"));
-            boolean foundTech2 = techCompanies.stream().anyMatch(c -> c.getTicker().equals("TECH2"));
+            boolean foundTech1 = techCompanies.stream().anyMatch(c -> c.getSymbol().equals("TECH1"));
+            boolean foundTech2 = techCompanies.stream().anyMatch(c -> c.getSymbol().equals("TECH2"));
             assertTrue(foundTech1 && foundTech2, "Should find both tech companies");
         });
         
@@ -143,7 +141,7 @@ public class CompanyRepositoryTestSuite {
         runTest("Find by sector - single result", () -> {
             List<Company> healthCompanies = repo.findBySector("Healthcare");
             assertEqualsInt(1, healthCompanies.size(), "Should find exactly 1 healthcare company");
-            assertEqualsStr("HEALTH1", healthCompanies.get(0).getTicker(), "Should find HEALTH1");
+            assertEqualsStr("HEALTH1", healthCompanies.get(0).getSymbol(), "Should find HEALTH1");
         });
         
         // Test 2.3: Find by sector - no results
@@ -176,34 +174,35 @@ public class CompanyRepositoryTestSuite {
         // Test 3.1: Update market cap
         runTest("Update market cap", () -> {
             Company original = createTestCompany("UPD1", "Update Test 1", "Technology");
-            original = new Company(original.getId(), original.getTicker(), original.getName(),
-                original.getSector(), original.getIndustry(), original.getExchange(),
-                1000000000.0, original.getDescription(), original.getCreatedAt());
             repo.save(original);
             
-            Company updated = new Company(original.getId(), original.getTicker(), original.getName(),
-                original.getSector(), original.getIndustry(), original.getExchange(),
-                2000000000.0, original.getDescription(), original.getCreatedAt());
+            // Create updated version with new market cap
+            Company updated = new Company(
+                original.getSymbol(),
+                original.getName(),
+                original.getDescription(),
+                2000000000.0,
+                original.getPeRatio()
+            );
+            updated.setSector(original.getSector());
+            updated.setIndustry(original.getIndustry());
             repo.save(updated);
             
             Optional<Company> found = repo.findByTicker("UPD1");
             assertTrue(found.isPresent(), "Company should exist");
-            assertEqualsDouble(2000000000.0, found.get().getMarketCap(), "Market cap should be updated");
+            assertEqualsDouble(2000000000.0, found.get().getMarketCapitalization(), "Market cap should be updated");
         });
         
-        // Test 3.2: Update with null values
+        // Test 3.2: Update with null optional fields
         runTest("Update with null optional fields", () -> {
             Company company = new Company(
-                UUID.randomUUID().toString(),
                 "UPD2",
                 "Update Test 2",
-                null,  // null sector
-                null,  // null industry
-                null,  // null exchange
-                null,  // null market cap
                 null,  // null description
-                LocalDateTime.now()
+                0.0,   // zero market cap
+                0.0    // zero PE ratio
             );
+            // sector and industry can be null via setters
             repo.save(company);
             
             Optional<Company> found = repo.findByTicker("UPD2");
@@ -275,22 +274,14 @@ public class CompanyRepositoryTestSuite {
         
         // Test 5.2: Special characters in text fields
         runTest("Handle special characters", () -> {
-            Company company = createTestCompany(
+            Company company = new Company(
                 "SPEC1",
                 "Company & Co. \"The Best\" 'Ever'",
-                "Technology & Finance"
-            );
-            company = new Company(
-                company.getId(),
-                company.getTicker(),
-                company.getName(),
-                company.getSector(),
-                company.getIndustry(),
-                company.getExchange(),
-                company.getMarketCap(),
                 "Description with special chars: <>&\"'",
-                company.getCreatedAt()
+                1000000000.0,
+                15.0
             );
+            company.setSector("Technology & Finance");
             repo.save(company);
             
             Optional<Company> found = repo.findByTicker("SPEC1");
@@ -300,18 +291,14 @@ public class CompanyRepositoryTestSuite {
         
         // Test 5.3: Very large market cap
         runTest("Handle very large market cap", () -> {
-            Company company = createTestCompany("BIG1", "Big Company", "Technology");
-            company = new Company(
-                company.getId(),
-                company.getTicker(),
-                company.getName(),
-                company.getSector(),
-                company.getIndustry(),
-                company.getExchange(),
+            Company company = new Company(
+                "BIG1",
+                "Big Company",
+                "Test description",
                 999999999999999.99,  // Very large number
-                company.getDescription(),
-                company.getCreatedAt()
+                15.0
             );
+            company.setSector("Technology");
             repo.save(company);
             
             Optional<Company> found = repo.findByTicker("BIG1");
@@ -320,15 +307,19 @@ public class CompanyRepositoryTestSuite {
         
         // Test 5.4: Zero and negative market cap
         runTest("Handle zero and negative market cap", () -> {
-            Company zero = createTestCompany("ZERO1", "Zero Cap", "Technology");
-            zero = new Company(zero.getId(), zero.getTicker(), zero.getName(),
-                zero.getSector(), zero.getIndustry(), zero.getExchange(),
-                0.0, zero.getDescription(), zero.getCreatedAt());
+            Company zero = new Company(
+                "ZERO1",
+                "Zero Cap",
+                "Test description",
+                0.0,
+                15.0
+            );
+            zero.setSector("Technology");
             repo.save(zero);
             
             Optional<Company> foundZero = repo.findByTicker("ZERO1");
             assertTrue(foundZero.isPresent(), "Company with zero market cap should be saved");
-            assertEqualsDouble(0.0, foundZero.get().getMarketCap(), "Market cap should be 0");
+            assertEqualsDouble(0.0, foundZero.get().getMarketCapitalization(), "Market cap should be 0");
         });
     }
     
@@ -374,42 +365,30 @@ public class CompanyRepositoryTestSuite {
             List<Company> finance = repo.findBySector("Finance");
             
             // UNIQ1 should now be in Finance, not Technology
-            boolean inTech = all.stream().anyMatch(c -> c.getTicker().equals("UNIQ1"));
-            boolean inFinance = finance.stream().anyMatch(c -> c.getTicker().equals("UNIQ1"));
+            boolean inTech = all.stream().anyMatch(c -> c.getSymbol().equals("UNIQ1"));
+            boolean inFinance = finance.stream().anyMatch(c -> c.getSymbol().equals("UNIQ1"));
             
             assertFalse(inTech, "UNIQ1 should not be in Technology after update");
             assertTrue(inFinance, "UNIQ1 should be in Finance after update");
         });
         
-        // Test 7.2: Timestamp preservation
-        runTest("CreatedAt timestamp preservation", () -> {
-            Company company = createTestCompany("TIME1", "Timestamp Test", "Technology");
-            LocalDateTime originalTime = company.getCreatedAt();
-            repo.save(company);
-            
-            // Wait a moment
-            try { Thread.sleep(100); } catch (InterruptedException e) {}
-            
-            Optional<Company> found = repo.findByTicker("TIME1");
-            assertTrue(found.isPresent(), "Company should exist");
-            // Note: Created timestamp might be set by database, so this test may need adjustment
-        });
+        // Test 7.2: Timestamp preservation - skipped (API entity doesn't track creation time)
+        // The API Company entity uses symbol as primary key and doesn't have creation timestamps
     }
     
     // ===== Test Utilities =====
     
     private static Company createTestCompany(String ticker, String name, String sector) {
-        return new Company(
-            UUID.randomUUID().toString(),
+        Company company = new Company(
             ticker,
             name,
-            sector,
-            "Test Industry",
-            "TEST",
-            1000000000.0,
             "Test description for " + ticker,
-            LocalDateTime.now()
+            1000000000.0,
+            15.0 // P/E ratio
         );
+        company.setSector(sector);
+        company.setIndustry("Test Industry");
+        return company;
     }
     
     private static void runTest(String testName, Runnable test) {

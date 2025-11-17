@@ -17,18 +17,15 @@ public class TestCompanyRepository {
         try {
             // Test 1: Create a company
             System.out.println("Test 1: Creating Apple Inc...");
-            String appleId = java.util.UUID.randomUUID().toString();
             Company apple = new Company(
-                appleId,
                 "AAPL",
                 "Apple Inc.",
-                "Technology",
-                "Consumer Electronics",
-                "NASDAQ",
-                3000000000000.0, // $3T
                 "Apple designs and manufactures consumer electronics, software, and online services.",
-                java.time.LocalDateTime.now()
+                3000000000000.0, // $3T
+                30.0 // P/E ratio
             );
+            apple.setSector("Technology");
+            apple.setIndustry("Consumer Electronics");
             
             repo.save(apple);
             System.out.println("✓ Company saved\n");
@@ -40,11 +37,10 @@ public class TestCompanyRepository {
             if (found.isPresent()) {
                 Company c = found.get();
                 System.out.println("✓ Found company:");
-                System.out.println("  ID: " + c.getId());
-                System.out.println("  Ticker: " + c.getTicker());
+                System.out.println("  Symbol: " + c.getSymbol());
                 System.out.println("  Name: " + c.getName());
                 System.out.println("  Sector: " + c.getSector());
-                System.out.println("  Market Cap: $" + c.getMarketCap());
+                System.out.println("  Market Cap: $" + c.getMarketCapitalization());
             } else {
                 System.out.println("✗ Company not found");
             }
@@ -53,38 +49,33 @@ public class TestCompanyRepository {
             // Test 3: Update company (upsert)
             System.out.println("Test 3: Updating AAPL market cap...");
             Company appleUpdated = new Company(
-                apple.getId(),
-                apple.getTicker(),
+                apple.getSymbol(),
                 apple.getName(),
-                apple.getSector(),
-                apple.getIndustry(),
-                apple.getExchange(),
-                3100000000000.0, // $3.1T
                 apple.getDescription(),
-                apple.getCreatedAt()
+                3100000000000.0, // $3.1T
+                apple.getPeRatio()
             );
+            appleUpdated.setSector(apple.getSector());
+            appleUpdated.setIndustry(apple.getIndustry());
             repo.save(appleUpdated);
             
             Optional<Company> updated = repo.findByTicker("AAPL");
             if (updated.isPresent()) {
-                System.out.println("✓ Updated market cap: $" + updated.get().getMarketCap());
+                System.out.println("✓ Updated market cap: $" + updated.get().getMarketCapitalization());
             }
             System.out.println();
             
             // Test 4: Create another company
             System.out.println("Test 4: Creating Microsoft...");
-            String msftId = java.util.UUID.randomUUID().toString();
             Company msft = new Company(
-                msftId,
                 "MSFT",
                 "Microsoft Corporation",
-                "Technology",
-                "Software",
-                "NASDAQ",
-                2800000000000.0,
                 "Microsoft develops and licenses software, services, devices and solutions.",
-                java.time.LocalDateTime.now()
+                2800000000000.0,
+                25.0 // P/E ratio
             );
+            msft.setSector("Technology");
+            msft.setIndustry("Software");
             repo.save(msft);
             System.out.println("✓ Company saved\n");
             
@@ -93,7 +84,7 @@ public class TestCompanyRepository {
             var techCompanies = repo.findBySector("Technology");
             System.out.println("✓ Found " + techCompanies.size() + " companies:");
             for (Company c : techCompanies) {
-                System.out.println("  - " + c.getTicker() + ": " + c.getName());
+                System.out.println("  - " + c.getSymbol() + ": " + c.getName());
             }
             
             System.out.println("\n✅ All tests passed!");

@@ -484,32 +484,28 @@ public class PriceRepositoryTestSuite {
         
         // Create test companies
         Company company1 = new Company(
-            UUID.randomUUID().toString(),
             "PRICE1",
             "Price Test Company 1",
-            "Technology",
-            "Software",
-            "TEST",
-            1000000000.0,
             "Test company for price data",
-            LocalDateTime.now()
+            1000000000.0,
+            15.0
         );
+        company1.setSector("Technology");
+        company1.setIndustry("Software");
         companyRepo.save(company1);
-        testCompanyId1 = company1.getId();
+        testCompanyId1 = company1.getSymbol();
         
         Company company2 = new Company(
-            UUID.randomUUID().toString(),
             "PRICE2",
             "Price Test Company 2",
-            "Finance",
-            "Banking",
-            "TEST",
-            2000000000.0,
             "Test company for price data",
-            LocalDateTime.now()
+            2000000000.0,
+            20.0
         );
+        company2.setSector("Finance");
+        company2.setIndustry("Banking");
         companyRepo.save(company2);
-        testCompanyId2 = company2.getId();
+        testCompanyId2 = company2.getSymbol();
     }
     
     private static void cleanupTestData() {

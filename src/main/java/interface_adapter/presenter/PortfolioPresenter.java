@@ -47,20 +47,27 @@ public class PortfolioPresenter implements TrackPortfolioOutputBoundary {
             // TODO: Get current market price for each position
             double currentPrice = 100.0; // Placeholder - should get from output data
             
+            double marketValue = position.currentMarketValue(currentPrice);
+            double gain = position.unrealizedGain(currentPrice);
+            
             positionViews[i] = new PositionView(
                     position.getTicker(),
                     position.getQuantity(),
-                    currentPrice,
                     position.getAverageCost(),
-                    position.unrealizedGain(currentPrice)
+                    currentPrice,
+                    marketValue,
+                    gain
             );
         }
 
+        double totalGain = outputData.getTotalRealizedGain() + outputData.getTotalUnrealizedGain();
+        
         return new PortfolioViewModel(
                 outputData.getPortfolioId(),
                 positionViews,
                 outputData.getTotalRealizedGain(),
                 outputData.getTotalUnrealizedGain(),
+                totalGain,
                 outputData.getSnapshotTime()
         );
     }

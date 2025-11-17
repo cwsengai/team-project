@@ -36,8 +36,7 @@ public class TradingController implements PortfolioController {
         // Create input data and call use case
         TrackPortfolioInputData inputData = new TrackPortfolioInputData(
                 portfolioId, 
-                userId, 
-                LocalDate.now()
+                userId
         );
         
         inputBoundary.trackPortfolio(inputData);
@@ -51,10 +50,10 @@ public class TradingController implements PortfolioController {
      */
     @Override
     public void refreshPortfolio(String portfolioId, String userId, LocalDate asOfDate) {
+        // Note: asOfDate parameter currently not used in input data
         TrackPortfolioInputData inputData = new TrackPortfolioInputData(
                 portfolioId, 
-                userId, 
-                asOfDate
+                userId
         );
         inputBoundary.trackPortfolio(inputData);
     }

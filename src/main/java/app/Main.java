@@ -14,6 +14,7 @@ import entity.Trade;
 import interface_adapter.controller.TradingController;
 import interface_adapter.presenter.PortfolioPresenter;
 import use_case.track_portfolio.TrackPortfolioInteractor;
+import view.MainFrame;
 import view.PortfolioPage;
 
 /**

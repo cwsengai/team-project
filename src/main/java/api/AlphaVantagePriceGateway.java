@@ -1,11 +1,12 @@
 package api;
 
-import use_case.PriceDataAccessInterface;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import entity.PricePoint;
 import entity.TimeInterval;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.IOException;
+import use_case.PriceDataAccessInterface;
 
 
 public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
@@ -25,7 +26,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
         String functionName;
 
         switch (interval) {
-            case FIVE_MINUTES:
+            case INTRADAY:
                 functionName = "TIME_SERIES_INTRADAY";
                 break;
             case DAILY:
@@ -43,7 +44,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 .append("&symbol=").append(ticker)
                 .append("&apikey=").append(apiKey);
 
-        if (interval == TimeInterval.FIVE_MINUTES) {
+        if (interval == TimeInterval.INTRADAY) {
             urlBuilder.append("&interval=").append("5min"); // 盘中数据所需参数
         }
 

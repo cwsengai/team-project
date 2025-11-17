@@ -95,13 +95,13 @@ public class PostgresCompanyRepository implements CompanyRepository {
         try (Connection conn = client.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            stmt.setString(1, company.getId());
-            stmt.setString(2, company.getTicker());
+            stmt.setString(1, company.getSymbol());
+            stmt.setString(2, company.getSymbol()); // ticker = symbol
             stmt.setString(3, company.getName());
             stmt.setString(4, company.getSector());
             stmt.setString(5, company.getIndustry());
-            stmt.setString(6, company.getExchange());
-            stmt.setDouble(7, company.getMarketCap() != null ? company.getMarketCap() : 0.0);
+            stmt.setString(6, ""); // exchange not in API entity
+            stmt.setDouble(7, company.getMarketCapitalization());
             stmt.setString(8, company.getDescription());
             
             stmt.executeUpdate();
@@ -120,16 +120,19 @@ public class PostgresCompanyRepository implements CompanyRepository {
     }
     
     private Company mapResultSetToCompany(ResultSet rs) throws Exception {
-        return new Company(
-            rs.getString("id"),
-            rs.getString("ticker"),
-            rs.getString("name"),
-            rs.getString("sector"),
-            rs.getString("industry"),
-            rs.getString("exchange"),
-            rs.getDouble("market_cap"),
-            rs.getString("description"),
-            rs.getTimestamp("created_at").toLocalDateTime()
-        );
+        // Map to API Company entity using symbol as primary key
+        String symbol = rs.getString("ticker"); // Use ticker as symbol
+        String name = rs.getString("name");
+        String description = rs.getString("description");
+        double marketCap = rs.getDouble("market_cap");
+        
+        // Create Company using simple constructor (symbol, name, description, marketCap, peRatio)
+        Company company = new Company(symbol, name, description, marketCap, 0.0);
+        
+        // Set additional fields
+        company.setSector(rs.getString("sector"));
+        company.setIndustry(rs.getString("industry"));
+        
+        return company;
     }
 }
