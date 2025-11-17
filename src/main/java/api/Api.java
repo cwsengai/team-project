@@ -24,7 +24,6 @@ public class Api {
 
     private static final String FUNC_NEWS_SENTIMENT = "NEWS_SENTIMENT";
 
-
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey;
 
