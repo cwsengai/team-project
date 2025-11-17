@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,35 +11,112 @@ import java.util.Map;
  */
 public class Portfolio {
     private final String id;
-    private final String ownerId;
+    private final String userId;  // Changed from ownerId to match database
+    private String name;
+    private boolean isSimulation;
+    private final double initialCash;
+    private double currentCash;
+    private String currency;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private final List<Position> positions;
-    private double cash;
 
-    public Portfolio(String id, String ownerId, double initialCash) {
+    public Portfolio(String id, String userId, String name, boolean isSimulation,
+                     double initialCash, double currentCash, String currency,
+                     LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.ownerId = ownerId;
+        this.userId = userId;
+        this.name = name;
+        this.isSimulation = isSimulation;
+        this.initialCash = initialCash;
+        this.currentCash = currentCash;
+        this.currency = currency != null ? currency : "USD";
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
+        this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
         this.positions = new ArrayList<>();
-        this.cash = initialCash;
+    }
+
+    // Backward compatible constructor for existing code
+    public Portfolio(String id, String userId, double initialCash) {
+        this(id, userId, "My Portfolio", true, initialCash, initialCash, "USD",
+             LocalDateTime.now(), LocalDateTime.now());
     }
 
     public String getId() {
         return id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    // Keep old method for backward compatibility
+    @Deprecated
     public String getOwnerId() {
-        return ownerId;
+        return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean isSimulation() {
+        return isSimulation;
+    }
+
+    public void setSimulation(boolean simulation) {
+        isSimulation = simulation;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public double getInitialCash() {
+        return initialCash;
+    }
+
+    public double getCurrentCash() {
+        return currentCash;
+    }
+
+    public void setCurrentCash(double currentCash) {
+        this.currentCash = currentCash;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // Keep old method for backward compatibility
+    @Deprecated
+    public double getCash() {
+        return currentCash;
+    }
+
+    @Deprecated
+    public void setCash(double cash) {
+        setCurrentCash(cash);
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public List<Position> getPositions() {
         return new ArrayList<>(positions);
-    }
-
-    public double getCash() {
-        return cash;
-    }
-
-    public void setCash(double cash) {
-        this.cash = cash;
     }
 
     /**
@@ -104,6 +182,6 @@ public class Portfolio {
             }
         }
         
-        return totalPositionsValue + cash;
+        return totalPositionsValue + currentCash;
     }
 }

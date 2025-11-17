@@ -29,7 +29,8 @@ public class TrackPortfolioInteractor implements TrackPortfolioInputBoundary {
     public void trackPortfolio(TrackPortfolioInputData inputData) {
         try {
             // Retrieve portfolio from repository
-            Portfolio portfolio = portfolioRepository.findById(inputData.getPortfolioId());
+            Portfolio portfolio = portfolioRepository.findById(inputData.getPortfolioId())
+                    .orElse(null);
             
             if (portfolio == null) {
                 outputBoundary.presentError("Portfolio not found: " + inputData.getPortfolioId());
@@ -37,7 +38,7 @@ public class TrackPortfolioInteractor implements TrackPortfolioInputBoundary {
             }
 
             // TODO: Verify that the portfolio belongs to the user
-            if (!portfolio.getOwnerId().equals(inputData.getUserId())) {
+            if (!portfolio.getUserId().equals(inputData.getUserId())) {
                 outputBoundary.presentError("Unauthorized access to portfolio");
                 return;
             }
