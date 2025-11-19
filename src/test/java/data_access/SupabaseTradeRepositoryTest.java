@@ -70,29 +70,28 @@ public class SupabaseTradeRepositoryTest {
         User userProfile = new User(testUserId, testEmail, "Test Trade User");
         userRepository.save(userProfile);
         
-        // Create test financial instruments (required for foreign key constraints)
-        // Use service role to bypass RLS policies
+        // Create test financial instruments using SERVICE ROLE (bypasses RLS)
+        // Each instrument in separate try-catch to handle duplicates gracefully
         SupabaseClient serviceClient = null;
         try {
             serviceClient = new SupabaseClient(true); // Use service role key
             
-            Map<String, Object> aaplInstrument = new HashMap<>();
-            aaplInstrument.put("symbol", "AAPL");
-            aaplInstrument.put("name", "Apple Inc.");
-            aaplInstrument.put("type", "stock");
-            serviceClient.insert("financial_instruments", aaplInstrument, Map[].class);
+            try {
+                Map<String, Object> aaplInstrument = new HashMap<>();
+                aaplInstrument.put("symbol", "AAPL");
+                aaplInstrument.put("name", "Apple Inc.");
+                aaplInstrument.put("type", "stock");
+                serviceClient.insert("financial_instruments", aaplInstrument, Map[].class);
+            } catch (IOException e) { /* Already exists */ }
             
-            Map<String, Object> googlInstrument = new HashMap<>();
-            googlInstrument.put("symbol", "GOOGL");
-            googlInstrument.put("name", "Alphabet Inc.");
-            googlInstrument.put("type", "stock");
-            serviceClient.insert("financial_instruments", googlInstrument, Map[].class);
+            try {
+                Map<String, Object> googlInstrument = new HashMap<>();
+                googlInstrument.put("symbol", "GOOGL");
+                googlInstrument.put("name", "Alphabet Inc.");
+                googlInstrument.put("type", "stock");
+                serviceClient.insert("financial_instruments", googlInstrument, Map[].class);
+            } catch (IOException e) { /* Already exists */ }
             
-            instrumentsExist = true;
-        } catch (IOException e) {
-            // Instruments may already exist from previous test runs
-            System.out.println("Note: Financial instruments creation skipped: " + e.getMessage());
-            instrumentsExist = true; // Assume they exist
         } finally {
             if (serviceClient != null) {
                 serviceClient.shutdown();

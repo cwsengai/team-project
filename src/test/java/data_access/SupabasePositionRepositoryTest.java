@@ -65,24 +65,44 @@ public class SupabasePositionRepositoryTest {
         userRepository.save(userProfile);
         
         // Create test financial instruments using SERVICE ROLE (bypasses RLS)
+        // Each instrument in separate try-catch to handle duplicates gracefully
         SupabaseClient serviceClient = null;
         try {
             serviceClient = new SupabaseClient(true); // Use service role key
             
-            Map<String, Object> aaplInstrument = new HashMap<>();
-            aaplInstrument.put("symbol", "AAPL");
-            aaplInstrument.put("name", "Apple Inc.");
-            aaplInstrument.put("type", "stock");
-            serviceClient.insert("financial_instruments", aaplInstrument, Map[].class);
+            // Try to create each instrument individually
+            try {
+                Map<String, Object> aaplInstrument = new HashMap<>();
+                aaplInstrument.put("symbol", "AAPL");
+                aaplInstrument.put("name", "Apple Inc.");
+                aaplInstrument.put("type", "stock");
+                serviceClient.insert("financial_instruments", aaplInstrument, Map[].class);
+            } catch (IOException e) { /* Already exists */ }
             
-            Map<String, Object> googlInstrument = new HashMap<>();
-            googlInstrument.put("symbol", "GOOGL");
-            googlInstrument.put("name", "Alphabet Inc.");
-            googlInstrument.put("type", "stock");
-            serviceClient.insert("financial_instruments", googlInstrument, Map[].class);
-        } catch (IOException e) {
-            // Instruments may already exist from previous test runs
-            System.out.println("Note: Financial instruments creation skipped: " + e.getMessage());
+            try {
+                Map<String, Object> googlInstrument = new HashMap<>();
+                googlInstrument.put("symbol", "GOOGL");
+                googlInstrument.put("name", "Alphabet Inc.");
+                googlInstrument.put("type", "stock");
+                serviceClient.insert("financial_instruments", googlInstrument, Map[].class);
+            } catch (IOException e) { /* Already exists */ }
+            
+            try {
+                Map<String, Object> msftInstrument = new HashMap<>();
+                msftInstrument.put("symbol", "MSFT");
+                msftInstrument.put("name", "Microsoft Corp.");
+                msftInstrument.put("type", "stock");
+                serviceClient.insert("financial_instruments", msftInstrument, Map[].class);
+            } catch (IOException e) { /* Already exists */ }
+            
+            try {
+                Map<String, Object> tslaInstrument = new HashMap<>();
+                tslaInstrument.put("symbol", "TSLA");
+                tslaInstrument.put("name", "Tesla Inc.");
+                tslaInstrument.put("type", "stock");
+                serviceClient.insert("financial_instruments", tslaInstrument, Map[].class);
+            } catch (IOException e) { /* Already exists */ }
+            
         } finally {
             if (serviceClient != null) {
                 serviceClient.shutdown();
@@ -272,10 +292,10 @@ public class SupabasePositionRepositoryTest {
     void testPositionWithZeroQuantity() {
         // Arrange
         Position closedPosition = new Position(
-            "pos-closed",
+            null,  // Let database generate UUID
             testPortfolioId,
-            "MSFT",
-            "stock",
+            "AAPL",  // Use AAPL which already exists
+            null,  // instrumentType is transient
             0,  // Fully sold/closed
             350.0,
             500.0,  // Realized P/L from closing
