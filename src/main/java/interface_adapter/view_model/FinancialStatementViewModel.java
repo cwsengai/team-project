@@ -1,12 +1,12 @@
 package interface_adapter.view_model;
 
-public class CompanyViewModel {
+import entity.FinancialStatement;
+import java.util.List;
 
-    public String name;
-    public String symbol;
-    public String sector;
-    public String industry;
-    public String description;
+public class FinancialStatementViewModel {
+
+    public List<FinancialStatement> statements;
+    public String formattedOutput;
     public String error;
 
     private Runnable listener;
@@ -19,3 +19,4 @@ public class CompanyViewModel {
         if (listener != null) listener.run();
     }
 }
+

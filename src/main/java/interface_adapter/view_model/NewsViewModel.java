@@ -1,12 +1,15 @@
 package interface_adapter.view_model;
 
-public class CompanyViewModel {
+import entity.NewsArticle;
 
-    public String name;
-    public String symbol;
-    public String sector;
-    public String industry;
-    public String description;
+import java.util.List;
+
+public class NewsViewModel {
+
+    public List<NewsArticle> articles;
+
+    public String formattedNews;
+
     public String error;
 
     private Runnable listener;
