@@ -1,5 +1,9 @@
 package data_access;
 
+/*
+ * COMMENTED OUT: This test suite uses PostgreSQL repositories which are being migrated to Supabase.
+ * Will be deleted after Supabase test suites are implemented.
+ 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +15,10 @@ import java.util.UUID;
 
 import entity.Position;
 
-/**
- * Comprehensive test suite for PostgresPositionRepository.
- * Tests position management, portfolio isolation, P/L tracking, and edge cases.
- */
+
+ Comprehensive test suite for PostgresPositionRepository.
+ Tests position management, portfolio isolation, P/L tracking, and edge cases.
+ 
 public class PositionRepositoryTestSuite {
     private static PositionRepository positionRepo;
     private static PostgresClient client;
@@ -551,3 +555,4 @@ public class PositionRepositoryTestSuite {
         void run() throws Exception;
     }
 }
+*/

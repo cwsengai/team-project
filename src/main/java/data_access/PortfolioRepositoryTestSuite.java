@@ -1,5 +1,9 @@
 package data_access;
 
+/*
+ * COMMENTED OUT: This test suite uses PostgreSQL repositories which are being migrated to Supabase.
+ * Will be deleted after Supabase test suites are implemented.
+ 
 import java.sql.Connection;
 import java.sql.Statement;
 import java.time.LocalDateTime;
@@ -9,10 +13,10 @@ import java.util.UUID;
 
 import entity.Portfolio;
 
-/**
- * Comprehensive test suite for PostgresPortfolioRepository.
- * Tests all CRUD operations, user isolation, and RLS policies.
- */
+
+ Comprehensive test suite for PostgresPortfolioRepository.
+ Tests all CRUD operations, user isolation, and RLS policies.
+ 
 public class PortfolioRepositoryTestSuite {
     
     private static final PostgresPortfolioRepository repo = new PostgresPortfolioRepository();
@@ -474,3 +478,4 @@ public class PortfolioRepositoryTestSuite {
         }
     }
 }
+*/

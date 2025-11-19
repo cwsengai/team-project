@@ -1,5 +1,9 @@
 package data_access;
 
+/*
+ * COMMENTED OUT: This test suite uses PostgreSQL repositories which are being migrated to Supabase.
+ * Will be deleted after Supabase test suites are implemented.
+ 
 import java.sql.Connection;
 import java.sql.Statement;
 import java.time.LocalDateTime;
@@ -9,10 +13,10 @@ import java.util.UUID;
 import entity.Trade;
 import entity.TradeType;
 
-/**
- * Comprehensive test suite for PostgresTradeRepository.
- * Tests all CRUD operations, queries, and trade immutability.
- */
+
+ Comprehensive test suite for PostgresTradeRepository.
+ Tests all CRUD operations, queries, and trade immutability.
+ 
 public class TradeRepositoryTestSuite {
     
     private static final PostgresTradeRepository tradeRepo = new PostgresTradeRepository();
@@ -535,3 +539,4 @@ public class TradeRepositoryTestSuite {
         }
     }
 }
+*/

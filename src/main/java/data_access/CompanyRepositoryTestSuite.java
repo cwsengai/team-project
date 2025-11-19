@@ -1,5 +1,9 @@
 package data_access;
 
+/*
+ * COMMENTED OUT: This test suite uses PostgreSQL repositories which are being migrated to Supabase.
+ * Will be deleted after Supabase test suites are implemented.
+ 
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -9,10 +13,10 @@ import java.util.UUID;
 
 import entity.Company;
 
-/**
- * Comprehensive test suite for PostgresCompanyRepository.
- * Tests all CRUD operations, edge cases, and error handling.
- */
+
+ Comprehensive test suite for PostgresCompanyRepository.
+ Tests all CRUD operations, edge cases, and error handling.
+ 
 public class CompanyRepositoryTestSuite {
     
     private static final PostgresCompanyRepository repo = new PostgresCompanyRepository();
@@ -479,3 +483,4 @@ public class CompanyRepositoryTestSuite {
         }
     }
 }
+*/

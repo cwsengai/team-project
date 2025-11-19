@@ -1,5 +1,9 @@
 package data_access;
 
+/*
+ * COMMENTED OUT: This test suite uses PostgreSQL repositories which are being migrated to Supabase.
+ * Will be deleted after Supabase test suites are implemented.
+ 
 import java.sql.Connection;
 import java.sql.Statement;
 import java.time.LocalDateTime;
@@ -11,10 +15,10 @@ import entity.Company;
 import entity.PricePoint;
 import entity.TimeInterval;
 
-/**
- * Comprehensive test suite for PostgresPriceRepository.
- * Tests all CRUD operations, queries, and edge cases for price data.
- */
+
+ Comprehensive test suite for PostgresPriceRepository.
+ Tests all CRUD operations, queries, and edge cases for price data.
+ 
 public class PriceRepositoryTestSuite {
     
     private static final PostgresPriceRepository priceRepo = new PostgresPriceRepository();
@@ -593,3 +597,4 @@ public class PriceRepositoryTestSuite {
         }
     }
 }
+*/

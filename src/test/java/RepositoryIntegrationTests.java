@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,36 +14,42 @@ public class RepositoryIntegrationTests {
     private static int totalFailed = 0;
     
     @Test
+    @Disabled("Disabled: PostgreSQL repositories being migrated to Supabase")
     @DisplayName("Company Repository Test Suite")
     public void testCompanyRepository() {
         captureTestResults(() -> data_access.CompanyRepositoryTestSuite.main(new String[]{}));
     }
     
     @Test
+    @Disabled("Disabled: PostgreSQL repositories being migrated to Supabase")
     @DisplayName("Position Repository Test Suite")
     public void testPositionRepository() {
         captureTestResults(() -> data_access.PositionRepositoryTestSuite.main(new String[]{}));
     }
     
     @Test
+    @Disabled("Disabled: PostgreSQL repositories being migrated to Supabase")
     @DisplayName("Portfolio Repository Test Suite")
     public void testPortfolioRepository() {
         captureTestResults(() -> data_access.PortfolioRepositoryTestSuite.main(new String[]{}));
     }
     
     @Test
+    @Disabled("Disabled: PostgreSQL repositories being migrated to Supabase")
     @DisplayName("Trade Repository Test Suite")
     public void testTradeRepository() {
         captureTestResults(() -> data_access.TradeRepositoryTestSuite.main(new String[]{}));
     }
     
     @Test
+    @Disabled("Disabled: PostgreSQL repositories being migrated to Supabase")
     @DisplayName("Price Repository Test Suite")
     public void testPriceRepository() {
         captureTestResults(() -> data_access.PriceRepositoryTestSuite.main(new String[]{}));
     }
     
     @Test
+    @Disabled("Disabled: PostgreSQL repositories being migrated to Supabase")
     @DisplayName("User Repository Test Suite")
     public void testUserRepository() {
         captureTestResults(() -> data_access.UserRepositoryTestSuite.main(new String[]{}));
