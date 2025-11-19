@@ -2,28 +2,86 @@ package entity;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a price data point at a specific time.
+ * Contains OHLC (Open, High, Low, Close) data and volume.
+ */
 public class PricePoint {
+    private final String id;
+    private final String companyId;
+    private final LocalDateTime timestamp;
+    private final TimeInterval interval;
+    private final Double open;
+    private final Double high;
+    private final Double low;
+    private final Double close;
+    private final Double volume;
+    private final String source;
 
-    private final LocalDateTime dateTime;
-    private final double open;
-    private final double high;
-    private final double low;
-    private final double close;
-    private final long volume;
-
-    public PricePoint(LocalDateTime dateTime, double open, double high, double low, double close, long volume) {
-        this.dateTime = dateTime;
+    public PricePoint(String id, String companyId, LocalDateTime timestamp, TimeInterval interval,
+                      Double open, Double high, Double low, Double close, Double volume, String source) {
+        this.id = id;
+        this.companyId = companyId;
+        this.timestamp = timestamp;
+        this.interval = interval;
         this.open = open;
         this.high = high;
         this.low = low;
         this.close = close;
         this.volume = volume;
+        this.source = source;
     }
 
-    public LocalDateTime getDateTime() { return dateTime; }
-    public double getOpen() { return open; }
-    public double getHigh() { return high; }
-    public double getLow() { return low; }
-    public double getClose() { return close; }
-    public long getVolume() { return volume; }
+    // Simplified constructor for basic price data
+    public PricePoint(LocalDateTime timestamp, double price) {
+        this(null, null, timestamp, TimeInterval.DAILY, null, null, null, price, null, null);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public TimeInterval getInterval() {
+        return interval;
+    }
+
+    public Double getOpen() {
+        return open;
+    }
+
+    public Double getHigh() {
+        return high;
+    }
+
+    public Double getLow() {
+        return low;
+    }
+
+    public Double getClose() {
+        return close;
+    }
+
+    public Double getVolume() {
+        return volume;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    /**
+     * Get the price (alias for close price).
+     * @return Close price, or 0.0 if not available
+     */
+    public double getPrice() {
+        return close != null ? close : 0.0;
+    }
 }
