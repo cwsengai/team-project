@@ -37,6 +37,7 @@ public class SupabaseCompanyRepositoryTest {
     private static SupabaseCompanyRepository repository;
     
     @BeforeAll
+    @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client with SERVICE ROLE (to bypass RLS)
         // Companies table is read-only for regular users, write-only for admins
@@ -53,6 +54,7 @@ public class SupabaseCompanyRepositoryTest {
     }
     
     @AfterAll
+    @SuppressWarnings("unused")
     static void tearDown() {
         // Clean up test data
         cleanupTestData();

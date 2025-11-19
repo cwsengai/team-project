@@ -32,6 +32,7 @@ import entity.User;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase User Repository Tests")
+@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class SupabaseUserRepositoryTest {
     
     private static SupabaseClient client;
@@ -41,6 +42,7 @@ public class SupabaseUserRepositoryTest {
     private static final String TEST_PASSWORD = "TestUser123!";
     
     @BeforeAll
+    @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client
         client = new SupabaseClient();
@@ -56,6 +58,7 @@ public class SupabaseUserRepositoryTest {
     }
     
     @AfterAll
+    @SuppressWarnings("unused")
     static void tearDown() {
         System.out.println("Test user cleanup: " + testEmail);
         // Note: Supabase doesn't provide easy user deletion via client API
@@ -143,6 +146,7 @@ public class SupabaseUserRepositoryTest {
     @Test
     @Order(6)
     @DisplayName("Should throw UnsupportedOperationException for findByEmail")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testFindByEmailNotSupported() {
         // Act & Assert
         assertThrows(UnsupportedOperationException.class, () -> {
@@ -153,6 +157,7 @@ public class SupabaseUserRepositoryTest {
     @Test
     @Order(7)
     @DisplayName("Should throw exception when saving user without ID")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSaveWithoutId() {
         // Arrange
         User user = new User(null, "test@example.com", "No ID User");

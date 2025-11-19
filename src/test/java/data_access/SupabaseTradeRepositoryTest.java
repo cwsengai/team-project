@@ -52,9 +52,11 @@ public class SupabaseTradeRepositoryTest {
     private static String testEmail;
     private static String testPortfolioId;
     private static final String TEST_PASSWORD = "TestTrade123!";
-    private static boolean instrumentsExist = false;
+    @SuppressWarnings({"FieldCanBeLocal", "unused", "ConstantNamingConvention"})
+    private static final boolean INSTRUMENTS_EXIST = false;
     
     @BeforeAll
+    @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client
         client = new SupabaseClient();
@@ -109,6 +111,7 @@ public class SupabaseTradeRepositoryTest {
     }
     
     @AfterAll
+    @SuppressWarnings("unused")
     static void tearDown() {
         // Clean up test portfolio
         try {

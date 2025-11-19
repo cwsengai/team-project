@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Nested;
  * Runs all data access layer tests (repositories, client, config).
  */
 @DisplayName("Repository Integration Tests")
+@SuppressWarnings("unused")
 public class RepositoryIntegrationTests {
     
     // Supabase Repository Tests

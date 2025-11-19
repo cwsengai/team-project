@@ -47,6 +47,7 @@ public class SupabasePortfolioRepositoryTest {
     private static String testPortfolioId2;
     
     @BeforeAll
+    @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client
         client = new SupabaseClient();
@@ -67,6 +68,7 @@ public class SupabasePortfolioRepositoryTest {
     }
     
     @AfterAll
+    @SuppressWarnings("unused")
     static void tearDown() {
         // Clean up test portfolios
         try {

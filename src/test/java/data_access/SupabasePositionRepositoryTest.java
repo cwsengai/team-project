@@ -49,6 +49,7 @@ public class SupabasePositionRepositoryTest {
     private static final String TEST_PASSWORD = "TestPosition123!";
     
     @BeforeAll
+    @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client
         client = new SupabaseClient();
@@ -120,6 +121,7 @@ public class SupabasePositionRepositoryTest {
     }
     
     @AfterAll
+    @SuppressWarnings("unused")
     static void tearDown() {
         // Clean up test portfolio (positions will be cascade deleted)
         try {

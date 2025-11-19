@@ -2,14 +2,16 @@ package data_access;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import data_access.client.AuthResponse;
 import data_access.client.SupabaseClient;
@@ -23,6 +25,7 @@ import data_access.client.SupabaseClient;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase Client Tests")
+@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class SupabaseClientTest {
     
     private static SupabaseClient client;
@@ -30,6 +33,7 @@ public class SupabaseClientTest {
     private static final String TEST_PASSWORD = "TestClient123!";
     
     @BeforeAll
+    @SuppressWarnings("unused")
     static void setUp() {
         client = new SupabaseClient();
         testEmail = "test.client." + System.currentTimeMillis() + "@test.com";
@@ -89,6 +93,7 @@ public class SupabaseClientTest {
     @Test
     @Order(5)
     @DisplayName("Should fail sign in with wrong password")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignInWrongPassword() {
         // Act & Assert
         assertThrows(IOException.class, () -> {
@@ -99,6 +104,7 @@ public class SupabaseClientTest {
     @Test
     @Order(6)
     @DisplayName("Should fail sign in with non-existent user")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignInNonExistent() {
         // Act & Assert
         assertThrows(IOException.class, () -> {
@@ -109,6 +115,7 @@ public class SupabaseClientTest {
     @Test
     @Order(7)
     @DisplayName("Should fail sign up with duplicate email")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignUpDuplicate() {
         // Act & Assert
         assertThrows(IOException.class, () -> {
@@ -119,6 +126,7 @@ public class SupabaseClientTest {
     @Test
     @Order(8)
     @DisplayName("Should fail sign up with weak password")
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignUpWeakPassword() {
         // Arrange
         String weakEmail = "weak." + System.currentTimeMillis() + "@test.com";
