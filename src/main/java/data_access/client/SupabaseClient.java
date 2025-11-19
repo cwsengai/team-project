@@ -394,15 +394,14 @@ public class SupabaseClient implements AutoCloseable {
      */
     public void shutdown() {
         if (httpClient != null) {
-            var executorService = httpClient.dispatcher().executorService();
-            executorService.shutdown();
-            httpClient.connectionPool().evictAll();
-            try {
+            try (var executorService = httpClient.dispatcher().executorService()) {
+                executorService.shutdown();
+                httpClient.connectionPool().evictAll();
                 if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
                     executorService.shutdownNow();
                 }
             } catch (InterruptedException e) {
-                executorService.shutdownNow();
+                httpClient.dispatcher().executorService().shutdownNow();
                 Thread.currentThread().interrupt();
             }
         }
