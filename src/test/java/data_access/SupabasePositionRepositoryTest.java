@@ -38,10 +38,8 @@ import entity.User;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase Position Repository Tests")
 public class SupabasePositionRepositoryTest {
-    
-    private static SupabaseClient client;
+
     private static SupabasePositionRepository repository;
-    private static SupabaseUserRepository userRepository;
     private static SupabasePortfolioRepository portfolioRepository;
     private static String testUserId;
     private static String testEmail;
@@ -53,7 +51,7 @@ public class SupabasePositionRepositoryTest {
     @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client
-        client = new SupabaseClient();
+        SupabaseClient client = new SupabaseClient();
         
         // Create unique test user
         testEmail = "test.position." + System.currentTimeMillis() + "@test.com";
@@ -62,7 +60,7 @@ public class SupabasePositionRepositoryTest {
         System.out.println("Created test user: " + testEmail + " (ID: " + testUserId + ")");
         
         // Create user profile
-        userRepository = new SupabaseUserRepository(client);
+        SupabaseUserRepository userRepository = new SupabaseUserRepository(client);
         User userProfile = new User(testUserId, testEmail, "Test Position User");
         userRepository.save(userProfile);
         

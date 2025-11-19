@@ -91,6 +91,7 @@ public class SupabaseClientTest {
     
     @Test
     @Order(5)
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @DisplayName("Should fail sign in with wrong password")
     void testSignInWrongPassword() {
         // Act & Assert
@@ -101,6 +102,7 @@ public class SupabaseClientTest {
     
     @Test
     @Order(6)
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @DisplayName("Should fail sign in with non-existent user")
     void testSignInNonExistent() {
         // Act & Assert
@@ -111,6 +113,7 @@ public class SupabaseClientTest {
     
     @Test
     @Order(7)
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @DisplayName("Should fail sign up with duplicate email")
     void testSignUpDuplicate() {
         // Act & Assert
@@ -121,6 +124,7 @@ public class SupabaseClientTest {
     
     @Test
     @Order(8)
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @DisplayName("Should fail sign up with weak password")
     void testSignUpWeakPassword() {
         // Arrange

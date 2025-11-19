@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.FieldNamingPolicy;
@@ -145,7 +146,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Sign up failed: " + responseBody);
             }
@@ -179,7 +180,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Sign in failed: " + responseBody);
             }
@@ -243,7 +244,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Query failed: " + responseBody);
             }
@@ -270,7 +271,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Query failed: " + responseBody);
             }
@@ -302,7 +303,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Insert failed: " + responseBody);
             }
@@ -335,7 +336,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Update failed: " + responseBody);
             }
@@ -359,7 +360,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
             if (!response.isSuccessful()) {
                 throw new IOException("Delete failed: " + responseBody);
             }

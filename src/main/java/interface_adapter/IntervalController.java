@@ -6,7 +6,6 @@ import use_case.PriceInputBoundary;
 public class IntervalController {
 
     private final PriceInputBoundary priceInteractor;
-    private final String currentTicker = "DOW";
 
     public IntervalController(PriceInputBoundary interactor) {
         this.priceInteractor = interactor;
@@ -31,6 +30,7 @@ public class IntervalController {
         }
 
         if (interval != null) {
+            String currentTicker = "DOW";
             System.out.println("INFO: Requesting price history for " + currentTicker + " with interval " + interval);
             this.priceInteractor.loadPriceHistory(currentTicker, interval);
         }

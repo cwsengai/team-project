@@ -155,6 +155,7 @@ public class SupabaseUserRepositoryTest {
     
     @Test
     @Order(6)
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @DisplayName("Should throw UnsupportedOperationException for findByEmail")
     void testFindByEmailNotSupported() {
         // Act & Assert
@@ -165,6 +166,7 @@ public class SupabaseUserRepositoryTest {
     
     @Test
     @Order(7)
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @DisplayName("Should throw exception when saving user without ID")
     void testSaveWithoutId() {
         // Arrange

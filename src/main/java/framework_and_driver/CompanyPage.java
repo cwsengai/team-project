@@ -12,7 +12,6 @@ public class CompanyPage extends JFrame {
     private CompanyController controller;
 
     private JTextField symbolField;
-    private JButton searchButton;
     private JLabel nameLabel;
     private JLabel sectorLabel;
     private JLabel industryLabel;
@@ -45,7 +44,7 @@ public class CompanyPage extends JFrame {
         JPanel panel = new JPanel();
 
         symbolField = new JTextField(10);
-        searchButton = new JButton("Search");
+        JButton searchButton = new JButton("Search");
 
         searchButton.addActionListener(e ->
                 controller.onCompanySelected(symbolField.getText().trim())

@@ -29,15 +29,13 @@ import data_access.repository.supabase.SupabasePriceRepository;
 public class SupabasePriceRepositoryTest {
     
     private static SupabaseClient client;
-    @SuppressWarnings("unused")
-    private static SupabasePriceRepository repository;
-    
+
     @BeforeAll
     @SuppressWarnings("unused")
     static void setUp() {
         // Initialize Supabase client (no auth required for reading public price data)
         client = new SupabaseClient();
-        repository = new SupabasePriceRepository(client);
+        SupabasePriceRepository repository = new SupabasePriceRepository(client);
     }
     
     @Test

@@ -44,12 +44,9 @@ import entity.User;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase Trade Repository Tests")
 public class SupabaseTradeRepositoryTest {
-    
-    private static SupabaseClient client;
+
     private static SupabaseTradeRepository repository;
-    private static SupabaseUserRepository userRepository;
     private static SupabasePortfolioRepository portfolioRepository;
-    private static String testUserId;
     private static String testEmail;
     private static String testPortfolioId;
     private static final String TEST_PASSWORD = "TestTrade123!";
@@ -61,16 +58,16 @@ public class SupabaseTradeRepositoryTest {
     @SuppressWarnings("unused")
     static void setUp() throws IOException {
         // Initialize Supabase client
-        client = new SupabaseClient();
+        SupabaseClient client = new SupabaseClient();
         
         // Create unique test user
         testEmail = "test.trade." + System.currentTimeMillis() + "@test.com";
         AuthResponse authResponse = client.signUp(testEmail, TEST_PASSWORD);
-        testUserId = authResponse.getUser().getId();
+        String testUserId = authResponse.getUser().getId();
         System.out.println("Created test user: " + testEmail + " (ID: " + testUserId + ")");
         
         // Create user profile
-        userRepository = new SupabaseUserRepository(client);
+        SupabaseUserRepository userRepository = new SupabaseUserRepository(client);
         User userProfile = new User(testUserId, testEmail, "Test Trade User");
         userRepository.save(userProfile);
         

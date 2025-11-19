@@ -37,9 +37,7 @@ public class SupabasePortfolioRepositoryTest {
     
     private static SupabaseClient client;
     private static SupabasePortfolioRepository repository;
-    private static SupabaseUserRepository userRepository;
     private static String testUserId;
-    private static String testEmail;
     private static final String TEST_PASSWORD = "Test123456!";
     
     // Test portfolio IDs for cleanup
@@ -53,13 +51,13 @@ public class SupabasePortfolioRepositoryTest {
         client = new SupabaseClient();
         
         // Create unique test user with timestamp to avoid conflicts
-        testEmail = "test.portfolio." + System.currentTimeMillis() + "@test.com";
+        String testEmail = "test.portfolio." + System.currentTimeMillis() + "@test.com";
         AuthResponse authResponse = client.signUp(testEmail, TEST_PASSWORD);
         testUserId = authResponse.getUser().getId();
         System.out.println("Created test user: " + testEmail + " (ID: " + testUserId + ")");
         
         // Create user profile in user_profiles table
-        userRepository = new SupabaseUserRepository(client);
+        SupabaseUserRepository userRepository = new SupabaseUserRepository(client);
         User userProfile = new User(testUserId, testEmail, "Test User");
         userRepository.save(userProfile);
         
