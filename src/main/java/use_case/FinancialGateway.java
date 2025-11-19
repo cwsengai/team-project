@@ -7,5 +7,5 @@ import entity.FinancialStatement;
  */
 public interface FinancialGateway {
 
-    FinancialStatement getFinancials(String ticker, String reportType) throws Exception;
+    FinancialStatement getFinancials(String ticker, String reportType);
 }

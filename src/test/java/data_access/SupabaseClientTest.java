@@ -19,7 +19,7 @@ import data_access.client.SupabaseClient;
 /**
  * Integration tests for SupabaseClient.
  * Tests authentication and basic client operations.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  */

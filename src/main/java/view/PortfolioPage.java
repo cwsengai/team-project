@@ -178,10 +178,4 @@ public class PortfolioPage extends JPanel implements PortfolioView {
         controller.viewPortfolio(currentPortfolioId, currentUserId);
     }
 
-    /**
-     * TODO: Add method to switch between different portfolios
-     * TODO: Add method to export portfolio data
-     * TODO: Add chart visualization for portfolio performance
-     * TODO: Add filtering and search for positions
-     */
 }

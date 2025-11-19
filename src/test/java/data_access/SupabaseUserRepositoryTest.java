@@ -26,7 +26,7 @@ import entity.User;
 /**
  * Integration tests for SupabaseUserRepository.
  * Tests CRUD operations against the Supabase database.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  * - Supabase auth must be configured correctly

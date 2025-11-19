@@ -88,9 +88,4 @@ public class TrackPortfolioInteractor implements TrackPortfolioInputBoundary {
         );
     }
 
-    /**
-     * TODO: Add method to handle historical portfolio snapshots
-     * TODO: Add method to calculate portfolio performance over time
-     * TODO: Add caching for stock prices to reduce API calls
-     */
 }

@@ -20,7 +20,7 @@ import entity.TimeInterval;
 /**
  * Supabase implementation of PriceRepository.
  * Uses REST API to interact with the price_points table.
- * 
+ * <p>
  * Note: Price data is typically read-only for regular users.
  * Price updates are usually done via service role (background jobs/Edge Functions).
  */

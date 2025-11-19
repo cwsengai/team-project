@@ -18,7 +18,7 @@ import entity.User;
 /**
  * Supabase implementation of UserRepository.
  * Uses REST API to interact with the user_profiles table.
- * 
+ * <p>
  * Note: Email and password are managed by Supabase Auth (auth.users table).
  * This repository only manages the user profile data (public.user_profiles table).
  */

@@ -396,6 +396,14 @@ public class SupabaseClient {
         if (httpClient != null) {
             httpClient.dispatcher().executorService().shutdown();
             httpClient.connectionPool().evictAll();
+            try {
+                if (!httpClient.dispatcher().executorService().awaitTermination(5, TimeUnit.SECONDS)) {
+                    httpClient.dispatcher().executorService().shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                httpClient.dispatcher().executorService().shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
     }
 }

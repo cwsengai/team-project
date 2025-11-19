@@ -8,5 +8,5 @@ import java.util.List;
  */
 public interface NewsGateway {
 
-    List<NewsArticle> getRelatedNews(String ticker) throws Exception;
+    List<NewsArticle> getRelatedNews(String ticker);
 }

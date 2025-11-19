@@ -122,11 +122,4 @@ public class Main {
         repository.save(portfolio);
     }
 
-    /**
-     * TODO: Add configuration loading (API keys, database connections, etc.)
-     * TODO: Add proper dependency injection framework (e.g., Spring, Guice)
-     * TODO: Add logging configuration
-     * TODO: Add error handling for initialization failures
-     * TODO: Add command-line argument parsing for different modes (demo, production, etc.)
-     */
 }

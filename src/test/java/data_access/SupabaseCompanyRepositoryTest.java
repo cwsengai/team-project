@@ -24,7 +24,7 @@ import entity.Company;
 /**
  * Integration tests for SupabaseCompanyRepository.
  * Tests all CRUD operations against the Supabase database.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set in .env
  * - Uses service role key to bypass RLS policies (companies are admin-only write)
@@ -38,7 +38,7 @@ public class SupabaseCompanyRepositoryTest {
     
     @BeforeAll
     @SuppressWarnings("unused")
-    static void setUp() throws IOException {
+    static void setUp() {
         // Initialize Supabase client with SERVICE ROLE (to bypass RLS)
         // Companies table is read-only for regular users, write-only for admins
         client = new SupabaseClient(true); // true = use service role key

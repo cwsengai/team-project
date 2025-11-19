@@ -2,6 +2,7 @@ package data_access.repository.supabase;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +20,7 @@ import entity.Company;
 /**
  * Supabase implementation of CompanyRepository.
  * Uses REST API to interact with the companies table.
- * 
+ * <p>
  * Note: Company data is typically read-only for regular users.
  * Only admins (using service role key) can insert/update companies.
  */
@@ -34,7 +35,7 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     public Optional<Company> findByTicker(String ticker) {
         // TODO: Consider implementing caching for frequently accessed company data
         try {
-            String encodedTicker = URLEncoder.encode(ticker, "UTF-8");
+            String encodedTicker = URLEncoder.encode(ticker, StandardCharsets.UTF_8);
             Company[] companies = client.queryWithFilter(
                 "companies",
                 "symbol=eq." + encodedTicker,

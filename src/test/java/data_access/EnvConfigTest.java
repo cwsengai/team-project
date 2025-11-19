@@ -85,7 +85,7 @@ public class EnvConfigTest {
         assertNotNull(jdbcUrl);
         if (!jdbcUrl.isEmpty()) {
             // If there's a URL, it should be in JDBC format
-            assertTrue(jdbcUrl.startsWith("jdbc:") || jdbcUrl.isEmpty());
+            assertTrue(jdbcUrl.startsWith("jdbc:"));
         }
     }
     

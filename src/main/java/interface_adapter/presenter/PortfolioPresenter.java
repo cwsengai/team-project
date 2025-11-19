@@ -72,9 +72,4 @@ public class PortfolioPresenter implements TrackPortfolioOutputBoundary {
         );
     }
 
-    /**
-     * TODO: Add method to format numbers for display
-     * TODO: Add method to calculate percentage gains
-     * TODO: Add method to sort positions by different criteria
-     */
 }

@@ -30,7 +30,7 @@ import entity.User;
 /**
  * Integration tests for SupabasePositionRepository.
  * Tests CRUD operations against the Supabase database.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  * - Supabase RLS policies must be configured correctly
@@ -329,7 +329,7 @@ public class SupabasePositionRepositoryTest {
     @Test
     @Order(10)
     @DisplayName("Should maintain positions across multiple portfolios")
-    void testMultiplePortfolios() throws IOException {
+    void testMultiplePortfolios() {
         // Arrange - create second portfolio
         Portfolio portfolio2 = new Portfolio(null, testUserId, 50000.0);
         Portfolio savedPortfolio2 = portfolioRepository.save(portfolio2);

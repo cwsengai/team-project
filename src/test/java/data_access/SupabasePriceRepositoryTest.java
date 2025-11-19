@@ -16,10 +16,10 @@ import data_access.repository.supabase.SupabasePriceRepository;
 /**
  * Integration tests for SupabasePriceRepository.
  * Tests read operations against the Supabase database.
- * 
+ * <p>
  * Note: Most write operations require service role permissions.
  * These tests focus on read operations that regular users can perform.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  * - Some price data should exist in the database for testing

@@ -31,11 +31,11 @@ import entity.User;
 /**
  * Integration tests for SupabaseTradeRepository.
  * Tests all operations against the Supabase database.
- * 
+ * <p>
  * NOTE: These tests require financial instruments (AAPL, GOOGL) to exist in the database.
  * Due to Row Level Security (RLS) policies, regular users cannot create financial instruments.
  * These instruments must be created by an admin or service role before running tests.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  * - Supabase RLS policies must be configured correctly

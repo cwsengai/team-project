@@ -82,7 +82,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
             
             // Check for API error messages
             if (root.has("Error Message") || root.has("Note")) {
-                throw new RuntimeException("API Error: " + root.toString());
+                throw new RuntimeException("API Error: " + root);
             }
             
             // Determine the time series key based on interval

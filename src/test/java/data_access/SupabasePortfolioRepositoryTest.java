@@ -27,7 +27,7 @@ import entity.User;
 /**
  * Integration tests for SupabasePortfolioRepository.
  * Tests CRUD operations and Row Level Security (RLS) enforcement.
- * 
+ * <p>
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  * - Supabase auth and RLS policies must be configured correctly

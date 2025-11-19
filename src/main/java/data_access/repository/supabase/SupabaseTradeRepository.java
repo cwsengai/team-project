@@ -17,7 +17,7 @@ import entity.Trade;
  * Supabase implementation of TradeRepository.
  * Uses REST API to interact with the trades table.
  * Row Level Security (RLS) automatically filters by authenticated user.
- * 
+ * <p>
  * Note: Trades are immutable once created (no update/delete operations).
  */
 public class SupabaseTradeRepository implements TradeRepository {
