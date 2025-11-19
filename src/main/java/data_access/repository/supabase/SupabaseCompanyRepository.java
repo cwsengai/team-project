@@ -56,25 +56,8 @@ public class SupabaseCompanyRepository implements CompanyRepository {
 
     @Override
     public Optional<Company> findById(String id) {
-        try {
-            String encodedId = URLEncoder.encode(id, "UTF-8");
-            Company[] companies = client.queryWithFilter(
-                "companies",
-                "symbol=eq." + encodedId,
-                Company[].class
-            );
-
-            if (companies != null && companies.length > 0) {
-                return Optional.of(companies[0]);
-            }
-            return Optional.empty();
-
-        } catch (IOException e) {
-            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
-                throw new DatabaseConnectionException("Failed to connect to database while fetching company by ID: " + id, e);
-            }
-            throw new RepositoryException("Error fetching company by ID: " + id, e);
-        }
+        // Symbol is the primary key, so ID and ticker are the same
+        return findByTicker(id);
     }
 
     @Override

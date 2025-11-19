@@ -32,7 +32,6 @@ import entity.User;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase User Repository Tests")
-@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class SupabaseUserRepositoryTest {
     
     private static SupabaseClient client;
@@ -146,7 +145,6 @@ public class SupabaseUserRepositoryTest {
     @Test
     @Order(6)
     @DisplayName("Should throw UnsupportedOperationException for findByEmail")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testFindByEmailNotSupported() {
         // Act & Assert
         assertThrows(UnsupportedOperationException.class, () -> {
@@ -157,7 +155,6 @@ public class SupabaseUserRepositoryTest {
     @Test
     @Order(7)
     @DisplayName("Should throw exception when saving user without ID")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSaveWithoutId() {
         // Arrange
         User user = new User(null, "test@example.com", "No ID User");

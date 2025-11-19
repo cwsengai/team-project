@@ -35,7 +35,7 @@ public class SupabaseClient {
     private final boolean useServiceRole;
     private final OkHttpClient httpClient;
     private final Gson gson;
-    private String accessToken; // JWT from auth
+    private String accessToken;
 
     /**
      * Creates a new Supabase client with default settings.
@@ -145,7 +145,6 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            // TODO: Add null check for response.body() to prevent NullPointerException
             String responseBody = response.body().string();
             if (!response.isSuccessful()) {
                 throw new IOException("Sign up failed: " + responseBody);
@@ -192,7 +191,6 @@ public class SupabaseClient {
 
     /**
      * Sign out the current user.
-     * Clears the access token from the client.
      */
     public void signOut() {
         this.accessToken = null;
@@ -203,7 +201,7 @@ public class SupabaseClient {
     /**
      * Check if a user is currently authenticated.
      *
-     * @return true if access token exists, false otherwise
+     * @return true if authenticated, false otherwise
      */
     public boolean isAuthenticated() {
         // TODO: Check token expiration, not just existence
@@ -213,13 +211,12 @@ public class SupabaseClient {
 
     /**
      * Get the authorization token for API requests.
-     * Returns service role key if using service role, otherwise user's access token.
      *
-     * @return the authorization token
+     * @return service role key if using service role, otherwise user's access token
      */
     private String getAuthToken() {
         if (useServiceRole) {
-            return anonKey; // When useServiceRole=true, anonKey IS the service role key
+            return anonKey;
         }
         return accessToken != null ? accessToken : anonKey;
     }
@@ -229,8 +226,7 @@ public class SupabaseClient {
     // ============================================================================
 
     /**
-     * Query a database table.
-     * Returns all rows unless filtered.
+     * Query a database table. Returns all rows unless filtered.
      *
      * @param table the table name
      * @param responseType the class type to deserialize into
@@ -256,8 +252,7 @@ public class SupabaseClient {
     }
 
     /**
-     * Query a database table with filters.
-     * Example filter: "id=eq.123" or "name=like.*john*"
+     * Query a database table with filters (e.g., "id=eq.123" or "name=like.*john*").
      *
      * @param table the table name
      * @param filter PostgREST filter string
@@ -290,7 +285,7 @@ public class SupabaseClient {
      * @param data the data object to insert
      * @param responseType the class type to deserialize into
      * @param <T> the response type
-     * @return the inserted row (with auto-generated fields like ID)
+     * @return the inserted row with auto-generated fields
      * @throws IOException if the request fails
      */
     public <T> T insert(String table, Object data, Class<T> responseType) throws IOException {
@@ -319,7 +314,7 @@ public class SupabaseClient {
      * Update data in a database table.
      *
      * @param table the table name
-     * @param filter PostgREST filter to select rows (e.g., "id=eq.123")
+     * @param filter PostgREST filter (e.g., "id=eq.123")
      * @param data the data object with fields to update
      * @param responseType the class type to deserialize into
      * @param <T> the response type
@@ -352,7 +347,7 @@ public class SupabaseClient {
      * Delete data from a database table.
      *
      * @param table the table name
-     * @param filter PostgREST filter to select rows (e.g., "id=eq.123")
+     * @param filter PostgREST filter (e.g., "id=eq.123")
      * @throws IOException if the request fails
      */
     public void delete(String table, String filter) throws IOException {
@@ -378,7 +373,7 @@ public class SupabaseClient {
     /**
      * Get the current access token.
      *
-     * @return the JWT access token, or null if not authenticated
+     * @return JWT access token, or null if not authenticated
      */
     public String getAccessToken() {
         return accessToken;
@@ -387,7 +382,7 @@ public class SupabaseClient {
     /**
      * Set the access token manually (for testing or session restoration).
      *
-     * @param accessToken the JWT access token
+     * @param accessToken JWT access token
      */
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
@@ -395,7 +390,6 @@ public class SupabaseClient {
 
     /**
      * Shutdown the HTTP client and release resources.
-     * Call this when the client is no longer needed to prevent memory leaks.
      */
     public void shutdown() {
         if (httpClient != null) {

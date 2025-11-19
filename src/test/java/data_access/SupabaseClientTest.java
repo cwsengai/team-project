@@ -25,7 +25,6 @@ import data_access.client.SupabaseClient;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase Client Tests")
-@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class SupabaseClientTest {
     
     private static SupabaseClient client;
@@ -93,7 +92,6 @@ public class SupabaseClientTest {
     @Test
     @Order(5)
     @DisplayName("Should fail sign in with wrong password")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignInWrongPassword() {
         // Act & Assert
         assertThrows(IOException.class, () -> {
@@ -104,7 +102,6 @@ public class SupabaseClientTest {
     @Test
     @Order(6)
     @DisplayName("Should fail sign in with non-existent user")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignInNonExistent() {
         // Act & Assert
         assertThrows(IOException.class, () -> {
@@ -115,7 +112,6 @@ public class SupabaseClientTest {
     @Test
     @Order(7)
     @DisplayName("Should fail sign up with duplicate email")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignUpDuplicate() {
         // Act & Assert
         assertThrows(IOException.class, () -> {
@@ -126,7 +122,6 @@ public class SupabaseClientTest {
     @Test
     @Order(8)
     @DisplayName("Should fail sign up with weak password")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     void testSignUpWeakPassword() {
         // Arrange
         String weakEmail = "weak." + System.currentTimeMillis() + "@test.com";

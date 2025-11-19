@@ -52,7 +52,7 @@ public class SupabaseTradeRepositoryTest {
     private static String testEmail;
     private static String testPortfolioId;
     private static final String TEST_PASSWORD = "TestTrade123!";
-    @SuppressWarnings({"FieldCanBeLocal", "unused", "ConstantNamingConvention"})
+    @SuppressWarnings({"unused"})
     private static final boolean INSTRUMENTS_EXIST = false;
     
     @BeforeAll
