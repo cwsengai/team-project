@@ -1,5 +1,9 @@
 package data_access;
 
+/*
+ * COMMENTED OUT: This test suite uses PostgreSQL repositories which are being migrated to Supabase.
+ * Will be deleted after Supabase test suites are implemented.
+ 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,10 +12,10 @@ import java.util.Optional;
 
 import entity.User;
 
-/**
- * Comprehensive test suite for PostgresUserRepository.
- * Tests user CRUD operations, authentication lookups, and timestamp management.
- */
+
+ Comprehensive test suite for PostgresUserRepository.
+ Tests user CRUD operations, authentication lookups, and timestamp management.
+ 
 public class UserRepositoryTestSuite {
     private static UserRepository userRepo;
     private static PostgresClient client;
@@ -452,3 +456,4 @@ public class UserRepositoryTestSuite {
         void run() throws Exception;
     }
 }
+*/

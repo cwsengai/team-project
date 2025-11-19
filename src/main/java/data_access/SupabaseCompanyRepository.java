@@ -50,10 +50,10 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     @Override
     public Optional<Company> findById(String id) {
         try {
-            // Query: GET /rest/v1/companies?id=eq.{id}
+            // Query: GET /rest/v1/companies?symbol=eq.{id} (symbol is the primary key)
             Company[] companies = client.queryWithFilter(
                 "companies",
-                "id=eq." + id,
+                "symbol=eq." + id,
                 Company[].class
             );
 

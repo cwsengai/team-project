@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -47,7 +49,10 @@ public class SupabaseClient {
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
-        this.gson = new Gson();
+        // Configure GSON to convert between camelCase (Java) and snake_case (database)
+        this.gson = new GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create();
     }
 
     // ============================================================================
