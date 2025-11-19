@@ -14,6 +14,7 @@ import entity.TimeInterval;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import use_case.PriceDataAccessInterface;
 
 
@@ -32,10 +33,11 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
             if (!response.isSuccessful()) {
                 throw new IOException("API request failed with code: " + response.code());
             }
-            if (response.body() == null) {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
                 throw new IOException("API response body is null");
             }
-            return response.body().string();
+            return responseBody.string();
         }
     }
     // -----------------------------------------------------

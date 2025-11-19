@@ -82,6 +82,9 @@ public class PricePoint {
      * @return Close price, or 0.0 if not available
      */
     public double getPrice() {
-        return close != null ? close : 0.0;
+        if (close == null) {
+            return 0.0;
+        }
+        return close;
     }
 }

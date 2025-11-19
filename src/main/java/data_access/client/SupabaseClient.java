@@ -59,8 +59,8 @@ public class SupabaseClient implements AutoCloseable {
      * Creates a new Supabase client with custom URL and API key.
      * Use this constructor to override the default Supabase project settings.
      *
-     * @param supabaseUrl the Supabase project URL
-     * @param anonKey the anonymous API key or service role key
+     * @param supabaseUrl    the Supabase project URL
+     * @param anonKey        the anonymous API key or service role key
      * @param useServiceRole if true, treats anonKey as service role key
      */
     public SupabaseClient(String supabaseUrl, String anonKey, boolean useServiceRole) {
@@ -68,54 +68,54 @@ public class SupabaseClient implements AutoCloseable {
         this.anonKey = anonKey;
         this.useServiceRole = useServiceRole;
         this.httpClient = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build();
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
         // TODO: Configure connection pooling for better performance
         // TODO: Add retry logic for transient network failures
         this.gson = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
-                @Override
-                public void write(JsonWriter out, LocalDateTime value) throws IOException {
-                    if (value == null) {
-                        out.nullValue();
-                    } else {
-                        out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
+                    @Override
+                    public void write(JsonWriter out, LocalDateTime value) throws IOException {
+                        if (value == null) {
+                            out.nullValue();
+                        } else {
+                            out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                        }
                     }
-                }
 
-                @Override
-                public LocalDateTime read(JsonReader in) throws IOException {
-                    if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
-                        in.nextNull();
-                        return null;
+                    @Override
+                    public LocalDateTime read(JsonReader in) throws IOException {
+                        if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                            in.nextNull();
+                            return null;
+                        }
+                        String timestamp = in.nextString();
+                        return java.time.OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                                .toLocalDateTime();
                     }
-                    String timestamp = in.nextString();
-                    return java.time.OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                        .toLocalDateTime();
-                }
-            })
-            .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {
-                @Override
-                public void write(JsonWriter out, LocalDate value) throws IOException {
-                    if (value == null) {
-                        out.nullValue();
-                    } else {
-                        out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                })
+                .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {
+                    @Override
+                    public void write(JsonWriter out, LocalDate value) throws IOException {
+                        if (value == null) {
+                            out.nullValue();
+                        } else {
+                            out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                        }
                     }
-                }
 
-                @Override
-                public LocalDate read(JsonReader in) throws IOException {
-                    if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
-                        in.nextNull();
-                        return null;
+                    @Override
+                    public LocalDate read(JsonReader in) throws IOException {
+                        if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                            in.nextNull();
+                            return null;
+                        }
+                        return LocalDate.parse(in.nextString(), DateTimeFormatter.ISO_LOCAL_DATE);
                     }
-                    return LocalDate.parse(in.nextString(), DateTimeFormatter.ISO_LOCAL_DATE);
-                }
-            })
-            .create();
+                })
+                .create();
     }
 
     // ============================================================================
@@ -125,7 +125,7 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Sign up a new user with email and password.
      *
-     * @param email the user's email
+     * @param email    the user's email
      * @param password the user's password
      * @return authentication response with access token and user info
      * @throws IOException if the request fails
@@ -133,17 +133,16 @@ public class SupabaseClient implements AutoCloseable {
     public AuthResponse signUp(String email, String password) throws IOException {
         // TODO: Add input validation and sanitization to prevent injection attacks
         String json = String.format(
-            "{\"email\":\"%s\",\"password\":\"%s\"}",
-            email, password
-        );
+                "{\"email\":\"%s\",\"password\":\"%s\"}",
+                email, password);
 
         RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/auth/v1/signup")
-            .header("apikey", anonKey)
-            .post(body)
-            .build();
+                .url(supabaseUrl + "/auth/v1/signup")
+                .header("apikey", anonKey)
+                .post(body)
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -159,7 +158,7 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Sign in an existing user with email and password.
      *
-     * @param email the user's email
+     * @param email    the user's email
      * @param password the user's password
      * @return authentication response with access token and user info
      * @throws IOException if the request fails
@@ -167,17 +166,16 @@ public class SupabaseClient implements AutoCloseable {
     public AuthResponse signIn(String email, String password) throws IOException {
         // TODO: Add input validation and sanitization to prevent injection attacks
         String json = String.format(
-            "{\"email\":\"%s\",\"password\":\"%s\"}",
-            email, password
-        );
+                "{\"email\":\"%s\",\"password\":\"%s\"}",
+                email, password);
 
         RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/auth/v1/token?grant_type=password")
-            .header("apikey", anonKey)
-            .post(body)
-            .build();
+                .url(supabaseUrl + "/auth/v1/token?grant_type=password")
+                .header("apikey", anonKey)
+                .post(body)
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -229,19 +227,19 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Query a database table. Returns all rows unless filtered.
      *
-     * @param table the table name
+     * @param table        the table name
      * @param responseType the class type to deserialize into
-     * @param <T> the response type
+     * @param <T>          the response type
      * @return the query result
      * @throws IOException if the request fails
      */
     public <T> T query(String table, Class<T> responseType) throws IOException {
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/rest/v1/" + table)
-            .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + getAuthToken())
-            .get()
-            .build();
+                .url(supabaseUrl + "/rest/v1/" + table)
+                .header("apikey", anonKey)
+                .header("Authorization", "Bearer " + getAuthToken())
+                .get()
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -253,22 +251,23 @@ public class SupabaseClient implements AutoCloseable {
     }
 
     /**
-     * Query a database table with filters (e.g., "id=eq.123" or "name=like.*john*").
+     * Query a database table with filters (e.g., "id=eq.123" or
+     * "name=like.*john*").
      *
-     * @param table the table name
-     * @param filter PostgREST filter string
+     * @param table        the table name
+     * @param filter       PostgREST filter string
      * @param responseType the class type to deserialize into
-     * @param <T> the response type
+     * @param <T>          the response type
      * @return the query result
      * @throws IOException if the request fails
      */
     public <T> T queryWithFilter(String table, String filter, Class<T> responseType) throws IOException {
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
-            .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + getAuthToken())
-            .get()
-            .build();
+                .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
+                .header("apikey", anonKey)
+                .header("Authorization", "Bearer " + getAuthToken())
+                .get()
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -282,10 +281,10 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Insert data into a database table.
      *
-     * @param table the table name
-     * @param data the data object to insert
+     * @param table        the table name
+     * @param data         the data object to insert
      * @param responseType the class type to deserialize into
-     * @param <T> the response type
+     * @param <T>          the response type
      * @return the inserted row with auto-generated fields
      * @throws IOException if the request fails
      */
@@ -295,12 +294,12 @@ public class SupabaseClient implements AutoCloseable {
         RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/rest/v1/" + table)
-            .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + getAuthToken())
-            .header("Prefer", "return=representation")
-            .post(body)
-            .build();
+                .url(supabaseUrl + "/rest/v1/" + table)
+                .header("apikey", anonKey)
+                .header("Authorization", "Bearer " + getAuthToken())
+                .header("Prefer", "return=representation")
+                .post(body)
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -314,11 +313,11 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Update data in a database table.
      *
-     * @param table the table name
-     * @param filter PostgREST filter (e.g., "id=eq.123")
-     * @param data the data object with fields to update
+     * @param table        the table name
+     * @param filter       PostgREST filter (e.g., "id=eq.123")
+     * @param data         the data object with fields to update
      * @param responseType the class type to deserialize into
-     * @param <T> the response type
+     * @param <T>          the response type
      * @return the updated row(s)
      * @throws IOException if the request fails
      */
@@ -328,12 +327,12 @@ public class SupabaseClient implements AutoCloseable {
         RequestBody body = RequestBody.create(json, JSON_MEDIA_TYPE);
 
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
-            .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + getAuthToken())
-            .header("Prefer", "return=representation")
-            .patch(body)
-            .build();
+                .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
+                .header("apikey", anonKey)
+                .header("Authorization", "Bearer " + getAuthToken())
+                .header("Prefer", "return=representation")
+                .patch(body)
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -347,17 +346,17 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Delete data from a database table.
      *
-     * @param table the table name
+     * @param table  the table name
      * @param filter PostgREST filter (e.g., "id=eq.123")
      * @throws IOException if the request fails
      */
     public void delete(String table, String filter) throws IOException {
         Request request = new Request.Builder()
-            .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
-            .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + getAuthToken())
-            .delete()
-            .build();
+                .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
+                .header("apikey", anonKey)
+                .header("Authorization", "Bearer " + getAuthToken())
+                .delete()
+                .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBody = Objects.requireNonNull(response.body(), "Response body is null").string();
@@ -392,18 +391,21 @@ public class SupabaseClient implements AutoCloseable {
     /**
      * Shutdown the HTTP client and release resources.
      */
+    @SuppressWarnings("resource")
     public void shutdown() {
-        if (httpClient != null) {
-            try (var executorService = httpClient.dispatcher().executorService()) {
-                executorService.shutdown();
-                httpClient.connectionPool().evictAll();
-                if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-                    executorService.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                httpClient.dispatcher().executorService().shutdownNow();
-                Thread.currentThread().interrupt();
+        if (httpClient == null) {
+            return;
+        }
+        var executorService = httpClient.dispatcher().executorService();
+        executorService.shutdown();
+        httpClient.connectionPool().evictAll();
+        try {
+            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
             }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
         }
     }
 }

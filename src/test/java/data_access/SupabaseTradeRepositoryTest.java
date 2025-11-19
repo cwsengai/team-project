@@ -73,10 +73,7 @@ public class SupabaseTradeRepositoryTest {
         
         // Create test financial instruments using SERVICE ROLE (bypasses RLS)
         // Each instrument in separate try-catch to handle duplicates gracefully
-        SupabaseClient serviceClient = null;
-        try {
-            serviceClient = new SupabaseClient(true); // Use service role key
-            
+        try (SupabaseClient serviceClient = new SupabaseClient(true)) {
             try {
                 Map<String, Object> aaplInstrument = new HashMap<>();
                 aaplInstrument.put("symbol", "AAPL");
@@ -92,11 +89,6 @@ public class SupabaseTradeRepositoryTest {
                 googlInstrument.put("type", "stock");
                 serviceClient.insert("financial_instruments", googlInstrument, Map[].class);
             } catch (IOException e) { /* Already exists */ }
-            
-        } finally {
-            if (serviceClient != null) {
-                serviceClient.shutdown();
-            }
         }
         
         // Create test portfolio
