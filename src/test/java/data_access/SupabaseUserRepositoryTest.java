@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -177,7 +176,7 @@ public class SupabaseUserRepositoryTest {
     
     @Test
     @Order(8)
-    @DisplayName("Should call delete without error (RLS may prevent actual deletion)")
+    @DisplayName("Should delete user successfully")
     void testDeleteUser() throws IOException {
         // Arrange - create a real authenticated user for deletion test
         String tempEmail = "test.delete." + System.currentTimeMillis() + "@test.com";
@@ -192,13 +191,14 @@ public class SupabaseUserRepositoryTest {
         Optional<User> found = repository.findById(tempUserId);
         assertTrue(found.isPresent(), "Temporary user should exist");
         
-        // Act & Assert - verify delete method executes without throwing an exception
-        // Note: RLS policies may prevent actual deletion of user profiles,
-        // but we can verify the method call completes successfully
-        assertDoesNotThrow(() -> repository.delete(tempUserId),
-            "Delete method should execute without throwing an exception");
+        // Act - delete the user using service role to bypass RLS
+        try (SupabaseClient serviceClient = new SupabaseClient(true)) {
+            SupabaseUserRepository serviceRepo = new SupabaseUserRepository(serviceClient);
+            serviceRepo.delete(tempUserId);
+        }
         
-        // The actual deletion may be prevented by RLS, so we just verify the API call succeeded
-        System.out.println("Delete API call completed successfully (RLS may have prevented actual deletion)");
+        // Assert - verify the user was actually deleted
+        Optional<User> afterDelete = repository.findById(tempUserId);
+        assertFalse(afterDelete.isPresent(), "User should be deleted");
     }
 }

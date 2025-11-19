@@ -3,6 +3,7 @@ package data_access;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -44,8 +45,7 @@ public class SupabasePriceRepositoryTest {
     void testSavePricePoint() {
         // Skip test - requires fixing enum mismatch or populating database
         // Also requires write permissions which regular users don't have
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -99,14 +99,7 @@ public class SupabasePriceRepositoryTest {
         // Since database is empty or may have enum mismatch issues,
         // we just verify the method doesn't throw unexpected exceptions
         // and returns empty Optional
-        try {
-            // Skip this test if we know there's an enum mismatch
-            // This would require fixing the database schema or enum mapping
-            System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-            assertTrue(true);
-        } catch (Exception e) {
-            assertTrue(true); // Test passes regardless
-        }
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -114,8 +107,7 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle queries for multiple tickers")
     void testGetLatestPrices() {
         // Skip test - requires fixing enum mismatch or populating database
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -123,8 +115,7 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle historical price queries")
     void testGetHistoricalPrices() {
         // Skip test - requires fixing enum mismatch or populating database  
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -132,8 +123,7 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle ordered historical queries")
     void testHistoricalPricesOrdered() {
         // Skip test - requires fixing enum mismatch or populating database
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -141,8 +131,7 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle empty result sets")
     void testGetHistoricalPricesEmpty() {
         // Skip test - requires fixing enum mismatch or populating database
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -150,8 +139,7 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle different time intervals")
     void testDifferentTimeIntervals() {
         // Skip test - requires fixing enum mismatch or populating database
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -159,8 +147,7 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle cleanup operations")
     void testCleanup() {
         // Skip test - requires fixing enum mismatch or populating database
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
     
     @Test
@@ -168,7 +155,6 @@ public class SupabasePriceRepositoryTest {
     @DisplayName("Should handle save multiple price points")
     void testSavePricePoints() {
         // Skip test - requires fixing enum mismatch or populating database
-        System.out.println("SKIPPED: Cannot test with current database state (no data or enum mismatch)");
-        assertTrue(true);
+        Assumptions.assumeTrue(false, "Cannot test with current database state (no data or enum mismatch)");
     }
 }
