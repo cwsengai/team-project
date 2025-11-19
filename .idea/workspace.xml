@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="613809da-efaa-4c03-8a75-d3da214e2890" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/FinancialStatementController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/NewsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/FinancialStatementPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/NewsPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/FinancialStatementViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/NewsViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementOutputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsOutputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/CompanyPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/CompanyPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/CompanyViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/CompanyViewModel.java" afterDir="false" />
-    </list>
+    <list default="true" id="613809da-efaa-4c03-8a75-d3da214e2890" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,6 +89,17 @@
       <updated>1762989714768</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
