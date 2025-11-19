@@ -14,14 +14,15 @@ public class Company {
     private String sector;
     private String industry;
     private String country;
+    private String exchange;
     
-    // Financial metrics
-    private long marketCapitalization;
-    private float eps;
-    private float peRatio;
-    private float dividendPerShare;
-    private float dividendYield;
-    private float beta;
+    // Financial metrics (using Double to match Supabase numeric type)
+    private Double marketCapitalization;  // market_cap in DB
+    private Double eps;
+    private Double peRatio;  // pe_ratio in DB
+    private Double dividendPerShare;  // dividend_per_share in DB
+    private Double dividendYield;  // dividend_yield in DB
+    private Double beta;
     
     // Related entities
     private final List<FinancialStatement> financialStatements;
@@ -29,9 +30,9 @@ public class Company {
 
     // Full constructor
     public Company(String symbol, String name, String description, String sector,
-                   String industry, String country, long marketCapitalization,
-                   float eps, float peRatio, float dividendPerShare,
-                   float dividendYield, float beta,
+                   String industry, String country, String exchange, Double marketCapitalization,
+                   Double eps, Double peRatio, Double dividendPerShare,
+                   Double dividendYield, Double beta,
                    List<FinancialStatement> financialStatements,
                    List<NewsArticle> newsArticles) {
         this.symbol = symbol;
@@ -40,12 +41,13 @@ public class Company {
         this.sector = sector;
         this.industry = industry;
         this.country = country;
+        this.exchange = exchange;
         this.marketCapitalization = marketCapitalization;
         this.eps = eps;
         this.peRatio = peRatio;
         this.dividendPerShare = dividendPerShare;
         this.dividendYield = dividendYield;
-        this.beta = beta;
+        this.beta = beta != null ? beta : 1.0;
         this.financialStatements = financialStatements;
         this.newsArticles = newsArticles;
     }
@@ -58,12 +60,13 @@ public class Company {
         this.sector = null;
         this.industry = null;
         this.country = null;
-        this.marketCapitalization = (long) marketCap;
-        this.eps = 0.0f;
-        this.peRatio = (float) peRatio;
-        this.dividendPerShare = 0.0f;
-        this.dividendYield = 0.0f;
-        this.beta = 1.0f;
+        this.exchange = null;
+        this.marketCapitalization = marketCap;
+        this.eps = null;
+        this.peRatio = peRatio;
+        this.dividendPerShare = null;
+        this.dividendYield = null;
+        this.beta = 1.0;
         this.financialStatements = null;
         this.newsArticles = null;
     }
@@ -117,51 +120,59 @@ public class Company {
         this.country = country;
     }
 
-    public float getMarketCapitalization() {
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
+    }
+
+    public Double getMarketCapitalization() {
         return marketCapitalization;
     }
 
-    public void setMarketCapitalization(long value) {
+    public void setMarketCapitalization(Double value) {
         this.marketCapitalization = value;
     }
 
-    public float getEPS() {
+    public Double getEPS() {
         return eps;
     }
 
-    public void setEps(float value) {
+    public void setEps(Double value) {
         this.eps = value;
     }
 
-    public float getPeRatio() {
+    public Double getPeRatio() {
         return peRatio;
     }
 
-    public void setPeRatio(float value) {
+    public void setPeRatio(Double value) {
         this.peRatio = value;
     }
 
-    public float getDividendPerShare() {
+    public Double getDividendPerShare() {
         return dividendPerShare;
     }
 
-    public void setDividendPerShare(float value) {
+    public void setDividendPerShare(Double value) {
         this.dividendPerShare = value;
     }
 
-    public float getDividendYield() {
+    public Double getDividendYield() {
         return dividendYield;
     }
 
-    public void setDividendYield(float value) {
+    public void setDividendYield(Double value) {
         this.dividendYield = value;
     }
 
-    public float getBeta() {
+    public Double getBeta() {
         return beta;
     }
 
-    public void setBeta(float value) {
+    public void setBeta(Double value) {
         this.beta = value;
     }
 

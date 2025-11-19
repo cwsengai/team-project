@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
  * Contains OHLC (Open, High, Low, Close) data and volume.
  */
 public class PricePoint {
-    private final String id;
-    private final String companyId;
+    private final String companySymbol;  // Matches DB: company_symbol (references companies.symbol)
     private final LocalDateTime timestamp;
     private final TimeInterval interval;
     private final Double open;
@@ -18,10 +17,9 @@ public class PricePoint {
     private final Double volume;
     private final String source;
 
-    public PricePoint(String id, String companyId, LocalDateTime timestamp, TimeInterval interval,
+    public PricePoint(String companySymbol, LocalDateTime timestamp, TimeInterval interval,
                       Double open, Double high, Double low, Double close, Double volume, String source) {
-        this.id = id;
-        this.companyId = companyId;
+        this.companySymbol = companySymbol;
         this.timestamp = timestamp;
         this.interval = interval;
         this.open = open;
@@ -34,15 +32,17 @@ public class PricePoint {
 
     // Simplified constructor for basic price data
     public PricePoint(LocalDateTime timestamp, double price) {
-        this(null, null, timestamp, TimeInterval.DAILY, null, null, null, price, null, null);
+        this(null, timestamp, TimeInterval.DAILY, null, null, null, price, null, null);
     }
 
-    public String getId() {
-        return id;
+    public String getCompanySymbol() {
+        return companySymbol;
     }
 
+    // Backward compatibility
+    @Deprecated
     public String getCompanyId() {
-        return companyId;
+        return companySymbol;
     }
 
     public LocalDateTime getTimestamp() {

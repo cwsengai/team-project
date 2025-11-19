@@ -9,23 +9,23 @@ public class Trade {
     private final String id;  // Changed from tradeId
     private final String portfolioId;
     private final String positionId;
-    private final String companyId;
-    private final String ticker;  // Denormalized for convenience
-    private final TradeType tradeType;
+    private final String instrumentSymbol;  // Matches DB: instrument_symbol (references financial_instruments.symbol)
+    private final String instrumentType;  // Matches DB: instrument_type
+    private final TradeType tradeType;  // Matches DB: trade_type
     private final int quantity;
     private final double price;
     private final double fees;
-    private final LocalDateTime executedAt;
-    private final LocalDateTime createdAt;
+    private final LocalDateTime executedAt;  // Matches DB: executed_at
+    private final LocalDateTime createdAt;  // Matches DB: created_at
 
-    public Trade(String id, String portfolioId, String positionId, String companyId, String ticker,
+    public Trade(String id, String portfolioId, String positionId, String instrumentSymbol, String instrumentType,
                  TradeType tradeType, int quantity, double price, double fees,
                  LocalDateTime executedAt, LocalDateTime createdAt) {
         this.id = id;
         this.portfolioId = portfolioId;
         this.positionId = positionId;
-        this.companyId = companyId;
-        this.ticker = ticker;
+        this.instrumentSymbol = instrumentSymbol;
+        this.instrumentType = instrumentType;
         this.tradeType = tradeType;
         this.quantity = quantity;
         this.price = price;
@@ -37,7 +37,7 @@ public class Trade {
     // Backward compatible constructor for existing code
     public Trade(String tradeId, String ticker, int quantity, double price,
                  LocalDateTime timestamp, boolean isBuy) {
-        this(tradeId, null, null, null, ticker,
+        this(tradeId, null, null, ticker, null,
              isBuy ? TradeType.BUY : TradeType.SELL,
              quantity, price, 0.0, timestamp, LocalDateTime.now());
     }
@@ -60,12 +60,24 @@ public class Trade {
         return positionId;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getInstrumentSymbol() {
+        return instrumentSymbol;
     }
 
+    public String getInstrumentType() {
+        return instrumentType;
+    }
+
+    // Backward compatibility - alias for instrumentSymbol
+    @Deprecated
     public String getTicker() {
-        return ticker;
+        return instrumentSymbol;
+    }
+
+    // Backward compatibility - companyId not used in new schema
+    @Deprecated
+    public String getCompanyId() {
+        return null;
     }
 
     public TradeType getTradeType() {

@@ -10,22 +10,22 @@ import java.util.List;
 public class Position {
     private final String id;
     private final String portfolioId;
-    private final String companyId;
-    private final String ticker;  // Denormalized for convenience
+    private final String instrumentSymbol;  // Matches DB: instrument_symbol (references financial_instruments.symbol)
+    private final String instrumentType;  // Matches DB: instrument_type
     private int quantity;
-    private double averageCost;
-    private double realizedPL;
-    private double unrealizedPL;
-    private LocalDateTime lastUpdated;
+    private double averageCost;  // Matches DB: avg_price
+    private double realizedPL;  // Matches DB: realized_pl
+    private double unrealizedPL;  // Matches DB: unrealized_pl
+    private LocalDateTime lastUpdated;  // Matches DB: last_updated
     private final List<Trade> trades;
 
-    public Position(String id, String portfolioId, String companyId, String ticker,
+    public Position(String id, String portfolioId, String instrumentSymbol, String instrumentType,
                     int quantity, double averageCost, double realizedPL, double unrealizedPL,
                     LocalDateTime lastUpdated) {
         this.id = id;
         this.portfolioId = portfolioId;
-        this.companyId = companyId;
-        this.ticker = ticker;
+        this.instrumentSymbol = instrumentSymbol;
+        this.instrumentType = instrumentType;
         this.quantity = quantity;
         this.averageCost = averageCost;
         this.realizedPL = realizedPL;
@@ -36,7 +36,7 @@ public class Position {
 
     // Backward compatible constructor for existing code
     public Position(String ticker) {
-        this(null, null, null, ticker, 0, 0.0, 0.0, 0.0, LocalDateTime.now());
+        this(null, null, ticker, null, 0, 0.0, 0.0, 0.0, LocalDateTime.now());
     }
 
     public String getId() {
@@ -47,12 +47,24 @@ public class Position {
         return portfolioId;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getInstrumentSymbol() {
+        return instrumentSymbol;
     }
 
+    public String getInstrumentType() {
+        return instrumentType;
+    }
+
+    // Backward compatibility - alias for instrumentSymbol
+    @Deprecated
     public String getTicker() {
-        return ticker;
+        return instrumentSymbol;
+    }
+
+    // Backward compatibility - companyId not used in new schema
+    @Deprecated
+    public String getCompanyId() {
+        return null;
     }
 
     public int getQuantity() {
