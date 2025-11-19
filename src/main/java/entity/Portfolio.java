@@ -19,7 +19,7 @@ public class Portfolio {
     private String currency;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private final List<Position> positions;
+    private transient final List<Position> positions;
 
     public Portfolio(String id, String userId, String name, boolean isSimulation,
                      double initialCash, double currentCash, String currency,

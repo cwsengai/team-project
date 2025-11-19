@@ -1,7 +1,6 @@
 package data_access;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import entity.Portfolio;
+import entity.User;
 
 /**
  * Integration tests for SupabasePortfolioRepository.
@@ -33,6 +33,7 @@ public class SupabasePortfolioRepositoryTest {
     
     private static SupabaseClient client;
     private static SupabasePortfolioRepository repository;
+    private static SupabaseUserRepository userRepository;
     private static String testUserId;
     private static String testEmail;
     private static final String TEST_PASSWORD = "Test123456!";
@@ -51,6 +52,11 @@ public class SupabasePortfolioRepositoryTest {
         AuthResponse authResponse = client.signUp(testEmail, TEST_PASSWORD);
         testUserId = authResponse.getUser().getId();
         System.out.println("Created test user: " + testEmail + " (ID: " + testUserId + ")");
+        
+        // Create user profile in user_profiles table
+        userRepository = new SupabaseUserRepository(client);
+        User userProfile = new User(testUserId, testEmail, "Test User");
+        userRepository.save(userProfile);
         
         // Initialize repository
         repository = new SupabasePortfolioRepository(client);

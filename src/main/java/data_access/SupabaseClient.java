@@ -1,11 +1,17 @@
 package data_access;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
-import com.google.gson.Gson;
 import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -50,8 +56,51 @@ public class SupabaseClient {
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
         // Configure GSON to convert between camelCase (Java) and snake_case (database)
+        // and to serialize java.time types as ISO-8601 strings
         this.gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
+                @Override
+                public void write(JsonWriter out, LocalDateTime value) throws IOException {
+                    if (value == null) {
+                        out.nullValue();
+                    } else {
+                        out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                    }
+                }
+
+                @Override
+                public LocalDateTime read(JsonReader in) throws IOException {
+                    if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                        in.nextNull();
+                        return null;
+                    }
+                    // Supabase returns timestamps with timezone offset like "2025-11-19T00:58:04.174872+00:00"
+                    // Parse and convert to LocalDateTime (dropping timezone info)
+                    String timestamp = in.nextString();
+                    return java.time.OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                        .toLocalDateTime();
+                }
+            })
+            .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {
+                @Override
+                public void write(JsonWriter out, LocalDate value) throws IOException {
+                    if (value == null) {
+                        out.nullValue();
+                    } else {
+                        out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                    }
+                }
+
+                @Override
+                public LocalDate read(JsonReader in) throws IOException {
+                    if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                        in.nextNull();
+                        return null;
+                    }
+                    return LocalDate.parse(in.nextString(), DateTimeFormatter.ISO_LOCAL_DATE);
+                }
+            })
             .create();
     }
 

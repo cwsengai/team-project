@@ -17,7 +17,7 @@ public class Position {
     private double realizedPL;  // Matches DB: realized_pl
     private double unrealizedPL;  // Matches DB: unrealized_pl
     private LocalDateTime lastUpdated;  // Matches DB: last_updated
-    private final List<Trade> trades;
+    private transient final List<Trade> trades;
 
     public Position(String id, String portfolioId, String instrumentSymbol, String instrumentType,
                     int quantity, double averageCost, double realizedPL, double unrealizedPL,

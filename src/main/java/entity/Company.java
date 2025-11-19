@@ -25,8 +25,8 @@ public class Company {
     private Double beta;
     
     // Related entities
-    private final List<FinancialStatement> financialStatements;
-    private final List<NewsArticle> newsArticles;
+    private transient final List<FinancialStatement> financialStatements;
+    private transient final List<NewsArticle> newsArticles;
 
     // Full constructor
     public Company(String symbol, String name, String description, String sector,
