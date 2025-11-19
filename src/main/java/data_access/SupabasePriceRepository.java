@@ -55,24 +55,11 @@ public class SupabasePriceRepository implements PriceRepository {
     @Override
     public Optional<PricePoint> getLatestPrice(String ticker, TimeInterval interval) {
         try {
-            // First, get the company_id from ticker
-            // This requires joining with companies table or querying separately
-            Company[] companies = client.queryWithFilter(
-                "companies",
-                "ticker=eq." + ticker,
-                Company[].class
-            );
-
-            if (companies == null || companies.length == 0) {
-                return Optional.empty();
-            }
-
-            String companyId = companies[0].getId();
-
-            // Query: GET /rest/v1/price_points?company_id=eq.{id}&interval=eq.{interval}&order=timestamp.desc&limit=1
+            // Query directly using company_symbol (which matches companies.symbol)
+            // Query: GET /rest/v1/price_points?company_symbol=eq.{ticker}&interval=eq.{interval}&order=timestamp.desc&limit=1
             String filter = String.format(
-                "company_id=eq.%s&interval=eq.%s&order=timestamp.desc&limit=1",
-                companyId,
+                "company_symbol=eq.%s&interval=eq.%s&order=timestamp.desc&limit=1",
+                ticker,
                 interval.name()
             );
 
@@ -109,23 +96,11 @@ public class SupabasePriceRepository implements PriceRepository {
     @Override
     public List<PricePoint> getHistoricalPrices(String ticker, LocalDateTime start, LocalDateTime end, TimeInterval interval) {
         try {
-            // First, get the company_id from ticker
-            Company[] companies = client.queryWithFilter(
-                "companies",
-                "ticker=eq." + ticker,
-                Company[].class
-            );
-
-            if (companies == null || companies.length == 0) {
-                return Collections.emptyList();
-            }
-
-            String companyId = companies[0].getId();
-
-            // Query: GET /rest/v1/price_points?company_id=eq.{id}&interval=eq.{interval}&timestamp=gte.{start}&timestamp=lte.{end}&order=timestamp.asc
+            // Query directly using company_symbol
+            // Query: GET /rest/v1/price_points?company_symbol=eq.{ticker}&interval=eq.{interval}&timestamp=gte.{start}&timestamp=lte.{end}&order=timestamp.asc
             String filter = String.format(
-                "company_id=eq.%s&interval=eq.%s&timestamp=gte.%s&timestamp=lte.%s&order=timestamp.asc",
-                companyId,
+                "company_symbol=eq.%s&interval=eq.%s&timestamp=gte.%s&timestamp=lte.%s&order=timestamp.asc",
+                ticker,
                 interval.name(),
                 start.toString(),
                 end.toString()
@@ -160,13 +135,4 @@ public class SupabasePriceRepository implements PriceRepository {
         }
     }
 
-    // Helper class for Company (minimal version for this repository)
-    private static class Company {
-        private String id;
-        private String ticker;
-
-        public String getId() {
-            return id;
-        }
-    }
 }

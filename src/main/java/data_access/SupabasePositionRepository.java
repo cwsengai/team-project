@@ -48,35 +48,12 @@ public class SupabasePositionRepository implements PositionRepository {
     @Override
     public Optional<Position> findByPortfolioAndTicker(String portfolioId, String ticker) {
         try {
-            // First, get company_id from ticker
-            Company[] companies = client.queryWithFilter(
-                "companies",
-                "ticker=eq." + ticker,
-                Company[].class
-            );
-
-            if (companies == null || companies.length == 0) {
-                return Optional.empty();
-            }
-
-            String companyId = companies[0].getId();
-
-            // Query by portfolio_id and company_id
-            return findByPortfolioAndCompany(portfolioId, companyId);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Error fetching position by ticker: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Optional<Position> findByPortfolioAndCompany(String portfolioId, String companyId) {
-        try {
-            // Query: GET /rest/v1/portfolio_positions?portfolio_id=eq.{portfolioId}&company_id=eq.{companyId}
+            // Query by portfolio_id and instrument_symbol (ticker)
+            // The schema uses instrument_symbol which references financial_instruments.symbol
             String filter = String.format(
-                "portfolio_id=eq.%s&company_id=eq.%s",
+                "portfolio_id=eq.%s&instrument_symbol=eq.%s",
                 portfolioId,
-                companyId
+                ticker
             );
 
             Position[] positions = client.queryWithFilter(
@@ -91,6 +68,18 @@ public class SupabasePositionRepository implements PositionRepository {
             return Optional.empty();
 
         } catch (IOException e) {
+            throw new RuntimeException("Error fetching position by ticker: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Optional<Position> findByPortfolioAndCompany(String portfolioId, String companySymbol) {
+        try {
+            // Use instrument_symbol instead of company_id
+            // companySymbol parameter is actually the instrument symbol
+            return findByPortfolioAndTicker(portfolioId, companySymbol);
+
+        } catch (Exception e) {
             throw new RuntimeException("Error fetching position: " + e.getMessage(), e);
         }
     }
@@ -104,9 +93,9 @@ public class SupabasePositionRepository implements PositionRepository {
                 return insert(position);
             } else {
                 // Try to find existing position
-                Optional<Position> existing = findByPortfolioAndCompany(
+                Optional<Position> existing = findByPortfolioAndTicker(
                     position.getPortfolioId(),
-                    position.getCompanyId()
+                    position.getInstrumentSymbol()
                 );
 
                 if (existing.isPresent()) {
@@ -171,13 +160,4 @@ public class SupabasePositionRepository implements PositionRepository {
         }
     }
 
-    // Helper class for Company (minimal version for this repository)
-    private static class Company {
-        private String id;
-        private String ticker;
-
-        public String getId() {
-            return id;
-        }
-    }
 }

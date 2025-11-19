@@ -108,31 +108,31 @@ public class PostgresCompanyRepository implements CompanyRepository {
             stmt.setString(7, company.getCountry());
             
             // Set financial metrics (newly added columns)
-            if (company.getEPS() != 0) {
-                stmt.setFloat(8, company.getEPS());
+            if (company.getEPS() != null && company.getEPS() != 0) {
+                stmt.setDouble(8, company.getEPS());
             } else {
-                stmt.setNull(8, java.sql.Types.REAL);
+                stmt.setNull(8, java.sql.Types.DOUBLE);
             }
             
-            if (company.getPeRatio() != 0) {
-                stmt.setFloat(9, company.getPeRatio());
+            if (company.getPeRatio() != null && company.getPeRatio() != 0) {
+                stmt.setDouble(9, company.getPeRatio());
             } else {
-                stmt.setNull(9, java.sql.Types.REAL);
+                stmt.setNull(9, java.sql.Types.DOUBLE);
             }
             
-            if (company.getDividendPerShare() != 0) {
-                stmt.setFloat(10, company.getDividendPerShare());
+            if (company.getDividendPerShare() != null && company.getDividendPerShare() != 0) {
+                stmt.setDouble(10, company.getDividendPerShare());
             } else {
-                stmt.setNull(10, java.sql.Types.REAL);
+                stmt.setNull(10, java.sql.Types.DOUBLE);
             }
             
-            if (company.getDividendYield() != 0) {
-                stmt.setFloat(11, company.getDividendYield());
+            if (company.getDividendYield() != null && company.getDividendYield() != 0) {
+                stmt.setDouble(11, company.getDividendYield());
             } else {
-                stmt.setNull(11, java.sql.Types.REAL);
+                stmt.setNull(11, java.sql.Types.DOUBLE);
             }
             
-            stmt.setFloat(12, company.getBeta());
+            stmt.setDouble(12, company.getBeta() != null ? company.getBeta() : 1.0);
             
             stmt.executeUpdate();
             return company;
@@ -157,13 +157,14 @@ public class PostgresCompanyRepository implements CompanyRepository {
         double marketCap = rs.getDouble("market_cap");
         
         // Get financial metrics with NULL handling
-        float peRatio = rs.getObject("pe_ratio") != null ? rs.getFloat("pe_ratio") : 0.0f;
-        float eps = rs.getObject("eps") != null ? rs.getFloat("eps") : 0.0f;
-        float dividendPerShare = rs.getObject("dividend_per_share") != null ? rs.getFloat("dividend_per_share") : 0.0f;
-        float dividendYield = rs.getObject("dividend_yield") != null ? rs.getFloat("dividend_yield") : 0.0f;
+        Double peRatio = rs.getObject("pe_ratio") != null ? rs.getDouble("pe_ratio") : null;
+        Double eps = rs.getObject("eps") != null ? rs.getDouble("eps") : null;
+        Double dividendPerShare = rs.getObject("dividend_per_share") != null ? rs.getDouble("dividend_per_share") : null;
+        Double dividendYield = rs.getObject("dividend_yield") != null ? rs.getDouble("dividend_yield") : null;
+        Double beta = rs.getObject("beta") != null ? rs.getDouble("beta") : 1.0;
         
         // Create Company using constructor
-        Company company = new Company(symbol, name, description, marketCap, peRatio);
+        Company company = new Company(symbol, name, description, marketCap, peRatio != null ? peRatio : 0.0);
         
         // Set additional fields
         company.setSector(rs.getString("sector"));
@@ -172,7 +173,7 @@ public class PostgresCompanyRepository implements CompanyRepository {
         company.setEps(eps);
         company.setDividendPerShare(dividendPerShare);
         company.setDividendYield(dividendYield);
-        company.setBeta(rs.getFloat("beta"));
+        company.setBeta(beta);
         
         return company;
     }

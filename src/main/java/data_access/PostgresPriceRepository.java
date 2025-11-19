@@ -41,10 +41,10 @@ public class PostgresPriceRepository implements PriceRepository {
         try (Connection conn = client.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            String id = pricePoint.getId() != null ? pricePoint.getId() : UUID.randomUUID().toString();
+            String id = UUID.randomUUID().toString();
             
             stmt.setString(1, id);
-            stmt.setString(2, pricePoint.getCompanyId()); // ticker will be looked up to get UUID
+            stmt.setString(2, pricePoint.getCompanySymbol()); // companySymbol
             stmt.setTimestamp(3, Timestamp.valueOf(pricePoint.getTimestamp()));
             stmt.setString(4, pricePoint.getInterval().name());
             setDoubleOrNull(stmt, 5, pricePoint.getOpen());
@@ -74,10 +74,10 @@ public class PostgresPriceRepository implements PriceRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             for (PricePoint pricePoint : pricePoints) {
-                String id = pricePoint.getId() != null ? pricePoint.getId() : UUID.randomUUID().toString();
+                String id = UUID.randomUUID().toString();
                 
                 stmt.setString(1, id);
-                stmt.setString(2, pricePoint.getCompanyId()); // ticker will be looked up to get UUID
+                stmt.setString(2, pricePoint.getCompanySymbol()); // companySymbol
                 stmt.setTimestamp(3, Timestamp.valueOf(pricePoint.getTimestamp()));
                 stmt.setString(4, pricePoint.getInterval().name());
                 setDoubleOrNull(stmt, 5, pricePoint.getOpen());
@@ -210,8 +210,7 @@ public class PostgresPriceRepository implements PriceRepository {
     
     private PricePoint mapResultSetToPricePoint(ResultSet rs) throws Exception {
         return new PricePoint(
-            rs.getString("id"),
-            rs.getString("company_id"),
+            rs.getString("company_id"),  // companySymbol
             rs.getTimestamp("timestamp").toLocalDateTime(),
             TimeInterval.valueOf(rs.getString("interval")),
             getDoubleOrNull(rs, "open"),

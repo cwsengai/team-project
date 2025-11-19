@@ -45,7 +45,7 @@ public class TrackPortfolioInteractor implements TrackPortfolioInputBoundary {
 
             // Get current market prices for all positions
             String[] tickers = portfolio.getPositions().stream()
-                    .map(Position::getTicker)
+                    .map(Position::getInstrumentSymbol)
                     .toArray(String[]::new);
             
             Map<String, Double> currentPrices = stockDataGateway.getLatestPrices(tickers);

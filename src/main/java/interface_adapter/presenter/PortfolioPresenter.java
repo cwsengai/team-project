@@ -51,7 +51,7 @@ public class PortfolioPresenter implements TrackPortfolioOutputBoundary {
             double gain = position.unrealizedGain(currentPrice);
             
             positionViews[i] = new PositionView(
-                    position.getTicker(),
+                    position.getInstrumentSymbol(),
                     position.getQuantity(),
                     position.getAverageCost(),
                     currentPrice,

@@ -131,7 +131,7 @@ public class Portfolio {
      */
     public Position findPosition(String ticker) {
         return positions.stream()
-                .filter(p -> p.getTicker().equals(ticker))
+                .filter(p -> p.getInstrumentSymbol().equals(ticker))
                 .findFirst()
                 .orElse(null);
     }
@@ -157,7 +157,7 @@ public class Portfolio {
         
         // Calculate unrealized gains for each position
         for (Position position : positions) {
-            Double currentPrice = currentPrices.get(position.getTicker());
+            Double currentPrice = currentPrices.get(position.getInstrumentSymbol());
             if (currentPrice != null) {
                 totalUnrealizedGains += position.unrealizedGain(currentPrice);
             }
@@ -176,7 +176,7 @@ public class Portfolio {
         double totalPositionsValue = 0.0;
         
         for (Position position : positions) {
-            Double currentPrice = currentPrices.get(position.getTicker());
+            Double currentPrice = currentPrices.get(position.getInstrumentSymbol());
             if (currentPrice != null) {
                 totalPositionsValue += position.currentMarketValue(currentPrice);
             }

@@ -99,8 +99,8 @@ public class PositionRepositoryTestSuite {
             Position position = new Position(
                 null,  // ID will be generated
                 testPortfolioId1,
-                testCompanyId1,
-                "AAPL",
+                "AAPL",  // instrumentSymbol
+                "stock",  // instrumentType
                 100,
                 150.50,
                 0.0,
@@ -111,8 +111,8 @@ public class PositionRepositoryTestSuite {
             Position saved = positionRepo.save(position);
             assertNotNull(saved.getId(), "Position ID should be generated");
             assertEqualsStr(testPortfolioId1, saved.getPortfolioId(), "Portfolio ID should match");
-            assertEqualsStr(testCompanyId1, saved.getCompanyId(), "Company ID should match");
-            assertEqualsStr("AAPL", saved.getTicker(), "Ticker should match");
+            assertEqualsStr("AAPL", saved.getInstrumentSymbol(), "Instrument symbol should match");
+            assertEqualsStr("stock", saved.getInstrumentType(), "Instrument type should match");
             assertEqualsInt(100, saved.getQuantity(), "Quantity should match");
             assertEqualsDouble(150.50, saved.getAverageCost(), "Average cost should match");
         });
@@ -123,8 +123,8 @@ public class PositionRepositoryTestSuite {
             Position position = new Position(
                 null,
                 testPortfolioId1,
-                testCompanyId2,
-                "GOOGL",
+                "GOOGL",  // instrumentSymbol
+                "stock",  // instrumentType
                 50,
                 2800.00,
                 0.0,
@@ -137,8 +137,8 @@ public class PositionRepositoryTestSuite {
             Position updated = new Position(
                 saved.getId(),
                 saved.getPortfolioId(),
-                saved.getCompanyId(),
-                saved.getTicker(),
+                saved.getInstrumentSymbol(),
+                saved.getInstrumentType(),
                 75,  // Increased quantity
                 2750.00,  // New average cost
                 100.00,  // Some realized P/L
@@ -159,8 +159,8 @@ public class PositionRepositoryTestSuite {
             Position position = new Position(
                 null,
                 testPortfolioId1,
-                testCompanyId3,
-                "MSFT",
+                "MSFT",  // instrumentSymbol
+                "stock",  // instrumentType
                 0,  // Zero quantity (closed position)
                 350.00,
                 500.00,  // Realized gains from closed position
@@ -191,10 +191,10 @@ public class PositionRepositoryTestSuite {
             List<Position> positions = positionRepo.findByPortfolioId(testPortfolioId1);
             assertEqualsInt(3, positions.size(), "Should find all 3 positions");
             
-            // Verify they're sorted by ticker
-            assertEqualsStr("AAPL", positions.get(0).getTicker(), "First should be AAPL");
-            assertEqualsStr("GOOGL", positions.get(1).getTicker(), "Second should be GOOGL");
-            assertEqualsStr("MSFT", positions.get(2).getTicker(), "Third should be MSFT");
+            // Verify they're sorted by instrument symbol
+            assertEqualsStr("AAPL", positions.get(0).getInstrumentSymbol(), "First should be AAPL");
+            assertEqualsStr("GOOGL", positions.get(1).getInstrumentSymbol(), "Second should be GOOGL");
+            assertEqualsStr("MSFT", positions.get(2).getInstrumentSymbol(), "Third should be MSFT");
         });
         
         // Test 2.2: Portfolio isolation
@@ -231,7 +231,7 @@ public class PositionRepositoryTestSuite {
         runTest("Find by portfolio and ticker", () -> {
             Optional<Position> found = positionRepo.findByPortfolioAndTicker(testPortfolioId1, "AAPL");
             assertTrue(found.isPresent(), "Should find AAPL position");
-            assertEqualsStr("AAPL", found.get().getTicker(), "Ticker should match");
+            assertEqualsStr("AAPL", found.get().getInstrumentSymbol(), "Instrument symbol should match");
             assertEqualsInt(100, found.get().getQuantity(), "Quantity should match");
         });
         
@@ -239,7 +239,7 @@ public class PositionRepositoryTestSuite {
         runTest("Find by portfolio and company ID", () -> {
             Optional<Position> found = positionRepo.findByPortfolioAndCompany(testPortfolioId1, testCompanyId2);
             assertTrue(found.isPresent(), "Should find GOOGL position");
-            assertEqualsStr("GOOGL", found.get().getTicker(), "Ticker should match");
+            assertEqualsStr("GOOGL", found.get().getInstrumentSymbol(), "Instrument symbol should match");
             assertEqualsInt(50, found.get().getQuantity(), "Quantity should match");
         });
         
@@ -409,7 +409,7 @@ public class PositionRepositoryTestSuite {
     // Helper methods
     private static Position createTestPosition(String portfolioId, String companyId, 
                                                String ticker, int quantity, double avgCost) {
-        return new Position(null, portfolioId, companyId, ticker, quantity, avgCost, 0.0, 0.0, null);
+        return new Position(null, portfolioId, ticker, "stock", quantity, avgCost, 0.0, 0.0, null);
     }
 
     private static String createTestPortfolio(String userId, String name) throws SQLException {
