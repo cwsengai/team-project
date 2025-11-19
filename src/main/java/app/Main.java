@@ -44,11 +44,8 @@ public class Main {
         String userId = "user-001";
 
         // === Data Access Layer ===
-        // Initialize Supabase client
-        SupabaseClient supabaseClient = new SupabaseClient(
-            EnvConfig.getSupabaseUrl(),
-            EnvConfig.getSupabaseAnonKey()
-        );
+        // Initialize Supabase client (uses environment config)
+        SupabaseClient supabaseClient = new SupabaseClient();
         
         // Create repository (Supabase)
         PortfolioRepository portfolioRepository = new SupabasePortfolioRepository(supabaseClient);

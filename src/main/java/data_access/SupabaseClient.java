@@ -26,10 +26,12 @@ import okhttp3.Response;
 public class SupabaseClient {
     private static final String DEFAULT_SUPABASE_URL = EnvConfig.getSupabaseUrl();
     private static final String DEFAULT_SUPABASE_ANON_KEY = EnvConfig.getSupabaseAnonKey();
+    private static final String SERVICE_ROLE_KEY = EnvConfig.getSupabaseServiceRoleKey();
     private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json");
 
     private final String supabaseUrl;
     private final String anonKey;
+    private final boolean useServiceRole;
     private final OkHttpClient httpClient;
     private final Gson gson;
     private String accessToken; // JWT from auth
@@ -38,7 +40,17 @@ public class SupabaseClient {
      * Creates a new Supabase client with default settings.
      */
     public SupabaseClient() {
-        this(DEFAULT_SUPABASE_URL, DEFAULT_SUPABASE_ANON_KEY);
+        this(DEFAULT_SUPABASE_URL, DEFAULT_SUPABASE_ANON_KEY, false);
+    }
+
+    /**
+     * Creates a new Supabase client with service role (admin) permissions.
+     * Use this for operations that bypass RLS policies.
+     *
+     * @param useServiceRole if true, uses service role key instead of anon key
+     */
+    public SupabaseClient(boolean useServiceRole) {
+        this(DEFAULT_SUPABASE_URL, useServiceRole ? SERVICE_ROLE_KEY : DEFAULT_SUPABASE_ANON_KEY, useServiceRole);
     }
 
     /**
@@ -46,11 +58,13 @@ public class SupabaseClient {
      * Use this constructor to override the default Supabase project settings.
      *
      * @param supabaseUrl the Supabase project URL
-     * @param anonKey the anonymous API key
+     * @param anonKey the anonymous API key or service role key
+     * @param useServiceRole if true, treats anonKey as service role key
      */
-    public SupabaseClient(String supabaseUrl, String anonKey) {
+    public SupabaseClient(String supabaseUrl, String anonKey, boolean useServiceRole) {
         this.supabaseUrl = supabaseUrl;
         this.anonKey = anonKey;
+        this.useServiceRole = useServiceRole;
         this.httpClient = new OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -191,6 +205,19 @@ public class SupabaseClient {
         return accessToken != null && !accessToken.isEmpty();
     }
 
+    /**
+     * Get the authorization token for API requests.
+     * Returns service role key if using service role, otherwise user's access token.
+     *
+     * @return the authorization token
+     */
+    private String getAuthToken() {
+        if (useServiceRole) {
+            return anonKey; // When useServiceRole=true, anonKey IS the service role key
+        }
+        return accessToken != null ? accessToken : anonKey;
+    }
+
     // ============================================================================
     // DATABASE OPERATIONS
     // ============================================================================
@@ -209,7 +236,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(supabaseUrl + "/rest/v1/" + table)
             .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", "Bearer " + getAuthToken())
             .get()
             .build();
 
@@ -237,7 +264,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
             .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", "Bearer " + getAuthToken())
             .get()
             .build();
 
@@ -268,7 +295,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(supabaseUrl + "/rest/v1/" + table)
             .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", "Bearer " + getAuthToken())
             .header("Prefer", "return=representation")
             .post(body)
             .build();
@@ -301,7 +328,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
             .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", "Bearer " + getAuthToken())
             .header("Prefer", "return=representation")
             .patch(body)
             .build();
@@ -326,7 +353,7 @@ public class SupabaseClient {
         Request request = new Request.Builder()
             .url(supabaseUrl + "/rest/v1/" + table + "?" + filter)
             .header("apikey", anonKey)
-            .header("Authorization", "Bearer " + accessToken)
+            .header("Authorization", "Bearer " + getAuthToken())
             .delete()
             .build();
 
