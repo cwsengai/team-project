@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,6 +55,7 @@ public class SupabaseTradeRepositoryTest {
     private static final String TEST_PASSWORD = "TestTrade123!";
     @SuppressWarnings({"unused"})
     private static final boolean INSTRUMENTS_EXIST = false;
+    private static final boolean CLEANUP_AFTER_TESTS = true;
     
     @BeforeAll
     @SuppressWarnings("unused")
@@ -113,6 +115,19 @@ public class SupabaseTradeRepositoryTest {
     @AfterAll
     @SuppressWarnings("unused")
     static void tearDown() {
+        // Clean up test trades if cleanup is enabled
+        if (CLEANUP_AFTER_TESTS && testPortfolioId != null) {
+            try {
+                List<Trade> trades = repository.findByPortfolioId(testPortfolioId);
+                for (Trade trade : trades) {
+                    repository.delete(trade.getId());
+                }
+                System.out.println("Cleaned up " + trades.size() + " test trades");
+            } catch (Exception e) {
+                System.out.println("Trade cleanup warning: " + e.getMessage());
+            }
+        }
+        
         // Clean up test portfolio
         try {
             if (testPortfolioId != null) {
@@ -275,5 +290,38 @@ public class SupabaseTradeRepositoryTest {
         // Assert
         assertNotNull(trades);
         assertTrue(trades.isEmpty());
+    }
+    
+    @Test
+    @Order(8)
+    @DisplayName("Should delete trade")
+    void testDeleteTrade() {
+        // Arrange - create a temporary trade for deletion
+        Trade tempTrade = new Trade(
+            null,
+            testPortfolioId,
+            null,
+            "AAPL",
+            null,
+            TradeType.BUY,
+            1,
+            150.0,
+            1.0,
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        );
+        Trade saved = repository.save(tempTrade);
+        String tradeId = saved.getId();
+        
+        // Verify it exists
+        List<Trade> beforeDelete = repository.findByPortfolioId(testPortfolioId);
+        assertTrue(beforeDelete.stream().anyMatch(t -> t.getId().equals(tradeId)), "Trade should exist");
+        
+        // Act - delete it
+        repository.delete(tradeId);
+        
+        // Assert - verify it's gone
+        List<Trade> afterDelete = repository.findByPortfolioId(testPortfolioId);
+        assertFalse(afterDelete.stream().anyMatch(t -> t.getId().equals(tradeId)), "Trade should be deleted");
     }
 }

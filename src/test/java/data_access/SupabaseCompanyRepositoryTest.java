@@ -144,7 +144,7 @@ public class SupabaseCompanyRepositoryTest {
             Company firstCompany = companies.get(0);
             String companyId = firstCompany.getSymbol(); // Using symbol as ID
             
-            Optional<Company> found = repository.findById(companyId);
+            Optional<Company> found = repository.findByTicker(companyId);
             
             assertTrue(found.isPresent(), "Should find company by ID");
             found.ifPresent(c -> assertEquals(companyId, c.getSymbol()));
@@ -159,7 +159,7 @@ public class SupabaseCompanyRepositoryTest {
     @DisplayName("Should return empty for non-existent ID")
     void testFindByIdNotFound() {
         String fakeId = "FAKE_" + UUID.randomUUID();
-        Optional<Company> company = repository.findById(fakeId);
+        Optional<Company> company = repository.findByTicker(fakeId);
         
         assertTrue(company.isEmpty(), "Should not find company with fake ID");
     }

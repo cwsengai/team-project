@@ -19,4 +19,6 @@ public interface PositionRepository {
     Position save(Position position);
 
     void updatePL(String positionId, double realizedPL, double unrealizedPL);
+
+    void delete(String id);
 }

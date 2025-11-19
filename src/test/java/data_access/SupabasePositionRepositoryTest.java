@@ -47,6 +47,7 @@ public class SupabasePositionRepositoryTest {
     private static String testEmail;
     private static String testPortfolioId;
     private static final String TEST_PASSWORD = "TestPosition123!";
+    private static final boolean CLEANUP_AFTER_TESTS = true;
     
     @BeforeAll
     @SuppressWarnings("unused")
@@ -123,6 +124,19 @@ public class SupabasePositionRepositoryTest {
     @AfterAll
     @SuppressWarnings("unused")
     static void tearDown() {
+        // Clean up test positions if cleanup is enabled
+        if (CLEANUP_AFTER_TESTS && testPortfolioId != null) {
+            try {
+                List<Position> positions = repository.findByPortfolioId(testPortfolioId);
+                for (Position position : positions) {
+                    repository.delete(position.getId());
+                }
+                System.out.println("Cleaned up " + positions.size() + " test positions");
+            } catch (Exception e) {
+                System.out.println("Position cleanup warning: " + e.getMessage());
+            }
+        }
+        
         // Clean up test portfolio (positions will be cascade deleted)
         try {
             if (testPortfolioId != null) {
@@ -350,5 +364,36 @@ public class SupabasePositionRepositoryTest {
             // Cleanup second portfolio
             portfolioRepository.delete(portfolio2Id);
         }
+    }
+    
+    @Test
+    @Order(11)
+    @DisplayName("Should delete position")
+    void testDeletePosition() {
+        // Arrange - create a temporary position for deletion
+        Position tempPosition = new Position(
+            null,
+            testPortfolioId,
+            "MSFT",
+            null,
+            5,
+            300.0,
+            0.0,
+            0.0,
+            java.time.LocalDateTime.now()
+        );
+        Position saved = repository.save(tempPosition);
+        String positionId = saved.getId();
+        
+        // Verify it exists
+        Optional<Position> beforeDelete = repository.findByPortfolioAndTicker(testPortfolioId, "MSFT");
+        assertTrue(beforeDelete.isPresent(), "Position should exist");
+        
+        // Act - delete it
+        repository.delete(positionId);
+        
+        // Assert - verify it's gone
+        Optional<Position> afterDelete = repository.findByPortfolioAndTicker(testPortfolioId, "MSFT");
+        assertFalse(afterDelete.isPresent(), "Position should be deleted");
     }
 }

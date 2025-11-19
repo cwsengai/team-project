@@ -17,4 +17,6 @@ public interface UserRepository {
     User save(User user);
 
     void updateLastLogin(String userId, LocalDateTime timestamp);
+
+    void delete(String id);
 }

@@ -55,12 +55,6 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     }
 
     @Override
-    public Optional<Company> findById(String id) {
-        // Symbol is the primary key, so ID and ticker are the same
-        return findByTicker(id);
-    }
-
-    @Override
     public List<Company> findBySector(String sector) {
         try {
             Company[] companies = client.queryWithFilter(

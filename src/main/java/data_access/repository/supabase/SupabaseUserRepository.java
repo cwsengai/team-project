@@ -154,4 +154,20 @@ public class SupabaseUserRepository implements UserRepository {
             throw new RepositoryException("Error updating last login for user: " + userId, e);
         }
     }
+
+    @Override
+    public void delete(String id) {
+        try {
+            client.delete("user_profiles", "id=eq." + id);
+
+        } catch (IOException e) {
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("DELETE", "user_profiles");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while deleting user", e);
+            }
+            throw new RepositoryException("Error deleting user: " + id, e);
+        }
+    }
 }

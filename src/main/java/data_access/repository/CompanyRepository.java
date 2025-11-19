@@ -12,8 +12,6 @@ import entity.Company;
 public interface CompanyRepository {
     Optional<Company> findByTicker(String ticker);
 
-    Optional<Company> findById(String id);
-
     List<Company> findBySector(String sector);
 
     Company save(Company company);

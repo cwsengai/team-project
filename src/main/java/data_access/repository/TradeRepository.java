@@ -17,4 +17,6 @@ public interface TradeRepository {
     List<Trade> findByPositionId(String positionId);
 
     List<Trade> findByPortfolioInDateRange(String portfolioId, LocalDateTime start, LocalDateTime end);
+
+    void delete(String id);
 }

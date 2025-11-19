@@ -125,4 +125,20 @@ public class SupabaseTradeRepository implements TradeRepository {
             throw new RepositoryException("Error fetching trades in date range for portfolio: " + portfolioId, e);
         }
     }
+
+    @Override
+    public void delete(String id) {
+        try {
+            client.delete("trades", "id=eq." + id);
+
+        } catch (IOException e) {
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("DELETE", "trades");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while deleting trade", e);
+            }
+            throw new RepositoryException("Error deleting trade: " + id, e);
+        }
+    }
 }
