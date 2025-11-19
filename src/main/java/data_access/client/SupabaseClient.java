@@ -25,7 +25,7 @@ import okhttp3.Response;
  * Client for interacting with Supabase REST API and authentication.
  * Handles JWT-based authentication and database operations via PostgREST.
  */
-public class SupabaseClient {
+public class SupabaseClient implements AutoCloseable {
     private static final String DEFAULT_SUPABASE_URL = EnvConfig.getSupabaseUrl();
     private static final String DEFAULT_SUPABASE_ANON_KEY = EnvConfig.getSupabaseAnonKey();
     private static final String SERVICE_ROLE_KEY = EnvConfig.getSupabaseServiceRoleKey();
@@ -381,12 +381,12 @@ public class SupabaseClient {
     }
 
     /**
-     * Set the access token manually (for testing or session restoration).
-     *
-     * @param accessToken JWT access token
+     * Shutdown the HTTP client and release resources.
+     * Implements AutoCloseable for use with try-with-resources.
      */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    @Override
+    public void close() {
+        shutdown();
     }
 
     /**
@@ -394,14 +394,15 @@ public class SupabaseClient {
      */
     public void shutdown() {
         if (httpClient != null) {
-            httpClient.dispatcher().executorService().shutdown();
+            var executorService = httpClient.dispatcher().executorService();
+            executorService.shutdown();
             httpClient.connectionPool().evictAll();
             try {
-                if (!httpClient.dispatcher().executorService().awaitTermination(5, TimeUnit.SECONDS)) {
-                    httpClient.dispatcher().executorService().shutdownNow();
+                if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow();
                 }
             } catch (InterruptedException e) {
-                httpClient.dispatcher().executorService().shutdownNow();
+                executorService.shutdownNow();
                 Thread.currentThread().interrupt();
             }
         }
