@@ -3,20 +3,37 @@ package entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents a position in a particular stock within a portfolio.
  */
 public class Position {
     private final String id;
+    
+    @SerializedName("portfolio_id")
     private final String portfolioId;
-    private final String instrumentSymbol;  // Matches DB: instrument_symbol (references financial_instruments.symbol)
-    private final String instrumentType;  // Matches DB: instrument_type
+    
+    @SerializedName("instrument_symbol")
+    private final String instrumentSymbol;  // references financial_instruments.symbol
+    
+    @SerializedName("instrument_type")
+    private final transient String instrumentType;  // Not in DB schema
+    
     private int quantity;
-    private double averageCost;  // Matches DB: avg_price
-    private double realizedPL;  // Matches DB: realized_pl
-    private double unrealizedPL;  // Matches DB: unrealized_pl
-    private LocalDateTime lastUpdated;  // Matches DB: last_updated
+    
+    @SerializedName("avg_price")
+    private double averageCost;  // Maps to avg_price in DB
+    
+    @SerializedName("realized_pl")
+    private double realizedPL;
+    
+    @SerializedName("unrealized_pl")
+    private double unrealizedPL;
+    
+    @SerializedName("last_updated")
+    private LocalDateTime lastUpdated;
+    
     private transient final List<Trade> trades;
 
     public Position(String id, String portfolioId, String instrumentSymbol, String instrumentType,

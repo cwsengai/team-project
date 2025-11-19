@@ -76,7 +76,7 @@ public class SupabasePriceRepository implements PriceRepository {
             String filter = String.format(
                 "company_symbol=eq.%s&interval=eq.%s&order=timestamp.desc&limit=1",
                 ticker,
-                interval.name()
+                interval.name().toLowerCase()
             );
 
             PricePoint[] prices = client.queryWithFilter(
@@ -120,7 +120,7 @@ public class SupabasePriceRepository implements PriceRepository {
             String filter = String.format(
                 "company_symbol=eq.%s&interval=eq.%s&timestamp=gte.%s&timestamp=lte.%s&order=timestamp.asc",
                 ticker,
-                interval.name(),
+                interval.name().toLowerCase(),
                 start.toString(),
                 end.toString()
             );

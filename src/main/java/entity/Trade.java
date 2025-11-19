@@ -10,7 +10,11 @@ public class Trade {
     private final String portfolioId;
     private final String positionId;
     private final String instrumentSymbol;  // Matches DB: instrument_symbol (references financial_instruments.symbol)
-    private final String instrumentType;  // Matches DB: instrument_type
+    
+    // Not stored in trades table - available via join with financial_instruments
+    // Using transient to exclude from Gson serialization
+    private final transient String instrumentType;
+    
     private final TradeType tradeType;  // Matches DB: trade_type
     private final int quantity;
     private final double price;
