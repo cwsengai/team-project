@@ -1,10 +1,10 @@
 package data_access;
 
-import org.json.JSONObject;
 import java.util.List;
 
-import api.Api;
+import org.json.JSONObject;
 
+import api.Api;
 import entity.Company;
 import use_case.company.CompanyGateway;
 
@@ -40,12 +40,13 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
                 json.optString("Sector"),
                 json.optString("Industry"),
                 json.optString("Country"),
-                json.optLong("MarketCapitalization"),
-                (float) json.optDouble("EPS"),
-                (float) json.optDouble("PERatio"),
-                (float) json.optDouble("DividendPerShare"),
-                (float) json.optDouble("DividendYield"),
-                (float) json.optDouble("Beta"),
+                json.optString("Exchange", null),  // Exchange field
+                (double) json.optLong("MarketCapitalization"),  // Convert to Double
+                json.optDouble("EPS") != 0.0 ? json.optDouble("EPS") : null,
+                json.optDouble("PERatio") != 0.0 ? json.optDouble("PERatio") : null,
+                json.optDouble("DividendPerShare") != 0.0 ? json.optDouble("DividendPerShare") : null,
+                json.optDouble("DividendYield") != 0.0 ? json.optDouble("DividendYield") : null,
+                json.optDouble("Beta") != 0.0 ? json.optDouble("Beta") : null,
                 List.of(), // Placeholder for financial statements
                 List.of()  // Placeholder for news articles
         );

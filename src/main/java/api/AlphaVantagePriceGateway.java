@@ -109,9 +109,14 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 Double close = data.optDouble("4. close", 0.0);
                 Double volume = data.optDouble("5. volume", 0.0);
                 
+                // Note: companySymbol should be passed from getPriceHistory method
+                // For now, using null as it's not available in the time series data
                 PricePoint pricePoint = new PricePoint(
-                    null, null, dateTime, interval,
-                    open, high, low, close, volume, "AlphaVantage"
+                    null,  // companySymbol - should be set by caller
+                    dateTime, 
+                    interval,
+                    open, high, low, close, volume, 
+                    "AlphaVantage"
                 );
                 
                 pricePoints.add(pricePoint);
