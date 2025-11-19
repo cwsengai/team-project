@@ -190,8 +190,8 @@ The application includes sample portfolio data:
    - [x] Design Supabase schema
    - [x] Implement Supabase repositories
    - [x] Update entity classes for new schema
-   - [ ] Create test data seeding scripts
-   - [ ] Set up Row Level Security (RLS) policies
+   - [x] Create test data seeding scripts
+   - [x] Set up Row Level Security (RLS) policies
 
 ### Medium Priority
 
