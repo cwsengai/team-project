@@ -1,135 +1,54 @@
 package entity;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Represents a position in a particular stock within a portfolio.
- */
 public class Position {
-    private final String id;
-    private final String portfolioId;
-    private final String companyId;
-    private final String ticker;  // Denormalized for convenience
-    private int quantity;
-    private double averageCost;
-    private double realizedPL;
-    private double unrealizedPL;
-    private LocalDateTime lastUpdated;
-    private final List<Trade> trades;
+    //position :-current direction  -current quantity -current average cost price
+    private final String ticker;  // stock code
+    private boolean isLong;       // current durection
+    private int quantity;         // current position quantity
+    private double avgPrice;      // current averagecost price
 
-    public Position(String id, String portfolioId, String companyId, String ticker,
-                    int quantity, double averageCost, double realizedPL, double unrealizedPL,
-                    LocalDateTime lastUpdated) {
-        this.id = id;
-        this.portfolioId = portfolioId;
-        this.companyId = companyId;
+    public Position(String ticker, boolean isLong, int quantity, double avgPrice) {
         this.ticker = ticker;
+        this.isLong = isLong;
         this.quantity = quantity;
-        this.averageCost = averageCost;
-        this.realizedPL = realizedPL;
-        this.unrealizedPL = unrealizedPL;
-        this.lastUpdated = lastUpdated != null ? lastUpdated : LocalDateTime.now();
-        this.trades = new ArrayList<>();
-    }
-
-    // Backward compatible constructor for existing code
-    public Position(String ticker) {
-        this(null, null, null, ticker, 0, 0.0, 0.0, 0.0, LocalDateTime.now());
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getPortfolioId() {
-        return portfolioId;
-    }
-
-    public String getCompanyId() {
-        return companyId;
+        this.avgPrice = avgPrice;
     }
 
     public String getTicker() {
         return ticker;
     }
 
+    public boolean isLong() {
+        return isLong;
+    }
+
     public int getQuantity() {
         return quantity;
     }
 
-    public double getAverageCost() {
-        return averageCost;
+    public double getAvgPrice() {
+        return avgPrice;
     }
 
-    public double getRealizedPL() {
-        return realizedPL;
+    //Increase position (in the same direction) Recalculate the average cost price
+    public void add(int qty, double fillPrice) {
+        double totalCost = avgPrice * quantity + fillPrice * qty;
+        quantity += qty;
+        avgPrice = totalCost / quantity;
     }
 
-    public void setRealizedPL(double realizedPL) {
-        this.realizedPL = realizedPL;
-        this.lastUpdated = LocalDateTime.now();
-    }
-
-    public double getUnrealizedPL() {
-        return unrealizedPL;
-    }
-
-    public void setUnrealizedPL(double unrealizedPL) {
-        this.unrealizedPL = unrealizedPL;
-        this.lastUpdated = LocalDateTime.now();
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public List<Trade> getTrades() {
-        return new ArrayList<>(trades);
-    }
-
-    /**
-     * Add a trade to this position and update quantity and average cost.
-     */
-    public void addTrade(Trade trade) {
-        trades.add(trade);
-        
-        if (trade.getTradeType() == TradeType.BUY) {
-            // Calculate new average cost when buying
-            double totalCost = (averageCost * quantity) + (trade.getPrice() * trade.getQuantity());
-            quantity += trade.getQuantity();
-            averageCost = quantity > 0 ? totalCost / quantity : 0;
-        } else {
-            // Selling - calculate realized gains
-            double saleProceeds = trade.getQuantity() * trade.getPrice();
-            double costBasis = trade.getQuantity() * averageCost;
-            realizedPL += (saleProceeds - costBasis - trade.getFees());
-            quantity -= trade.getQuantity();
+    // Reduce position (close position/partially close position) ,Do not change the avgPrice
+    public void reduce(int qty) {
+        quantity -= qty;
+        if (quantity < 0) {
+            quantity = 0;
         }
-        this.lastUpdated = LocalDateTime.now();
     }
 
-    /**
-     * Calculate current market value of this position.
-     */
-    public double currentMarketValue(double currentPrice) {
-        return quantity * currentPrice;
-    }
-
-    /**
-     * Calculate unrealized gain/loss for this position.
-     * TODO: Verify calculation logic
-     */
-    public double unrealizedGain(double currentPrice) {
-        return (currentPrice - averageCost) * quantity;
-    }
-
-    /**
-     * Get realized gains from closed trades.
-     * @return Total realized gains/losses
-     */
-    public double getRealizedGains() {
-        return realizedPL;
+    // After liquidating the position, open a reverse position (flip the position)
+    public void flip(boolean newIsLong, int newQty, double newAvgPrice) {
+        this.isLong = newIsLong;
+        this.quantity = newQty;
+        this.avgPrice = newAvgPrice;
     }
 }
