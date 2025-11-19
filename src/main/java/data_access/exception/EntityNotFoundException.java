@@ -1,4 +1,4 @@
-package data_access;
+package data_access.exception;
 
 /**
  * Exception thrown when a requested entity cannot be found in the repository.

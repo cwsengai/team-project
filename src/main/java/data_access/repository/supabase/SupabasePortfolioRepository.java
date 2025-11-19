@@ -1,4 +1,4 @@
-package data_access;
+package data_access.repository.supabase;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import data_access.client.SupabaseClient;
+import data_access.exception.*;
+import data_access.repository.PortfolioRepository;
 import entity.Portfolio;
 
 /**

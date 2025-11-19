@@ -1,10 +1,12 @@
-package data_access;
+package data_access.gateway.alphavantage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import data_access.config.EnvConfig;
+import data_access.gateway.StockDataGateway;
 import entity.PricePoint;
 
 /**

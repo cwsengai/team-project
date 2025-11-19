@@ -17,6 +17,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import data_access.client.AuthResponse;
+import data_access.client.SupabaseClient;
+import data_access.repository.supabase.SupabasePortfolioRepository;
+import data_access.repository.supabase.SupabaseUserRepository;
 import entity.Portfolio;
 import entity.User;
 

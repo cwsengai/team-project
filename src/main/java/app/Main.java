@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 import javax.swing.SwingUtilities;
 
-import data_access.AlphaVantageGateway;
-import data_access.EnvConfig;
-import data_access.PortfolioRepository;
-import data_access.StockDataGateway;
-import data_access.SupabaseClient;
-import data_access.SupabasePortfolioRepository;
+import data_access.client.SupabaseClient;
+import data_access.config.EnvConfig;
+import data_access.gateway.StockDataGateway;
+import data_access.gateway.alphavantage.AlphaVantageGateway;
+import data_access.repository.PortfolioRepository;
+import data_access.repository.supabase.SupabasePortfolioRepository;
 import entity.Portfolio;
 import entity.Position;
 import entity.Trade;

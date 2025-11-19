@@ -1,4 +1,4 @@
-package data_access;
+package data_access.exception;
 
 /**
  * Exception thrown when data fails validation before being persisted.

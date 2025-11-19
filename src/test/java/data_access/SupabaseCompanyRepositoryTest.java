@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import data_access.client.SupabaseClient;
+import data_access.repository.supabase.SupabaseCompanyRepository;
 import entity.Company;
 
 /**

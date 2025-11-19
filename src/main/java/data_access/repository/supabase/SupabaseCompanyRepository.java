@@ -1,4 +1,4 @@
-package data_access;
+package data_access.repository.supabase;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import data_access.client.SupabaseClient;
+import data_access.exception.*;
+import data_access.repository.CompanyRepository;
 import entity.Company;
 
 /**

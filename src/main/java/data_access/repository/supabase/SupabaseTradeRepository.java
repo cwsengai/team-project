@@ -1,4 +1,4 @@
-package data_access;
+package data_access.repository.supabase;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -6,6 +6,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import data_access.client.SupabaseClient;
+import data_access.exception.DatabaseConnectionException;
+import data_access.exception.PermissionDeniedException;
+import data_access.exception.RepositoryException;
+import data_access.repository.TradeRepository;
 import entity.Trade;
 
 /**

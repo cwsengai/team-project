@@ -1,4 +1,4 @@
-package data_access;
+package data_access.exception;
 
 /**
  * Exception thrown when attempting to create an entity that already exists.

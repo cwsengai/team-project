@@ -1,4 +1,4 @@
-package data_access;
+package data_access.gateway;
 
 import java.time.LocalDate;
 import java.util.Map;

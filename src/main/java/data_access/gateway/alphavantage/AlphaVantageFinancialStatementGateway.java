@@ -1,17 +1,16 @@
-package data_access;
+package data_access.gateway.alphavantage;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 import api.Api;
-
 import entity.FinancialStatement;
 import use_case.financial_statement.FinancialStatementGateway;
 

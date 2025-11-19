@@ -1,4 +1,4 @@
-package data_access;
+package data_access.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

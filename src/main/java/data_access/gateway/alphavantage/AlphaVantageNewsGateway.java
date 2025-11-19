@@ -1,17 +1,15 @@
-package data_access;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
+package data_access.gateway.alphavantage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import api.Api;
-
 import entity.NewsArticle;
 import use_case.news.NewsGateway;
 

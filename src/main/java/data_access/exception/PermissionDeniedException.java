@@ -1,4 +1,4 @@
-package data_access;
+package data_access.exception;
 
 /**
  * Exception thrown when a user attempts an operation they don't have permission for.

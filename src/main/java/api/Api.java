@@ -1,12 +1,12 @@
 package api;
 
-import data_access.EnvConfig;
+import java.io.IOException;
+
+import data_access.config.EnvConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-
-import java.io.IOException;
 
 public class Api {
 

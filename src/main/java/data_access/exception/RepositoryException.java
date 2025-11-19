@@ -1,4 +1,4 @@
-package data_access;
+package data_access.exception;
 
 /**
  * Base exception for repository layer errors.

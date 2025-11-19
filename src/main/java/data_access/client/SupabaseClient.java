@@ -1,4 +1,4 @@
-package data_access;
+package data_access.client;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,6 +13,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import data_access.config.EnvConfig;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

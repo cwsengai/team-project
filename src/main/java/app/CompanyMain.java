@@ -1,8 +1,8 @@
 package app;
 
 import api.Api;
-import data_access.AlphaVantageCompanyGateway;
-import data_access.EnvConfig;
+import data_access.config.EnvConfig;
+import data_access.gateway.alphavantage.AlphaVantageCompanyGateway;
 import framework_and_driver.CompanyPage;
 import interface_adapter.controller.CompanyController;
 import interface_adapter.presenter.CompanyPresenter;

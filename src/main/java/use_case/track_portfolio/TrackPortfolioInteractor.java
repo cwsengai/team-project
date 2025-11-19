@@ -3,8 +3,8 @@ package use_case.track_portfolio;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import data_access.PortfolioRepository;
-import data_access.StockDataGateway;
+import data_access.gateway.StockDataGateway;
+import data_access.repository.PortfolioRepository;
 import entity.Portfolio;
 import entity.Position;
 
