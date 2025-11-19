@@ -33,9 +33,10 @@ The application follows Clean Architecture with clear separation of concerns:
                      │
 ┌────────────────────┴────────────────────────────────────────┐
 │                   Data Access Layer                         │
-│  Repositories: InMemoryPortfolioRepository                  │
+│  Repositories: SupabasePortfolioRepository (REST API)       │
 │  Gateways:     AlphaVantageGateway                         │
 │  Interfaces:   PortfolioRepository, StockDataGateway        │
+│  Database:     Supabase (PostgreSQL via PostgREST)          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -108,11 +109,36 @@ src/main/java/
 
 ### Data Access
 
-- **InMemoryPortfolioRepository**: Development/testing storage
-- **AlphaVantageGateway**: Stock price API (currently mock data)
-- **SupabasePortfolioRepository**: Production database (placeholder)
+- **SupabaseClient**: REST API client for Supabase (PostgreSQL via PostgREST)
+- **SupabasePortfolioRepository**: Production portfolio storage using Supabase
+- **SupabasePositionRepository**: Position data with Row Level Security (RLS)
+- **SupabaseTradeRepository**: Trade history storage
+- **SupabasePriceRepository**: Price data storage
+- **SupabaseCompanyRepository**: Company information (read-only for regular users)
+- **AlphaVantageGateway**: Stock price API integration
+- **PostgreSQL Repositories**: Legacy JDBC implementations (used in tests)
 
 ## Running the Application
+
+### Prerequisites
+
+1. **Supabase Account**: Create a project at [supabase.com](https://supabase.com)
+2. **Environment Variables**: Create a `.env` file in the project root:
+
+```env
+# Supabase Configuration
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# API Keys
+ALPHA_VANTAGE_API_KEY=your-api-key
+
+# Application Settings
+APP_ENV=development
+```
+
+3. **Database Schema**: Run the schema migration in your Supabase project (see `migrations/` folder)
 
 ### Compile and Run
 
@@ -140,23 +166,32 @@ The application includes sample portfolio data:
 
 ### High Priority
 
-1. **Price Data Integration**
+1. **Authentication & User Management**
+
+   - [ ] Implement Supabase Auth integration
+   - [ ] Add user login/signup UI
+   - [ ] Handle JWT tokens for authenticated requests
+   - [ ] Implement user session management
+
+2. **Price Data Integration**
 
    - [ ] Implement real Alpha Vantage API calls
-   - [ ] Add API key configuration
    - [ ] Handle API rate limits
-   - [ ] Implement price caching
+   - [ ] Implement price caching in Supabase
+   - [ ] Add scheduled price updates
 
-2. **Gain Calculations**
+3. **Gain Calculations**
 
    - [ ] Verify realized gains logic
    - [ ] Implement FIFO/LIFO cost basis methods
    - [ ] Add tax lot tracking
 
-3. **Database Integration**
-   - [ ] Complete Supabase repository implementation
-   - [ ] Design database schema
-   - [ ] Implement migration scripts
+4. **Database Migration**
+   - [x] Design Supabase schema
+   - [x] Implement Supabase repositories
+   - [x] Update entity classes for new schema
+   - [ ] Create test data seeding scripts
+   - [ ] Set up Row Level Security (RLS) policies
 
 ### Medium Priority
 

@@ -30,10 +30,10 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     @Override
     public Optional<Company> findByTicker(String ticker) {
         try {
-            // Query: GET /rest/v1/companies?ticker=eq.{ticker}
+            // Query: GET /rest/v1/companies?symbol=eq.{ticker}
             Company[] companies = client.queryWithFilter(
                 "companies",
-                "ticker=eq." + ticker,
+                "symbol=eq." + ticker,
                 Company[].class
             );
 

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import entity.Company;
 import entity.PricePoint;
@@ -98,8 +97,7 @@ public class PriceRepositoryTestSuite {
         // Test 1.2: Save price with null values
         runTest("Save price with null OHLV values", () -> {
             PricePoint price = new PricePoint(
-                UUID.randomUUID().toString(),
-                testCompanyId1,
+                testCompanyId1,  // companySymbol
                 LocalDateTime.now().minusHours(12),
                 TimeInterval.INTRADAY,
                 null, null, null,  // null open, high, low
@@ -470,8 +468,7 @@ public class PriceRepositoryTestSuite {
                                                TimeInterval interval, double open, double high,
                                                double low, double close, double volume) {
         return new PricePoint(
-            UUID.randomUUID().toString(),
-            companyId,
+            companyId,  // companySymbol
             timestamp,
             interval,
             open, high, low, close, volume,

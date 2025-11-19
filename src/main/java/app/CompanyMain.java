@@ -2,6 +2,7 @@ package app;
 
 import api.Api;
 import data_access.AlphaVantageCompanyGateway;
+import data_access.EnvConfig;
 import framework_and_driver.CompanyPage;
 import interface_adapter.controller.CompanyController;
 import interface_adapter.presenter.CompanyPresenter;
@@ -13,7 +14,11 @@ import use_case.company.CompanyOutputBoundary;
 public class CompanyMain {
     public static void main(String[] args) {
 
-        Api api = new Api("demo"); // TODO: Replace with actual API key
+        String apiKey = EnvConfig.getAlphaVantageApiKey();
+        if (apiKey.isEmpty()) {
+            apiKey = "demo"; // Fallback to demo key
+        }
+        Api api = new Api(apiKey);
         AlphaVantageCompanyGateway gateway = new AlphaVantageCompanyGateway(api);
 
         CompanyViewModel vm = new CompanyViewModel();

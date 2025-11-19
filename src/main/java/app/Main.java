@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import javax.swing.SwingUtilities;
 
 import data_access.AlphaVantageGateway;
-import data_access.InMemoryPortfolioRepository;
+import data_access.EnvConfig;
 import data_access.PortfolioRepository;
 import data_access.StockDataGateway;
+import data_access.SupabaseClient;
+import data_access.SupabasePortfolioRepository;
 import entity.Portfolio;
 import entity.Position;
 import entity.Trade;
@@ -42,15 +44,26 @@ public class Main {
         String userId = "user-001";
 
         // === Data Access Layer ===
-        // Create repository (in-memory for now)
-        PortfolioRepository portfolioRepository = new InMemoryPortfolioRepository();
+        // Initialize Supabase client
+        SupabaseClient supabaseClient = new SupabaseClient(
+            EnvConfig.getSupabaseUrl(),
+            EnvConfig.getSupabaseAnonKey()
+        );
+        
+        // Create repository (Supabase)
+        PortfolioRepository portfolioRepository = new SupabasePortfolioRepository(supabaseClient);
         
         // Create stock data gateway
         // TODO: Replace with actual API key from configuration
-        StockDataGateway stockDataGateway = new AlphaVantageGateway("DEMO_API_KEY");
+        String apiKey = EnvConfig.getAlphaVantageApiKey();
+        if (apiKey.isEmpty()) {
+            apiKey = "DEMO_API_KEY";
+        }
+        StockDataGateway stockDataGateway = new AlphaVantageGateway(apiKey);
 
         // === Create sample portfolio for demo ===
-        createSamplePortfolio(portfolioRepository, portfolioId, userId);
+        // Note: Commented out for Supabase - requires authenticated user
+        // createSamplePortfolio(portfolioRepository, portfolioId, userId);
 
         // === Create main frame ===
         MainFrame frame = new MainFrame();
