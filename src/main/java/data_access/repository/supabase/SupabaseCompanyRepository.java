@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 import data_access.client.SupabaseClient;
-import data_access.exception.*;
+import data_access.exception.DataValidationException;
+import data_access.exception.DatabaseConnectionException;
+import data_access.exception.EntityNotFoundException;
+import data_access.exception.PermissionDeniedException;
+import data_access.exception.RepositoryException;
 import data_access.repository.CompanyRepository;
 import entity.Company;
 
@@ -22,20 +26,14 @@ import entity.Company;
 public class SupabaseCompanyRepository implements CompanyRepository {
     private final SupabaseClient client;
 
-    /**
-     * Creates a new Supabase company repository.
-     *
-     * @param client the authenticated Supabase client
-     */
     public SupabaseCompanyRepository(SupabaseClient client) {
         this.client = client;
     }
 
     @Override
     public Optional<Company> findByTicker(String ticker) {
+        // TODO: Consider implementing caching for frequently accessed company data
         try {
-            // Query: GET /rest/v1/companies?symbol=eq.{ticker}
-            // URL encode the ticker to handle special characters
             String encodedTicker = URLEncoder.encode(ticker, "UTF-8");
             Company[] companies = client.queryWithFilter(
                 "companies",
@@ -59,8 +57,6 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     @Override
     public Optional<Company> findById(String id) {
         try {
-            // Query: GET /rest/v1/companies?symbol=eq.{id} (symbol is the primary key)
-            // URL encode the ID to handle special characters
             String encodedId = URLEncoder.encode(id, "UTF-8");
             Company[] companies = client.queryWithFilter(
                 "companies",
@@ -84,7 +80,6 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     @Override
     public List<Company> findBySector(String sector) {
         try {
-            // Query: GET /rest/v1/companies?sector=eq.{sector}
             Company[] companies = client.queryWithFilter(
                 "companies",
                 "sector=eq." + sector,
@@ -104,18 +99,15 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     @Override
     public Company save(Company company) {
         try {
-            // Validate company data
             if (company.getSymbol() == null || company.getSymbol().isEmpty()) {
                 throw new DataValidationException("symbol", "Company symbol cannot be null or empty");
             }
             
-            // Check if company exists
             Optional<Company> existing = findByTicker(company.getSymbol());
             if (existing.isPresent()) {
                 return update(company);
             }
             
-            // Insert new company
             return insert(company);
 
         } catch (IOException e) {
@@ -132,6 +124,7 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     private Company insert(Company company) throws IOException {
         // Note: This may fail if user doesn't have INSERT permission
         // Only service role or admin should insert companies
+        // TODO: Handle duplicate key violations and return meaningful error
         Company[] result = client.insert(
             "companies",
             company,
@@ -161,9 +154,7 @@ public class SupabaseCompanyRepository implements CompanyRepository {
 
     @Override
     public void saveAll(List<Company> companies) {
-        // Note: Supabase supports bulk insert via POST with JSON array
-        // For simplicity, we'll insert one at a time
-        // In production, optimize this by using bulk insert
+        // TODO: Optimize with bulk insert instead of one-by-one
         for (Company company : companies) {
             save(company);
         }

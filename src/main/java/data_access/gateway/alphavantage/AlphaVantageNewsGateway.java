@@ -26,7 +26,8 @@ public class AlphaVantageNewsGateway implements NewsGateway {
         try {
             jsonString = api.getFuncNewsSentiment(symbol);
         } catch (Exception e) {
-            // handle or log as appropriate; returning null for now
+            // TODO: Implement proper error handling and logging
+            // TODO: Consider throwing custom exception instead of returning null
             e.printStackTrace();
             return null;
         }
@@ -56,6 +57,7 @@ public class AlphaVantageNewsGateway implements NewsGateway {
                             .toFormatter();
 
             String rawTime = feedObject.optString("time_published");
+            // TODO: Add error handling for invalid date formats
             LocalDateTime timePublished = LocalDateTime.parse(rawTime, formatter);
 
 

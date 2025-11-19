@@ -23,11 +23,6 @@ import entity.Trade;
 public class SupabaseTradeRepository implements TradeRepository {
     private final SupabaseClient client;
 
-    /**
-     * Creates a new Supabase trade repository.
-     *
-     * @param client the authenticated Supabase client
-     */
     public SupabaseTradeRepository(SupabaseClient client) {
         this.client = client;
     }
@@ -35,7 +30,6 @@ public class SupabaseTradeRepository implements TradeRepository {
     @Override
     public Trade save(Trade trade) {
         try {
-            // Trades are always inserts (immutable)
             Trade[] result = client.insert(
                 "trades",
                 trade,
@@ -61,8 +55,6 @@ public class SupabaseTradeRepository implements TradeRepository {
     @Override
     public List<Trade> findByPortfolioId(String portfolioId) {
         try {
-            // Query: GET /rest/v1/trades?portfolio_id=eq.{portfolioId}&order=executed_at.desc
-            // RLS ensures user can only see trades in their own portfolios
             String filter = String.format(
                 "portfolio_id=eq.%s&order=executed_at.desc",
                 portfolioId
@@ -87,7 +79,6 @@ public class SupabaseTradeRepository implements TradeRepository {
     @Override
     public List<Trade> findByPositionId(String positionId) {
         try {
-            // Query: GET /rest/v1/trades?position_id=eq.{positionId}&order=executed_at.asc
             String filter = String.format(
                 "position_id=eq.%s&order=executed_at.asc",
                 positionId
@@ -112,7 +103,6 @@ public class SupabaseTradeRepository implements TradeRepository {
     @Override
     public List<Trade> findByPortfolioInDateRange(String portfolioId, LocalDateTime start, LocalDateTime end) {
         try {
-            // Query: GET /rest/v1/trades?portfolio_id=eq.{portfolioId}&executed_at=gte.{start}&executed_at=lte.{end}&order=executed_at.desc
             String filter = String.format(
                 "portfolio_id=eq.%s&executed_at=gte.%s&executed_at=lte.%s&order=executed_at.desc",
                 portfolioId,

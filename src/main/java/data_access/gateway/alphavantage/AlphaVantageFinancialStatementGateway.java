@@ -28,6 +28,8 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
         try {
             jsonString_balance = api.getFuncBalanceSheet(symbol);
         } catch (Exception e) {
+            // TODO: Implement proper error handling and logging
+            // TODO: Consider throwing custom exception instead of returning null
             e.printStackTrace(); return null;
         }
 
@@ -99,6 +101,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
     private Map<LocalDate, JSONObject> extractAnnualReports(String jsonStr) {
         Map<LocalDate, JSONObject> map = new HashMap<>();
 
+        // TODO: Add validation for API error responses (e.g., rate limit exceeded)
         JSONObject root = new JSONObject(jsonStr);
         if (!root.has("annualReports")) return map;
 

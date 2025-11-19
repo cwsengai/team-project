@@ -25,6 +25,7 @@ public class AuthResponse {
 
     public void setRefreshToken(String refresh_token) {
         this.refresh_token = refresh_token;
+        // TODO: Implement automatic token refresh mechanism
     }
 
     public String getTokenType() {
@@ -51,9 +52,6 @@ public class AuthResponse {
         this.user = user;
     }
 
-    /**
-     * Nested class for user information in auth response.
-     */
     public static class UserInfo {
         private String id;
         private String email;

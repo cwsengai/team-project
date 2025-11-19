@@ -50,9 +50,6 @@ public class InMemoryPortfolioRepository implements PortfolioRepository {
         portfolios.remove(id);
     }
 
-    /**
-     * Clear all portfolios (useful for testing).
-     */
     public void clear() {
         portfolios.clear();
     }

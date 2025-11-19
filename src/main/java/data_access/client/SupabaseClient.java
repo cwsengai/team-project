@@ -70,8 +70,8 @@ public class SupabaseClient {
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
-        // Configure GSON to convert between camelCase (Java) and snake_case (database)
-        // and to serialize java.time types as ISO-8601 strings
+        // TODO: Configure connection pooling for better performance
+        // TODO: Add retry logic for transient network failures
         this.gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
@@ -90,8 +90,6 @@ public class SupabaseClient {
                         in.nextNull();
                         return null;
                     }
-                    // Supabase returns timestamps with timezone offset like "2025-11-19T00:58:04.174872+00:00"
-                    // Parse and convert to LocalDateTime (dropping timezone info)
                     String timestamp = in.nextString();
                     return java.time.OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
                         .toLocalDateTime();
@@ -132,6 +130,7 @@ public class SupabaseClient {
      * @throws IOException if the request fails
      */
     public AuthResponse signUp(String email, String password) throws IOException {
+        // TODO: Add input validation and sanitization to prevent injection attacks
         String json = String.format(
             "{\"email\":\"%s\",\"password\":\"%s\"}",
             email, password
@@ -146,6 +145,7 @@ public class SupabaseClient {
             .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
+            // TODO: Add null check for response.body() to prevent NullPointerException
             String responseBody = response.body().string();
             if (!response.isSuccessful()) {
                 throw new IOException("Sign up failed: " + responseBody);
@@ -165,6 +165,7 @@ public class SupabaseClient {
      * @throws IOException if the request fails
      */
     public AuthResponse signIn(String email, String password) throws IOException {
+        // TODO: Add input validation and sanitization to prevent injection attacks
         String json = String.format(
             "{\"email\":\"%s\",\"password\":\"%s\"}",
             email, password
@@ -195,6 +196,8 @@ public class SupabaseClient {
      */
     public void signOut() {
         this.accessToken = null;
+        // TODO: Implement proper sign out via Supabase auth endpoint
+        // TODO: Invalidate refresh token on server side
     }
 
     /**
@@ -203,6 +206,8 @@ public class SupabaseClient {
      * @return true if access token exists, false otherwise
      */
     public boolean isAuthenticated() {
+        // TODO: Check token expiration, not just existence
+        // TODO: Implement automatic token refresh using refresh_token
         return accessToken != null && !accessToken.isEmpty();
     }
 

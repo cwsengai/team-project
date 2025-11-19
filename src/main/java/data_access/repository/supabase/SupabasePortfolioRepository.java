@@ -9,7 +9,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import data_access.client.SupabaseClient;
-import data_access.exception.*;
+import data_access.exception.DatabaseConnectionException;
+import data_access.exception.EntityNotFoundException;
+import data_access.exception.PermissionDeniedException;
+import data_access.exception.RepositoryException;
 import data_access.repository.PortfolioRepository;
 import entity.Portfolio;
 
@@ -21,11 +24,6 @@ import entity.Portfolio;
 public class SupabasePortfolioRepository implements PortfolioRepository {
     private final SupabaseClient client;
 
-    /**
-     * Creates a new Supabase portfolio repository.
-     *
-     * @param client the authenticated Supabase client
-     */
     public SupabasePortfolioRepository(SupabaseClient client) {
         this.client = client;
     }
@@ -33,8 +31,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     @Override
     public Optional<Portfolio> findById(String id) {
         try {
-            // Query: GET /rest/v1/portfolios?id=eq.{id}
-            // RLS ensures user can only see their own portfolios
             Portfolio[] portfolios = client.queryWithFilter(
                 "portfolios",
                 "id=eq." + id,
@@ -57,8 +53,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     @Override
     public List<Portfolio> findByUserId(String userId) {
         try {
-            // RLS automatically filters by auth.uid()
-            // So we can just query all portfolios - only user's will be returned
             Portfolio[] portfolios = client.query(
                 "portfolios",
                 Portfolio[].class
@@ -77,8 +71,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     @Override
     public Portfolio save(Portfolio portfolio) {
         try {
-            // If portfolio has no ID, it's a new insert (Supabase will generate UUID)
-            // Otherwise, it's an update
             if (portfolio.getId() == null || portfolio.getId().isEmpty()) {
                 return insert(portfolio);
             } else {
@@ -97,7 +89,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     }
 
     private Portfolio insert(Portfolio portfolio) throws IOException {
-        // Supabase will auto-generate UUID and timestamps
         Portfolio[] result = client.insert(
             "portfolios",
             portfolio,
@@ -111,7 +102,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     }
 
     private Portfolio update(Portfolio portfolio) throws IOException {
-        // Update by ID
         Portfolio[] result = client.update(
             "portfolios",
             "id=eq." + portfolio.getId(),
@@ -128,7 +118,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     @Override
     public void updateCash(String id, double cash) {
         try {
-            // Create a partial update object (only the cash field)
             Map<String, Object> updateData = new HashMap<>();
             updateData.put("current_cash", cash);
 
@@ -154,8 +143,6 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     @Override
     public void delete(String id) {
         try {
-            // RLS will prevent deleting portfolios user doesn't own
-            // CASCADE delete will remove positions and trades
             client.delete("portfolios", "id=eq." + id);
 
         } catch (IOException e) {

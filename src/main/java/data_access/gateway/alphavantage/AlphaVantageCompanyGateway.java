@@ -22,17 +22,20 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
         try {
             jsonString = api.getOverview(symbol);
         } catch (Exception e) {
-            // handle or log as appropriate; returning null for now
+            // TODO: Implement proper error handling and logging
             e.printStackTrace();
             return null;
         }
 
         if (jsonString == null) {
+            // TODO: Consider throwing exception instead of returning null
             return null;
         }
 
         JSONObject json = new JSONObject(jsonString);
 
+        // TODO: Validate that required fields exist in JSON response
+        // TODO: Handle API error responses (e.g., invalid symbol, rate limit)
         return new Company(
                 json.optString("Symbol"),
                 json.optString("Name"),
@@ -40,15 +43,15 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
                 json.optString("Sector"),
                 json.optString("Industry"),
                 json.optString("Country"),
-                json.optString("Exchange", null),  // Exchange field
-                (double) json.optLong("MarketCapitalization"),  // Convert to Double
+                json.optString("Exchange", null),
+                (double) json.optLong("MarketCapitalization"),
                 json.optDouble("EPS") != 0.0 ? json.optDouble("EPS") : null,
                 json.optDouble("PERatio") != 0.0 ? json.optDouble("PERatio") : null,
                 json.optDouble("DividendPerShare") != 0.0 ? json.optDouble("DividendPerShare") : null,
                 json.optDouble("DividendYield") != 0.0 ? json.optDouble("DividendYield") : null,
                 json.optDouble("Beta") != 0.0 ? json.optDouble("Beta") : null,
-                List.of(), // Placeholder for financial statements
-                List.of()  // Placeholder for news articles
+                List.of(),
+                List.of()
         );
     }
 

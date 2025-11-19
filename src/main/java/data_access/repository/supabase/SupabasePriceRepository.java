@@ -27,11 +27,6 @@ import entity.TimeInterval;
 public class SupabasePriceRepository implements PriceRepository {
     private final SupabaseClient client;
 
-    /**
-     * Creates a new Supabase price repository.
-     *
-     * @param client the authenticated Supabase client
-     */
     public SupabasePriceRepository(SupabaseClient client) {
         this.client = client;
     }
@@ -60,9 +55,7 @@ public class SupabasePriceRepository implements PriceRepository {
 
     @Override
     public void savePricePoints(List<PricePoint> pricePoints) {
-        // Note: Supabase supports bulk insert via POST with JSON array
-        // For now, we'll insert one at a time for simplicity
-        // In production, optimize this with bulk insert
+        // TODO: Optimize with bulk insert instead of one-by-one
         for (PricePoint pricePoint : pricePoints) {
             savePricePoint(pricePoint);
         }
@@ -71,8 +64,6 @@ public class SupabasePriceRepository implements PriceRepository {
     @Override
     public Optional<PricePoint> getLatestPrice(String ticker, TimeInterval interval) {
         try {
-            // Query directly using company_symbol (which matches companies.symbol)
-            // Query: GET /rest/v1/price_points?company_symbol=eq.{ticker}&interval=eq.{interval}&order=timestamp.desc&limit=1
             String filter = String.format(
                 "company_symbol=eq.%s&interval=eq.%s&order=timestamp.desc&limit=1",
                 ticker,
@@ -102,8 +93,7 @@ public class SupabasePriceRepository implements PriceRepository {
     public Map<String, PricePoint> getLatestPrices(List<String> tickers) {
         Map<String, PricePoint> result = new HashMap<>();
 
-        // Note: This is not optimal - fetching one by one
-        // In production, use a single query with IN clause or bulk fetch
+        // TODO: Optimize with single query using IN clause
         for (String ticker : tickers) {
             Optional<PricePoint> price = getLatestPrice(ticker, TimeInterval.DAILY);
             price.ifPresent(pricePoint -> result.put(ticker, pricePoint));
@@ -115,8 +105,6 @@ public class SupabasePriceRepository implements PriceRepository {
     @Override
     public List<PricePoint> getHistoricalPrices(String ticker, LocalDateTime start, LocalDateTime end, TimeInterval interval) {
         try {
-            // Query directly using company_symbol
-            // Query: GET /rest/v1/price_points?company_symbol=eq.{ticker}&interval=eq.{interval}&timestamp=gte.{start}&timestamp=lte.{end}&order=timestamp.asc
             String filter = String.format(
                 "company_symbol=eq.%s&interval=eq.%s&timestamp=gte.%s&timestamp=lte.%s&order=timestamp.asc",
                 ticker,
@@ -144,9 +132,6 @@ public class SupabasePriceRepository implements PriceRepository {
     @Override
     public void cleanup(LocalDateTime olderThan) {
         try {
-            // Delete old price data
-            // Query: DELETE /rest/v1/price_points?timestamp=lt.{olderThan}
-            // Note: This requires DELETE permission (typically service role only)
             client.delete(
                 "price_points",
                 "timestamp=lt." + olderThan.toString()

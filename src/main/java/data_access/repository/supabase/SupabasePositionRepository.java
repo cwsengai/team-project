@@ -9,7 +9,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import data_access.client.SupabaseClient;
-import data_access.exception.*;
+import data_access.exception.DatabaseConnectionException;
+import data_access.exception.EntityNotFoundException;
+import data_access.exception.PermissionDeniedException;
+import data_access.exception.RepositoryException;
 import data_access.repository.PositionRepository;
 import entity.Position;
 
@@ -21,11 +24,6 @@ import entity.Position;
 public class SupabasePositionRepository implements PositionRepository {
     private final SupabaseClient client;
 
-    /**
-     * Creates a new Supabase position repository.
-     *
-     * @param client the authenticated Supabase client
-     */
     public SupabasePositionRepository(SupabaseClient client) {
         this.client = client;
     }
@@ -33,8 +31,6 @@ public class SupabasePositionRepository implements PositionRepository {
     @Override
     public List<Position> findByPortfolioId(String portfolioId) {
         try {
-            // Query: GET /rest/v1/portfolio_positions?portfolio_id=eq.{portfolioId}
-            // RLS ensures user can only see positions in their own portfolios
             Position[] positions = client.queryWithFilter(
                 "portfolio_positions",
                 "portfolio_id=eq." + portfolioId,
@@ -54,8 +50,6 @@ public class SupabasePositionRepository implements PositionRepository {
     @Override
     public Optional<Position> findByPortfolioAndTicker(String portfolioId, String ticker) {
         try {
-            // Query by portfolio_id and instrument_symbol (ticker)
-            // The schema uses instrument_symbol which references financial_instruments.symbol
             String filter = String.format(
                 "portfolio_id=eq.%s&instrument_symbol=eq.%s",
                 portfolioId,
@@ -84,8 +78,6 @@ public class SupabasePositionRepository implements PositionRepository {
     @Override
     public Optional<Position> findByPortfolioAndCompany(String portfolioId, String companySymbol) {
         try {
-            // Use instrument_symbol instead of company_id
-            // companySymbol parameter is actually the instrument symbol
             return findByPortfolioAndTicker(portfolioId, companySymbol);
 
         } catch (Exception e) {
@@ -96,12 +88,9 @@ public class SupabasePositionRepository implements PositionRepository {
     @Override
     public Position save(Position position) {
         try {
-            // If position has no ID, it's a new insert
-            // Otherwise, check if it exists and update
             if (position.getId() == null || position.getId().isEmpty()) {
                 return insert(position);
             } else {
-                // Try to find existing position
                 Optional<Position> existing = findByPortfolioAndTicker(
                     position.getPortfolioId(),
                     position.getInstrumentSymbol()
@@ -126,7 +115,6 @@ public class SupabasePositionRepository implements PositionRepository {
     }
 
     private Position insert(Position position) throws IOException {
-        // Insert new position
         Position[] result = client.insert(
             "portfolio_positions",
             position,
@@ -140,7 +128,6 @@ public class SupabasePositionRepository implements PositionRepository {
     }
 
     private Position update(Position position) throws IOException {
-        // Update existing position
         Position[] result = client.update(
             "portfolio_positions",
             "id=eq." + position.getId(),
@@ -157,7 +144,6 @@ public class SupabasePositionRepository implements PositionRepository {
     @Override
     public void updatePL(String positionId, double realizedPL, double unrealizedPL) {
         try {
-            // Create a partial update object
             Map<String, Object> updateData = new HashMap<>();
             updateData.put("realized_pl", realizedPL);
             updateData.put("unrealized_pl", unrealizedPL);

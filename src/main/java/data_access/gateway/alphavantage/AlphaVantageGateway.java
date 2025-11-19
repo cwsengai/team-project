@@ -29,6 +29,8 @@ public class AlphaVantageGateway implements StockDataGateway {
      * @param apiKey the Alpha Vantage API key
      */
     public AlphaVantageGateway(String apiKey) {
+        // TODO: Store and validate API key
+        // TODO: Throw exception if API key is null or empty
     }
 
     @Override

@@ -10,37 +10,32 @@ public class EnvConfig {
     private static final Dotenv dotenv;
 
     static {
-        // Load .env file from project root
         dotenv = Dotenv.configure()
-            .ignoreIfMissing() // Don't crash if .env doesn't exist (e.g., in production)
+            .ignoreIfMissing()
             .load();
+        // TODO: Add validation for required environment variables
+        // TODO: Log warning if using default values in production
     }
 
-    // Database Configuration (PostgreSQL)
     public static String getDatabaseUrl() {
         return dotenv.get("DATABASE_URL", "");
     }
 
-    // Convert PostgreSQL connection string to JDBC format
-    // Handles: postgresql://user:pass@host:port/database
     public static String getDbUrl() {
         String dbUrl = getDatabaseUrl();
         if (dbUrl.isEmpty()) {
             return "";
         }
         
-        // Connection string is already in postgresql:// format
-        // JDBC needs jdbc:postgresql:// prefix
         if (dbUrl.startsWith("postgresql://")) {
             return "jdbc:" + dbUrl;
         } else if (dbUrl.startsWith("jdbc:")) {
-            return dbUrl;  // Already in JDBC format
+            return dbUrl;
         }
         
         return dbUrl;
     }
 
-    // Supabase Configuration
     public static String getSupabaseUrl() {
         return dotenv.get("SUPABASE_URL", "https://your-project.supabase.co");
     }
@@ -50,15 +45,15 @@ public class EnvConfig {
     }
 
     public static String getSupabaseServiceRoleKey() {
+        // TODO: Add security check to prevent exposing service role key in client-side code
+        // TODO: Consider restricting access to this method to server-side components only
         return dotenv.get("SUPABASE_SERVICE_ROLE_KEY", "");
     }
 
-    // API Keys
     public static String getAlphaVantageApiKey() {
         return dotenv.get("ALPHA_VANTAGE_API_KEY", "");
     }
 
-    // Application Settings
     public static String getAppEnv() {
         return dotenv.get("APP_ENV", "development");
     }
