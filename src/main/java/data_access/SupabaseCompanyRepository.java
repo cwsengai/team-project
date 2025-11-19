@@ -46,7 +46,10 @@ public class SupabaseCompanyRepository implements CompanyRepository {
             return Optional.empty();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching company by ticker: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching company by ticker: " + ticker, e);
+            }
+            throw new RepositoryException("Error fetching company by ticker: " + ticker, e);
         }
     }
 
@@ -68,7 +71,10 @@ public class SupabaseCompanyRepository implements CompanyRepository {
             return Optional.empty();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching company by ID: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching company by ID: " + id, e);
+            }
+            throw new RepositoryException("Error fetching company by ID: " + id, e);
         }
     }
 
@@ -85,27 +91,38 @@ public class SupabaseCompanyRepository implements CompanyRepository {
             return companies != null ? Arrays.asList(companies) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching companies by sector: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching companies by sector", e);
+            }
+            throw new RepositoryException("Error fetching companies by sector: " + sector, e);
         }
     }
 
     @Override
     public Company save(Company company) {
         try {
+            // Validate company data
+            if (company.getSymbol() == null || company.getSymbol().isEmpty()) {
+                throw new DataValidationException("symbol", "Company symbol cannot be null or empty");
+            }
+            
             // Check if company exists
-            if (company.getSymbol() != null && !company.getSymbol().isEmpty()) {
-                // Check if exists and update by symbol (using ticker as alias)
-                Optional<Company> existing = findByTicker(company.getSymbol());
-                if (existing.isPresent()) {
-                    return update(company);
-                }
+            Optional<Company> existing = findByTicker(company.getSymbol());
+            if (existing.isPresent()) {
+                return update(company);
             }
             
             // Insert new company
             return insert(company);
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving company: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("INSERT", "companies");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while saving company", e);
+            }
+            throw new RepositoryException("Error saving company: " + company.getSymbol(), e);
         }
     }
 
@@ -121,7 +138,7 @@ public class SupabaseCompanyRepository implements CompanyRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Insert failed: no data returned");
+        throw new RepositoryException("Insert failed: no data returned from database");
     }
 
     private Company update(Company company) throws IOException {
@@ -136,7 +153,7 @@ public class SupabaseCompanyRepository implements CompanyRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Update failed: company not found");
+        throw new EntityNotFoundException("Company", company.getSymbol());
     }
 
     @Override

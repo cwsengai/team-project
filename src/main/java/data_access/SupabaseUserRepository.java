@@ -1,12 +1,12 @@
 package data_access;
 
-import entity.User;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import entity.User;
 
 /**
  * Supabase implementation of UserRepository.
@@ -43,30 +43,28 @@ public class SupabaseUserRepository implements UserRepository {
             return Optional.empty();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching user by ID: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching user", e);
+            }
+            throw new RepositoryException("Error fetching user by ID: " + id, e);
         }
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try {
-            // Note: Email is stored in auth.users, not user_profiles
-            // This query may need adjustment based on your schema
-            // For now, we'll search by display_name as a placeholder
-            // In production, you would query auth.users via Supabase Admin API
-            
-            // This is a limitation: we can't directly query auth.users from client
-            // You would need to implement this via a Supabase Edge Function
-            // or use the Admin API with service role key (server-side only)
-            
-            throw new UnsupportedOperationException(
-                "findByEmail requires Supabase Admin API or Edge Function. " +
-                "Use authentication flow (signIn/signUp) instead."
-            );
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching user by email: " + e.getMessage(), e);
-        }
+        // Note: Email is stored in auth.users, not user_profiles
+        // This query may need adjustment based on your schema
+        // For now, we'll search by display_name as a placeholder
+        // In production, you would query auth.users via Supabase Admin API
+        
+        // This is a limitation: we can't directly query auth.users from client
+        // You would need to implement this via a Supabase Edge Function
+        // or use the Admin API with service role key (server-side only)
+        
+        throw new UnsupportedOperationException(
+            "findByEmail requires Supabase Admin API or Edge Function. " +
+            "Use authentication flow (signIn/signUp) instead."
+        );
     }
 
     @Override
@@ -75,7 +73,7 @@ public class SupabaseUserRepository implements UserRepository {
             // If user has no ID, it's a new insert
             // Otherwise, it's an update
             if (user.getId() == null || user.getId().isEmpty()) {
-                throw new IllegalArgumentException(
+                throw new DataValidationException(
                     "User ID is required. Create users via Supabase Auth signUp() first."
                 );
             }
@@ -90,7 +88,13 @@ public class SupabaseUserRepository implements UserRepository {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving user: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("WRITE", "user_profiles");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while saving user", e);
+            }
+            throw new RepositoryException("Error saving user: " + user.getId(), e);
         }
     }
 
@@ -113,7 +117,7 @@ public class SupabaseUserRepository implements UserRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Insert failed: no data returned");
+        throw new RepositoryException("Insert failed: no data returned from database");
     }
 
     private User update(User user) throws IOException {
@@ -134,7 +138,7 @@ public class SupabaseUserRepository implements UserRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Update failed: user profile not found");
+        throw new EntityNotFoundException("User", user.getId());
     }
 
     @Override
@@ -144,15 +148,22 @@ public class SupabaseUserRepository implements UserRepository {
             Map<String, Object> updateData = new HashMap<>();
             updateData.put("last_login", timestamp.toString());
 
-            client.update(
+            User[] result = client.update(
                 "user_profiles",
                 "id=eq." + userId,
                 updateData,
                 User[].class
             );
+            
+            if (result == null || result.length == 0) {
+                throw new EntityNotFoundException("User", userId);
+            }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error updating last login: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while updating last login", e);
+            }
+            throw new RepositoryException("Error updating last login for user: " + userId, e);
         }
     }
 }

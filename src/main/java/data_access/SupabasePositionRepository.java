@@ -41,7 +41,10 @@ public class SupabasePositionRepository implements PositionRepository {
             return positions != null ? Arrays.asList(positions) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching positions: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching positions", e);
+            }
+            throw new RepositoryException("Error fetching positions for portfolio: " + portfolioId, e);
         }
     }
 
@@ -68,7 +71,10 @@ public class SupabasePositionRepository implements PositionRepository {
             return Optional.empty();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching position by ticker: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching position", e);
+            }
+            throw new RepositoryException("Error fetching position by ticker: " + ticker, e);
         }
     }
 
@@ -80,7 +86,7 @@ public class SupabasePositionRepository implements PositionRepository {
             return findByPortfolioAndTicker(portfolioId, companySymbol);
 
         } catch (Exception e) {
-            throw new RuntimeException("Error fetching position: " + e.getMessage(), e);
+            throw new RepositoryException("Error fetching position for company: " + companySymbol, e);
         }
     }
 
@@ -106,7 +112,13 @@ public class SupabasePositionRepository implements PositionRepository {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving position: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("WRITE", "portfolio_positions");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while saving position", e);
+            }
+            throw new RepositoryException("Error saving position", e);
         }
     }
 
@@ -121,7 +133,7 @@ public class SupabasePositionRepository implements PositionRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Insert failed: no data returned");
+        throw new RepositoryException("Insert failed: no data returned from database");
     }
 
     private Position update(Position position) throws IOException {
@@ -136,7 +148,7 @@ public class SupabasePositionRepository implements PositionRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Update failed: position not found");
+        throw new EntityNotFoundException("Position", position.getId());
     }
 
     @Override
@@ -148,15 +160,22 @@ public class SupabasePositionRepository implements PositionRepository {
             updateData.put("unrealized_pl", unrealizedPL);
             updateData.put("last_updated", java.time.LocalDateTime.now().toString());
 
-            client.update(
+            Position[] result = client.update(
                 "portfolio_positions",
                 "id=eq." + positionId,
                 updateData,
                 Position[].class
             );
+            
+            if (result == null || result.length == 0) {
+                throw new EntityNotFoundException("Position", positionId);
+            }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error updating P/L: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while updating P/L", e);
+            }
+            throw new RepositoryException("Error updating P/L for position: " + positionId, e);
         }
     }
 

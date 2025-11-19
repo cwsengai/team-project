@@ -43,7 +43,13 @@ public class SupabasePriceRepository implements PriceRepository {
             );
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving price point: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("INSERT", "price_points");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while saving price point", e);
+            }
+            throw new RepositoryException("Error saving price point", e);
         }
     }
 
@@ -80,7 +86,10 @@ public class SupabasePriceRepository implements PriceRepository {
             return Optional.empty();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching latest price: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching latest price", e);
+            }
+            throw new RepositoryException("Error fetching latest price for ticker: " + ticker, e);
         }
     }
 
@@ -120,7 +129,10 @@ public class SupabasePriceRepository implements PriceRepository {
             return prices != null ? Arrays.asList(prices) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching historical prices: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching historical prices", e);
+            }
+            throw new RepositoryException("Error fetching historical prices for ticker: " + ticker, e);
         }
     }
 
@@ -136,7 +148,13 @@ public class SupabasePriceRepository implements PriceRepository {
             );
 
         } catch (IOException e) {
-            throw new RuntimeException("Error cleaning up old prices: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("DELETE", "price_points");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while cleaning up prices", e);
+            }
+            throw new RepositoryException("Error cleaning up old prices", e);
         }
     }
 

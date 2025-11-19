@@ -40,10 +40,16 @@ public class SupabaseTradeRepository implements TradeRepository {
             if (result != null && result.length > 0) {
                 return result[0];
             }
-            throw new RuntimeException("Insert failed: no data returned");
+            throw new RepositoryException("Insert failed: no data returned from database");
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving trade: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("INSERT", "trades");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while saving trade", e);
+            }
+            throw new RepositoryException("Error saving trade", e);
         }
     }
 
@@ -66,7 +72,10 @@ public class SupabaseTradeRepository implements TradeRepository {
             return trades != null ? Arrays.asList(trades) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching trades: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching trades", e);
+            }
+            throw new RepositoryException("Error fetching trades for portfolio: " + portfolioId, e);
         }
     }
 
@@ -88,7 +97,10 @@ public class SupabaseTradeRepository implements TradeRepository {
             return trades != null ? Arrays.asList(trades) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching trades by position: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching trades", e);
+            }
+            throw new RepositoryException("Error fetching trades for position: " + positionId, e);
         }
     }
 
@@ -112,7 +124,10 @@ public class SupabaseTradeRepository implements TradeRepository {
             return trades != null ? Arrays.asList(trades) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching trades in date range: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching trades", e);
+            }
+            throw new RepositoryException("Error fetching trades in date range for portfolio: " + portfolioId, e);
         }
     }
 }

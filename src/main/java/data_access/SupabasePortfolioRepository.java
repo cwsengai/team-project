@@ -44,7 +44,10 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
             return Optional.empty();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching portfolio: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching portfolio", e);
+            }
+            throw new RepositoryException("Error fetching portfolio: " + id, e);
         }
     }
 
@@ -61,7 +64,10 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
             return portfolios != null ? Arrays.asList(portfolios) : Collections.emptyList();
 
         } catch (IOException e) {
-            throw new RuntimeException("Error fetching portfolios: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while fetching portfolios", e);
+            }
+            throw new RepositoryException("Error fetching portfolios for user: " + userId, e);
         }
     }
 
@@ -77,7 +83,13 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving portfolio: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("WRITE", "portfolios");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while saving portfolio", e);
+            }
+            throw new RepositoryException("Error saving portfolio", e);
         }
     }
 
@@ -92,7 +104,7 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Insert failed: no data returned");
+        throw new RepositoryException("Insert failed: no data returned from database");
     }
 
     private Portfolio update(Portfolio portfolio) throws IOException {
@@ -107,7 +119,7 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
         if (result != null && result.length > 0) {
             return result[0];
         }
-        throw new RuntimeException("Update failed: portfolio not found");
+        throw new EntityNotFoundException("Portfolio", portfolio.getId());
     }
 
     @Override
@@ -117,15 +129,22 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
             Map<String, Object> updateData = new HashMap<>();
             updateData.put("current_cash", cash);
 
-            client.update(
+            Portfolio[] result = client.update(
                 "portfolios",
                 "id=eq." + id,
                 updateData,
                 Portfolio[].class
             );
+            
+            if (result == null || result.length == 0) {
+                throw new EntityNotFoundException("Portfolio", id);
+            }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error updating cash: " + e.getMessage(), e);
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while updating cash", e);
+            }
+            throw new RepositoryException("Error updating cash for portfolio: " + id, e);
         }
     }
 
@@ -137,7 +156,13 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
             client.delete("portfolios", "id=eq." + id);
 
         } catch (IOException e) {
-            throw new RuntimeException("Error deleting portfolio: " + e.getMessage(), e);
+            if (e.getMessage().contains("permission") || e.getMessage().contains("denied")) {
+                throw new PermissionDeniedException("DELETE", "portfolios");
+            }
+            if (e.getMessage().contains("Failed to connect") || e.getMessage().contains("timeout")) {
+                throw new DatabaseConnectionException("Failed to connect to database while deleting portfolio", e);
+            }
+            throw new RepositoryException("Error deleting portfolio: " + id, e);
         }
     }
 }
