@@ -1,6 +1,7 @@
 package data_access;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,9 +32,11 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     public Optional<Company> findByTicker(String ticker) {
         try {
             // Query: GET /rest/v1/companies?symbol=eq.{ticker}
+            // URL encode the ticker to handle special characters
+            String encodedTicker = URLEncoder.encode(ticker, "UTF-8");
             Company[] companies = client.queryWithFilter(
                 "companies",
-                "symbol=eq." + ticker,
+                "symbol=eq." + encodedTicker,
                 Company[].class
             );
 
@@ -51,9 +54,11 @@ public class SupabaseCompanyRepository implements CompanyRepository {
     public Optional<Company> findById(String id) {
         try {
             // Query: GET /rest/v1/companies?symbol=eq.{id} (symbol is the primary key)
+            // URL encode the ID to handle special characters
+            String encodedId = URLEncoder.encode(id, "UTF-8");
             Company[] companies = client.queryWithFilter(
                 "companies",
-                "symbol=eq." + id,
+                "symbol=eq." + encodedId,
                 Company[].class
             );
 

@@ -3,7 +3,9 @@ package data_access;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import entity.Portfolio;
@@ -112,12 +114,13 @@ public class SupabasePortfolioRepository implements PortfolioRepository {
     public void updateCash(String id, double cash) {
         try {
             // Create a partial update object (only the cash field)
-            String updateJson = String.format("{\"current_cash\": %f}", cash);
+            Map<String, Object> updateData = new HashMap<>();
+            updateData.put("current_cash", cash);
 
             client.update(
                 "portfolios",
                 "id=eq." + id,
-                updateJson,
+                updateData,
                 Portfolio[].class
             );
 
