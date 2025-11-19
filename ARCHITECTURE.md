@@ -138,7 +138,7 @@ ALPHA_VANTAGE_API_KEY=your-api-key
 APP_ENV=development
 ```
 
-3. **Database Schema**: Run the schema migration in your Supabase project (see `migrations/` folder)
+1. **Database Schema**: Run the schema migration in your Supabase project (see `migrations/` folder)
 
 ### Compile and Run
 
@@ -195,34 +195,34 @@ The application includes sample portfolio data:
 
 ### Medium Priority
 
-4. **UI Enhancements**
+1. **UI Enhancements**
 
    - [ ] Add portfolio creation/editing
    - [ ] Add buy/sell trade entry
    - [ ] Add charts and visualizations
    - [ ] Implement multi-portfolio support
 
-5. **Error Handling**
+2. **Error Handling**
 
    - [ ] Add comprehensive validation
    - [ ] Implement error logging
    - [ ] Add user-friendly error messages
 
-6. **Testing**
+3. **Testing**
    - [ ] Write unit tests for entities
    - [ ] Write integration tests for use cases
    - [ ] Add UI tests
 
 ### Low Priority
 
-7. **Features**
+1. **Features**
 
    - [ ] Export portfolio to CSV/PDF
    - [ ] Add performance metrics
    - [ ] Implement portfolio comparison
    - [ ] Add alerts for price changes
 
-8. **Configuration**
+2. **Configuration**
    - [ ] Externalize configuration
    - [ ] Add environment profiles (dev/prod)
    - [ ] Implement proper DI framework

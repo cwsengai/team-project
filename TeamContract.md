@@ -44,7 +44,7 @@ This contract sets out shared expectations and commitments for how our team will
 
 ---
 
-## Decision Making
+## Decision-Making
 
 * How will decisions about your team project be made? (Examples: By majority vote, by unanimous vote, etc.)
 * By majority vote and effective communication

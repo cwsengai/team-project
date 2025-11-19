@@ -50,12 +50,6 @@ public class Portfolio {
         return userId;
     }
 
-    // Keep old method for backward compatibility
-    @Deprecated
-    public String getOwnerId() {
-        return userId;
-    }
-
     public String getName() {
         return name;
     }
@@ -85,17 +79,6 @@ public class Portfolio {
     public void setCurrentCash(double currentCash) {
         this.currentCash = currentCash;
         this.updatedAt = LocalDateTime.now();
-    }
-
-    // Keep old method for backward compatibility
-    @Deprecated
-    public double getCash() {
-        return currentCash;
-    }
-
-    @Deprecated
-    public void setCash(double cash) {
-        setCurrentCash(cash);
     }
 
     public String getCurrency() {

@@ -39,12 +39,6 @@ public class PricePoint {
         return companySymbol;
     }
 
-    // Backward compatibility
-    @Deprecated
-    public String getCompanyId() {
-        return companySymbol;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }

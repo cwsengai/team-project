@@ -73,18 +73,6 @@ public class Position {
         return instrumentType;
     }
 
-    // Backward compatibility - alias for instrumentSymbol
-    @Deprecated
-    public String getTicker() {
-        return instrumentSymbol;
-    }
-
-    // Backward compatibility - companyId not used in new schema
-    @Deprecated
-    public String getCompanyId() {
-        return null;
-    }
-
     public int getQuantity() {
         return quantity;
     }

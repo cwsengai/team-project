@@ -23,7 +23,7 @@ import view.PortfolioPage;
  * The Main class is the entry point of the application.
  * Sets up dependency injection and wires all components together.
  */
-public class Main {
+public class OrderHistoryView {
     public static void main(String[] args) {
         // Use SwingUtilities.invokeLater to ensure thread safety
         SwingUtilities.invokeLater(() -> {

@@ -31,6 +31,7 @@ import entity.User;
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  * - Supabase auth must be configured correctly
  */
+@SuppressWarnings("ALL")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase User Repository Tests")
 public class SupabaseUserRepositoryTest {
@@ -159,9 +160,7 @@ public class SupabaseUserRepositoryTest {
     @DisplayName("Should throw UnsupportedOperationException for findByEmail")
     void testFindByEmailNotSupported() {
         // Act & Assert
-        assertThrows(UnsupportedOperationException.class, () -> {
-            repository.findByEmail(testEmail);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> repository.findByEmail(testEmail));
     }
     
     @Test
@@ -173,9 +172,7 @@ public class SupabaseUserRepositoryTest {
         User user = new User(null, "test@example.com", "No ID User");
         
         // Act & Assert
-        assertThrows(Exception.class, () -> {
-            repository.save(user);
-        });
+        assertThrows(Exception.class, () -> repository.save(user));
     }
     
     @Test

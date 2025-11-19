@@ -1,8 +1,8 @@
 package use_case;
 
 /**
- * CompanyDetailInputBoundary is ViewCompanyDetailInteractor 's Input Port)。
- * Controller depend this interface to start loading company's detailed working logic(UC3/UC5)。
+ * CompanyDetailInputBoundary is ViewCompanyDetailInteractor 's Input Port。
+ * Controller depend on this interface to start loading company's detailed working logic(UC3/UC5)。
  */
 public interface CompanyDetailInputBoundary {
 

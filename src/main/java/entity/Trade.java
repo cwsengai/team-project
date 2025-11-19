@@ -50,12 +50,6 @@ public class Trade {
         return id;
     }
 
-    // Keep old method for backward compatibility
-    @Deprecated
-    public String getTradeId() {
-        return id;
-    }
-
     public String getPortfolioId() {
         return portfolioId;
     }
@@ -72,26 +66,8 @@ public class Trade {
         return instrumentType;
     }
 
-    // Backward compatibility - alias for instrumentSymbol
-    @Deprecated
-    public String getTicker() {
-        return instrumentSymbol;
-    }
-
-    // Backward compatibility - companyId not used in new schema
-    @Deprecated
-    public String getCompanyId() {
-        return null;
-    }
-
     public TradeType getTradeType() {
         return tradeType;
-    }
-
-    // Keep old method for backward compatibility
-    @Deprecated
-    public boolean isBuy() {
-        return tradeType == TradeType.BUY;
     }
 
     public int getQuantity() {
@@ -107,12 +83,6 @@ public class Trade {
     }
 
     public LocalDateTime getExecutedAt() {
-        return executedAt;
-    }
-
-    // Keep old method for backward compatibility
-    @Deprecated
-    public LocalDateTime getTimestamp() {
         return executedAt;
     }
 

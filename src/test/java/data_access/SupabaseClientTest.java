@@ -23,6 +23,7 @@ import data_access.client.SupabaseClient;
  * Prerequisites:
  * - SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env
  */
+@SuppressWarnings("ALL")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Supabase Client Tests")
 public class SupabaseClientTest {
@@ -95,9 +96,7 @@ public class SupabaseClientTest {
     @DisplayName("Should fail sign in with wrong password")
     void testSignInWrongPassword() {
         // Act & Assert
-        assertThrows(IOException.class, () -> {
-            client.signIn(testEmail, "WrongPassword123!");
-        });
+        assertThrows(IOException.class, () -> client.signIn(testEmail, "WrongPassword123!"));
     }
     
     @Test
@@ -106,9 +105,7 @@ public class SupabaseClientTest {
     @DisplayName("Should fail sign in with non-existent user")
     void testSignInNonExistent() {
         // Act & Assert
-        assertThrows(IOException.class, () -> {
-            client.signIn("nonexistent@example.com", TEST_PASSWORD);
-        });
+        assertThrows(IOException.class, () -> client.signIn("nonexistent@example.com", TEST_PASSWORD));
     }
     
     @Test
@@ -117,9 +114,7 @@ public class SupabaseClientTest {
     @DisplayName("Should fail sign up with duplicate email")
     void testSignUpDuplicate() {
         // Act & Assert
-        assertThrows(IOException.class, () -> {
-            client.signUp(testEmail, TEST_PASSWORD);
-        });
+        assertThrows(IOException.class, () -> client.signUp(testEmail, TEST_PASSWORD));
     }
     
     @Test
