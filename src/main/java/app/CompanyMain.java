@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import api.AlphaVantagePriceGateway;
 import api.Api;
+
 import data_access.AlphaVantageCompanyGateway;
 import framework_and_driver.CompanyDetailPage;
 import interface_adapter.CompanyDetailController;
@@ -16,6 +17,7 @@ import use_case.PriceDataAccessInterface;
 import use_case.ViewCompanyDetailInteractor;
 
 public class CompanyMain {
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Initialize API
