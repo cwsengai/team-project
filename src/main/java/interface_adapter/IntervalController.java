@@ -1,15 +1,19 @@
 package interface_adapter;
 
-import use_case.PriceInputBoundary;
 import entity.TimeInterval;
+import use_case.PriceInputBoundary;
 
 public class IntervalController {
 
     private final PriceInputBoundary priceInteractor;
-    private final String currentTicker = "DOW";
+    private String currentTicker = "AAPL"; // Default ticker
 
     public IntervalController(PriceInputBoundary interactor) {
         this.priceInteractor = interactor;
+    }
+
+    public void setCurrentTicker(String ticker) {
+        this.currentTicker = ticker;
     }
 
     public void handleTimeChange(String buttonText) {
@@ -17,12 +21,14 @@ public class IntervalController {
 
         switch (buttonText) {
             case "5M":
-                interval = TimeInterval.FIVE_MINUTES;
+                interval = TimeInterval.Five_Minutes;
                 break;
             case "1D":
+            case "1 day":
                 interval = TimeInterval.DAILY;
                 break;
             case "1W":
+            case "1 week":
                 interval = TimeInterval.WEEKLY;
                 break;
             default:
@@ -30,7 +36,7 @@ public class IntervalController {
                 break;
         }
 
-        if (interval != null) {
+        if (interval != null && currentTicker != null) {
             System.out.println("INFO: Requesting price history for " + currentTicker + " with interval " + interval);
             this.priceInteractor.loadPriceHistory(currentTicker, interval);
         }
