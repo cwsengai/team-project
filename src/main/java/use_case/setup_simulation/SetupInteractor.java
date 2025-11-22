@@ -29,6 +29,6 @@ public class SetupInteractor implements SetupInputBoundary {
             return;
         }
 
-        presenter.prepareSuccessView();
+        presenter.prepareSuccessView(input);
     }
 }
