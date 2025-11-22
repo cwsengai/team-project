@@ -46,7 +46,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
         String functionName;
 
         switch (interval) {
-            case INTRADAY:
+            case FIVE_MINUTS:
                 functionName = "TIME_SERIES_INTRADAY";
                 break;
             case DAILY:
@@ -64,7 +64,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 .append("&symbol=").append(ticker)
                 .append("&apikey=").append(apiKey);
 
-        if (interval == TimeInterval.INTRADAY) {
+        if (interval == TimeInterval.FIVE_MINUTS) {
             urlBuilder.append("&interval=").append("5min"); // Required parameter for intraday data
         }
 
@@ -126,7 +126,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     
     private String getTimeSeriesKey(TimeInterval interval) {
         switch (interval) {
-            case INTRADAY:
+            case FIVE_MINUTS:
                 return "Time Series (5min)";
             case DAILY:
                 return "Time Series (Daily)";
@@ -141,7 +141,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     
     private LocalDateTime parseTimestamp(String timestamp, TimeInterval interval) {
         try {
-            if (interval == TimeInterval.INTRADAY) {
+            if (interval == TimeInterval.FIVE_MINUTS) {
                 // Format: "2023-11-17 16:00:00"
                 return LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             } else {

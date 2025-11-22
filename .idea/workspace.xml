@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="613809da-efaa-4c03-8a75-d3da214e2890" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/FinancialStatementController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/NewsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/FinancialStatementPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/NewsPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/FinancialStatementViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/NewsViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementOutputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsOutputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/CompanyPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/CompanyPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/CompanyViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/CompanyViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="companyDetails" />
+        <entry key="$PROJECT_DIR$" value="feature/simulated-trade" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,6 +53,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.ApiTest.executor": "Run",
+    "Application.BillionaireDashBoard.executor": "Run",
     "Application.CompanyMain.executor": "Run",
     "Application.TestCompanyGateway.executor": "Run",
     "Application.TestFinancialStatementGateway.executor": "Run",
@@ -73,7 +62,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "CompanyDetails__financial__news",
+    "git-widget-placeholder": "feature/simulated-trading",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "run.code.analysis.last.selected.profile": "pProject Default"
