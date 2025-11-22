@@ -101,8 +101,8 @@ public class PositionRepositoryTestSuite {
                 testPortfolioId1,
                 testCompanyId1,
                 "AAPL",
-                100,
-                150.50,
+//                100,
+                150.5,
                 0.0,
                 0.0,
                 null

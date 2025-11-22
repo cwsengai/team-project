@@ -15,8 +15,6 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
     private final PriceDataAccessInterface realDataGateway;
     private final Random random = new Random();
 
-    // 60 ticks to simulate 1 second per tick
-    private static final int TICKS_PER_CANDLE = 60;
 
     public SimulationMarketDataAccess(PriceDataAccessInterface realDataGateway) {
         this.realDataGateway = realDataGateway;
@@ -25,7 +23,6 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
     @Override
     public List<PricePoint> loadHistory(String ticker) {
         try {
-            // Force 5-minute interval for simulation base data
             return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTS);
         } catch (Exception e) {
             System.err.println("Simulation Data Load Error: " + e.getMessage());
@@ -34,31 +31,35 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
     }
 
     @Override
-    public List<Double> generateTicks(PricePoint point) {
-        Double[] ticks = new Double[TICKS_PER_CANDLE];
+    public List<Double> generateTicks(PricePoint point, int numberOfTicks) {
+        Double[] ticks = new Double[numberOfTicks]; // 使用参数
 
         double open = point.getOpen();
         double high = point.getHigh();
         double low = point.getLow();
         double close = point.getClose();
 
-        // Anchor Start and End
+        // 1. Anchor
         ticks[0] = open;
-        ticks[TICKS_PER_CANDLE - 1] = close;
+        ticks[numberOfTicks - 1] = close; // 使用参数
 
-        // Randomize positions for High and Low (between index 1 and 58)
-        int idx1 = 1 + random.nextInt(TICKS_PER_CANDLE - 3);
-        int idx2 = idx1 + 1 + random.nextInt(TICKS_PER_CANDLE - idx1 - 1);
+        // 2. Randomize positions (ensure valid bounds)
+        // 需要至少4个点才能跑这个随机算法，防止 crash
+        if (numberOfTicks < 4) {
+            // 极简模式：如果倍速太快导致点太少，直接线性填充
+            fillInterpolation(ticks, 0, numberOfTicks - 1);
+        } else {
+            int idx1 = 1 + random.nextInt(numberOfTicks - 3);
+            int idx2 = idx1 + 1 + random.nextInt(numberOfTicks - idx1 - 1);
 
-        // Randomize order (High first or Low first)
-        boolean highFirst = random.nextBoolean();
-        ticks[idx1] = highFirst ? high : low;
-        ticks[idx2] = highFirst ? low : high;
+            boolean highFirst = random.nextBoolean();
+            ticks[idx1] = highFirst ? high : low;
+            ticks[idx2] = highFirst ? low : high;
 
-        // Linear Interpolation to fill gaps
-        fillInterpolation(ticks, 0, idx1);
-        fillInterpolation(ticks, idx1, idx2);
-        fillInterpolation(ticks, idx2, TICKS_PER_CANDLE - 1);
+            fillInterpolation(ticks, 0, idx1);
+            fillInterpolation(ticks, idx1, idx2);
+            fillInterpolation(ticks, idx2, numberOfTicks - 1);
+        }
 
         List<Double> result = new ArrayList<>();
         Collections.addAll(result, ticks);

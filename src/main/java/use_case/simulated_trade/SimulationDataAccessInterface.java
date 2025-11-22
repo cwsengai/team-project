@@ -8,5 +8,5 @@ public interface SimulationDataAccessInterface {
     List<PricePoint> loadHistory(String ticker);
 
     // core! use 5min data to generate 60 data points
-    List<Double> generateTicks(PricePoint point);
+    List<Double> generateTicks(PricePoint point, int numberOfTicks);
 }

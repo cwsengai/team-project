@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="613809da-efaa-4c03-8a75-d3da214e2890" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/SimulatedMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/PriceChartPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/TradingView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulationDataAccessInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulationDataAccessInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/update_market/UpdateMarketInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/update_market/UpdateMarketInteractor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +58,7 @@
     "Application.ApiTest.executor": "Run",
     "Application.BillionaireDashBoard.executor": "Run",
     "Application.CompanyMain.executor": "Run",
+    "Application.SimulatedMain.executor": "Run",
     "Application.TestCompanyGateway.executor": "Run",
     "Application.TestFinancialStatementGateway.executor": "Run",
     "Application.TestNewsGateway.executor": "Run",
@@ -68,6 +72,11 @@
     "run.code.analysis.last.selected.profile": "pProject Default"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="entity" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
@@ -95,6 +104,17 @@
       <updated>1762989714768</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
