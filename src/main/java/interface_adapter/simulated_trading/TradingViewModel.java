@@ -5,6 +5,8 @@ import java.beans.PropertyChangeSupport;
 
 public class TradingViewModel {
 
+    public static final String VIEW_NAME = "trading";
+
     public static final String TITLE_LABEL = "Simulated Trading System";
     public static final String BUY_BUTTON_LABEL = "Buy/Long";
     public static final String SELL_BUTTON_LABEL = "Sell/Short";
@@ -13,6 +15,10 @@ public class TradingViewModel {
     private TradingState state = new TradingState();
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public String getViewName() {
+        return VIEW_NAME;
+    }
 
     public void setState(TradingState state) {
         this.state = state;
