@@ -4,7 +4,7 @@ package entity;
  * Enum representing time intervals for price data.
  */
 public enum TimeInterval {
-    Five_Minute,
+    FIVE_MINUTES,
     DAILY,
     WEEKLY,
     MONTHLY

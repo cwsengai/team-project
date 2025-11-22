@@ -1,5 +1,7 @@
 package interface_adapter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,20 +70,20 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
         view.updateChart(viewModel);
     }
 
-    private String formatTimestamp(java.time.LocalDateTime timestamp, TimeInterval interval) {
+    private String formatTimestamp(LocalDateTime timestamp, TimeInterval interval) {
         if (timestamp == null) {
             return "";
         }
         
         // Format based on interval for better readability
         switch (interval) {
-            case INTRADAY:
-                return timestamp.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
+            case FIVE_MINUTES:
+                return timestamp.format(DateTimeFormatter.ofPattern("HH:mm"));
             case DAILY:
-                return timestamp.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             case WEEKLY:
             case MONTHLY:
-                return timestamp.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+                return timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM"));
             default:
                 return timestamp.toString();
         }

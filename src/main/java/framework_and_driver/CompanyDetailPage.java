@@ -39,7 +39,7 @@ public class CompanyDetailPage extends JFrame {
     public CompanyDetailPage() {
         super("Company Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 800);
+        setSize(1600, 1000);
         setLayout(new BorderLayout());
 
         // Top panel with header
@@ -98,8 +98,8 @@ public class CompanyDetailPage extends JFrame {
 
         // Chart panel
         chartPanel = new ChartPanel();
-        chartPanel.setPreferredSize(new java.awt.Dimension(800, 500));
-        chartPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+        chartPanel.setPreferredSize(new java.awt.Dimension(1200, 700));
+        chartPanel.setMinimumSize(new java.awt.Dimension(1000, 600));
 
         // Price info panel
         JPanel pricePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
@@ -280,5 +280,12 @@ public class CompanyDetailPage extends JFrame {
     public void displayError(String message) {
         javax.swing.JOptionPane.showMessageDialog(this, message, "Error", 
                 javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Get the chart panel for error display
+     */
+    public ChartPanel getChartPanel() {
+        return chartPanel;
     }
 }

@@ -4,6 +4,9 @@ import use_case.CompanyDetailOutputBoundary;
 import use_case.PriceChartOutputBoundary;
 import entity.*;
 import framework_and_driver.CompanyDetailPage;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, PriceChartOutputBoundary {
@@ -22,7 +25,11 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
 
     @Override
     public void presentError(String message) {
+        // Show error in both dialog and chart area
         view.displayError(message);
+        if (view.getChartPanel() != null) {
+            view.getChartPanel().displayError(message);
+        }
     }
 
     // Implement PriceChartOutputBoundary to update chart
@@ -77,19 +84,19 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
         view.updateChart(viewModel);
     }
 
-    private String formatTimestamp(java.time.LocalDateTime timestamp, TimeInterval interval) {
+    private String formatTimestamp(LocalDateTime timestamp, TimeInterval interval) {
         if (timestamp == null) {
             return "";
         }
         
         switch (interval) {
-            case INTRADAY:
-                return timestamp.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
+            case FIVE_MINUTES:
+                return timestamp.format(DateTimeFormatter.ofPattern("HH:mm"));
             case DAILY:
-                return timestamp.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             case WEEKLY:
             case MONTHLY:
-                return timestamp.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+                return timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM"));
             default:
                 return timestamp.toString();
         }

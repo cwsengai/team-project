@@ -187,7 +187,7 @@ public class ChartWindow extends JFrame {
         TimeInterval interval = viewModel.getInterval();
         if (interval != null) {
             switch (interval) {
-                case INTRADAY: // 5 minutes - show more detail
+                case FIVE_MINUTES: // 5 minutes - show more detail
                     maxPoints = 500;
                     break;
                 case DAILY: // Daily - show moderate detail
@@ -225,19 +225,21 @@ public class ChartWindow extends JFrame {
         }
 
         // Limit X-axis labels to avoid overcrowding (max 15-20 labels)
+        // Instead of using empty strings, we only keep the labels we want to show
         int labelCount = displayLabels.size();
         int maxLabels = 15; // Maximum number of labels to show on X-axis
         if (labelCount > maxLabels) {
             List<String> axisLabels = new ArrayList<>();
+            List<Double> axisPrices = new ArrayList<>();
             int labelStep = Math.max(1, labelCount / maxLabels);
             for (int i = 0; i < labelCount; i++) {
                 if (i % labelStep == 0 || i == labelCount - 1) {
                     axisLabels.add(displayLabels.get(i));
-                } else {
-                    axisLabels.add(""); // Empty string to hide label
+                    axisPrices.add(displayPrices.get(i));
                 }
             }
             displayLabels = axisLabels;
+            displayPrices = axisPrices;
         }
 
         chart.addSeries("Price", displayLabels, displayPrices);
@@ -271,7 +273,7 @@ public class ChartWindow extends JFrame {
         TimeInterval interval = viewModel.getInterval();
         if (interval != null) {
             switch (interval) {
-                case INTRADAY: // 5 minutes - show more detail
+                case FIVE_MINUTES: // 5 minutes - show more detail
                     maxPoints = 500;
                     break;
                 case DAILY: // Daily - show moderate detail
@@ -309,19 +311,21 @@ public class ChartWindow extends JFrame {
         }
 
         // Limit X-axis labels to avoid overcrowding (max 15-20 labels)
+        // Instead of using empty strings, we only keep the labels we want to show
         int labelCount = displayLabels.size();
         int maxLabels = 15; // Maximum number of labels to show on X-axis
         if (labelCount > maxLabels) {
             List<String> axisLabels = new ArrayList<>();
+            List<Double> axisPrices = new ArrayList<>();
             int labelStep = Math.max(1, labelCount / maxLabels);
             for (int i = 0; i < labelCount; i++) {
                 if (i % labelStep == 0 || i == labelCount - 1) {
                     axisLabels.add(displayLabels.get(i));
-                } else {
-                    axisLabels.add(""); // Empty string to hide label
+                    axisPrices.add(displayPrices.get(i));
                 }
             }
             displayLabels = axisLabels;
+            displayPrices = axisPrices;
         }
 
         // Show only close price as a line chart (cleaner than showing all OHLC)
