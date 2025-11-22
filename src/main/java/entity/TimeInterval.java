@@ -5,7 +5,7 @@ package entity;
  */
 public enum TimeInterval {
 
-    FIVE_MINUTES,
+    Five_Minutes,
     DAILY,
     WEEKLY,
 

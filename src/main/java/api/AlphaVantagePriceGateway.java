@@ -25,7 +25,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
         String functionName;
 
         switch (interval) {
-            case FIVE_MINUTES:
+            case Five_Minutes:
                 functionName = "TIME_SERIES_INTRADAY";
                 break;
             case DAILY:
@@ -43,7 +43,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 .append("&symbol=").append(ticker)
                 .append("&apikey=").append(apiKey);
 
-        if (interval == TimeInterval.FIVE_MINUTES) {
+        if (interval == TimeInterval.Five_Minutes) {
             urlBuilder.append("&interval=").append("5min"); // 盘中数据所需参数
         }
 
