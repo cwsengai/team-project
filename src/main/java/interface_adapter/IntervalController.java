@@ -21,8 +21,7 @@ public class IntervalController {
 
         switch (buttonText) {
             case "5M":
-            case "5min":
-                interval = TimeInterval.INTRADAY;
+                interval = TimeInterval.Five_Minutes;
                 break;
             case "1D":
             case "1 day":
