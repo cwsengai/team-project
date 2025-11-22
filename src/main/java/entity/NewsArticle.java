@@ -1,27 +1,29 @@
 package entity;
 
-import java.time.ZonedDateTime;
-import java.util.List;
+import java.time.LocalDateTime;
+
 
 public class NewsArticle {
-
-    private final String headline;
-    private final String source;
-    private final ZonedDateTime publishedAt;
+    private final String symbol;
+    private final String title;
+    private final String url;
+    private final LocalDateTime publishedAt;
     private final String summary;
-    private final List<String> tickersMentioned;
+    private final String source;
 
-    public NewsArticle(String headline, String source, ZonedDateTime publishedAt, String summary, List<String> tickersMentioned) {
-        this.headline = headline;
-        this.source = source;
+    public NewsArticle(String symbol, String title, String url, LocalDateTime publishedAt, String summary, String source) {
+        this.symbol = symbol;
+        this.title = title;
+        this.url = url;
         this.publishedAt = publishedAt;
         this.summary = summary;
-        this.tickersMentioned = tickersMentioned;
+        this.source = source;
     }
 
-    public String getHeadline() { return headline; }
-    public String getSource() { return source; }
-    public ZonedDateTime getPublishedAt() { return publishedAt; }
+    public String getSymbol() { return symbol; }
+    public String getTitle() { return title; }
+    public String getUrl() { return url; }
+    public LocalDateTime getPublishedAt() { return publishedAt; }
     public String getSummary() { return summary; }
-    public List<String> getTickersMentioned() { return tickersMentioned; }
+    public String getSource() { return source; }
 }

@@ -1,0 +1,19 @@
+Index: src/main/java/entity/TimeInterval.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package entity;\n\n/**\n * 实体：定义历史价格图表的时间粒度。\n */\npublic enum TimeInterval {\n\n    FIVE_MINUTES,\n    DAILY,\n    WEEKLY,\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/entity/TimeInterval.java b/src/main/java/entity/TimeInterval.java
+--- a/src/main/java/entity/TimeInterval.java	(revision 1712c9c28ab3b867daf1493c68f7ca175815184d)
++++ b/src/main/java/entity/TimeInterval.java	(date 1763595740654)
+@@ -1,8 +1,5 @@
+ package entity;
+ 
+-/**
+- * 实体：定义历史价格图表的时间粒度。
+- */
+ public enum TimeInterval {
+ 
+     FIVE_MINUTES,
