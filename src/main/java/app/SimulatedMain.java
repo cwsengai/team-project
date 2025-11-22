@@ -15,7 +15,7 @@ import use_case.simulated_trade.SimulationDataAccessInterface;
 import use_case.simulated_trade.SimulatedTradeInteractor;
 import use_case.update_market.UpdateMarketInteractor;
 import use_case.setup_simulation.SetupInteractor;
-import use_case.setup_simulation.SetupInputData; // 👈 解决编译问题
+import use_case.setup_simulation.SetupInputData;
 import view.TradingView;
 import view.SetupView;
 import view.ViewManager;
@@ -31,10 +31,8 @@ public class SimulatedMain {
     private static final PriceDataAccessInterface baseGateway = new AlphaVantagePriceGateway();
     private static final SimulationDataAccessInterface simulationDAO = new SimulationMarketDataAccess(baseGateway);
 
-    // Global state to temporarily hold setup input data after validation
     private static Optional<SetupInputData> setupInput = Optional.empty();
 
-    // --- 1. The Factory Listener (Handles dynamic view creation and async start) ---
     private static class TradingViewFactoryListener implements PropertyChangeListener {
 
         private final JPanel views;
@@ -42,7 +40,8 @@ public class SimulatedMain {
         private final TradingViewModel tradingViewModel;
         private final ViewManagerModel viewManagerModel;
 
-        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout, TradingViewModel tradingViewModel, ViewManagerModel viewManagerModel) {
+        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout, TradingViewModel tradingViewModel,
+                                          ViewManagerModel viewManagerModel) {
             this.views = views;
             this.cardLayout = cardLayout;
             this.tradingViewModel = tradingViewModel;
@@ -56,42 +55,34 @@ public class SimulatedMain {
                 SetupInputData input = setupInput.get();
                 String ticker = input.getTicker();
 
-                // 1. 创建 Account Entity
                 Account account = new Account(input.getInitialBalance());
                 TradingPresenter tradingPresenter = new TradingPresenter(tradingViewModel);
 
-                // 2. 创建 Interactor (现在是异步加载)
                 UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(
                         simulationDAO, tradingPresenter, account, ticker
                 );
-                updateMarketInteractor.setSpeed(input.getSpeedMultiplier()); // 设置速度
+                updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
 
                 SimulatedTradeInteractor tradeInteractor = new SimulatedTradeInteractor(
                         tradingPresenter, account
                 );
 
-                // 3. 创建 Controller
                 TradingController tradingController = new TradingController(updateMarketInteractor, tradeInteractor);
 
-                // 4. 移除并替换 View
                 views.removeAll();
 
-                // 5. 创建并添加真实的 Trading View (它内部会启动 Timer)
                 TradingView tradingView = new TradingView(tradingController, tradingViewModel);
                 views.add(tradingView, TradingViewModel.VIEW_NAME);
 
-                // 6. 显示并刷新
                 cardLayout.show(views, TradingViewModel.VIEW_NAME);
                 views.revalidate();
                 views.repaint();
 
-                // 7. 异步启动数据加载 (核心：不阻塞 UI 线程)
                 new Thread(() -> {
                     System.out.println("Starting asynchronous data loading for " + ticker + "...");
                     updateMarketInteractor.loadData(ticker);
                 }).start();
 
-                // 8. 清空 Setup 数据，防止重复创建
                 setupInput = Optional.empty();
             }
         }
@@ -103,18 +94,14 @@ public class SimulatedMain {
             super(viewManagerModel, tradingViewModel, setupViewModel);
         }
 
-        // 覆盖基类方法，并接收 SetupInputData 参数
         @Override
         public void prepareSuccessView(SetupInputData input) {
-            // 1. 关键：将数据存入全局状态，供 Factory 使用
             SimulatedMain.setupInput = Optional.of(input);
 
-            // 2. 直接调用 ViewManagerModel 切换 View (避免调用 super 导致的抽象方法错误)
             viewManagerModel.setActiveView(tradingViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
         }
 
-        // 我们也需要确保 prepareFailView 逻辑存在，否则基类会报错
         @Override
         public void prepareFailView(String error) {
             super.prepareFailView(error);

@@ -7,29 +7,30 @@ import java.util.List;
 import java.util.Map;
 
 public class TradingState {
-    // 1. Top Info
+    // 1. Top Info & Chart
     private String availableCash = "$100,000.00";
-
-    // 2. Chart Area
     private String ticker = "AAPL";
     private String currentPrice = "Loading...";
-    private List<Double> chartData = new ArrayList<>(); // For drawing the graph
+    private List<Double> chartData = new ArrayList<>();
 
-    // 3. Portfolio Summary (Bottom)
+    // 2. Portfolio Summary (Must match TradingPresenter updates)
     private String totalProfit = "$0.00";
     private String totalReturnRate = "0.00%";
     private String maxDrawdown = "$0.00";
     private String maxGain = "$0.00";
-    private String totalTrades = "0";
+
+    private String totalTrades = "0";       // Required by Presenter
+    private String winningTrades = "0";     // Required by Presenter
+    private String losingTrades = "0";      // Required by Presenter
     private String winRate = "0%";
 
-    // 4. Wallet Table (Holdings)
+    // 3. Wallet Table (Holdings)
     private Map<String, Position> positions = new HashMap<>();
 
-    // 5. Errors (For popups)
+    // 4. Errors
     private String error = null;
 
-    // Copy Constructor (Required for Clean Arch to keep state immutable)
+    // Copy Constructor (Required for Clean Arch)
     public TradingState(TradingState copy) {
         this.availableCash = copy.availableCash;
         this.ticker = copy.ticker;
@@ -40,6 +41,8 @@ public class TradingState {
         this.maxDrawdown = copy.maxDrawdown;
         this.maxGain = copy.maxGain;
         this.totalTrades = copy.totalTrades;
+        this.winningTrades = copy.winningTrades; // Ensure copy constructor includes new fields
+        this.losingTrades = copy.losingTrades;   // Ensure copy constructor includes new fields
         this.winRate = copy.winRate;
         this.positions = new HashMap<>(copy.positions);
         this.error = copy.error;
@@ -74,11 +77,19 @@ public class TradingState {
     public String getMaxGain() { return maxGain; }
     public void setMaxGain(String maxGain) { this.maxGain = maxGain; }
 
+    // --- New/Corrected Statistical Accessors ---
     public String getTotalTrades() { return totalTrades; }
     public void setTotalTrades(String totalTrades) { this.totalTrades = totalTrades; }
 
+    public String getWinningTrades() { return winningTrades; }
+    public void setWinningTrades(String winningTrades) { this.winningTrades = winningTrades; }
+
+    public String getLosingTrades() { return losingTrades; }
+    public void setLosingTrades(String losingTrades) { this.losingTrades = losingTrades; }
+
     public String getWinRate() { return winRate; }
     public void setWinRate(String winRate) { this.winRate = winRate; }
+    // -------------------------------------------
 
     public Map<String, Position> getPositions() { return positions; }
     public void setPositions(Map<String, Position> positions) { this.positions = positions; }

@@ -9,7 +9,8 @@ public class SetupInputData {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public SetupInputData(String ticker, double initialBalance, int speedMultiplier, LocalDate startDate, LocalDate endDate) {
+    public SetupInputData(String ticker, double initialBalance, int speedMultiplier,
+                          LocalDate startDate, LocalDate endDate) {
         this.ticker = ticker;
         this.initialBalance = initialBalance;
         this.speedMultiplier = speedMultiplier;

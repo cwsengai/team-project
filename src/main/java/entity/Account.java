@@ -80,10 +80,15 @@ public class Account {
         return currentEquity - initialBalance;
     }
 
+
     // UI: "Total Return Rate"
     public double getTotalReturnRate(double currentEquity) {
         if (initialBalance == 0) return 0.0;
         return (currentEquity - initialBalance) / initialBalance;
+    }
+
+    public int getWinningTrades() {
+        return winningTrades;
     }
 
     // UI: "Max Drawdown"
@@ -105,6 +110,10 @@ public class Account {
     public double getWinRate() {
         if (totalTrades == 0) return 0.0;
         return (double) winningTrades / totalTrades;
+    }
+
+    public int getLosingTrades() {
+        return totalTrades - winningTrades;
     }
 
     // UI: "Wallet"

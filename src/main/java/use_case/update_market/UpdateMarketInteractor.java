@@ -2,11 +2,13 @@ package use_case.update_market;
 
 import entity.Account;
 import entity.PricePoint;
+import entity.Position;
 import use_case.simulated_trade.SimulationDataAccessInterface;
 
 import javax.swing.SwingUtilities;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
 
@@ -14,6 +16,9 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
     private final UpdateMarketOutputBoundary presenter;
     private final Account account;
 
+    private final String simulationTicker;
+
+    // Simulation State
     private List<PricePoint> allCandles;
     private List<Double> currentMinuteTicks;
     private int candleIndex = 0;
@@ -29,6 +34,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
         this.dataAccess = dataAccess;
         this.presenter = presenter;
         this.account = account;
+        this.simulationTicker = ticker;
     }
 
     private int calculateTicksPerCandle() {
@@ -59,32 +65,48 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
             presenter.prepareFailView("Simulation Data Ended");
             return;
         }
-
         if (currentMinuteTicks == null || tickIndex >= currentMinuteTicks.size()) {
             presenter.prepareFailView("Tick Data Error");
             return;
         }
-        double currentPrice = currentMinuteTicks.get(tickIndex);
-        historyTicksForChart.add(currentPrice);
 
-        String currentTicker = "AAPL";
+        double currentPrice = currentMinuteTicks.get(tickIndex);
+
+        String currentTicker = this.simulationTicker;
+
+        // Update Account and Get Equity
         double currentEquity = account.calculateTotalEquity(currentPrice, currentTicker);
 
+        // Get Data Needed for Presenter/View
+        Map<String, Position> currentPositions = account.getPositions();
+        historyTicksForChart.add(currentPrice);
+
+        // Package and Send Output Data
         UpdateMarketOutputData outputData = new UpdateMarketOutputData(
                 currentPrice,
                 currentEquity,
                 account.getTotalReturnRate(currentEquity),
                 account.getMaxDrawdown(currentEquity),
                 account.getBalance(),
+
+                // --- Pass Stats (13 arguments total) ---
+                account.getTotalTrades(),
+                account.getWinningTrades(),
+                account.getMaxGain(),
+                account.getLosingTrades(),
+                account.getWinRate(), // 👈 FIX 3: This was the missing 13th argument
+
                 historyTicksForChart,
-                account.getPositions(),
+                currentPositions,
                 null
         );
 
         presenter.prepareSuccessView(outputData);
 
+        // Advance Time
         tickIndex++;
 
+        // Handle Candle Rollover
         if (tickIndex >= currentMinuteTicks.size()) {
             tickIndex = 0;
             candleIndex++;
