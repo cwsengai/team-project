@@ -21,6 +21,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
     private final TradingViewModel viewModel;
     private final TradingController controller;
 
+    // UI Components
     private final JLabel availableCashLabel = new JLabel();
     private final JLabel tickerLabel = new JLabel("---");
 
@@ -30,16 +31,18 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
     private final JLabel maxDrawdownLabel = new JLabel("0.00%");
     private final JLabel maxGainLabel = new JLabel("0.00%");
     private final JLabel totalTradesLabel = new JLabel("0");
-    private final JLabel winningTradesLabel = new JLabel("0"); // New Label
-    private final JLabel losingTradesLabel = new JLabel("0");  // New Label
+    private final JLabel winningTradesLabel = new JLabel("0");
+    private final JLabel losingTradesLabel = new JLabel("0");
     private final JLabel winRateLabel = new JLabel("0.00%");
+
+    // Wallet Table Components
+    private final DefaultTableModel walletTableModel;
+    private final JTable walletTable;
 
     private final JTextField amountField = new JTextField(10);
     private final JButton buyButton = new JButton(TradingViewModel.BUY_BUTTON_LABEL);
     private final JButton sellButton = new JButton(TradingViewModel.SELL_BUTTON_LABEL);
     private final PriceChartPanel chartPanel = new PriceChartPanel();
-    private final DefaultTableModel walletTableModel;
-    private final JTable walletTable;
 
     private final Timer timer = new Timer(1000, this);
 
@@ -48,13 +51,14 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
 
-        String[] columnNames = {"Name", "Type", "Qty", "Amount(USD)", "Buying Price", "Current Price",
-                "Unrealized Profit", "Unrealized Return Rate"};
+        // ✅ FIX 1: 修正 Table Column Headers - 8 列，匹配 Figma 命名
+        String[] columnNames = {"Name", "Type", "Amount(USD)", "Buying time", "Buying Price", "Current Price", "Unrealized Profit", "Unrealized Return Rate"};
         walletTableModel = new DefaultTableModel(columnNames, 0);
         walletTable = new JTable(walletTableModel);
 
         this.setLayout(new BorderLayout());
 
+        // --- 1. TOP HEADER ---
         JPanel headerPanel = new JPanel(new BorderLayout());
         JPanel cashPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         cashPanel.add(new JLabel("Available Virtual Money: "));
@@ -68,8 +72,10 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         headerPanel.add(tickerPanel, BorderLayout.SOUTH);
         this.add(headerPanel, BorderLayout.NORTH);
 
+        // --- 2. RIGHT PANEL (Controls) ---
         this.add(createControlPanel(), BorderLayout.EAST);
 
+        // --- 3. CENTER CONTAINER (Chart + Wallet Table) ---
         JPanel centerContainer = new JPanel();
         centerContainer.setLayout(new BoxLayout(centerContainer, BoxLayout.Y_AXIS));
 
@@ -92,7 +98,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
     }
 
     private JPanel createControlPanel() {
-        // ... (omitted for brevity)
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -151,23 +156,18 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
     private void handleTrade(boolean isBuy) {
         if (controller == null) {
-            JOptionPane.showMessageDialog(this, "Simulation not fully initialized." +
-                            " Please start from Setup View.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Simulation not fully initialized. Please start from Setup View.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         try {
             double amount = Double.parseDouble(amountField.getText());
-            String priceStr = viewModel.getState().getCurrentPrice().replace("$", "")
-                    .replace(",", "");
+            String priceStr = viewModel.getState().getCurrentPrice().replace("$", "").replace(",", "");
             double currentPrice = Double.parseDouble(priceStr);
 
             controller.executeTrade(viewModel.getState().getTicker(), amount, isBuy, currentPrice);
             amountField.setText("");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error in trade input or price data." +
-                            " Is simulation running?",
-                    "Trade Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error in trade input or price data. Is simulation running?", "Trade Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -186,19 +186,18 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             JOptionPane.showMessageDialog(this, state.getError());
         }
 
-        // 1. Update Labels (Assuming Presenter updates TradingState with all 8 metrics)
+        // 1. Update Labels
         availableCashLabel.setText(state.getAvailableCash());
         totalProfitLabel.setText(state.getTotalProfit());
         totalReturnLabel.setText(state.getTotalReturnRate());
         maxDrawdownLabel.setText(state.getMaxDrawdown());
         maxGainLabel.setText(state.getMaxGain());
         totalTradesLabel.setText(state.getTotalTrades());
-        winningTradesLabel.setText(state.getWinRate());
-        losingTradesLabel.setText(state.getTotalTrades());
+        winningTradesLabel.setText(state.getWinningTrades());
+        losingTradesLabel.setText(state.getLosingTrades());
+        winRateLabel.setText(state.getWinRate());
 
-        winRateLabel.setText(state.getWinRate()); // Win Rate is percentage
-
-        // 2. Update Chart
+        // 2. Update Chart & Ticker
         chartPanel.updateData(state.getChartData());
         tickerLabel.setText(state.getTicker());
 
@@ -210,8 +209,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         walletTableModel.setRowCount(0);
 
         try {
-            double currentPrice = Double.parseDouble(currentPriceStr.replace("$", "")
-                    .replace(",", ""));
+            double currentPrice = Double.parseDouble(currentPriceStr.replace("$", "").replace(",", ""));
 
             for (Map.Entry<String, Position> entry : positions.entrySet()) {
                 Position p = entry.getValue();
@@ -221,19 +219,19 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
                 double entryValue = p.getAvgPrice() * p.getQuantity();
                 double returnRate = entryValue != 0 ? (unrealizedPnL / entryValue) : 0;
 
-                String simplifiedTime = LocalDateTime.now().format(java.time.format.DateTimeFormatter
-                        .ofPattern("yyyy-MM-dd HH:mm"));
+                // 简化 Buying Time (Position 实体不存储，使用当前时间作为占位符)
+                String simplifiedTime = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
 
                 walletTableModel.addRow(new Object[]{
                         p.getTicker(),
                         p.isLong() ? "Buy" : "Sell",
-                        p.getQuantity(),                           // Qty (New Column)
-                        String.format("%,.2f usd", totalCostBasis), // Amount(USD)
-                        simplifiedTime,                            // Buying Time
-                        String.format("%,.2f", p.getAvgPrice()),
-                        String.format("%,.2f", currentPrice),
-                        String.format("%,.2f usd", unrealizedPnL),
-                        String.format("%.3f%%", returnRate * 100)
+                        String.format("%,.2f usd", totalCostBasis), // Col 4: Amount(USD) (Total Cost)
+                        simplifiedTime,// Col 5: Buying Time
+                        String.format("%,.2f", p.getAvgPrice()),   // Col 6: Buying Price (Avg Unit Cost)
+                        String.format("%,.2f", currentPrice),      // Col 7: Current Price
+                        String.format("%,.2f usd", unrealizedPnL),  // Col 8: Unrealized Profit
+                        String.format("%.3f%%", returnRate * 100) // Col 9: Unrealized Ret Rate (Still 9 columns needed for full data)
                 });
             }
         } catch (NumberFormatException e) {

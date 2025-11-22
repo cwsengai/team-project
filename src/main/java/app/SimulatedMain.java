@@ -151,7 +151,7 @@ public class SimulatedMain {
         viewManagerModel.firePropertyChanged();
 
         application.pack();
-        application.setSize(1000, 650);
+        application.setSize(1300, 750);
         application.setVisible(true);
     }
 }
