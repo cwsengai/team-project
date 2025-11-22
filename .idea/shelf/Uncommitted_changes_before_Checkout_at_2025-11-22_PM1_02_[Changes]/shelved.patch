@@ -1,0 +1,70 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"f5a27736-dc26-40a3-8ee3-4710d1bd7f3d\" name=\"Changes\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/app/CompanyMain.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/app/CompanyMain.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/entity/ChartViewModel.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/entity/ChartViewModel.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\n  \"lastFilter\": {\n    \"state\": \"OPEN\",\n    \"assignee\": \"mirror-chen\"\n  }\n}]]></component>\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\n  \"selectedUrlAndAccountId\": {\n    \"url\": \"git@github.com:cwsengai/team-project.git\",\n    \"accountId\": \"597eafc1-ada2-4f1e-baa5-702e470fa0fe\"\n  }\n}]]></component>\n  <component name=\"ProjectColorInfo\"><![CDATA[{\n  \"associatedIndex\": 5\n}]]></component>\n  <component name=\"ProjectId\" id=\"35qCg5nggkMQ23hEztZfvTDIeOA\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Application.CompanyMain.executor\": \"Run\",\n    \"Application.Main.executor\": \"Run\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.git.unshallow\": \"true\",\n    \"git-widget-placeholder\": \"UC4chart\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"settings.editor.selected.configurable\": \"reference.settings.project.maven.repository.indices\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435\" />\n        <option value=\"bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"f5a27736-dc26-40a3-8ee3-4710d1bd7f3d\" name=\"Changes\" comment=\"\" />\n      <created>1763828325617</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1763828325617</updated>\n      <workItem from=\"1763828327985\" duration=\"3242000\" />\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n</project>
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision e0e0739f4161ee36ddfd12715da102ddd8eead40)
++++ b/.idea/workspace.xml	(date 1763834247032)
+@@ -4,16 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="f5a27736-dc26-40a3-8ee3-4710d1bd7f3d" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/ChartViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/ChartViewModel.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java" afterDir="false" />
+-    </list>
++    <list default="true" id="f5a27736-dc26-40a3-8ee3-4710d1bd7f3d" name="Changes" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -22,21 +13,21 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "mirror-chen"
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;mirror-chen&quot;
+   }
+-}]]></component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "git@github.com:cwsengai/team-project.git",
+-    "accountId": "597eafc1-ada2-4f1e-baa5-702e470fa0fe"
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;git@github.com:cwsengai/team-project.git&quot;,
++    &quot;accountId&quot;: &quot;597eafc1-ada2-4f1e-baa5-702e470fa0fe&quot;
+   }
+-}]]></component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 5
+-}]]></component>
++}</component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 5
++}</component>
+   <component name="ProjectId" id="35qCg5nggkMQ23hEztZfvTDIeOA" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+@@ -48,7 +39,7 @@
+     "Application.Main.executor": "Run",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "UC4chart",
++    "git-widget-placeholder": "main",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.tslint": "true",
+     "node.js.selected.package.eslint": "(autodetect)",
