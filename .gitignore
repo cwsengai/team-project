@@ -40,4 +40,3 @@ build/
 
 ### Environment Files ###
 .env
-.env*
