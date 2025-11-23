@@ -16,19 +16,26 @@ public class PortfolioSummaryMain {
             boolean loggedIn = false; // Simulate not logged in
             if (!loggedIn) {
                 javax.swing.JOptionPane.showMessageDialog(null,
-                        "No login page exists. Using a fake user for this session.",
+                        "No login page exists. Using a specific test user for this session.",
                         "Login Required", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-                // Use Supabase utils to login as the provided fake user
-                // (simulate by setting JWT directly, since createAndLoginRandomUser makes a random user)
-                String fakeJwt = "FAKE_JWT_FOR_USER_0d2a1feb-363c-4284-bb22-73a4ae3431a3";
-                userSessionDAO.setJwtToken(fakeJwt);
-                // Optionally, you could call SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO) if you want a random user
-                // try {
-                //     util.SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
-                // } catch (Exception e) {
-                //     throw new RuntimeException("Failed to create random user for session", e);
-                // }
+                // Use the specific user credentials provided
+                String email = "user_a19669278ed94d2390fe752f8d4a4af7@example.com";
+                String password = "TestPassword123!";
+                try {
+                    // This assumes you have a SupabaseAuthClient utility that can login with email/password and set the JWT
+                    String supabaseUrl = data_access.EnvConfig.getSupabaseUrl();
+                    String supabaseApiKey = data_access.EnvConfig.getSupabaseAnonKey();
+                    api.SupabaseAuthClient authClient = new api.SupabaseAuthClient(supabaseUrl, supabaseApiKey);
+                    String jwt = authClient.loginAndGetJwt(email, password);
+                    if (jwt != null) {
+                        userSessionDAO.setJwtToken(jwt);
+                    } else {
+                        throw new RuntimeException("Failed to login as the specific test user.");
+                    }
+                } catch (java.io.IOException | RuntimeException e) {
+                    throw new RuntimeException("Failed to login as the specific test user.", e);
+                }
             }
 
             // === Show the portfolio summary page (placeholder) ===

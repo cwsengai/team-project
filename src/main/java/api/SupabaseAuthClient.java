@@ -13,6 +13,13 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class SupabaseAuthClient {
+        /**
+         * Signs in with the given email and password and returns the JWT (access_token), or null on failure.
+         */
+        public String loginAndGetJwt(String email, String password) throws IOException {
+            JSONObject result = signIn(email, password);
+            return result.optString("access_token", null);
+        }
     private final String supabaseUrl;
     private final String supabaseApiKey;
     private final OkHttpClient client = new OkHttpClient();
