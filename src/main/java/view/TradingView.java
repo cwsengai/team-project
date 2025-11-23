@@ -51,7 +51,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
 
-        // ✅ FIX 1: 修正 Table Column Headers - 8 列，匹配 Figma 命名
         String[] columnNames = {"Name", "Type", "Amount(USD)", "Buying time", "Buying Price", "Current Price", "Unrealized Profit", "Unrealized Return Rate"};
         walletTableModel = new DefaultTableModel(columnNames, 0);
         walletTable = new JTable(walletTableModel);
@@ -107,10 +106,11 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         panel.add(Box.createVerticalStrut(10));
 
         buyButton.setBackground(new Color(0, 150, 0));
-        buyButton.setForeground(Color.WHITE);
+        buyButton.setForeground(Color.BLACK);
         buyButton.setOpaque(true);
+
         sellButton.setBackground(new Color(150, 0, 0));
-        sellButton.setForeground(Color.WHITE);
+        sellButton.setForeground(Color.BLACK);
         sellButton.setOpaque(true);
 
         buyButton.addActionListener(e -> handleTrade(true));
