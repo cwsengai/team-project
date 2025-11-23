@@ -20,20 +20,30 @@ public class PortfolioSummaryMain {
                         "Login Required", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
                 // Use the specific user credentials provided
-                String email = "user_a19669278ed94d2390fe752f8d4a4af7@example.com";
-                String password = "TestPassword123!";
+                String email = "fakeuser@example.com";
+                String password = "FakePassword123!";
                 try {
-                    // This assumes you have a SupabaseAuthClient utility that can login with email/password and set the JWT
                     String supabaseUrl = data_access.EnvConfig.getSupabaseUrl();
                     String supabaseApiKey = data_access.EnvConfig.getSupabaseAnonKey();
                     api.SupabaseAuthClient authClient = new api.SupabaseAuthClient(supabaseUrl, supabaseApiKey);
-                    String jwt = authClient.loginAndGetJwt(email, password);
+                    org.json.JSONObject loginResult = authClient.signIn(email, password);
+                    String jwt = loginResult.optString("access_token", null);
                     if (jwt != null) {
                         userSessionDAO.setJwtToken(jwt);
                     } else {
-                        throw new RuntimeException("Failed to login as the specific test user.");
+                        String errorMsg = loginResult.optString("error", "Unknown error");
+                        String errorDesc = loginResult.optString("error_description", loginResult.toString());
+                        System.err.println("Supabase login failed: " + errorMsg + ", " + errorDesc);
+                        javax.swing.JOptionPane.showMessageDialog(null,
+                                "Supabase login failed: " + errorMsg + "\n" + errorDesc,
+                                "Login Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException("Failed to login as the specific test user. " + errorMsg + ": " + errorDesc);
                     }
                 } catch (java.io.IOException | RuntimeException e) {
+                    e.printStackTrace();
+                    javax.swing.JOptionPane.showMessageDialog(null,
+                            "Exception during login: " + e.getMessage(),
+                            "Login Exception", javax.swing.JOptionPane.ERROR_MESSAGE);
                     throw new RuntimeException("Failed to login as the specific test user.", e);
                 }
             }
