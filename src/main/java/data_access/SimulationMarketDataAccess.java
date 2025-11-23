@@ -23,7 +23,7 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
     @Override
     public List<PricePoint> loadHistory(String ticker) {
         try {
-            return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTS);
+            return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTES);
         } catch (Exception e) {
             System.err.println("Simulation Data Load Error: " + e.getMessage());
             return new ArrayList<>();

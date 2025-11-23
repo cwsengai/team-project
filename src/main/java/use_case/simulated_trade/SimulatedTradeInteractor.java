@@ -1,10 +1,8 @@
 package use_case.simulated_trade;
 
 import entity.Account;
+import java.time.LocalDateTime;
 
-/**
- * Handles the business logic for executing a trade based on user input amount.
- */
 public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
 
     private final SimulatedTradeOutputBoundary presenter;
@@ -22,13 +20,15 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
         double amountUSD = input.getAmount();
         boolean isBuy = input.isBuyAction();
 
-        // Validate input amount
+        LocalDateTime tradeTime = LocalDateTime.now();
+
+        // 1. Validate input amount (omitted for brevity)
         if (amountUSD <= 0) {
             presenter.prepareFailView("Amount must be positive.");
             return;
         }
 
-        // Calculate share quantity (floor value)
+        // 2. Calculate share quantity
         int quantity = (int) (amountUSD / price);
 
         if (quantity <= 0) {
@@ -36,22 +36,22 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
             return;
         }
 
-        // Check for sufficient funds (only required for Buy actions)
+        // 3. Check for sufficient funds (simplified)
         double totalCost = quantity * price;
         if (isBuy && account.getBalance() < totalCost) {
             presenter.prepareFailView("Insufficient funds.");
             return;
         }
 
-        // Execute trade logic in Entity
-        account.executeTrade(ticker, isBuy, quantity, price);
+        // 4. Execute trade logic in Entity
+        account.executeTrade(ticker, isBuy, quantity, price, tradeTime);
 
-        // Prepare success response
+        // 5. Prepare success response
         String action = isBuy ? "Bought" : "Sold (Short)";
         String message = String.format("Successfully %s %d shares of %s at $%.2f",
                 action, quantity, ticker, price);
 
-        // Notify Presenter
+        // 6. Notify Presenter
         SimulatedTradeOutputData outputData = new SimulatedTradeOutputData(account.getBalance(), message);
         presenter.prepareSuccessView(outputData);
     }
