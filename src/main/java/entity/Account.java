@@ -1,11 +1,11 @@
 package entity;
 
-import use_case.simulated_trade.TradeClosedListener; // Essential for notifying external components
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import use_case.simulated_trade.TradeClosedListener; // Essential for notifying external components
 
 public class Account {
     // Core Funds
@@ -46,7 +46,6 @@ public class Account {
         // Save current state before update for history record
         double entryPriceBefore = positions.containsKey(ticker) ? positions.get(ticker).getAvgPrice() : 0.0;
         boolean wasLong = positions.containsKey(ticker) && positions.get(ticker).isLong();
-
 
         positions.putIfAbsent(ticker, new Position(ticker, isBuyAction, 0, 0));
         Position position = positions.get(ticker);
@@ -102,38 +101,56 @@ public class Account {
     }
 
     // UI: "available virtual money"
-    public double getBalance() { return balance; }
+    public double getBalance() {
+        return balance;
+    }
 
     // UI: "Total Profit"
-    public double getTotalProfit(double currentEquity) { return currentEquity - initialBalance; }
+    public double getTotalProfit(double currentEquity) {
+        return currentEquity - initialBalance;
+    }
 
     // UI: "Total Return Rate"
     public double getTotalReturnRate(double currentEquity) {
-        if (initialBalance == 0) return 0.0;
+        if (initialBalance == 0)
+            return 0.0;
         return (currentEquity - initialBalance) / initialBalance;
     }
 
     // UI: "Max Drawdown"
-    public double getMaxDrawdown(double currentEquity) { return Math.max(0.0, maxEquity - currentEquity); }
+    public double getMaxDrawdown(double currentEquity) {
+        return Math.max(0.0, maxEquity - currentEquity);
+    }
 
     // UI: "Max Gain"
-    public double getMaxGain() { return maxGain; }
+    public double getMaxGain() {
+        return maxGain;
+    }
 
     // UI: "Total Trades#"
-    public int getTotalTrades() { return totalTrades; }
+    public int getTotalTrades() {
+        return totalTrades;
+    }
 
     // UI: "Winning Trades#"
-    public int getWinningTrades() { return winningTrades; }
+    public int getWinningTrades() {
+        return winningTrades;
+    }
 
     // UI: "Win Rate"
     public double getWinRate() {
-        if (totalTrades == 0) return 0.0;
+        if (totalTrades == 0)
+            return 0.0;
         return (double) winningTrades / totalTrades;
     }
 
     // UI: "Losing Trades"
-    public int getLosingTrades() { return totalTrades - winningTrades; }
+    public int getLosingTrades() {
+        return totalTrades - winningTrades;
+    }
 
     // UI: "Wallet"
-    public Map<String, Position> getPositions() { return positions; }
+    public Map<String, Position> getPositions() {
+        return positions;
+    }
 }

@@ -31,30 +31,15 @@ public class SupabaseAuthClient {
 
     public JSONObject signUp(String email, String password) throws IOException {
         String url = supabaseUrl + "/auth/v1/signup";
-        JSONObject json = new JSONObject();
-        json.put("email", email);
-        json.put("password", password);
-        RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("apikey", supabaseApiKey)
-                .addHeader("Content-Type", "application/json")
-                .post(body)
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-			ResponseBody responseBody = response.body();
-			String resp;
-			if (responseBody != null) {
-				resp = responseBody.string();
-			} else {
-				resp = "";
-			}
-            return new JSONObject(resp);
-        }
+        return sendAuthRequest(url, email, password);
     }
 
     public JSONObject signIn(String email, String password) throws IOException {
         String url = supabaseUrl + "/auth/v1/token?grant_type=password";
+        return sendAuthRequest(url, email, password);
+    }
+
+    private JSONObject sendAuthRequest(String url, String email, String password) throws IOException {
         JSONObject json = new JSONObject();
         json.put("email", email);
         json.put("password", password);
@@ -66,13 +51,8 @@ public class SupabaseAuthClient {
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-			ResponseBody responseBody = response.body();
-			String resp;
-			if (responseBody != null) {
-				resp = responseBody.string();
-			} else {
-				resp = "";
-			}
+            ResponseBody responseBody = response.body();
+            String resp = (responseBody != null) ? responseBody.string() : "";
             return new JSONObject(resp);
         }
     }
