@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -80,7 +81,13 @@ public class CompanyDetailPage extends JFrame {
 
         // Add action listener for login button
         loginButton.addActionListener(e -> {
-            String jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
+            String jwt;
+            try {
+                jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
+            } catch (IOException e1) {
+                System.out.println("[CompanyDetailPage] [ERROR] Supabase login exception: " + e1.getMessage());
+                return;
+            }
             if (jwt != null) {
                 System.out.println("[CompanyDetailPage] Supabase login: JWT set = " + jwt);
             } else {

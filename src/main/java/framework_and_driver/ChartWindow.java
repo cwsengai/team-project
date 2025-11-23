@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +84,13 @@ public class ChartWindow extends JFrame {
 
         // Add action listener for login button
         loginButton.addActionListener(e -> {
-            String jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
+            String jwt;
+            try {
+                jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
+            } catch (IOException e1) {
+                statusArea.append("[ERROR] Supabase login exception: " + e1.getMessage() + "\n");
+                return;
+            }
             if (jwt != null) {
                 statusArea.append("[DEBUG] Supabase user logged in. JWT set.\n");
             } else {

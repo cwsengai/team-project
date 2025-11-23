@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import use_case.simulated_trade.SimulatedTradeDataAccessInterface;
 
 public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessInterface {
@@ -54,7 +55,14 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to store trade: " + response.code() + " - " + response.body().string());
+                ResponseBody responseBody = response.body();
+                String resp;
+                if (responseBody != null) {
+                    resp = responseBody.string();
+                } else {
+                    resp = "";
+                }
+                throw new IOException("Failed to store trade: " + response.code() + " - " + resp);
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to store trade via Supabase REST API", e);

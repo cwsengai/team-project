@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class SupabaseAuthClient {
     private final String supabaseUrl;
@@ -34,7 +35,13 @@ public class SupabaseAuthClient {
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            String resp = response.body().string();
+			ResponseBody responseBody = response.body();
+			String resp;
+			if (responseBody != null) {
+				resp = responseBody.string();
+			} else {
+				resp = "";
+			}
             return new JSONObject(resp);
         }
     }
@@ -52,7 +59,13 @@ public class SupabaseAuthClient {
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            String resp = response.body().string();
+			ResponseBody responseBody = response.body();
+			String resp;
+			if (responseBody != null) {
+				resp = responseBody.string();
+			} else {
+				resp = "";
+			}
             return new JSONObject(resp);
         }
     }
@@ -66,7 +79,7 @@ public class SupabaseAuthClient {
         JSONObject result;
         try {
             result = signUp(email, password);
-        } catch (Exception e) {
+        } catch (IOException | org.json.JSONException e) {
             // If user exists, try sign in
             result = signIn(email, password);
         }

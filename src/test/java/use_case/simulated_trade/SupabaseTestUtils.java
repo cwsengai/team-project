@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class SupabaseTestUtils {
     private static final String SUPABASE_URL = EnvConfig.getSupabaseUrl();
@@ -52,7 +53,11 @@ public class SupabaseTestUtils {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to log in user: " + response.code() + " - " + response.body().string());
             }
-            String responseBody = response.body().string();
+            ResponseBody responseBodyObj = response.body();
+            if (responseBodyObj == null) {
+                throw new IOException("Login response body is null");
+            }
+            String responseBody = responseBodyObj.string();
             JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
             return json.get("access_token").getAsString();
         }

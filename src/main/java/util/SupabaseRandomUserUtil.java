@@ -1,5 +1,7 @@
 package util;
 
+import java.io.IOException;
+
 import api.SupabaseAuthClient;
 import data_access.EnvConfig;
 import use_case.session.SessionDataAccessInterface;
@@ -7,8 +9,9 @@ import use_case.session.SessionDataAccessInterface;
 public class SupabaseRandomUserUtil {
     /**
      * Creates a random Supabase user, logs in, and sets the JWT in the session DAO. Returns the JWT or null on failure.
+     * @throws IOException 
      */
-    public static String createAndLoginRandomUser(SessionDataAccessInterface sessionDAO) {
+    public static String createAndLoginRandomUser(SessionDataAccessInterface sessionDAO) throws IOException {
         try {
             String supabaseUrl = EnvConfig.getSupabaseUrl();
             String supabaseApiKey = EnvConfig.getSupabaseAnonKey();
@@ -25,7 +28,11 @@ public class SupabaseRandomUserUtil {
                 System.err.println("[SupabaseRandomUserUtil] Supabase login failed.");
             }
             return jwt;
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
+            System.err.println("[SupabaseRandomUserUtil] Supabase login exception: " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
+        } catch (RuntimeException ex) {
             System.err.println("[SupabaseRandomUserUtil] Supabase login exception: " + ex.getMessage());
             ex.printStackTrace();
             return null;

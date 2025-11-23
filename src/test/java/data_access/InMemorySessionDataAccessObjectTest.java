@@ -34,6 +34,7 @@ public class InMemorySessionDataAccessObjectTest {
     @Test
     void testGetCurrentUserIdThrowsWhenNoJwt() {
         InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
+        
         assertThrows(IllegalStateException.class, sessionDAO::getCurrentUserId);
     }
 }
