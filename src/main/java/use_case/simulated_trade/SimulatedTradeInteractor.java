@@ -53,8 +53,6 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
         // 4. Execute trade logic in Entity
         account.executeTrade(ticker, isBuy, quantity, price, tradeTime);
 
-      
-
         // 5. Prepare success response
         String action = isBuy ? "Bought" : "Sold (Short)";
         String message = String.format("Successfully %s %d shares of %s at $%.2f",
