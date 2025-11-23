@@ -48,12 +48,26 @@ public class PortfolioSummaryMain {
                 }
             }
 
-            // === Show the portfolio summary page (placeholder) ===
+            // === Show the portfolio summary page (main layout and background) ===
             javax.swing.JFrame frame = new javax.swing.JFrame("Portfolio Summary");
             frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-            frame.setSize(400, 300);
-            frame.add(new javax.swing.JLabel("Portfolio Summary Page (placeholder)", javax.swing.SwingConstants.CENTER));
+            frame.setSize(900, 700);
             frame.setLocationRelativeTo(null);
+
+            // Main background panel with light grey color
+            javax.swing.JPanel background = new javax.swing.JPanel();
+            background.setBackground(new java.awt.Color(0xF7, 0xF7, 0xF7));
+            background.setLayout(new java.awt.BorderLayout());
+
+            // Main content panel (vertical box, centered, with padding)
+            javax.swing.JPanel contentPanel = new javax.swing.JPanel();
+            contentPanel.setOpaque(false);
+            contentPanel.setLayout(new javax.swing.BoxLayout(contentPanel, javax.swing.BoxLayout.Y_AXIS));
+            contentPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(32, 32, 32, 32));
+
+            // Add contentPanel to background (centered)
+            background.add(contentPanel, java.awt.BorderLayout.CENTER);
+            frame.setContentPane(background);
             frame.setVisible(true);
         });
     }
