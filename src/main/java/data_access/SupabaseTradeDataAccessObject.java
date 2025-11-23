@@ -40,9 +40,7 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
                 pst.executeUpdate();
             }
 
-            // Optional: Update Portfolio Cash Balance logic here if not using DB Triggers
-            // updatePortfolioBalance(conn, userId, trade.getRealizedPnL());
-
+            // Cash balance is updated automatically via DB trigger
             conn.commit(); // Save changes
         } catch (SQLException e) {
             throw new RuntimeException("Failed to store trade", e);
