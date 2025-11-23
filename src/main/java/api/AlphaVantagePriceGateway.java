@@ -65,7 +65,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 .append("&apikey=").append(apiKey);
 
         if (interval == TimeInterval.FIVE_MINUTES) {
-            urlBuilder.append("&interval=").append("5min"); // 盘中数据所需参数
+            urlBuilder.append("&interval=").append("5min"); // Required parameter for intraday data
         }
 
         String jsonResponse = sendHttpRequest(urlBuilder.toString());

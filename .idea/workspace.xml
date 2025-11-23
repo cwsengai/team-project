@@ -5,14 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5a27736-dc26-40a3-8ee3-4710d1bd7f3d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/ChartViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/ChartViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryPortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryPortfolioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepositoryTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PositionRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PositionRepositoryTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PostgresPortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PostgresPortfolioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PostgresPositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PostgresPositionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PriceRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PriceRepositoryTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SupabasePortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SupabasePortfolioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SupabasePositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SupabasePositionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/TradeRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/TradeRepositoryTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Portfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/simulated_trading/SimulatedTradingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/simulated_trading/SimulatedTradingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/PortfolioPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/PortfolioPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/GetPriceByIntervalInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/GetPriceByIntervalInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/track_portfolio/TrackPortfolioInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/track_portfolio/TrackPortfolioInteractor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,23 +37,28 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "mirror-chen"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mirror-chen&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:cwsengai/team-project.git",
-    "accountId": "597eafc1-ada2-4f1e-baa5-702e470fa0fe"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:cwsengai/team-project.git&quot;,
+    &quot;accountId&quot;: &quot;597eafc1-ada2-4f1e-baa5-702e470fa0fe&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="35qCg5nggkMQ23hEztZfvTDIeOA" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />

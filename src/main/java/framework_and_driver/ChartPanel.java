@@ -85,10 +85,26 @@ public class ChartPanel extends JPanel {
         chartContainer.repaint();
     }
 
+    /**
+     * Display error message in the chart area
+     */
+    public void displayError(String message) {
+        chartContainer.removeAll();
+        JLabel errorLabel = new JLabel("<html><div style='text-align: center; padding: 20px; color: red;'>" +
+                "<h3>⚠️ Error Loading Chart Data</h3>" +
+                "<p>" + message + "</p>" +
+                "<p style='font-size: 10px; color: gray;'>Possible reasons: API rate limit exceeded, network error, or invalid data.</p>" +
+                "</div></html>", 
+                SwingConstants.CENTER);
+        chartContainer.add(errorLabel, BorderLayout.CENTER);
+        chartContainer.revalidate();
+        chartContainer.repaint();
+    }
+
     private CategoryChart createLineChart(ChartViewModel viewModel) {
         CategoryChart chart = new CategoryChartBuilder()
-                .width(getWidth() > 0 ? getWidth() - 20 : 600)
-                .height(getHeight() > 0 ? getHeight() - 20 : 400)
+                .width(getWidth() > 0 ? getWidth() - 20 : 1200)
+                .height(getHeight() > 0 ? getHeight() - 20 : 700)
                 .title(viewModel.getTitle())
                 .xAxisTitle("Date")
                 .yAxisTitle("Price (USD)")
@@ -107,21 +123,22 @@ public class ChartPanel extends JPanel {
         List<Double> displayPrices = new ArrayList<>();
         
         // Determine max points based on interval
+        // For larger charts, we can show more data points
         int maxPoints;
         TimeInterval interval = viewModel.getInterval();
         if (interval != null) {
             switch (interval) {
-                case INTRADAY: // 5 minutes - show more detail
-                    maxPoints = 500;
+                case FIVE_MINUTES: // 5 minutes - show all 5-minute intervals (about 78 points per day)
+                    maxPoints = 500; // Can show multiple days of 5-minute data
                     break;
-                case DAILY: // Daily - show moderate detail
-                    maxPoints = 100;
+                case DAILY: // Daily - show daily data points
+                    maxPoints = 500; // Can show up to 500 days (about 1.5 years)
                     break;
-                case WEEKLY: // Weekly - show less detail
-                    maxPoints = 50;
+                case WEEKLY: // Weekly - show weekly data points
+                    maxPoints = 200; // Can show up to 200 weeks (about 4 years)
                     break;
-                case MONTHLY: // Monthly - show minimal detail
-                    maxPoints = 30;
+                case MONTHLY: // Monthly - show monthly data points
+                    maxPoints = 120; // Can show up to 120 months (10 years)
                     break;
                 default:
                     maxPoints = 200;
@@ -148,20 +165,43 @@ public class ChartPanel extends JPanel {
             displayPrices = prices;
         }
 
-        // Limit X-axis labels to avoid overcrowding (max 15-20 labels)
+        // Limit X-axis labels based on interval - show more labels for larger charts
+        // Instead of using empty strings, we only keep the labels we want to show
         int labelCount = displayLabels.size();
-        int maxLabels = 15; // Maximum number of labels to show on X-axis
+        int maxLabels; // Maximum number of labels to show on X-axis
+        if (interval != null) {
+            switch (interval) {
+                case FIVE_MINUTES: // 5 minutes - show more labels (every 5 minutes)
+                    maxLabels = 80; // Can show up to 80 labels for intraday data
+                    break;
+                case DAILY: // Daily - show daily labels
+                    maxLabels = 90; // Can show up to 90 days (about 3 months)
+                    break;
+                case WEEKLY: // Weekly - show weekly labels
+                    maxLabels = 52; // Can show up to 52 weeks (1 year)
+                    break;
+                case MONTHLY: // Monthly - show monthly labels
+                    maxLabels = 24; // Can show up to 24 months (2 years)
+                    break;
+                default:
+                    maxLabels = 50;
+            }
+        } else {
+            maxLabels = 50; // Default
+        }
+        
         if (labelCount > maxLabels) {
             List<String> axisLabels = new ArrayList<>();
+            List<Double> axisPrices = new ArrayList<>();
             int labelStep = Math.max(1, labelCount / maxLabels);
             for (int i = 0; i < labelCount; i++) {
                 if (i % labelStep == 0 || i == labelCount - 1) {
                     axisLabels.add(displayLabels.get(i));
-                } else {
-                    axisLabels.add(""); // Empty string to hide label
+                    axisPrices.add(displayPrices.get(i));
                 }
             }
             displayLabels = axisLabels;
+            displayPrices = axisPrices;
         }
 
         chart.addSeries("Price", displayLabels, displayPrices);
@@ -171,8 +211,8 @@ public class ChartPanel extends JPanel {
 
     private CategoryChart createCandlestickChart(ChartViewModel viewModel) {
         CategoryChart chart = new CategoryChartBuilder()
-                .width(getWidth() > 0 ? getWidth() - 20 : 600)
-                .height(getHeight() > 0 ? getHeight() - 20 : 400)
+                .width(getWidth() > 0 ? getWidth() - 20 : 1200)
+                .height(getHeight() > 0 ? getHeight() - 20 : 700)
                 .title(viewModel.getTitle())
                 .xAxisTitle("Date")
                 .yAxisTitle("Price (USD)")
@@ -191,21 +231,22 @@ public class ChartPanel extends JPanel {
         List<Double> displayPrices;
         
         // Determine max points based on interval
+        // For larger charts, we can show more data points
         int maxPoints;
         TimeInterval interval = viewModel.getInterval();
         if (interval != null) {
             switch (interval) {
-                case INTRADAY: // 5 minutes - show more detail
-                    maxPoints = 500;
+                case FIVE_MINUTES: // 5 minutes - show all 5-minute intervals (about 78 points per day)
+                    maxPoints = 500; // Can show multiple days of 5-minute data
                     break;
-                case DAILY: // Daily - show moderate detail
-                    maxPoints = 100;
+                case DAILY: // Daily - show daily data points
+                    maxPoints = 500; // Can show up to 500 days (about 1.5 years)
                     break;
-                case WEEKLY: // Weekly - show less detail
-                    maxPoints = 50;
+                case WEEKLY: // Weekly - show weekly data points
+                    maxPoints = 200; // Can show up to 200 weeks (about 4 years)
                     break;
-                case MONTHLY: // Monthly - show minimal detail
-                    maxPoints = 30;
+                case MONTHLY: // Monthly - show monthly data points
+                    maxPoints = 120; // Can show up to 120 months (10 years)
                     break;
                 default:
                     maxPoints = 200;
@@ -232,20 +273,43 @@ public class ChartPanel extends JPanel {
             displayPrices = closePrices;
         }
 
-        // Limit X-axis labels to avoid overcrowding (max 15-20 labels)
+        // Limit X-axis labels based on interval - show more labels for larger charts
+        // Instead of using empty strings, we only keep the labels we want to show
         int labelCount = displayLabels.size();
-        int maxLabels = 15; // Maximum number of labels to show on X-axis
+        int maxLabels; // Maximum number of labels to show on X-axis
+        if (interval != null) {
+            switch (interval) {
+                case FIVE_MINUTES: // 5 minutes - show more labels (every 5 minutes)
+                    maxLabels = 80; // Can show up to 80 labels for intraday data
+                    break;
+                case DAILY: // Daily - show daily labels
+                    maxLabels = 90; // Can show up to 90 days (about 3 months)
+                    break;
+                case WEEKLY: // Weekly - show weekly labels
+                    maxLabels = 52; // Can show up to 52 weeks (1 year)
+                    break;
+                case MONTHLY: // Monthly - show monthly labels
+                    maxLabels = 24; // Can show up to 24 months (2 years)
+                    break;
+                default:
+                    maxLabels = 50;
+            }
+        } else {
+            maxLabels = 50; // Default
+        }
+        
         if (labelCount > maxLabels) {
             List<String> axisLabels = new ArrayList<>();
+            List<Double> axisPrices = new ArrayList<>();
             int labelStep = Math.max(1, labelCount / maxLabels);
             for (int i = 0; i < labelCount; i++) {
                 if (i % labelStep == 0 || i == labelCount - 1) {
                     axisLabels.add(displayLabels.get(i));
-                } else {
-                    axisLabels.add(""); // Empty string to hide label
+                    axisPrices.add(displayPrices.get(i));
                 }
             }
             displayLabels = axisLabels;
+            displayPrices = axisPrices;
         }
 
         // Show only close price as a line chart (cleaner than showing all OHLC)
