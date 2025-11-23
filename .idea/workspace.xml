@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50c8dc4f-ad34-4d4a-86a2-b56f4bca2e25" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/TradeClosedListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulatedTradeInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulatedTradeInteractor.java" afterDir="false" />
-    </list>
+    <list default="true" id="50c8dc4f-ad34-4d4a-86a2-b56f4bca2e25" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

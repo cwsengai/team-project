@@ -15,7 +15,7 @@ public class Account {
 
     // Holdings and Listeners
     private final Map<String, Position> positions = new HashMap<>();
-    private final List<TradeClosedListener> listeners = new ArrayList<>(); // ✅ New: Event Listeners
+    private final List<TradeClosedListener> listeners = new ArrayList<>();
 
     // Performance Stats (Counters for Figma Summary)
     private int totalTrades = 0;
