@@ -6,6 +6,7 @@ import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryLogin;
 import app.ui.PortfolioSummaryNavBar;
+import app.ui.PortfolioOrderHistoryTable;
 
 public class PortfolioSummaryMain {
     public static void main(String[] args) {
@@ -37,6 +38,7 @@ public class PortfolioSummaryMain {
             contentPanel.add(new PortfolioSummaryNavBar(frame));
             contentPanel.add(new PortfolioSummaryHeader());
             contentPanel.add(new PortfolioSummaryCard());
+            contentPanel.add(new PortfolioOrderHistoryTable());
 
             // Add contentPanel to background (centered)
             background.add(contentPanel, java.awt.BorderLayout.CENTER);
