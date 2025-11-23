@@ -1,135 +1,70 @@
 package entity;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Represents a position in a particular stock within a portfolio.
- */
 public class Position {
-    private final String id;
-    private final String portfolioId;
-    private final String companyId;
-    private final String ticker;  // Denormalized for convenience
-    private int quantity;
-    private double averageCost;
-    private double realizedPL;
-    private double unrealizedPL;
-    private LocalDateTime lastUpdated;
-    private final List<Trade> trades;
+    private final String ticker;
+    private boolean isLong;       // true = Long, false = Short
+    private int quantity;         // Absolute quantity (always >= 0)
+    private double avgPrice;      // Weighted average cost price
 
-    public Position(String id, String portfolioId, String companyId, String ticker,
-                    int quantity, double averageCost, double realizedPL, double unrealizedPL,
-                    LocalDateTime lastUpdated) {
-        this.id = id;
-        this.portfolioId = portfolioId;
-        this.companyId = companyId;
+    public Position(String ticker, boolean isLong, int quantity, double avgPrice) {
         this.ticker = ticker;
+        this.isLong = isLong;
         this.quantity = quantity;
-        this.averageCost = averageCost;
-        this.realizedPL = realizedPL;
-        this.unrealizedPL = unrealizedPL;
-        this.lastUpdated = lastUpdated != null ? lastUpdated : LocalDateTime.now();
-        this.trades = new ArrayList<>();
-    }
-
-    // Backward compatible constructor for existing code
-    public Position(String ticker) {
-        this(null, null, null, ticker, 0, 0.0, 0.0, 0.0, LocalDateTime.now());
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getPortfolioId() {
-        return portfolioId;
-    }
-
-    public String getCompanyId() {
-        return companyId;
-    }
-
-    public String getTicker() {
-        return ticker;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getAverageCost() {
-        return averageCost;
-    }
-
-    public double getRealizedPL() {
-        return realizedPL;
-    }
-
-    public void setRealizedPL(double realizedPL) {
-        this.realizedPL = realizedPL;
-        this.lastUpdated = LocalDateTime.now();
-    }
-
-    public double getUnrealizedPL() {
-        return unrealizedPL;
-    }
-
-    public void setUnrealizedPL(double unrealizedPL) {
-        this.unrealizedPL = unrealizedPL;
-        this.lastUpdated = LocalDateTime.now();
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public List<Trade> getTrades() {
-        return new ArrayList<>(trades);
+        this.avgPrice = avgPrice;
     }
 
     /**
-     * Add a trade to this position and update quantity and average cost.
+     * Updates position based on trade action.
+     * @return Realized PnL (only returns value when reducing or closing position).
      */
-    public void addTrade(Trade trade) {
-        trades.add(trade);
-        
-        if (trade.getTradeType() == TradeType.BUY) {
-            // Calculate new average cost when buying
-            double totalCost = (averageCost * quantity) + (trade.getPrice() * trade.getQuantity());
-            quantity += trade.getQuantity();
-            averageCost = quantity > 0 ? totalCost / quantity : 0;
-        } else {
-            // Selling - calculate realized gains
-            double saleProceeds = trade.getQuantity() * trade.getPrice();
-            double costBasis = trade.getQuantity() * averageCost;
-            realizedPL += (saleProceeds - costBasis - trade.getFees());
-            quantity -= trade.getQuantity();
+    public double update(boolean isBuyAction, int tradeQty, double tradePrice) {
+        // Determine if adding to position (Same direction) or reducing/flipping (Opposite direction)
+        boolean isIncrease = (isLong && isBuyAction) || (!isLong && !isBuyAction);
+
+        if (quantity == 0) {
+            this.isLong = isBuyAction;
+            this.quantity = tradeQty;
+            this.avgPrice = tradePrice;
+            return 0.0;
         }
-        this.lastUpdated = LocalDateTime.now();
+
+        if (isIncrease) {
+            // Calculate new Weighted Average Price
+            double totalCost = (avgPrice * quantity) + (tradePrice * tradeQty);
+            quantity += tradeQty;
+            avgPrice = totalCost / quantity;
+            return 0.0;
+        } else {
+            double pnl = 0.0;
+            // PnL logic: (Sell - Cost) for Long; (Cost - Sell) for Short
+            double priceDiff = isLong ? (tradePrice - avgPrice) : (avgPrice - tradePrice);
+
+            if (tradeQty <= quantity) {
+                // Partial or full close
+                pnl = priceDiff * tradeQty;
+                quantity -= tradeQty;
+            } else {
+                // Position Flip: Close current -> Open reverse
+                pnl = priceDiff * quantity; // Realize PnL on existing quantity
+
+                // Open new position with remaining qty
+                this.quantity = tradeQty - quantity;
+                this.isLong = !this.isLong;
+                this.avgPrice = tradePrice;
+            }
+            return pnl;
+        }
     }
 
-    /**
-     * Calculate current market value of this position.
-     */
-    public double currentMarketValue(double currentPrice) {
-        return quantity * currentPrice;
+    public double getUnrealizedPnL(double currentPrice) {
+        if (quantity == 0) return 0.0;
+        // Short position profits when price drops (Avg > Current)
+        double diff = isLong ? (currentPrice - avgPrice) : (avgPrice - currentPrice);
+        return diff * quantity;
     }
 
-    /**
-     * Calculate unrealized gain/loss for this position.
-     * TODO: Verify calculation logic
-     */
-    public double unrealizedGain(double currentPrice) {
-        return (currentPrice - averageCost) * quantity;
-    }
-
-    /**
-     * Get realized gains from closed trades.
-     * @return Total realized gains/losses
-     */
-    public double getRealizedGains() {
-        return realizedPL;
-    }
+    public String getTicker() { return ticker; }
+    public boolean isLong() { return isLong; }
+    public int getQuantity() { return quantity; }
+    public double getAvgPrice() { return avgPrice; }
 }
