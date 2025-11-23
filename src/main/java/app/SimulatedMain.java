@@ -10,16 +10,23 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import api.AlphaVantagePriceGateway;
+import data_access.InMemorySessionDataAccessObject;
 import data_access.SimulationMarketDataAccess;
+import data_access.SupabaseTradeDataAccessObject;
+import entity.Account;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.setup_simulation.SetupController;
 import interface_adapter.setup_simulation.SetupPresenter;
 import interface_adapter.setup_simulation.SetupViewModel;
+import interface_adapter.simulated_trading.TradingController;
+import interface_adapter.simulated_trading.TradingPresenter;
 import interface_adapter.simulated_trading.TradingViewModel;
 import use_case.PriceDataAccessInterface;
 import use_case.setup_simulation.SetupInputData;
 import use_case.setup_simulation.SetupInteractor;
+import use_case.simulated_trade.SimulatedTradeInteractor;
 import use_case.simulated_trade.SimulationDataAccessInterface;
+import use_case.update_market.UpdateMarketInteractor;
 import view.SetupView;
 import view.TradingView;
 import view.ViewManager;
@@ -69,30 +76,30 @@ public class SimulatedMain {
                 String ticker = input.getTicker();
 
                 // Create a random session and account for the user
-                data_access.InMemorySessionDataAccessObject sessionDAO = new data_access.InMemorySessionDataAccessObject();
+                InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
                 try {
                     util.SupabaseRandomUserUtil.createAndLoginRandomUser(sessionDAO);
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to create random user for session", e);
                 }
-                entity.Account account = new entity.Account(input.getInitialBalance());
-                data_access.SupabaseTradeDataAccessObject tradeDAO = new data_access.SupabaseTradeDataAccessObject();
-                interface_adapter.simulated_trading.TradingPresenter tradingPresenter = new interface_adapter.simulated_trading.TradingPresenter(tradingViewModel);
+                Account account = new Account(input.getInitialBalance());
+                SupabaseTradeDataAccessObject tradeDAO = new SupabaseTradeDataAccessObject();
+                TradingPresenter tradingPresenter = new TradingPresenter(tradingViewModel);
 
-                use_case.update_market.UpdateMarketInteractor updateMarketInteractor = new use_case.update_market.UpdateMarketInteractor(
+                UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(
                         simulationDAO, tradingPresenter, account, ticker
                 );
                 updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
 
-                use_case.simulated_trade.SimulatedTradeInteractor tradeInteractor = new use_case.simulated_trade.SimulatedTradeInteractor(
+                SimulatedTradeInteractor tradeInteractor = new SimulatedTradeInteractor(
                         tradingPresenter, account, tradeDAO, sessionDAO
                 );
 
-                interface_adapter.simulated_trading.TradingController tradingController = new interface_adapter.simulated_trading.TradingController(updateMarketInteractor, tradeInteractor);
+                TradingController tradingController = new TradingController(updateMarketInteractor, tradeInteractor);
 
                 views.removeAll();
 
-                view.TradingView tradingView = new view.TradingView(tradingController, tradingViewModel);
+                TradingView tradingView = new TradingView(tradingController, tradingViewModel);
                 views.add(tradingView, TradingViewModel.VIEW_NAME);
 
                 cardLayout.show(views, TradingViewModel.VIEW_NAME);
