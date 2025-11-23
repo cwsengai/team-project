@@ -4,62 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5a27736-dc26-40a3-8ee3-4710d1bd7f3d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/AlphaVantagePriceGateway.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryPortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryPortfolioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PortfolioRepositoryTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PositionRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PositionRepositoryTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PostgresPortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PostgresPortfolioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PostgresPositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PostgresPositionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/PriceRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/PriceRepositoryTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SupabasePortfolioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SupabasePortfolioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SupabasePositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SupabasePositionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/TradeRepositoryTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/TradeRepositoryTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/TimeInterval.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/ChartWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyDetailPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/CompanyDetailPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/IntervalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/PriceChartPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/simulated_trading/SimulatedTradingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/simulated_trading/SimulatedTradingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/PortfolioPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/PortfolioPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/GetPriceByIntervalInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/GetPriceByIntervalInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/track_portfolio/TrackPortfolioInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/track_portfolio/TrackPortfolioInteractor.java" afterDir="false" />
+    <list default="true" id="50c8dc4f-ad34-4d4a-86a2-b56f4bca2e25" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/TradeClosedListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulatedTradeInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulatedTradeInteractor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
     </option>
+  </component>
+  <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;mirror-chen&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:cwsengai/team-project.git&quot;,
-    &quot;accountId&quot;: &quot;597eafc1-ada2-4f1e-baa5-702e470fa0fe&quot;
-  }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="35qCg5nggkMQ23hEztZfvTDIeOA" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="35rf3jDENtLj4RY2w3p2rrLnF6B" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -67,39 +36,29 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.CompanyMain.executor": "Run",
-    "Application.Main.executor": "Run",
+    "Application.SimulatedMain.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "UC4chart",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "vue.rearranger.settings.migration": "true"
+    "git-widget-placeholder": "feature/simulated-trading",
+    "kotlin-language-version-configured": "true"
   }
 }]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
-        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f5a27736-dc26-40a3-8ee3-4710d1bd7f3d" name="Changes" comment="" />
-      <created>1763828325617</created>
+      <changelist id="50c8dc4f-ad34-4d4a-86a2-b56f4bca2e25" name="Changes" comment="" />
+      <created>1763872914098</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1763828325617</updated>
-      <workItem from="1763828327985" duration="3242000" />
+      <updated>1763872914098</updated>
     </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
 </project>
