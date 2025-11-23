@@ -20,20 +20,23 @@ import javax.swing.SwingConstants;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.style.Styler;
 
 import entity.ChartViewModel;
 import entity.TimeInterval;
 import interface_adapter.IntervalController;
+import use_case.session.SessionDataAccessInterface;
+import util.SupabaseRandomUserUtil;
 
 public class ChartWindow extends JFrame {
 
-    private JPanel chartPanel; // Panel to hold the XChart
+    private final JPanel chartPanel; // Panel to hold the XChart
     private final JTextArea statusArea = new JTextArea(3, 40); // Used to display Presenter's output
     private IntervalController controller;
+    private final SessionDataAccessInterface userSessionDAO;
 
-    public ChartWindow() {
+    public ChartWindow(SessionDataAccessInterface userSessionDAO) {
         super("Stock Chart Platform - UC4 Demo");
+        this.userSessionDAO = userSessionDAO;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(new BorderLayout());
@@ -77,6 +80,16 @@ public class ChartWindow extends JFrame {
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(Color.BLACK);
         loginButton.setFocusPainted(false);
+
+        // Add action listener for login button
+        loginButton.addActionListener(e -> {
+            String jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
+            if (jwt != null) {
+                statusArea.append("[DEBUG] Supabase user logged in. JWT set.\n");
+            } else {
+                statusArea.append("[ERROR] Supabase login failed.\n");
+            }
+        });
 
         panel.add(logo, BorderLayout.WEST);
         panel.add(loginButton, BorderLayout.EAST);

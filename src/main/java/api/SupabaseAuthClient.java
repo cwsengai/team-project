@@ -1,0 +1,76 @@
+package api;
+
+import java.io.IOException;
+import java.util.UUID;
+
+import org.json.JSONObject;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class SupabaseAuthClient {
+    private final String supabaseUrl;
+    private final String supabaseApiKey;
+    private final OkHttpClient client = new OkHttpClient();
+
+    public SupabaseAuthClient(String supabaseUrl, String supabaseApiKey) {
+        this.supabaseUrl = supabaseUrl;
+        this.supabaseApiKey = supabaseApiKey;
+    }
+
+    public JSONObject signUp(String email, String password) throws IOException {
+        String url = supabaseUrl + "/auth/v1/signup";
+        JSONObject json = new JSONObject();
+        json.put("email", email);
+        json.put("password", password);
+        RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseApiKey)
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String resp = response.body().string();
+            return new JSONObject(resp);
+        }
+    }
+
+    public JSONObject signIn(String email, String password) throws IOException {
+        String url = supabaseUrl + "/auth/v1/token?grant_type=password";
+        JSONObject json = new JSONObject();
+        json.put("email", email);
+        json.put("password", password);
+        RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseApiKey)
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String resp = response.body().string();
+            return new JSONObject(resp);
+        }
+    }
+
+    /**
+     * Utility to create a random user (email, password) and sign up or sign in, returning the JWT.
+     */
+    public String createRandomUserAndGetJwt() throws IOException {
+        String email = "user_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
+        String password = UUID.randomUUID().toString().replace("-", "");
+        JSONObject result;
+        try {
+            result = signUp(email, password);
+        } catch (Exception e) {
+            // If user exists, try sign in
+            result = signIn(email, password);
+        }
+        // JWT is in result["access_token"]
+        return result.optString("access_token", null);
+    }
+}

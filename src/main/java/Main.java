@@ -1,12 +1,14 @@
 import javax.swing.SwingUtilities;
 
 import api.AlphaVantagePriceGateway;
+import data_access.InMemorySessionDataAccessObject;
 import framework_and_driver.ChartWindow;
 import interface_adapter.IntervalController;
 import interface_adapter.PriceChartPresenter;
 import use_case.GetPriceByIntervalInteractor;
 import use_case.PriceChartOutputBoundary;
 import use_case.PriceDataAccessInterface;
+import use_case.session.SessionDataAccessInterface;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +18,8 @@ public class Main {
         PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
 
         // 2. VIEW (Frameworks & Drivers)
-        ChartWindow chartWindow = new ChartWindow();
+        SessionDataAccessInterface userSessionDAO = new InMemorySessionDataAccessObject();
+        ChartWindow chartWindow = new ChartWindow(userSessionDAO);
 
         // 3. PRESENTATION (Interface Adapter)
         PriceChartOutputBoundary pricePresenter = new PriceChartPresenter(chartWindow);
