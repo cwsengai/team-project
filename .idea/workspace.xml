@@ -5,22 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="613809da-efaa-4c03-8a75-d3da214e2890" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/FinancialStatementController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/controller/NewsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/FinancialStatementPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/NewsPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/FinancialStatementViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/NewsViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/financial_statement/FinancialStatementOutputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/news/NewsOutputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/CompanyMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework_and_driver/CompanyPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/CompanyPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/presenter/CompanyPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/CompanyViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_model/CompanyViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hmbstnks/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hmbstnks/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hmbstnks/LoginPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hmbstnks/MainLoginTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hmbstnks/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hmbstnks/UserDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="companyDetails" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +43,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/cwsengai/team-project.git&quot;,
-    &quot;accountId&quot;: &quot;39a398cf-4988-4a5f-8cd6-3cbf7744eca6&quot;
+    &quot;accountId&quot;: &quot;5baf4e59-a517-4d55-b98d-d7f162957e6c&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -66,6 +58,7 @@
   "keyToString": {
     "Application.ApiTest.executor": "Run",
     "Application.CompanyMain.executor": "Run",
+    "Application.MainLoginTest.executor": "Run",
     "Application.TestCompanyGateway.executor": "Run",
     "Application.TestFinancialStatementGateway.executor": "Run",
     "Application.TestNewsGateway.executor": "Run",
@@ -73,27 +66,23 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "CompanyDetails__financial__news",
+    "git-widget-placeholder": "hmbstnks",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "run.code.analysis.last.selected.profile": "pProject Default"
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
         <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
       </set>
     </attachedChunks>
   </component>
@@ -104,8 +93,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762989714768</updated>
+      <workItem from="1763592112396" duration="1930000" />
+      <workItem from="1763919825062" duration="3684000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
