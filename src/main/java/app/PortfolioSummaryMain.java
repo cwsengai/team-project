@@ -10,40 +10,34 @@ public class PortfolioSummaryMain {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // === Session Management ===
-            // TODO: Create the user session DAO for the app
-            // SessionDataAccessInterface userSessionDAO = new InMemorySessionDataAccessObject();
+            data_access.InMemorySessionDataAccessObject userSessionDAO = new data_access.InMemorySessionDataAccessObject();
 
-            // === Gateways and Adapters ===
-            // TODO: Create gateways and adapters for portfolio summary
-            // Example: PortfolioGateway portfolioGateway = new ...;
+            // === Check login (simulate not logged in) ===
+            boolean loggedIn = false; // Simulate not logged in
+            if (!loggedIn) {
+                javax.swing.JOptionPane.showMessageDialog(null,
+                        "No login page exists. Using a fake user for this session.",
+                        "Login Required", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-            // === UI ===
-            // TODO: Create the PortfolioSummaryPage UI and inject dependencies
-            // PortfolioSummaryPage portfolioSummaryPage = new PortfolioSummaryPage(userSessionDAO);
+                // Use Supabase utils to login as the provided fake user
+                // (simulate by setting JWT directly, since createAndLoginRandomUser makes a random user)
+                String fakeJwt = "FAKE_JWT_FOR_USER_0d2a1feb-363c-4284-bb22-73a4ae3431a3";
+                userSessionDAO.setJwtToken(fakeJwt);
+                // Optionally, you could call SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO) if you want a random user
+                // try {
+                //     util.SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
+                // } catch (Exception e) {
+                //     throw new RuntimeException("Failed to create random user for session", e);
+                // }
+            }
 
-            // === Presenter ===
-            // TODO: Create the presenter for the portfolio summary
-            // PortfolioSummaryPresenter presenter = new PortfolioSummaryPresenter(portfolioSummaryPage);
-
-            // === Interactors ===
-            // TODO: Create interactors for portfolio summary
-            // PortfolioSummaryInputBoundary interactor = new PortfolioSummaryInteractor(...);
-
-            // === Controllers ===
-            // TODO: Create controllers for portfolio summary
-            // PortfolioSummaryController controller = new PortfolioSummaryController(interactor);
-
-            // === Wire up controllers ===
-            // TODO: Wire up controllers to the UI
-            // portfolioSummaryPage.setController(controller);
-
-            // === Set visible ===
-            // TODO: Set the UI visible
-            // portfolioSummaryPage.setVisible(true);
-
-            // === Load initial data ===
-            // TODO: Load initial portfolio summary data if needed
-            // controller.handlePortfolioSummaryRequest();
+            // === Show the portfolio summary page (placeholder) ===
+            javax.swing.JFrame frame = new javax.swing.JFrame("Portfolio Summary");
+            frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+            frame.setSize(400, 300);
+            frame.add(new javax.swing.JLabel("Portfolio Summary Page (placeholder)", javax.swing.SwingConstants.CENTER));
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
     }
 }
