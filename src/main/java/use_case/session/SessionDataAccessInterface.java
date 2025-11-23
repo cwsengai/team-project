@@ -20,6 +20,4 @@ public interface SessionDataAccessInterface {
      * Returns the current user's UUID (decoded from JWT or stored directly).
      */
     UUID getCurrentUserId();
-
-    // TODO: Add methods for logout, refresh, etc. if needed
 }

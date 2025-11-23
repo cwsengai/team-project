@@ -50,8 +50,7 @@ public class SimulatedTradeIntegrationTest {
         SimulatedTradeInputData input = new SimulatedTradeInputData(ticker, isBuy, amount, price);
         assertDoesNotThrow(() -> tradeInteractor.executeTrade(input));
     }
-
-    // TODO: Add a test for failure if no user is logged in
+    
     @Test
     void testTradeSaveFailsIfNoUser() {
         sessionDAO.setJwtToken(null);

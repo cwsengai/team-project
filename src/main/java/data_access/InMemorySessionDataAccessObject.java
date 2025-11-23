@@ -34,6 +34,4 @@ public class InMemorySessionDataAccessObject implements SessionDataAccessInterfa
         if (userId == null) throw new IllegalArgumentException("JWT does not contain 'sub' (user_id)");
         return UUID.fromString(userId);
     }
-
-    // TODO: Add logout/clear method if needed
 }
