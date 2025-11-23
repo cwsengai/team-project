@@ -62,7 +62,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         // Speed Multiplier
         String[] speeds = {"5x", "10x", "20x", "30x"};
         speedComboBox = new JComboBox<>(speeds);
-        speedComboBox.setSelectedItem("10x"); // 默认 10x
+        speedComboBox.setSelectedItem("10x");
         inputPanel.add(new JLabel("Speed Multiplier:"));
         inputPanel.add(speedComboBox);
 

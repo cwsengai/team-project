@@ -219,7 +219,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
                 double entryValue = p.getAvgPrice() * p.getQuantity();
                 double returnRate = entryValue != 0 ? (unrealizedPnL / entryValue) : 0;
 
-                // 简化 Buying Time (Position 实体不存储，使用当前时间作为占位符)
                 String simplifiedTime = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
 

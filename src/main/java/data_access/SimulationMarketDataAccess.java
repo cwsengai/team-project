@@ -32,7 +32,7 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
 
     @Override
     public List<Double> generateTicks(PricePoint point, int numberOfTicks) {
-        Double[] ticks = new Double[numberOfTicks]; // 使用参数
+        Double[] ticks = new Double[numberOfTicks];
 
         double open = point.getOpen();
         double high = point.getHigh();
@@ -41,12 +41,10 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
 
         // 1. Anchor
         ticks[0] = open;
-        ticks[numberOfTicks - 1] = close; // 使用参数
+        ticks[numberOfTicks - 1] = close;
 
         // 2. Randomize positions (ensure valid bounds)
-        // 需要至少4个点才能跑这个随机算法，防止 crash
         if (numberOfTicks < 4) {
-            // 极简模式：如果倍速太快导致点太少，直接线性填充
             fillInterpolation(ticks, 0, numberOfTicks - 1);
         } else {
             int idx1 = 1 + random.nextInt(numberOfTicks - 3);
