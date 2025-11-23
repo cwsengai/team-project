@@ -5,19 +5,21 @@ import java.util.UUID;
 
 import entity.SimulatedTradeRecord;
 
-public class SimulatedTradeInteractor {
-    
-    private final SimulatedTradeDataAccessInterface dataAccess;
+import use_case.session.SessionDataAccessInterface;
 
-    public SimulatedTradeInteractor(SimulatedTradeDataAccessInterface dataAccess) {
+public class SimulatedTradeInteractor {
+    private final SimulatedTradeDataAccessInterface dataAccess;
+    private final SessionDataAccessInterface sessionDataAccess;
+
+    public SimulatedTradeInteractor(SimulatedTradeDataAccessInterface dataAccess, SessionDataAccessInterface sessionDataAccess) {
         this.dataAccess = dataAccess;
+        this.sessionDataAccess = sessionDataAccess;
     }
 
     public void execute(String ticker, boolean isLong, int quantity, double entryPrice, double exitPrice, LocalDateTime entryTime, LocalDateTime exitTime) {
-        
         // 1. Business Logic / Validation
         if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
-        
+
         double pnl = (exitPrice - entryPrice) * quantity;
         if (!isLong) pnl = -pnl; // Invert logic for shorts
 
@@ -26,9 +28,8 @@ public class SimulatedTradeInteractor {
             ticker, isLong, quantity, entryPrice, exitPrice, pnl, entryTime, exitTime
         );
 
-        // TODO: Implement a SessionManager to get current user ID
-        UUID currentUserId = UUID.fromString("some-user-uuid-here"); 
-        
+        // Get current user ID from session manager
+        UUID currentUserId = sessionDataAccess.getCurrentUserId();
         dataAccess.saveTrade(trade, currentUserId);
     }
 }

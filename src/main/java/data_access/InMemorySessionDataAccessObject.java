@@ -1,14 +1,11 @@
 package data_access;
 
-import use_case.session.SessionDataAccessInterface;
-
-/**
- * In-memory implementation of SessionDataAccessInterface.
- * Stores the JWT token for the current session only (not persistent).
- */
 import java.util.Base64;
 import java.util.UUID;
+
 import org.json.JSONObject;
+
+import use_case.session.SessionDataAccessInterface;
 
 public class InMemorySessionDataAccessObject implements SessionDataAccessInterface {
     private String jwtToken;
