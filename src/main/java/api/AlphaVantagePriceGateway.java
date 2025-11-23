@@ -1,21 +1,42 @@
 package api;
 
-import use_case.PriceDataAccessInterface;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.json.JSONObject;
+
 import entity.PricePoint;
 import entity.TimeInterval;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.IOException;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import use_case.PriceDataAccessInterface;
 
 
 public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
 
     private final String apiKey = "3TEXXG3G3UXFI7E2";
     private static final String BASE_URL = "https://www.alphavantage.co/query?";
+    private final OkHttpClient httpClient = new OkHttpClient();
 
     private String sendHttpRequest(String urlString) throws IOException {
-        System.out.println("DEBUG: Sending API request for price history: " + urlString);
-        return "{}";
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("API request failed with code: " + response.code());
+            }
+            if (response.body() == null) {
+                throw new IOException("API response body is null");
+            }
+            return response.body().string();
+        }
     }
     // -----------------------------------------------------
 
@@ -44,7 +65,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 .append("&apikey=").append(apiKey);
 
         if (interval == TimeInterval.FIVE_MINUTES) {
-            urlBuilder.append("&interval=").append("5min"); // 盘中数据所需参数
+            urlBuilder.append("&interval=").append("5min"); // Required parameter for intraday data
         }
 
         String jsonResponse = sendHttpRequest(urlBuilder.toString());
@@ -54,17 +75,81 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
 
 
     private List<PricePoint> parseJsonToPricePoints(String jsonResponse, TimeInterval interval) {
-
-        /*
-         * Actual Implementation Steps:
-         * 1. Introduce Jackson/Gson libraries.
-         * 2. Parse the jsonResponse string.
-         * 3. Iterate through timestamps under the "Time Series (X)" field.
-         * 4. Extract fields such as "1. open", "4. close", and "5. volume".
-         * 5. Create new PricePoint entities and add them to the list.
-         */
-
-        // We return an empty list to ensure compilation, due to the lack of external libraries.
-        return new ArrayList<>();
+        List<PricePoint> pricePoints = new ArrayList<>();
+        
+        try {
+            JSONObject root = new JSONObject(jsonResponse);
+            
+            // Check for API error messages
+            if (root.has("Error Message") || root.has("Note")) {
+                throw new RuntimeException("API Error: " + root.toString());
+            }
+            
+            // Determine the time series key based on interval
+            String timeSeriesKey = getTimeSeriesKey(interval);
+            
+            if (!root.has(timeSeriesKey)) {
+                return pricePoints; // Return empty list if no data
+            }
+            
+            JSONObject timeSeries = root.getJSONObject(timeSeriesKey);
+            Iterator<String> timestamps = timeSeries.keys();
+            
+            while (timestamps.hasNext()) {
+                String timestamp = timestamps.next();
+                JSONObject data = timeSeries.getJSONObject(timestamp);
+                
+                // Parse timestamp based on interval
+                LocalDateTime dateTime = parseTimestamp(timestamp, interval);
+                
+                // Extract OHLCV data
+                Double open = data.optDouble("1. open", 0.0);
+                Double high = data.optDouble("2. high", 0.0);
+                Double low = data.optDouble("3. low", 0.0);
+                Double close = data.optDouble("4. close", 0.0);
+                Double volume = data.optDouble("5. volume", 0.0);
+                
+                PricePoint pricePoint = new PricePoint(
+                    null, null, dateTime, interval,
+                    open, high, low, close, volume, "AlphaVantage"
+                );
+                
+                pricePoints.add(pricePoint);
+            }
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse price data: " + e.getMessage(), e);
+        }
+        
+        return pricePoints;
+    }
+    
+    private String getTimeSeriesKey(TimeInterval interval) {
+        switch (interval) {
+            case FIVE_MINUTES:
+                return "Time Series (5min)";
+            case DAILY:
+                return "Time Series (Daily)";
+            case WEEKLY:
+                return "Weekly Time Series";
+            case MONTHLY:
+                return "Monthly Time Series";
+            default:
+                throw new IllegalArgumentException("Unsupported interval: " + interval);
+        }
+    }
+    
+    private LocalDateTime parseTimestamp(String timestamp, TimeInterval interval) {
+        try {
+            if (interval == TimeInterval.FIVE_MINUTES) {
+                // Format: "2023-11-17 16:00:00"
+                return LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            } else {
+                // Format: "2023-11-17" - add midnight time
+                return LocalDateTime.parse(timestamp + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse timestamp: " + timestamp, e);
+        }
     }
 }

@@ -7,12 +7,9 @@ import interface_adapter.view_model.CompanyViewModel;
 public class CompanyPresenter implements CompanyOutputBoundary {
 
     private final CompanyViewModel vm;
-    private final framework_and_driver.CompanyPage ui;
 
-    public CompanyPresenter(CompanyViewModel vm,
-                                   framework_and_driver.CompanyPage ui) {
+    public CompanyPresenter(CompanyViewModel vm) {
         this.vm = vm;
-        this.ui = ui;
     }
 
     @Override
@@ -24,13 +21,16 @@ public class CompanyPresenter implements CompanyOutputBoundary {
         vm.industry = overview.getIndustry();
         vm.description = overview.getDescription();
 
-        ui.refresh();
+        // Notify UI via the listener set by CompanyPage
+        vm.notifyListener();
     }
 
     @Override
     public void presentError(String message) {
         vm.error = message;
-        ui.refresh();
+
+        // Notify UI via listener
+        vm.notifyListener();
     }
 }
 
