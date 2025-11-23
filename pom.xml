@@ -74,6 +74,13 @@
             <version>3.0.0</version>
         </dependency>
 
+        <!-- XChart for data visualization -->
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.8.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>
