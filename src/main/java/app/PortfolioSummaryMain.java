@@ -2,11 +2,11 @@ package app;
 
 import javax.swing.SwingUtilities;
 
+import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryLogin;
 import app.ui.PortfolioSummaryNavBar;
-import app.ui.PortfolioOrderHistoryTable;
 
 public class PortfolioSummaryMain {
     public static void main(String[] args) {
