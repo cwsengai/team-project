@@ -1,9 +1,8 @@
 package use_case.news;
 
-import entity.FinancialStatement;
-import entity.NewsArticle;
-
 import java.util.List;
+
+import entity.NewsArticle;
 
 public interface NewsOutputBoundary {
     void presentNews(List<NewsArticle> newsArticles);

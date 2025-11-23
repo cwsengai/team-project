@@ -1,30 +1,28 @@
 package app;
 
-import api.AlphaVantagePriceGateway;
-import data_access.SimulationMarketDataAccess;
-import entity.Account;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.simulated_trading.TradingController;
-import interface_adapter.simulated_trading.TradingPresenter;
-import interface_adapter.simulated_trading.TradingViewModel;
-import interface_adapter.setup_simulation.SetupController;
-import interface_adapter.setup_simulation.SetupPresenter;
-import interface_adapter.setup_simulation.SetupViewModel;
-import use_case.PriceDataAccessInterface;
-import use_case.simulated_trade.SimulationDataAccessInterface;
-import use_case.simulated_trade.SimulatedTradeInteractor;
-import use_case.update_market.UpdateMarketInteractor;
-import use_case.setup_simulation.SetupInteractor;
-import use_case.setup_simulation.SetupInputData;
-import view.TradingView;
-import view.SetupView;
-import view.ViewManager;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.CardLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Optional;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
+import api.AlphaVantagePriceGateway;
+import data_access.SimulationMarketDataAccess;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.setup_simulation.SetupController;
+import interface_adapter.setup_simulation.SetupPresenter;
+import interface_adapter.setup_simulation.SetupViewModel;
+import interface_adapter.simulated_trading.TradingViewModel;
+import use_case.PriceDataAccessInterface;
+import use_case.setup_simulation.SetupInputData;
+import use_case.setup_simulation.SetupInteractor;
+import use_case.simulated_trade.SimulationDataAccessInterface;
+import view.SetupView;
+import view.TradingView;
+import view.ViewManager;
 
 public class SimulatedMain {
 
@@ -51,27 +49,34 @@ public class SimulatedMain {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (viewManagerModel.getActiveView().equals(TradingViewModel.VIEW_NAME) && setupInput.isPresent()) {
-
                 SetupInputData input = setupInput.get();
                 String ticker = input.getTicker();
 
-                Account account = new Account(input.getInitialBalance());
-                TradingPresenter tradingPresenter = new TradingPresenter(tradingViewModel);
+                // Create a random session and account for the user
+                data_access.InMemorySessionDataAccessObject sessionDAO = new data_access.InMemorySessionDataAccessObject();
+                try {
+                    util.SupabaseRandomUserUtil.createAndLoginRandomUser(sessionDAO);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to create random user for session", e);
+                }
+                entity.Account account = new entity.Account(input.getInitialBalance());
+                data_access.SupabaseTradeDataAccessObject tradeDAO = new data_access.SupabaseTradeDataAccessObject();
+                interface_adapter.simulated_trading.TradingPresenter tradingPresenter = new interface_adapter.simulated_trading.TradingPresenter(tradingViewModel);
 
-                UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(
+                use_case.update_market.UpdateMarketInteractor updateMarketInteractor = new use_case.update_market.UpdateMarketInteractor(
                         simulationDAO, tradingPresenter, account, ticker
                 );
                 updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
 
-                SimulatedTradeInteractor tradeInteractor = new SimulatedTradeInteractor(
-                        tradingPresenter, account
+                use_case.simulated_trade.SimulatedTradeInteractor tradeInteractor = new use_case.simulated_trade.SimulatedTradeInteractor(
+                        tradingPresenter, account, tradeDAO, sessionDAO
                 );
 
-                TradingController tradingController = new TradingController(updateMarketInteractor, tradeInteractor);
+                interface_adapter.simulated_trading.TradingController tradingController = new interface_adapter.simulated_trading.TradingController(updateMarketInteractor, tradeInteractor);
 
                 views.removeAll();
 
-                TradingView tradingView = new TradingView(tradingController, tradingViewModel);
+                view.TradingView tradingView = new view.TradingView(tradingController, tradingViewModel);
                 views.add(tradingView, TradingViewModel.VIEW_NAME);
 
                 cardLayout.show(views, TradingViewModel.VIEW_NAME);

@@ -56,6 +56,7 @@ public class SimulatedTradeRecord {
         return exitTime;
     }
 
+    @Override
     public String toString() {
         return "SimulatedTradingRecord{" +
                 "ticker='" + ticker + '\'' +

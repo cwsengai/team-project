@@ -1,7 +1,6 @@
 package use_case.setup_simulation;
 
 import use_case.simulated_trade.SimulationDataAccessInterface;
-import java.time.temporal.ChronoUnit;
 
 public class SetupInteractor implements SetupInputBoundary {
 
