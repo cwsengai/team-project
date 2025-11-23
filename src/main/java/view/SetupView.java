@@ -1,15 +1,24 @@
 package view;
 
-import interface_adapter.setup_simulation.SetupController;
-import interface_adapter.setup_simulation.SetupViewModel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import interface_adapter.setup_simulation.SetupController;
+import interface_adapter.setup_simulation.SetupViewModel;
 
 public class SetupView extends JPanel implements PropertyChangeListener {
 

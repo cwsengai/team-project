@@ -2,7 +2,6 @@ package use_case.simulated_trade;
 
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -12,6 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import data_access.InMemorySessionDataAccessObject;
 import data_access.SupabaseTradeDataAccessObject;
+import entity.Account;
+import interface_adapter.simulated_trading.TradingPresenter;
+import interface_adapter.simulated_trading.TradingViewModel;
 import use_case.session.SessionDataAccessInterface;
 
 
@@ -19,6 +21,8 @@ public class SimulatedTradeIntegrationTest {
     private SessionDataAccessInterface sessionDAO;
     private SupabaseTradeDataAccessObject tradeDAO;
     private SimulatedTradeInteractor tradeInteractor;
+    private Account account;
+    private TradingPresenter presenter;
     private String testEmail;
     private String testPassword;
 
@@ -32,19 +36,19 @@ public class SimulatedTradeIntegrationTest {
         sessionDAO = new InMemorySessionDataAccessObject();
         sessionDAO.setJwtToken(jwt);
         tradeDAO = new SupabaseTradeDataAccessObject();
-        tradeInteractor = new SimulatedTradeInteractor(tradeDAO, sessionDAO);
+        account = new Account(10000.0); // Use a random or fixed balance
+        presenter = new TradingPresenter(new TradingViewModel());
+        tradeInteractor = new SimulatedTradeInteractor(presenter, account, tradeDAO, sessionDAO);
     }
 
     @Test
     void testTradeSaveWithSessionUser() {
         String ticker = "AAPL";
-        boolean isLong = true;
-        int quantity = 10;
-        double entry = 150.0;
-        double exit = 155.0;
-        LocalDateTime entryTime = LocalDateTime.now().minusHours(1);
-        LocalDateTime exitTime = LocalDateTime.now();
-        assertDoesNotThrow(() -> tradeInteractor.execute(ticker, isLong, quantity, entry, exit, entryTime, exitTime));
+        boolean isBuy = true;
+        double amount = 1500.0;
+        double price = 150.0;
+        SimulatedTradeInputData input = new SimulatedTradeInputData(ticker, isBuy, amount, price);
+        assertDoesNotThrow(() -> tradeInteractor.executeTrade(input));
     }
 
     // TODO: Add a test for failure if no user is logged in
@@ -52,14 +56,12 @@ public class SimulatedTradeIntegrationTest {
     void testTradeSaveFailsIfNoUser() {
         sessionDAO.setJwtToken(null);
         String ticker = "AAPL";
-        boolean isLong = true;
-        int quantity = 10;
-        double entry = 150.0;
-        double exit = 155.0;
-        LocalDateTime entryTime = LocalDateTime.now().minusHours(1);
-        LocalDateTime exitTime = LocalDateTime.now();
+        boolean isBuy = true;
+        double amount = 1500.0;
+        double price = 150.0;
+        SimulatedTradeInputData input = new SimulatedTradeInputData(ticker, isBuy, amount, price);
         assertThrows(IllegalStateException.class, () ->
-            tradeInteractor.execute(ticker, isLong, quantity, entry, exit, entryTime, exitTime)
+            tradeInteractor.executeTrade(input)
         );
     }
 }

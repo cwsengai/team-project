@@ -1,7 +1,6 @@
 package interface_adapter.controller.simulated_trading;
 
-import java.time.LocalDateTime;
-
+import use_case.simulated_trade.SimulatedTradeInputData;
 import use_case.simulated_trade.SimulatedTradeInteractor;
 
 public class SimulatedTradeController {
@@ -12,13 +11,14 @@ public class SimulatedTradeController {
         this.interactor = interactor;
     }
 
-    public void saveTrade(String ticker, boolean isLong, int quantity, double entry, double exit) {
-        // Validate basics here if you want, or let Interactor do it
-        LocalDateTime now = LocalDateTime.now();
-        
-        // Assume entry was sometime in the past for this simulation
-        LocalDateTime entryTime = now.minusMinutes(15); 
-        
-        interactor.execute(ticker, isLong, quantity, entry, exit, entryTime, now);
+    public void saveTrade(String ticker, boolean isBuy, double amount, double currentPrice) {
+        // This method now matches the Clean Architecture input style
+        SimulatedTradeInputData input = new SimulatedTradeInputData(
+            ticker,
+            isBuy,
+            amount,
+            currentPrice
+        );
+        interactor.executeTrade(input);
     }
 }
