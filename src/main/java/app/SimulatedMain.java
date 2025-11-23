@@ -24,6 +24,22 @@ import view.SetupView;
 import view.TradingView;
 import view.ViewManager;
 
+
+// import interface_adapter.simulated_trading.TradingController;
+// import java.awt.CardLayout;
+
+
+
+
+
+// import interface_adapter.setup_simulation.SetupController;
+// import interface_adapter.setup_simulation.SetupPresenter;
+// import interface_adapter.setup_simulation.SetupViewModel;
+// import interface_adapter.simulated_trading.TradingViewModel;
+// import use_case.PriceDataAccessInterface;
+// import use_case.simulated_trade.SimulationDataAccessInterface;
+
+
 public class SimulatedMain {
 
     private static final PriceDataAccessInterface baseGateway = new AlphaVantagePriceGateway();
