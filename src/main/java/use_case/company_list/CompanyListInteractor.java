@@ -34,7 +34,7 @@ public class CompanyListInteractor implements CompanyListInputBoundary {
 
             //Rules: filter out the invalid data
             companies = companies.stream()
-                    .filter(c -> c.getMarketCap() > 0)
+                    .filter(c -> c.getMarketCapitalization() > 0)
                     .collect(Collectors.toList());
 
             // Create output data
