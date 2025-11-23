@@ -1,0 +1,19 @@
+Index: src/main/java/data_access/SimulationMarketDataAccess.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package data_access;\n\nimport entity.PricePoint;\nimport entity.TimeInterval;\nimport use_case.PriceDataAccessInterface;\nimport use_case.simulated_trade.SimulationDataAccessInterface;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\nimport java.util.Random;\n\npublic class SimulationMarketDataAccess implements SimulationDataAccessInterface {\n\n    private final PriceDataAccessInterface realDataGateway;\n    private final Random random = new Random();\n\n\n    public SimulationMarketDataAccess(PriceDataAccessInterface realDataGateway) {\n        this.realDataGateway = realDataGateway;\n    }\n\n    @Override\n    public List<PricePoint> loadHistory(String ticker) {\n        try {\n            return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTS);\n        } catch (Exception e) {\n            System.err.println(\"Simulation Data Load Error: \" + e.getMessage());\n            return new ArrayList<>();\n        }\n    }\n\n    @Override\n    public List<Double> generateTicks(PricePoint point, int numberOfTicks) {\n        Double[] ticks = new Double[numberOfTicks];\n\n        double open = point.getOpen();\n        double high = point.getHigh();\n        double low = point.getLow();\n        double close = point.getClose();\n\n        // 1. Anchor\n        ticks[0] = open;\n        ticks[numberOfTicks - 1] = close;\n\n        // 2. Randomize positions (ensure valid bounds)\n        if (numberOfTicks < 4) {\n            fillInterpolation(ticks, 0, numberOfTicks - 1);\n        } else {\n            int idx1 = 1 + random.nextInt(numberOfTicks - 3);\n            int idx2 = idx1 + 1 + random.nextInt(numberOfTicks - idx1 - 1);\n\n            boolean highFirst = random.nextBoolean();\n            ticks[idx1] = highFirst ? high : low;\n            ticks[idx2] = highFirst ? low : high;\n\n            fillInterpolation(ticks, 0, idx1);\n            fillInterpolation(ticks, idx1, idx2);\n            fillInterpolation(ticks, idx2, numberOfTicks - 1);\n        }\n\n        List<Double> result = new ArrayList<>();\n        Collections.addAll(result, ticks);\n        return result;\n    }\n\n    private void fillInterpolation(Double[] array, int startIndex, int endIndex) {\n        double startVal = array[startIndex];\n        double endVal = array[endIndex];\n        int steps = endIndex - startIndex;\n\n        if (steps <= 0) return;\n        double stepValue = (endVal - startVal) / steps;\n\n        for (int i = 1; i < steps; i++) {\n            array[startIndex + i] = startVal + (stepValue * i);\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/data_access/SimulationMarketDataAccess.java b/src/main/java/data_access/SimulationMarketDataAccess.java
+--- a/src/main/java/data_access/SimulationMarketDataAccess.java	(revision 1989edd30e9fda41ca102f274d6c5bd2e81a382f)
++++ b/src/main/java/data_access/SimulationMarketDataAccess.java	(date 1763871751798)
+@@ -23,7 +23,7 @@
+     @Override
+     public List<PricePoint> loadHistory(String ticker) {
+         try {
+-            return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTS);
++            return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTES);
+         } catch (Exception e) {
+             System.err.println("Simulation Data Load Error: " + e.getMessage());
+             return new ArrayList<>();
