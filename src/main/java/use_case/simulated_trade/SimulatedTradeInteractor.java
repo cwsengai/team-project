@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import entity.SimulatedTradeRecord;
-
 import use_case.session.SessionDataAccessInterface;
 
 public class SimulatedTradeInteractor {
