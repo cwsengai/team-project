@@ -49,7 +49,11 @@ public class SimulatedTradeIntegrationTest {
                 throw e;
             }
         });
-        presenter = new TradingPresenter(new TradingViewModel());
+        presenter = new TradingPresenter(
+            new TradingViewModel(),
+            new interface_adapter.ViewManagerModel(),
+            new interface_adapter.setup_simulation.SetupViewModel()
+        );
         tradeInteractor = new SimulatedTradeInteractor(presenter, account);
     }
 
