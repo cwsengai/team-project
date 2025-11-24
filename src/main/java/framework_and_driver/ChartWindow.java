@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +24,15 @@ import org.knowm.xchart.XChartPanel;
 import entity.ChartViewModel;
 import entity.TimeInterval;
 import interface_adapter.IntervalController;
-import use_case.session.SessionDataAccessInterface;
-import util.SupabaseRandomUserUtil;
 
 public class ChartWindow extends JFrame {
 
-    private final JPanel chartPanel; // Panel to hold the XChart
+    private JPanel chartPanel; // Panel to hold the XChart
     private final JTextArea statusArea = new JTextArea(3, 40); // Used to display Presenter's output
     private IntervalController controller;
-    private final SessionDataAccessInterface userSessionDAO;
 
-    public ChartWindow(SessionDataAccessInterface userSessionDAO) {
+    public ChartWindow() {
         super("Stock Chart Platform - UC4 Demo");
-        this.userSessionDAO = userSessionDAO;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(new BorderLayout());
@@ -81,22 +76,6 @@ public class ChartWindow extends JFrame {
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(Color.BLACK);
         loginButton.setFocusPainted(false);
-
-        // Add action listener for login button
-        loginButton.addActionListener(e -> {
-            String jwt;
-            try {
-                jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
-            } catch (IOException e1) {
-                statusArea.append("[ERROR] Supabase login exception: " + e1.getMessage() + "\n");
-                return;
-            }
-            if (jwt != null) {
-                statusArea.append("[DEBUG] Supabase user logged in. JWT set.\n");
-            } else {
-                statusArea.append("[ERROR] Supabase login failed.\n");
-            }
-        });
 
         panel.add(logo, BorderLayout.WEST);
         panel.add(loginButton, BorderLayout.EAST);

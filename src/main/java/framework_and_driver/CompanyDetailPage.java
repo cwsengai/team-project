@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -19,8 +18,6 @@ import javax.swing.SwingConstants;
 import entity.CompanyDetailViewModel;
 import entity.NewsArticle;
 import interface_adapter.IntervalController;
-import use_case.session.SessionDataAccessInterface;
-import util.SupabaseRandomUserUtil;
 
 /**
  * Company detail page UI component that displays company information,
@@ -38,11 +35,8 @@ public class CompanyDetailPage extends JFrame {
     private IntervalController chartController;
     private String currentTicker;
 
-    private final SessionDataAccessInterface userSessionDAO;
-
-    public CompanyDetailPage(SessionDataAccessInterface userSessionDAO) {
+    public CompanyDetailPage() {
         super("Company Details");
-        this.userSessionDAO = userSessionDAO;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 1000);
         setLayout(new BorderLayout());
@@ -78,22 +72,6 @@ public class CompanyDetailPage extends JFrame {
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(Color.BLACK);
         loginButton.setFocusPainted(false);
-
-        // Add action listener for login button
-        loginButton.addActionListener(e -> {
-            String jwt;
-            try {
-                jwt = SupabaseRandomUserUtil.createAndLoginRandomUser(userSessionDAO);
-            } catch (IOException e1) {
-                System.out.println("[CompanyDetailPage] [ERROR] Supabase login exception: " + e1.getMessage());
-                return;
-            }
-            if (jwt != null) {
-                System.out.println("[CompanyDetailPage] Supabase login: JWT set = " + jwt);
-            } else {
-                System.out.println("[CompanyDetailPage] [ERROR] Supabase login failed.");
-            }
-        });
 
         panel.add(logo, BorderLayout.WEST);
         panel.add(loginButton, BorderLayout.EAST);
@@ -205,12 +183,12 @@ public class CompanyDetailPage extends JFrame {
         panel.setPreferredSize(new java.awt.Dimension(0, 200)); // Limit bottom panel height
 
         // Related News
-        JPanel newsPanelOuter = new JPanel(new BorderLayout());
-        newsPanelOuter.setBorder(BorderFactory.createTitledBorder("Related News"));
-        newsPanelOuter.setPreferredSize(new java.awt.Dimension(600, 0));
+        JPanel newsPanel = new JPanel(new BorderLayout());
+        newsPanel.setBorder(BorderFactory.createTitledBorder("Related News"));
+        newsPanel.setPreferredSize(new java.awt.Dimension(600, 0));
         this.newsPanel = new JPanel();
         this.newsPanel.setLayout(new BoxLayout(this.newsPanel, BoxLayout.Y_AXIS));
-        newsPanelOuter.add(new JScrollPane(this.newsPanel), BorderLayout.CENTER);
+        newsPanel.add(new JScrollPane(this.newsPanel), BorderLayout.CENTER);
 
         // Financial Statements
         financialStatementsPanel = new JPanel();
@@ -224,7 +202,7 @@ public class CompanyDetailPage extends JFrame {
         financialStatementsPanel.add(balanceSheet);
         financialStatementsPanel.add(cashFlow);
 
-        panel.add(newsPanelOuter, BorderLayout.WEST);
+        panel.add(newsPanel, BorderLayout.WEST);
         panel.add(financialStatementsPanel, BorderLayout.EAST);
 
         return panel;

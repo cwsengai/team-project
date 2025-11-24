@@ -4,7 +4,6 @@ import javax.swing.SwingUtilities;
 
 import api.AlphaVantagePriceGateway;
 import api.Api;
-import data_access.InMemorySessionDataAccessObject;
 import framework_and_driver.CompanyDetailPage;
 import interface_adapter.CompanyDetailController;
 import interface_adapter.CompanyDetailPresenter;
@@ -14,7 +13,6 @@ import use_case.GetPriceByIntervalInteractor;
 import use_case.PriceChartOutputBoundary;
 import use_case.PriceDataAccessInterface;
 import use_case.ViewCompanyDetailInteractor;
-import use_case.session.SessionDataAccessInterface;
 
 public class CompanyMain {
 
@@ -22,10 +20,6 @@ public class CompanyMain {
         SwingUtilities.invokeLater(() -> {
             // Initialize API
             Api api = new Api("demo"); // TODO: Replace with actual API key
-
-            // === Session Management ===
-            // Create the user session DAO for the app
-            SessionDataAccessInterface userSessionDAO = new InMemorySessionDataAccessObject();
             
             // Create gateways
             // Use api.AlphaVantageCompanyGateway which implements use_case.CompanyGateway
@@ -45,12 +39,7 @@ public class CompanyMain {
             PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
             
             // Create UI
-            // Example: create ChartWindow and inject userSessionDAO
-            // ChartWindow chartWindow = new ChartWindow(userSessionDAO);
-            // (You can now use chartWindow.setController(chartController) if needed)
-
-            // Existing UI
-            CompanyDetailPage companyDetailPage = new CompanyDetailPage(userSessionDAO);
+            CompanyDetailPage companyDetailPage = new CompanyDetailPage();
             
             // Create presenter (implements both CompanyDetailOutputBoundary and PriceChartOutputBoundary)
             CompanyDetailPresenter presenter = new CompanyDetailPresenter(companyDetailPage);
