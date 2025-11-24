@@ -30,7 +30,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
 
     private final Font LABEL_FONT = new Font("SansSerif", Font.BOLD, 18);
     private final Font INPUT_FONT = new Font("SansSerif", Font.PLAIN, 16);
-    private final Font HINT_FONT = new Font("SansSerif", Font.ITALIC, 14); // 新增提示字体
+    private final Font HINT_FONT = new Font("SansSerif", Font.ITALIC, 14);
 
     public SetupView(SetupController controller, SetupViewModel viewModel) {
         this.controller = controller;
