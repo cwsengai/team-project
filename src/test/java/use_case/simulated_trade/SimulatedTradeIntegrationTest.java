@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +24,8 @@ public class SimulatedTradeIntegrationTest {
     private TradingPresenter presenter;
     private String testEmail;
     private String testPassword;
+    // For propagating exceptions from listener to test
+    private RuntimeException listenerException;
 
     @BeforeEach
     void setup() throws IOException {
@@ -36,9 +37,20 @@ public class SimulatedTradeIntegrationTest {
         sessionDAO = new InMemorySessionDataAccessObject();
         sessionDAO.setJwtToken(jwt);
         tradeDAO = new SupabaseTradeDataAccessObject();
-        account = new Account(10000.0); // Use a random or fixed balance
+        String userId = sessionDAO.getCurrentUserId().toString();
+        account = new Account(10000.0, userId); // Pass userId to Account
+        // Register the trade save observer (mimic SimulatedMain)
+        account.addTradeClosedListener(record -> {
+            try {
+                java.util.UUID userUuid = sessionDAO.getCurrentUserId();
+                tradeDAO.saveTrade(record, userUuid);
+            } catch (RuntimeException e) {
+                listenerException = e;
+                throw e;
+            }
+        });
         presenter = new TradingPresenter(new TradingViewModel());
-        tradeInteractor = new SimulatedTradeInteractor(presenter, account, tradeDAO, sessionDAO);
+        tradeInteractor = new SimulatedTradeInteractor(presenter, account);
     }
 
     @Test
@@ -54,14 +66,25 @@ public class SimulatedTradeIntegrationTest {
     // TODO: Add a test for failure if no user is logged in
     @Test
     void testTradeSaveFailsIfNoUser() {
-        sessionDAO.setJwtToken(null);
         String ticker = "AAPL";
-        boolean isBuy = true;
         double amount = 1500.0;
-        double price = 150.0;
-        SimulatedTradeInputData input = new SimulatedTradeInputData(ticker, isBuy, amount, price);
-        assertThrows(IllegalStateException.class, () ->
-            tradeInteractor.executeTrade(input)
-        );
+        double buyPrice = 150.0;
+        double sellPrice = 151.0; // Use a different price to guarantee nonzero realizedPnL
+        // Step 1: Buy to open a position (while logged in)
+        SimulatedTradeInputData buyInput = new SimulatedTradeInputData(ticker, true, amount, buyPrice);
+        tradeInteractor.executeTrade(buyInput);
+
+        // Calculate the quantity actually bought
+        int quantity = (int) (amount / buyPrice);
+
+        // Step 2: Remove JWT to simulate logout
+        sessionDAO.setJwtToken(null);
+
+        // Step 3: Sell the exact quantity to close the position at a different price
+        double sellAmount = quantity * sellPrice;
+        SimulatedTradeInputData sellInput = new SimulatedTradeInputData(ticker, false, sellAmount, sellPrice);
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, () -> {
+            tradeInteractor.executeTrade(sellInput);
+        });
     }
 }
