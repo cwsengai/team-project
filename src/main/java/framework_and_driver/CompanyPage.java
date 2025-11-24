@@ -192,15 +192,6 @@ public class CompanyPage extends JFrame {
         chartPanel.setPreferredSize(new Dimension(1200, 700));
         chartPanel.setMinimumSize(new java.awt.Dimension(1000, 600));
 
-        // Price info Panel
-        JPanel pricePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        priceLabel = new JLabel("O 267.81  H 267.98  L 267.76  C 267.90  +0.06 (+0.02%)");
-        priceLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        changeLabel = new JLabel("Vol-Ticks 88");
-        changeLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        pricePanel.add(priceLabel);
-        pricePanel.add(changeLabel);
-
         // Interval buttons
         JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JButton btn5min = new JButton("5min");
@@ -230,7 +221,6 @@ public class CompanyPage extends JFrame {
         intervalPanel.add(zoomIn);
 
         JPanel bottom = new JPanel(new BorderLayout());
-        bottom.add(pricePanel, BorderLayout.NORTH);
         bottom.add(intervalPanel, BorderLayout.SOUTH);
 
         panel.add(headerPanel, BorderLayout.NORTH);
