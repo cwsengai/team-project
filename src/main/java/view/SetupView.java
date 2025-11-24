@@ -1,24 +1,13 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.time.format.DateTimeParseException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
 import interface_adapter.setup_simulation.SetupController;
 import interface_adapter.setup_simulation.SetupViewModel;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class SetupView extends JPanel implements PropertyChangeListener {
 
@@ -29,14 +18,13 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     // UI Components
     private final JTextField tickerField = new JTextField(10);
     private final JTextField balanceField = new JTextField("100000.00", 10);
-    private final JTextField startDateField = new JTextField("2024-01-01", 10);
-    private final JTextField endDateField = new JTextField("2024-01-31", 10);
+
 
     // Speed Options (5x, 10x, 20x, 30x)
     private final JComboBox<String> speedComboBox;
 
     private final JButton startButton = new JButton(SetupViewModel.START_BUTTON_LABEL);
-    private final JLabel errorLabel = new JLabel(" "); // Space to prevent layout jump
+    private final JLabel errorLabel = new JLabel(" ");
 
     public SetupView(SetupController controller, SetupViewModel viewModel) {
         this.controller = controller;
@@ -44,13 +32,38 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.viewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BorderLayout(20, 20));
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(50, 50, 50, 50),
-                BorderFactory.createTitledBorder(SetupViewModel.TITLE_LABEL)
-        ));
 
-        // --- 1. Main Input Panel ---
-        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        Border outerPadding = BorderFactory.createEmptyBorder(30, 50, 50, 50);
+        this.setBorder(outerPadding);
+
+        // --- 1. TOP HEADER (Logo + Error) ---
+        JPanel topContainer = new JPanel();
+        topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
+        topContainer.setOpaque(false);
+
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        logoPanel.setOpaque(false);
+        JLabel logoLabel = new JLabel("💰 BILLIONAIRE");
+        logoLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
+        logoLabel.setForeground(new Color(50, 50, 50));
+        logoPanel.add(logoLabel);
+
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JPanel errorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
+        errorPanel.setOpaque(false);
+        errorPanel.add(errorLabel);
+
+        topContainer.add(logoPanel);
+        topContainer.add(Box.createVerticalStrut(10));
+        topContainer.add(errorPanel);
+
+        this.add(topContainer, BorderLayout.NORTH);
+
+        // --- 2. Main Input Panel (Form) ---
+
+        JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 20));
+        inputPanel.setBorder(BorderFactory.createTitledBorder("Simulation Configuration"));
 
         // Ticker (Stock Symbol)
         inputPanel.add(new JLabel("Ticker (e.g., AAPL):"));
@@ -60,13 +73,6 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         inputPanel.add(new JLabel("Initial Balance ($):"));
         inputPanel.add(balanceField);
 
-        // Start Date
-        inputPanel.add(new JLabel("Start Date (YYYY-MM-DD):"));
-        inputPanel.add(startDateField);
-
-        // End Date
-        inputPanel.add(new JLabel("End Date (YYYY-MM-DD):"));
-        inputPanel.add(endDateField);
 
         // Speed Multiplier
         String[] speeds = {"5x", "10x", "20x", "30x"};
@@ -75,37 +81,37 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         inputPanel.add(new JLabel("Speed Multiplier:"));
         inputPanel.add(speedComboBox);
 
-        // --- 2. Button and Error ---
-        errorLabel.setForeground(Color.RED);
-        errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.add(inputPanel, BorderLayout.CENTER);
 
-        JPanel controlPanel = new JPanel(new FlowLayout());
-        startButton.setFont(new Font("Arial", Font.BOLD, 14));
+        // --- 3. Bottom Button ---
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+        startButton.setPreferredSize(new Dimension(120, 40));
+        startButton.setBackground(new Color(60, 179, 113));
+        startButton.setForeground(Color.BLACK);
+        startButton.setOpaque(true);
+        startButton.setBorderPainted(false);
+
         controlPanel.add(startButton);
 
-        this.add(errorLabel, BorderLayout.NORTH); // Display errors here
-        this.add(inputPanel, BorderLayout.CENTER);
         this.add(controlPanel, BorderLayout.SOUTH);
 
-        // Bind Action to Controller
+        // Bind Action
         startButton.addActionListener(e -> handleStart());
     }
 
     private void handleStart() {
-        errorLabel.setText(" ");
+        errorLabel.setText(" "); // Clear old error
         try {
             String ticker = tickerField.getText().toUpperCase();
             double balance = Double.parseDouble(balanceField.getText());
             int speed = Integer.parseInt(speedComboBox.getSelectedItem().toString().replace("x", ""));
 
-            String startDateStr = startDateField.getText();
-            String endDateStr = endDateField.getText();
+            controller.execute(ticker, balance, speed);
 
-            controller.execute(ticker, balance, speed, startDateStr, endDateStr);
         } catch (NumberFormatException ex) {
             errorLabel.setText("ERROR: Balance/Speed must be a number.");
-        } catch (DateTimeParseException ex) {
-            errorLabel.setText("ERROR: Date format must be YYYY-MM-DD.");
         }
     }
 

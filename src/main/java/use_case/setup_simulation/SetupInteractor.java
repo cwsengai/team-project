@@ -14,20 +14,14 @@ public class SetupInteractor implements SetupInputBoundary {
 
     @Override
     public void execute(SetupInputData input) {
-
         if (input.getSpeedMultiplier() < 5 || input.getSpeedMultiplier() > 30 || input.getSpeedMultiplier() % 5 != 0) {
-            presenter.prepareFailView("Invalid speed multiplier. Must be 5x, 10x, 20x, or 30x.");
+            presenter.prepareFailView("Invalid speed. Must be 5x, 10x, 20x, or 30x.");
             return;
         }
         if (input.getInitialBalance() <= 0) {
             presenter.prepareFailView("Initial balance must be positive.");
             return;
         }
-        if (input.getEndDate().isBefore(input.getStartDate())) {
-            presenter.prepareFailView("End date must be after start date.");
-            return;
-        }
-
         presenter.prepareSuccessView(input);
     }
 }
