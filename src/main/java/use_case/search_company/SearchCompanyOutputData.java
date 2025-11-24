@@ -4,20 +4,19 @@ import entity.Company;
 import java.util.List;
 
 /**
- * Output Data for Search Company Use Case
+ * Output data for Search Company use case.
  */
-
 public class SearchCompanyOutputData {
-    private final List<Company> matchingCompanies;
+    private final List<Company> companies;
     private final boolean success;
 
-    public SearchCompanyOutputData(List<Company> matchingCompanies, boolean success) {
-        this.matchingCompanies = matchingCompanies;
+    public SearchCompanyOutputData(List<Company> companies, boolean success) {
+        this.companies = companies;
         this.success = success;
     }
 
-    public List<Company> getMatchingCompanies() {
-        return matchingCompanies;
+    public List<Company> getCompanies() {
+        return companies;
     }
 
     public boolean isSuccess() {

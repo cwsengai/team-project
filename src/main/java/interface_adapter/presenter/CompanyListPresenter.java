@@ -1,6 +1,7 @@
 package interface_adapter.presenter;
 
 import entity.Company;
+import framework_and_driver.CompanyListPage;
 import interface_adapter.company_list.CompanyDisplayData;
 import interface_adapter.view_model.CompanyListViewModel;
 import use_case.company_list.CompanyListOutputBoundary;
@@ -9,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyListPresenter implements CompanyListOutputBoundary {
+    private final CompanyListPage page;
     private final CompanyListViewModel viewModel;
 
-    public CompanyListPresenter(CompanyListViewModel viewModel) {
+    public CompanyListPresenter(CompanyListPage page, CompanyListViewModel viewModel) {
+        this.page = page;
         this.viewModel = viewModel;
     }
 
@@ -20,54 +23,41 @@ public class CompanyListPresenter implements CompanyListOutputBoundary {
         List<CompanyDisplayData> displayList = new ArrayList<>();
 
         for (Company company : outputData.getCompanies()) {
+            String formattedCap = formatMarketCap(company.getMarketCapitalization());
+            String formattedPE = formatPeRatio(company.getPeRatio());
 
-            // Extract data from Company entity
-            String symbol = company.getSymbol();              // Note: it's getSymbol(), not getTicker()!
-            String name = company.getName();
-            String country = company.getCountry();
-            long marketCap = (long) company.getMarketCapitalization();  // Note: it's a long, not double!
-            float peRatio = company.getPeRatio();             // Note: it's a float!
-
-            // Format the numbers for display
-            String formattedCap = formatMarketCap(marketCap);
-            String formattedPE = formatPeRatio(peRatio);
-
-            // Create display data object
             displayList.add(new CompanyDisplayData(
-                    symbol,
-                    name,
-                    country,
+                    company.getSymbol(),
+                    company.getName(),
+                    company.getCountry(),
                     formattedCap,
                     formattedPE
             ));
         }
 
         viewModel.setCompanies(displayList);
+        page.updateCompanyList(displayList);
     }
 
     @Override
     public void presentError(String errorMessage) {
-        viewModel.setErrorMessage(errorMessage);
+        page.displayError(errorMessage);
     }
 
-    // Format the number and ratio
-
-    private String formatMarketCap(long marketCap) {
-        if (marketCap >= 1_000_000_000_000L) {
+    private String formatMarketCap(double marketCap) {
+        if (marketCap >= 1_000_000_000_000.0) {
             return String.format("$%.1fT", marketCap / 1_000_000_000_000.0);
-        } else if (marketCap >= 1_000_000_000L) {
+        } else if (marketCap >= 1_000_000_000.0) {
             return String.format("$%.1fB", marketCap / 1_000_000_000.0);
-        } else if (marketCap >= 1_000_000L) {
+        } else if (marketCap >= 1_000_000.0) {
             return String.format("$%.1fM", marketCap / 1_000_000.0);
         } else {
-            return String.format("$%d", marketCap);
+            return String.format("$%.0f", marketCap);
         }
     }
 
-    private String formatPeRatio(float peRatio) {
-        if (peRatio <= 0) {
-            return "N/A";
-        }
+    private String formatPeRatio(double peRatio) {
+        if (peRatio <= 0) return "N/A";
         return String.format("%.2f", peRatio);
     }
 }

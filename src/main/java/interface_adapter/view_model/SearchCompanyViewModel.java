@@ -4,8 +4,13 @@ import interface_adapter.company_list.CompanyDisplayData;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * View Model for Search Company feature.
+ * Holds the state of search results and notifies observers of changes.
+ */
 public class SearchCompanyViewModel {
     private List<CompanyDisplayData> searchResults = new ArrayList<>();
     private String errorMessage = "";
@@ -33,5 +38,9 @@ public class SearchCompanyViewModel {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
     }
 }

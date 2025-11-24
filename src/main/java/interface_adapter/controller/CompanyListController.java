@@ -1,21 +1,26 @@
 package interface_adapter.controller;
 
-import use_case.search_company.SearchCompanyInputBoundary;
-import use_case.search_company.SearchCompanyInputData;
+import use_case.company_list.CompanyListInputBoundary;
+import use_case.company_list.CompanyListInputData;
 
+/**
+ * Controller for Company List use case.
+ * Handles user actions to load the top companies list.
+ */
 public class CompanyListController {
-    private SearchCompanyInputBoundary interactor;
+    private final CompanyListInputBoundary interactor;
 
-    public void SearchCompanyController(SearchCompanyInputBoundary interactor) {
+    public CompanyListController(CompanyListInputBoundary interactor) {
         this.interactor = interactor;
     }
 
     /**
-     * Search for companies matching the query.
-     * @param query Search query (company name or symbol)
+     * Load the list of top companies.
+     * This triggers the use case to fetch and display companies.
      */
-    public void searchCompany(String query) {
-        SearchCompanyInputData inputData = new SearchCompanyInputData(query);
+    public void loadCompanyList() {
+        // Create empty input data (no parameters needed for loading full list)
+        CompanyListInputData inputData = new CompanyListInputData();
         interactor.execute(inputData);
     }
 }

@@ -1,286 +1,714 @@
+// File: src/main/java/framework_and_driver/CompanyListPage.java
 package framework_and_driver;
 
-import data_access.AlphaVantageCompanyGateway;
-import entity.PriceHistory;
-import entity.PricePoint;
-import entity.TimeInterval;
 import interface_adapter.company_list.CompanyDisplayData;
 import interface_adapter.controller.CompanyListController;
 import interface_adapter.controller.SearchCompanyController;
-import interface_adapter.presenter.CompanyListPresenter;
-import interface_adapter.presenter.SearchCompanyPresenter;
-import interface_adapter.view_model.CompanyListViewModel;
-import interface_adapter.view_model.SearchCompanyViewModel;
-import use_case.company_list.CompanyListInteractor;
-import use_case.search_company.SearchCompanyInteractor;
-import org.knowm.xchart.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.EventObject;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.table.TableCellEditor;
 
 /**
- * Main page showing market indices, economic indicators, and company list.
+ * Main page showing company list and search functionality.
  * Implements User Stories 1 (Company List) and 2 (Search).
  */
 public class CompanyListPage extends JPanel implements PropertyChangeListener {
-    private final CompanyListController listController;
-    private final SearchCompanyController searchController;
-    private final CompanyListViewModel listViewModel;
-    private final SearchCompanyViewModel searchViewModel;
-    private final AlphaVantageCompanyGateway gateway;
+    private CompanyListController listController;
+    private SearchCompanyController searchController;
 
     private JTable companyTable;
     private DefaultTableModel tableModel;
     private JTextField searchField;
 
+    // For economic indicator
+    private JPanel economicIndicatorsPanel;
+    private List<entity.EconomicIndicator> economicIndicators;
+
+    // For market index
+    private JPanel marketIndicesPanel;
+    private List<entity.MarketIndex> marketIndices;
+
+    // --- Custom Colors for the modern look ---
+    private static final Color BACKGROUND_COLOR = new Color(248, 248, 248);
+    private static final Color HEADER_BG_COLOR = Color.WHITE;
+    private static final Color PRIMARY_TEXT = Color.BLACK;
+    private static final Color ACCENT_COLOR = new Color(40, 40, 40);
+    private static final Color POSITIVE_CHANGE = new Color(0, 150, 0);
+    private static final Color NEGATIVE_CHANGE = new Color(200, 0, 0);
+    private static final Color TABLE_HEADER_BG = new Color(230, 230, 230);
+    private static final Color LINK_COLOR = new Color(133, 165, 168);
+
     public CompanyListPage() {
-        // Setup dependencies - Clean Architecture wiring
-        gateway = new AlphaVantageCompanyGateway();
-
-        // Company List use case
-        listViewModel = new CompanyListViewModel();
-        CompanyListPresenter listPresenter = new CompanyListPresenter(listViewModel);
-        CompanyListInteractor listInteractor = new CompanyListInteractor(gateway, listPresenter);
-        listController = new CompanyListController(listInteractor);
-
-        // Search use case
-        searchViewModel = new SearchCompanyViewModel();
-        SearchCompanyPresenter searchPresenter = new SearchCompanyPresenter(searchViewModel);
-        SearchCompanyInteractor searchInteractor = new SearchCompanyInteractor(gateway, searchPresenter);
-        searchController = new SearchCompanyController(searchInteractor);
-
-        // Subscribe to view model changes
-        listViewModel.addPropertyChangeListener(this);
-        searchViewModel.addPropertyChangeListener(this);
-
-        // Build UI
+        // Just build UI - controllers will be set later
         setupUI();
+    }
 
-        // Load initial data
-        listController.loadCompanyList();
+    private void runInitialDataLoad() {
+        // Run data loading in background to prevent UI freeze
+        if (listController != null) {
+            new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    listController.loadCompanyList();
+                    return null;
+                }
+            }.execute();
+        }
     }
 
     private void setupUI() {
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setBackground(Color.WHITE);
+        setLayout(new BorderLayout());
+        setBackground(BACKGROUND_COLOR);
 
-        // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(Color.WHITE);
+        JScrollPane mainScrollPane = new JScrollPane(createContentPanel());
+        mainScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        mainScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        mainScrollPane.getVerticalScrollBar().setBackground(BACKGROUND_COLOR);
 
-        JLabel title = new JLabel("🏦 BILLIONAIRE");
-        title.setFont(new Font("Arial", Font.BOLD, 28));
-        headerPanel.add(title, BorderLayout.WEST);
+        add(createHeaderPanel(), BorderLayout.NORTH);
+        add(mainScrollPane, BorderLayout.CENTER);
+    }
 
-        JButton loginButton = new JButton("Signup/ Login");
-        loginButton.setBackground(Color.BLACK);
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setFocusPainted(false);
-        headerPanel.add(loginButton, BorderLayout.EAST);
+    /**
+     * Creates the header panel with the title, Trade button, and Sign In button.
+     * Fixed: Uses BoxLayout to ensure buttons are always visible on the right.
+     */
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel();
+        // Use BoxLayout (X_AXIS) for robust left-to-right alignment
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
+        headerPanel.setBackground(HEADER_BG_COLOR);
+        headerPanel.setBorder(new EmptyBorder(15, 30, 15, 30));
 
-        add(headerPanel, BorderLayout.NORTH);
+        // Logo
+        JLabel logo = new JLabel("✶ BILLIONAIRE", SwingConstants.LEFT);
+        logo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        headerPanel.add(logo);
 
-        // Main content
+        // --- MIDDLE SPACER ---
+        // This glue pushes everything after it to the far right
+        headerPanel.add(Box.createHorizontalGlue());
+
+        // --- Right Side: Buttons ---
+
+        // Trade Button
+        JButton tradeButton = new JButton("Trade");
+        tradeButton.setBackground(new Color(0, 120, 215));  // Blue color
+        tradeButton.setForeground(Color.WHITE);
+        tradeButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        tradeButton.setFocusPainted(false);
+        tradeButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        tradeButton.setOpaque(true); // Ensure color renders on all OS
+        tradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        tradeButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this,
+                    "Opening trading platform...\n\nNote: This feature requires you to be signed in.",
+                    "Trade",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
+        headerPanel.add(tradeButton);
+
+        // Add spacer between buttons
+        headerPanel.add(Box.createHorizontalStrut(15));
+
+        // Sign In Button
+        JButton signInButton = new JButton("Sign In");
+        signInButton.setBackground(ACCENT_COLOR);
+        signInButton.setForeground(Color.WHITE);
+        signInButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        signInButton.setFocusPainted(false);
+        signInButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+        signInButton.setOpaque(true); // Ensure color renders on all OS
+        signInButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        signInButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this,
+                    "Redirecting to Sign In/Sign Up page...",
+                    "Sign In",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
+        headerPanel.add(signInButton);
+
+        return headerPanel;
+    }
+
+    /**
+     * Create the main content panel which holds all sections.
+     */
+    private JPanel createContentPanel() {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBackground(BACKGROUND_COLOR);
+        contentPanel.setBorder(new EmptyBorder(0, 30, 30, 30));
 
-        // Economic Indicators (simplified - no charts for demo simplicity)
+        // --- Stock Charts/Indices Panel ---
+        JPanel chartsPanel = createStockChartsPanel();
+        chartsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        contentPanel.add(chartsPanel);
+        contentPanel.add(Box.createVerticalStrut(25));
+
+        // --- Economic Indicators Panel ---
         JPanel economicPanel = createEconomicIndicatorsPanel();
+        economicPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(economicPanel);
-        contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(Box.createVerticalStrut(30));
 
-        // Company List Table
+        // --- Company List Panel ---
         JPanel companyPanel = createCompanyListPanel();
+        companyPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(companyPanel);
 
-        add(new JScrollPane(contentPanel), BorderLayout.CENTER);
+        return contentPanel;
     }
 
+    /**
+     * Create the panel for the main stock indices.
+     */
+    private JPanel createStockChartsPanel() {
+        marketIndicesPanel = new JPanel(new GridBagLayout());
+        marketIndicesPanel.setBackground(HEADER_BG_COLOR);
+        marketIndicesPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220, 220, 220)),
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        ));
+
+        // Initially show loading state
+        refreshMarketIndices();
+
+        marketIndicesPanel.setMaximumSize(new Dimension(1000, marketIndicesPanel.getPreferredSize().height));
+        marketIndicesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        return marketIndicesPanel;
+    }
+
+    public void setMarketIndices(List<entity.MarketIndex> indices) {
+        this.marketIndices = indices;
+        SwingUtilities.invokeLater(this::refreshMarketIndices);
+    }
+
+    private void refreshMarketIndices() {
+        marketIndicesPanel.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(8, 5, 8, 5);
+
+        // Headers
+        gbc.gridy = 0;
+
+        gbc.gridx = 0;
+        gbc.weightx = 1.0;
+        marketIndicesPanel.add(createStyledLabel("Market Index", true), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.0;
+        marketIndicesPanel.add(createStyledLabel("Current Price", true), gbc);
+
+        gbc.gridx = 2;
+        marketIndicesPanel.add(createStyledLabel("Change", true), gbc);
+
+        gbc.gridx = 3;
+        marketIndicesPanel.add(createStyledLabel("Change %", true), gbc);
+
+        gbc.gridx = 4;  // Added Details column header
+        marketIndicesPanel.add(createStyledLabel("Details", true), gbc);
+
+        // Separator
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridwidth = 5;  // Changed from 4 to 5
+        JSeparator separator = new JSeparator();
+        separator.setForeground(new Color(230, 230, 230));
+        marketIndicesPanel.add(separator, gbc);
+
+        gbc.gridwidth = 1;
+
+        // Data rows
+        if (marketIndices == null || marketIndices.isEmpty()) {
+            // Show loading
+            int row = 2;
+            addMarketIndexRowGB(marketIndicesPanel, gbc, row++, "S&P 500", "Loading...", "...", "...");
+            addMarketIndexRowGB(marketIndicesPanel, gbc, row++, "NASDAQ", "Loading...", "...", "...");
+            addMarketIndexRowGB(marketIndicesPanel, gbc, row++, "Dow Jones", "Loading...", "...", "...");
+        } else {
+            // Show real data
+            int row = 2;
+            for (entity.MarketIndex index : marketIndices) {
+                String changeStr = String.format("%+.2f", index.getChange());
+                String changeColor = index.isPositive() ? "positive" : "negative";
+
+                addMarketIndexRowGB(marketIndicesPanel, gbc, row++,
+                        index.getName(),
+                        index.getFormattedPrice(),
+                        changeStr,
+                        index.getFormattedChangePercent(),
+                        changeColor
+                );
+            }
+        }
+
+        marketIndicesPanel.revalidate();
+        marketIndicesPanel.repaint();
+    }
+
+    private void addMarketIndexRowGB(JPanel panel, GridBagConstraints gbc, int row,
+                                     String name, String price, String change, String changePercent) {
+        addMarketIndexRowGB(panel, gbc, row, name, price, change, changePercent, "neutral");
+    }
+
+    /**
+     * Add market index row with color and View Details button.
+     */
+    private void addMarketIndexRowGB(JPanel panel, GridBagConstraints gbc, int row,
+                                     String name, String price, String change, String changePercent, String colorType) {
+        gbc.gridy = row;
+
+        // Name
+        gbc.gridx = 0;
+        gbc.weightx = 1.0;
+        panel.add(createStyledLabel(name, false), gbc);
+
+        // Price
+        gbc.gridx = 1;
+        gbc.weightx = 0.0;
+        panel.add(createStyledLabel(price, false), gbc);
+
+        // Change
+        gbc.gridx = 2;
+        JLabel changeLabel = createStyledLabel(change, false);
+        if ("positive".equals(colorType)) {
+            changeLabel.setForeground(POSITIVE_CHANGE);
+        } else if ("negative".equals(colorType)) {
+            changeLabel.setForeground(NEGATIVE_CHANGE);
+        }
+        panel.add(changeLabel, gbc);
+
+        // Change Percent
+        gbc.gridx = 3;
+        JLabel changePercentLabel = createStyledLabel(changePercent, false);
+        if ("positive".equals(colorType)) {
+            changePercentLabel.setForeground(POSITIVE_CHANGE);
+        } else if ("negative".equals(colorType)) {
+            changePercentLabel.setForeground(NEGATIVE_CHANGE);
+        }
+        panel.add(changePercentLabel, gbc);
+
+        // View Details Button
+        gbc.gridx = 4;
+        JButton detailsButton = new JButton("View Details");
+        detailsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        detailsButton.setBorderPainted(false);
+        detailsButton.setContentAreaFilled(false);
+        detailsButton.setForeground(LINK_COLOR);
+        detailsButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        detailsButton.setHorizontalAlignment(SwingConstants.LEFT);
+        detailsButton.addActionListener(e -> JOptionPane.showMessageDialog(this,
+                "Viewing details for: " + name + "\n" +
+                        "Current Price: " + price + "\n" +
+                        "Change: " + change + "\n" +
+                        "Change %: " + changePercent));
+
+        panel.add(detailsButton, gbc);
+    }
+
+    /**
+     * Create economic indicators panel with real data.
+     */
     private JPanel createEconomicIndicatorsPanel() {
-        JPanel panel = new JPanel(new GridLayout(6, 3, 10, 5));
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createTitledBorder("Economic Indicators"));
+        economicIndicatorsPanel = new JPanel(new GridBagLayout());
+        economicIndicatorsPanel.setBackground(HEADER_BG_COLOR);
+        economicIndicatorsPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220, 220, 220)),
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        ));
 
-        panel.add(new JLabel("<html><b>Indicator</b></html>"));
-        panel.add(new JLabel("<html><b>Latest Value</b></html>"));
-        panel.add(new JLabel("<html><b>Last Updated</b></html>"));
+        // Initially show loading state
+        refreshEconomicIndicators();
 
-        addIndicatorRow(panel, "10-Year Breakeven Inflation Rate", "2.3 %", "2025-11-06");
-        addIndicatorRow(panel, "Federal Funds Effective Rate", "4.4 %", "2025-11-06");
-        addIndicatorRow(panel, "10-Year Treasury Constant Maturity Yield", "4.0 %", "2025-11-06");
-        addIndicatorRow(panel, "Sticky Price Consumer Price Index", "3.1 %", "2025-10-24");
-        addIndicatorRow(panel, "U.S. Unemployment Rate", "3.6 %", "2025-10-01");
+        economicIndicatorsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        return panel;
+        return economicIndicatorsPanel;
     }
 
-    private void addIndicatorRow(JPanel panel, String name, String value, String date) {
-        panel.add(new JLabel(name));
-        panel.add(new JLabel(value));
-        panel.add(new JLabel(date));
+    public void setEconomicIndicators(List<entity.EconomicIndicator> indicators) {
+        this.economicIndicators = indicators;
+        SwingUtilities.invokeLater(this::refreshEconomicIndicators);
     }
 
+    private void refreshEconomicIndicators() {
+        economicIndicatorsPanel.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(8, 5, 8, 5);
+
+        // Headers
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.weightx = 1.0;
+        economicIndicatorsPanel.add(createStyledLabel("Indicator", true), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.0;
+        economicIndicatorsPanel.add(createStyledLabel("Latest Value", true), gbc);
+
+        gbc.gridx = 2;
+        economicIndicatorsPanel.add(createStyledLabel("Last Updated", true), gbc);
+
+        gbc.gridx = 3;
+        economicIndicatorsPanel.add(createStyledLabel("Details", true), gbc);
+
+        // Separator
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridwidth = 4;
+        JSeparator separator = new JSeparator();
+        separator.setForeground(new Color(230, 230, 230));
+        economicIndicatorsPanel.add(separator, gbc);
+
+        gbc.gridwidth = 1;
+
+        // Data rows
+        if (economicIndicators == null || economicIndicators.isEmpty()) {
+            // Show loading for all 6 indicators
+            int row = 2;
+            addIndicatorRowGB(economicIndicatorsPanel, gbc, row++, "Loading economic data...", "...", "...");
+        } else {
+            // Show real data - ALL of them
+            int row = 2;
+            for (entity.EconomicIndicator indicator : economicIndicators) {
+                addIndicatorRowGB(economicIndicatorsPanel, gbc, row++,
+                        indicator.getName(),
+                        indicator.getValue(),
+                        indicator.getLastUpdated());
+            }
+        }
+
+        economicIndicatorsPanel.revalidate();
+        economicIndicatorsPanel.repaint();
+
+        // Force parent container to update
+        if (economicIndicatorsPanel.getParent() != null) {
+            economicIndicatorsPanel.getParent().revalidate();
+            economicIndicatorsPanel.getParent().repaint();
+        }
+    }
+
+    private void addIndicatorRowGB(JPanel panel, GridBagConstraints gbc, int row, String name, String value, String date) {
+        gbc.gridy = row;
+
+        gbc.gridx = 0;
+        gbc.weightx = 1.0;
+        panel.add(createStyledLabel(name, false), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.0;
+        panel.add(createStyledLabel(value, false), gbc);
+
+        gbc.gridx = 2;
+        panel.add(createStyledLabel(date, false), gbc);
+
+        gbc.gridx = 3;
+        JButton detailsButton = new JButton("View Details");
+        detailsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        detailsButton.setBorderPainted(false);
+        detailsButton.setContentAreaFilled(false);
+        detailsButton.setForeground(LINK_COLOR);
+        detailsButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        detailsButton.setHorizontalAlignment(SwingConstants.LEFT);
+        detailsButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Viewing details for: " + name));
+
+        panel.add(detailsButton, gbc);
+    }
+
+    private JLabel createStyledLabel(String text, boolean bold) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("SansSerif", bold ? Font.BOLD : Font.PLAIN, 14));
+        label.setForeground(PRIMARY_TEXT);
+        return label;
+    }
+
+    /**
+     * Create company list panel with search functionality.
+     */
     private JPanel createCompanyListPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(BACKGROUND_COLOR);
 
-        // Title and search bar at the top
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.WHITE);
+        JPanel topPanel = new JPanel(new BorderLayout(10, 0));
+        topPanel.setBackground(BACKGROUND_COLOR);
 
-        JLabel title = new JLabel("Top 100 Fortune Companies");
-        title.setFont(new Font("Arial", Font.BOLD, 18));
+        JLabel title = new JLabel("Top 100 Fortune");
+        title.setFont(new Font("SansSerif", Font.BOLD, 18));
         topPanel.add(title, BorderLayout.WEST);
 
-        // Search panel on the right
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        searchPanel.setBackground(Color.WHITE);
+        // Search Panel
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        searchPanel.setBackground(BACKGROUND_COLOR);
 
-        searchField = new JTextField(25);
-        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
-
-        JButton searchButton = new JButton("🔍 Search");
-        searchButton.setFont(new Font("Arial", Font.PLAIN, 12));
-        searchButton.addActionListener(e -> performSearch());
-
-        JButton clearButton = new JButton("Clear");
-        clearButton.setFont(new Font("Arial", Font.PLAIN, 12));
-        clearButton.addActionListener(e -> clearSearch());
-
-        // Allow Enter key to search
+        searchField = new JTextField(20);
+        searchField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        searchField.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
         searchField.addActionListener(e -> performSearch());
 
-        searchPanel.add(new JLabel("Search: "));
+        JButton searchButton = new JButton("Search");
+        searchButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        searchButton.setBackground(Color.WHITE);
+        searchButton.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        searchButton.addActionListener(e -> performSearch());
+        searchButton.setFocusPainted(false);
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JButton clearButton = new JButton("Clear");
+        clearButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        clearButton.setBackground(Color.WHITE);
+        clearButton.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        clearButton.addActionListener(e -> clearSearch());
+        clearButton.setFocusPainted(false);
+        clearButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JButton magnifyingGlassButton = new JButton("🔍");
+        magnifyingGlassButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        magnifyingGlassButton.setBackground(Color.WHITE);
+        magnifyingGlassButton.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        magnifyingGlassButton.addActionListener(e -> performSearch());
+        magnifyingGlassButton.setFocusPainted(false);
+        magnifyingGlassButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         searchPanel.add(clearButton);
+        searchPanel.add(magnifyingGlassButton);
 
         topPanel.add(searchPanel, BorderLayout.EAST);
         panel.add(topPanel, BorderLayout.NORTH);
 
-        // Create the table
-        String[] columns = {"Symbol", "Company", "Country", "Market Cap", "P/E Ratio"};
+        // Updated columns to show actual API data
+        String[] columns = {"Symbol", "Company", "Country", "Market Cap", "P/E Ratio", "View"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make table read-only
+                return column == 5;  // Only "View" button is editable
             }
         };
 
         companyTable = new JTable(tableModel);
-        companyTable.setRowHeight(30);
-        companyTable.setFont(new Font("Arial", Font.PLAIN, 12));
-        companyTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        companyTable.setRowHeight(40);
+        companyTable.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        companyTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+        companyTable.getTableHeader().setBackground(TABLE_HEADER_BG);
+        companyTable.getTableHeader().setOpaque(false);
+        companyTable.setBackground(HEADER_BG_COLOR);
         companyTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        companyTable.setShowGrid(true);
-        companyTable.setGridColor(new Color(230, 230, 230));
+        companyTable.setShowGrid(false);
+        companyTable.setIntercellSpacing(new Dimension(0, 0));
 
-        // Set column widths
+        companyTable.setDefaultRenderer(Object.class, new CustomTableRenderer());
+        companyTable.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        companyTable.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField()));
+
+        // Adjusted column widths for new columns
         companyTable.getColumnModel().getColumn(0).setPreferredWidth(80);   // Symbol
-        companyTable.getColumnModel().getColumn(1).setPreferredWidth(250);  // Company
+        companyTable.getColumnModel().getColumn(1).setPreferredWidth(200);  // Company
         companyTable.getColumnModel().getColumn(2).setPreferredWidth(120);  // Country
-        companyTable.getColumnModel().getColumn(3).setPreferredWidth(100);  // Market Cap
-        companyTable.getColumnModel().getColumn(4).setPreferredWidth(80);   // P/E Ratio
+        companyTable.getColumnModel().getColumn(3).setPreferredWidth(120);  // Market Cap
+        companyTable.getColumnModel().getColumn(4).setPreferredWidth(100);  // P/E Ratio
+        companyTable.getColumnModel().getColumn(5).setPreferredWidth(80);   // View
 
-        // Add table to scroll pane
         JScrollPane scrollPane = new JScrollPane(companyTable);
-        scrollPane.setPreferredSize(new Dimension(800, 400));
-        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        scrollPane.setPreferredSize(new Dimension(800, 450));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(HEADER_BG_COLOR);
 
         panel.add(scrollPane, BorderLayout.CENTER);
+        panel.setMaximumSize(new Dimension(1000, panel.getPreferredSize().height));
 
         return panel;
     }
 
-    /**
-     * Perform search when user clicks search button or presses Enter.
-     */
+    // --- Helper classes for the 'View' button in the table ---
+    private class ButtonRenderer extends DefaultTableCellRenderer {
+        private final JButton button;
+
+        public ButtonRenderer() {
+            button = new JButton("View");
+            button.setBackground(ACCENT_COLOR);
+            button.setForeground(Color.WHITE);
+            button.setFont(new Font("SansSerif", Font.BOLD, 12));
+            button.setOpaque(true);
+            button.setFocusPainted(false);
+            button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JPanel panel = new JPanel(new GridBagLayout());
+            panel.setBackground(table.getBackground());
+            panel.add(button);
+            return panel;
+        }
+    }
+
+    private class ButtonEditor extends DefaultCellEditor {
+        private final JButton button;
+        private String label;
+        private boolean isPushed;
+
+        public ButtonEditor(JTextField textField) {
+            super(textField);
+            setClickCountToStart(1);
+
+            button = new JButton("View");
+            button.setBackground(ACCENT_COLOR);
+            button.setForeground(Color.WHITE);
+            button.setFont(new Font("Arial", Font.BOLD, 12));
+            button.setOpaque(true);
+            button.setFocusPainted(false);
+            button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+            button.addActionListener(e -> fireEditingStopped());
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            JPanel panel = new JPanel(new GridBagLayout());
+            panel.setBackground(table.getBackground());
+            panel.add(button);
+            return panel;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                String companyName = (String) companyTable.getValueAt(companyTable.getEditingRow(), 1);
+                JOptionPane.showMessageDialog(button, "Viewing details for: " + companyName);
+            }
+            isPushed = false;
+            return label;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+    }
+
+    private class CustomTableRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            c.setForeground(PRIMARY_TEXT);
+            setHorizontalAlignment(SwingConstants.LEFT);
+
+            if (row % 2 == 0) {
+                c.setBackground(HEADER_BG_COLOR);
+            } else {
+                c.setBackground(new Color(250, 250, 250));
+            }
+            return c;
+        }
+    }
+
+    public void setListController(CompanyListController controller) {
+        this.listController = controller;
+    }
+
+    public void setSearchController(SearchCompanyController controller) {
+        this.searchController = controller;
+    }
+
+    public void loadInitialData() {
+        runInitialDataLoad();
+    }
+
     private void performSearch() {
+        if (searchController == null) return;
         String query = searchField.getText().trim();
         if (query.isEmpty()) {
-            // Empty search = show all companies
-            listController.loadCompanyList();
+            if (listController != null) {
+                new SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        listController.loadCompanyList();
+                        return null;
+                    }
+                }.execute();
+            }
         } else {
-            // Search for matching companies
             searchController.searchCompany(query);
         }
     }
 
-    /**
-     * Clear search and show all companies.
-     */
     private void clearSearch() {
         searchField.setText("");
-        listController.loadCompanyList();
+        if (listController != null) {
+            new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    listController.loadCompanyList();
+                    return null;
+                }
+            }.execute();
+        }
     }
 
-    /**
-     * Handle property change events from view models.
-     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("companies".equals(evt.getPropertyName())) {
-            // Company list was updated
-            updateTable(listViewModel.getCompanies());
+            SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
         } else if ("searchResults".equals(evt.getPropertyName())) {
-            // Search results were updated
-            updateTable(searchViewModel.getSearchResults());
+            SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
         } else if ("error".equals(evt.getPropertyName())) {
-            // An error occurred
-            String error = listViewModel.getErrorMessage();
-            if (error.isEmpty()) {
-                error = searchViewModel.getErrorMessage();
-            }
-            if (!error.isEmpty()) {
-                JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            String error = (String) evt.getNewValue();
+            SwingUtilities.invokeLater(() -> {
+                if (error != null && !error.isEmpty()) displayError(error);
+            });
         }
     }
 
-    /**
-     * Update the table with new company data.
-     */
-    private void updateTable(List<CompanyDisplayData> companies) {
-        // Clear existing rows
+    public void updateTable(List<CompanyDisplayData> companies) {
         tableModel.setRowCount(0);
-
-        // Add new rows
-        for (CompanyDisplayData company : companies) {
-            Object[] row = {
-                    company.getSymbol(),
-                    company.getName(),
-                    company.getCountry(),
-                    company.getFormattedMarketCap(),
-                    company.getFormattedPeRatio()
-            };
-            tableModel.addRow(row);
+        if (companies != null && !companies.isEmpty()) {
+            for (CompanyDisplayData company : companies) {
+                Object[] row = {
+                        company.getSymbol(),
+                        company.getName(),
+                        company.getCountry(),
+                        company.getFormattedMarketCap(),
+                        company.getFormattedPeRatio(),
+                        "View"
+                };
+                tableModel.addRow(row);
+            }
+        } else {
+            Object[] emptyRow = {"", "No companies found", "", "", "", ""};
+            tableModel.addRow(emptyRow);
         }
-
-        // Update table display
         companyTable.revalidate();
         companyTable.repaint();
     }
 
-    /**
-     * Main method to run the application.
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Billionaire Stock Platform");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1200, 800);
-            frame.setLocationRelativeTo(null); // Center on screen
-            frame.add(new CompanyListPage());
-            frame.setVisible(true);
-        });
+    public void displayError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void updateCompanyList(List<CompanyDisplayData> companies) {
+        updateTable(companies);
     }
 }
