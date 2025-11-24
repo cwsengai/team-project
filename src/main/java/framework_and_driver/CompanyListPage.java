@@ -20,6 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.table.TableCellEditor;
 
+
 /**
  * Main page showing company list and search functionality.
  * Implements User Stories 1 (Company List) and 2 (Search).
@@ -112,11 +113,10 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         tradeButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
         tradeButton.setOpaque(true); // Ensure color renders on all OS
         tradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        tradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         tradeButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Opening trading platform...\n\nNote: This feature requires you to be signed in.",
-                    "Trade",
-                    JOptionPane.INFORMATION_MESSAGE);
+            // ✅ Navigate to SimulateMain
+            openSimulatePage();
         });
         headerPanel.add(tradeButton);
 
@@ -133,10 +133,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         signInButton.setOpaque(true); // Ensure color renders on all OS
         signInButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         signInButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Redirecting to Sign In/Sign Up page...",
-                    "Sign In",
-                    JOptionPane.INFORMATION_MESSAGE);
+            // ✅ Navigate to PortfolioSummaryMain
+            openPortfolioSummaryPage();
         });
         headerPanel.add(signInButton);
 
@@ -564,6 +562,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         private final JButton button;
         private String label;
         private boolean isPushed;
+        private int currentRow;  // ✅ Add this field
 
         public ButtonEditor(JTextField textField) {
             super(textField);
@@ -585,6 +584,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             isPushed = true;
+            currentRow = row;  // ✅ Store the row
             JPanel panel = new JPanel(new GridBagLayout());
             panel.setBackground(table.getBackground());
             panel.add(button);
@@ -594,8 +594,14 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
-                String companyName = (String) companyTable.getValueAt(companyTable.getEditingRow(), 1);
-                JOptionPane.showMessageDialog(button, "Viewing details for: " + companyName);
+                // ✅ Get company symbol from the table
+                String symbol = (String) companyTable.getValueAt(currentRow, 0);  // Column 0 is Symbol
+                String companyName = (String) companyTable.getValueAt(currentRow, 1);  // Column 1 is Name
+
+                System.out.println("📊 Opening details for: " + symbol + " - " + companyName);
+
+                // ✅ Navigate to CompanyMain
+                openCompanyPage(symbol);
             }
             isPushed = false;
             return label;
@@ -605,23 +611,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         public boolean stopCellEditing() {
             isPushed = false;
             return super.stopCellEditing();
-        }
-    }
-
-    private class CustomTableRenderer extends DefaultTableCellRenderer {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-            c.setForeground(PRIMARY_TEXT);
-            setHorizontalAlignment(SwingConstants.LEFT);
-
-            if (row % 2 == 0) {
-                c.setBackground(HEADER_BG_COLOR);
-            } else {
-                c.setBackground(new Color(250, 250, 250));
-            }
-            return c;
         }
     }
 
@@ -638,9 +627,20 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     private void performSearch() {
-        if (searchController == null) return;
+        if (searchController == null) {
+            System.err.println("❌ Search controller is null!");
+            JOptionPane.showMessageDialog(this,
+                    "Search is not ready yet. Please wait for data to load.",
+                    "Search Not Ready",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         String query = searchField.getText().trim();
+        System.out.println("🔍 Search triggered with query: '" + query + "'");
+
         if (query.isEmpty()) {
+            System.out.println("🔍 Empty query - showing all companies");
             if (listController != null) {
                 new SwingWorker<Void, Void>() {
                     @Override
@@ -650,12 +650,20 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                     }
                 }.execute();
             }
+        } else if (query.length() < 2) {
+            System.out.println("⚠️ Query too short (less than 2 characters)");
+            JOptionPane.showMessageDialog(this,
+                    "Please enter at least 2 characters to search.",
+                    "Search",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else {
+            System.out.println("🔍 Executing search for: " + query);
             searchController.searchCompany(query);
         }
     }
 
     private void clearSearch() {
+        System.out.println("🔍 Clearing search");
         searchField.setText("");
         if (listController != null) {
             new SwingWorker<Void, Void>() {
@@ -711,4 +719,128 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     public void updateCompanyList(List<CompanyDisplayData> companies) {
         updateTable(companies);
     }
+
+
+    /**
+     * Navigate to the Simulate Trading page.
+     * Closes current window and opens SimulateMain.
+     */
+    private void openSimulatePage() {
+        System.out.println("📊 Navigating to Simulate Trading page...");
+
+        // Get the parent frame (window)
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
+        // Close current window
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+
+        // Open SimulateMain
+        SwingUtilities.invokeLater(() -> {
+            try {
+                app.SimulatedMain.main(new String[]{});
+            } catch (Exception ex) {
+                System.err.println("❌ Error opening Simulate page: " + ex.getMessage());
+                ex.printStackTrace();
+
+                // Show error dialog
+                JOptionPane.showMessageDialog(null,
+                        "Failed to open trading simulator: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+
+    /**
+     * Navigate to the Company Details page.
+     * Closes current window and opens CompanyMain with the selected company.
+     *
+     * @param symbol The company ticker symbol (e.g., "AAPL", "MSFT")
+     */
+    private void openCompanyPage(String symbol) {
+        System.out.println("📊 Navigating to Company Details page for: " + symbol);
+
+        // Get the parent frame (window)
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
+        // Close current window
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+
+        // Open CompanyMain with the selected company
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Pass the symbol to CompanyMain
+                app.CompanyMain.main(new String[]{symbol});
+            } catch (Exception ex) {
+                System.err.println("❌ Error opening Company Details page: " + ex.getMessage());
+                ex.printStackTrace();
+
+                // Show error dialog
+                JOptionPane.showMessageDialog(null,
+                        "Failed to open company details: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+
+    /**
+     * Navigate to the Portfolio Summary page.
+     * Keeps current window open and opens PortfolioSummaryMain in a new window.
+     */
+    private void openPortfolioSummaryPage() {
+        System.out.println("👤 Opening Portfolio Summary page...");
+
+        // ✅ Don't close current window - just open new one
+        SwingUtilities.invokeLater(() -> {
+            try {
+                app.PortfolioSummaryMain.main(new String[]{});
+            } catch (Exception ex) {
+                System.err.println("❌ Error opening Portfolio Summary page: " + ex.getMessage());
+                ex.printStackTrace();
+
+                // Show error dialog
+                JOptionPane.showMessageDialog(this,
+                        "Failed to open portfolio summary: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+
+    /**
+     * Custom renderer for table cells to provide alternating row colors and styling.
+     */
+    private class CustomTableRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus,
+                                                       int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            // Text color
+            c.setForeground(PRIMARY_TEXT);
+
+            // Left-align text
+            setHorizontalAlignment(SwingConstants.LEFT);
+
+            // Alternating row colors (makes table easier to read)
+            if (isSelected) {
+                c.setBackground(table.getSelectionBackground());
+            } else if (row % 2 == 0) {
+                c.setBackground(HEADER_BG_COLOR);           // White
+            } else {
+                c.setBackground(new Color(250, 250, 250));  // Light gray
+            }
+
+            return c;
+        }
+    }
+
+
+
 }

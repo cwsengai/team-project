@@ -73,6 +73,16 @@ public class CompanyListMain {
         SearchCompanyPresenter searchPresenter =
                 new SearchCompanyPresenter(page, searchViewModel);
 
+        // ✅ INITIALIZE SEARCH IMMEDIATELY (with empty list for now)
+        AlphaVantageSearchDataAccess searchDataAccess =
+                new AlphaVantageSearchDataAccess(new ArrayList<>());
+        SearchCompanyInteractor searchInteractor =
+                new SearchCompanyInteractor(searchDataAccess, searchPresenter);
+        SearchCompanyController searchController =
+                new SearchCompanyController(searchInteractor);
+        page.setSearchController(searchController);  // ✅ Set it right away!
+        System.out.println("✅ Search controller initialized (will update with data as it loads)");
+
         // ========== 4. CREATE AND SHOW WINDOW ==========
         JFrame frame = new JFrame("Billionaire - Stock Market Database");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,12 +92,12 @@ public class CompanyListMain {
         frame.setVisible(true);
 
         System.out.println("✅ Window opened!");
+        System.out.println("📊 Starting progressive data loading...");
 
         // ========== 5. SHOW ALL 100 COMPANIES IMMEDIATELY (Names Only) ==========
         List<String> allTickers = Top100Companies.getAll();
         List<CompanyDisplayData> initialDisplay = new ArrayList<>();
 
-// Create display data for all 100 companies (names only, no API calls)
         for (int i = 0; i < allTickers.size(); i++) {
             String ticker = allTickers.get(i);
 
@@ -110,12 +120,11 @@ public class CompanyListMain {
             }
         }
 
-// Show all 100 immediately!
         page.updateTable(initialDisplay);
         System.out.println("✅ Showing all 100 companies (names only)");
-        System.out.println("📊 Loading full data for top 10...");
+        System.out.println("📊 Loading full data for top 3...");
 
-        // ========== 6. LOAD FULL DATA FOR TOP 10 IN BACKGROUND ==========
+        // ========== 6. PROGRESSIVE LOADING IN BACKGROUND ==========
         new SwingWorker<Void, Object>() {
             private final Map<String, Company> loadedCompanies = new HashMap<>();
 
@@ -152,15 +161,15 @@ public class CompanyListMain {
                         }
                     }).start();
 
-                    // ===== STEP 3: Load FULL DATA for first 3 companies only =====
+                    // ===== STEP 3: Load FULL DATA for first 3 companies =====
                     System.out.println("🏢 Loading detailed data for top 3 companies...");
-                    List<String> top3Tickers = allTickers.subList(0, Math.min(3, allTickers.size()));  // ✅ Changed to 3
+                    List<String> top3Tickers = allTickers.subList(0, Math.min(3, allTickers.size()));
 
                     int count = 0;
                     for (String ticker : top3Tickers) {
                         try {
                             count++;
-                            System.out.println(String.format("  Loading %d/3: %s", count, ticker));  // ✅ Changed to 3
+                            System.out.println(String.format("  Loading %d/3: %s", count, ticker));
 
                             Company company = companyGateway.fetchOverview(ticker);
 
@@ -168,11 +177,15 @@ public class CompanyListMain {
                                 loadedCompanies.put(ticker, company);
                                 publish(new CompanyUpdate(ticker, company));
                                 System.out.println("  ✅ " + company.getName());
+
+                                // ✅ UPDATE SEARCH DATA AS COMPANIES LOAD
+                                SwingUtilities.invokeLater(() -> {
+                                    searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values()));
+                                });
                             } else {
                                 System.err.println("  ⚠️ No data for " + ticker);
                             }
 
-                            // Rate limit delay
                             if (count < top3Tickers.size()) {
                                 Thread.sleep(12000);
                             }
@@ -186,11 +199,8 @@ public class CompanyListMain {
                         }
                     }
 
-                    // ===== STEP 4: Setup Search with Loaded Companies =====
+                    // ===== STEP 4: Setup Company List Controller =====
                     if (!loadedCompanies.isEmpty()) {
-                        AlphaVantageSearchDataAccess searchDataAccess =
-                                new AlphaVantageSearchDataAccess(new ArrayList<>(loadedCompanies.values()));
-
                         AlphaVantageCompanyListDataAccess companyListDataAccess =
                                 new AlphaVantageCompanyListDataAccess(companyGateway, true) {
                                     @Override
@@ -201,17 +211,12 @@ public class CompanyListMain {
 
                         CompanyListInteractor companyListInteractor =
                                 new CompanyListInteractor(companyListDataAccess, companyListPresenter);
-                        SearchCompanyInteractor searchInteractor =
-                                new SearchCompanyInteractor(searchDataAccess, searchPresenter);
 
                         CompanyListController companyListController =
                                 new CompanyListController(companyListInteractor);
-                        SearchCompanyController searchController =
-                                new SearchCompanyController(searchInteractor);
 
                         SwingUtilities.invokeLater(() -> {
                             page.setListController(companyListController);
-                            page.setSearchController(searchController);
                         });
                     }
 
@@ -230,14 +235,12 @@ public class CompanyListMain {
                     if (chunk instanceof CompanyUpdate) {
                         CompanyUpdate update = (CompanyUpdate) chunk;
 
-                        // Update the display data with full information
                         List<CompanyDisplayData> currentDisplay = new ArrayList<>();
 
                         for (int i = 0; i < allTickers.size(); i++) {
                             String ticker = allTickers.get(i);
 
                             if (loadedCompanies.containsKey(ticker)) {
-                                // ✅ This company has full data loaded
                                 Company company = loadedCompanies.get(ticker);
                                 currentDisplay.add(new CompanyDisplayData(
                                         company.getSymbol(),
@@ -247,7 +250,6 @@ public class CompanyListMain {
                                         formatPeRatio(company.getPeRatio())
                                 ));
                             } else if (i < 3) {
-                                // ✅ Top 10 but not loaded yet - show loading
                                 currentDisplay.add(new CompanyDisplayData(
                                         ticker,
                                         getCompanyNameGuess(ticker),
@@ -256,7 +258,6 @@ public class CompanyListMain {
                                         "Loading..."
                                 ));
                             } else {
-                                // ✅ Companies 11-100 - show placeholder
                                 currentDisplay.add(new CompanyDisplayData(
                                         ticker,
                                         getCompanyNameGuess(ticker),
@@ -274,7 +275,7 @@ public class CompanyListMain {
 
             @Override
             protected void done() {
-                System.out.println("✅ All data loading complete!");
+                System.out.println("✅ All background loading complete!");
             }
 
             private String formatMarketCap(double marketCap) {
@@ -295,18 +296,129 @@ public class CompanyListMain {
             }
         }.execute();
 
-        System.out.println("Ready! Full data will load progressively for top 10...");
+        System.out.println("Ready! Companies will appear as they load...");
     }
 
     /**
      * Guess company name from ticker symbol.
      * This is just for display - real names will load for top 10.
      */
+    /**
+     * Get company name from ticker symbol.
+     * Used for display when full data isn't loaded.
+     */
     private static String getCompanyNameGuess(String ticker) {
         Map<String, String> knownNames = new HashMap<>();
+
+        // Top 20
         knownNames.put("AAPL", "Apple Inc");
         knownNames.put("MSFT", "Microsoft Corporation");
         knownNames.put("GOOGL", "Alphabet Inc");
+        knownNames.put("AMZN", "Amazon.com Inc");
+        knownNames.put("NVDA", "NVIDIA Corporation");
+        knownNames.put("META", "Meta Platforms Inc");
+        knownNames.put("TSLA", "Tesla Inc");
+        knownNames.put("BRK.B", "Berkshire Hathaway");
+        knownNames.put("V", "Visa Inc");
+        knownNames.put("UNH", "UnitedHealth Group");
+        knownNames.put("JNJ", "Johnson & Johnson");
+        knownNames.put("WMT", "Walmart Inc");
+        knownNames.put("JPM", "JPMorgan Chase");
+        knownNames.put("MA", "Mastercard Inc");
+        knownNames.put("XOM", "Exxon Mobil");
+        knownNames.put("PG", "Procter & Gamble");
+        knownNames.put("HD", "Home Depot");
+        knownNames.put("CVX", "Chevron Corporation");
+        knownNames.put("AVGO", "Broadcom Inc");
+        knownNames.put("MRK", "Merck & Co");
+
+        // 21-40
+        knownNames.put("ABBV", "AbbVie Inc");
+        knownNames.put("PEP", "PepsiCo Inc");
+        knownNames.put("KO", "Coca-Cola Company");
+        knownNames.put("COST", "Costco Wholesale");
+        knownNames.put("ADBE", "Adobe Inc");
+        knownNames.put("TMO", "Thermo Fisher Scientific");
+        knownNames.put("MCD", "McDonald's Corporation");
+        knownNames.put("CSCO", "Cisco Systems");
+        knownNames.put("ACN", "Accenture");
+        knownNames.put("ABT", "Abbott Laboratories");
+        knownNames.put("NKE", "Nike Inc");
+        knownNames.put("LLY", "Eli Lilly");
+        knownNames.put("TXN", "Texas Instruments");
+        knownNames.put("DHR", "Danaher Corporation");
+        knownNames.put("CRM", "Salesforce Inc");
+        knownNames.put("NEE", "NextEra Energy");
+        knownNames.put("DIS", "Walt Disney Company");
+        knownNames.put("VZ", "Verizon Communications");
+        knownNames.put("CMCSA", "Comcast Corporation");
+        knownNames.put("ORCL", "Oracle Corporation");
+
+        // 41-60
+        knownNames.put("INTC", "Intel Corporation");
+        knownNames.put("NFLX", "Netflix Inc");
+        knownNames.put("AMD", "Advanced Micro Devices");
+        knownNames.put("PFE", "Pfizer Inc");
+        knownNames.put("PM", "Philip Morris International");
+        knownNames.put("T", "AT&T Inc");
+        knownNames.put("UPS", "United Parcel Service");
+        knownNames.put("BA", "Boeing Company");
+        knownNames.put("IBM", "IBM");
+        knownNames.put("QCOM", "Qualcomm Inc");
+        knownNames.put("HON", "Honeywell International");
+        knownNames.put("AMGN", "Amgen Inc");
+        knownNames.put("RTX", "Raytheon Technologies");
+        knownNames.put("UNP", "Union Pacific");
+        knownNames.put("SPGI", "S&P Global");
+        knownNames.put("LOW", "Lowe's Companies");
+        knownNames.put("CAT", "Caterpillar Inc");
+        knownNames.put("SBUX", "Starbucks Corporation");
+        knownNames.put("GS", "Goldman Sachs");
+        knownNames.put("INTU", "Intuit Inc");
+
+        // 61-80
+        knownNames.put("AXP", "American Express");
+        knownNames.put("CVS", "CVS Health");
+        knownNames.put("DE", "Deere & Company");
+        knownNames.put("BLK", "BlackRock Inc");
+        knownNames.put("MDLZ", "Mondelez International");
+        knownNames.put("GILD", "Gilead Sciences");
+        knownNames.put("ADP", "Automatic Data Processing");
+        knownNames.put("MMM", "3M Company");
+        knownNames.put("TJX", "TJX Companies");
+        knownNames.put("BKNG", "Booking Holdings");
+        knownNames.put("ISRG", "Intuitive Surgical");
+        knownNames.put("AMT", "American Tower");
+        knownNames.put("REGN", "Regeneron Pharmaceuticals");
+        knownNames.put("CI", "Cigna Corporation");
+        knownNames.put("VRTX", "Vertex Pharmaceuticals");
+        knownNames.put("CB", "Chubb Limited");
+        knownNames.put("MO", "Altria Group");
+        knownNames.put("SYK", "Stryker Corporation");
+        knownNames.put("ZTS", "Zoetis Inc");
+        knownNames.put("BDX", "Becton Dickinson");
+
+        // 81-100
+        knownNames.put("TGT", "Target Corporation");
+        knownNames.put("SO", "Southern Company");
+        knownNames.put("USB", "U.S. Bancorp");
+        knownNames.put("PLD", "Prologis Inc");
+        knownNames.put("DUK", "Duke Energy");
+        knownNames.put("CME", "CME Group");
+        knownNames.put("CSX", "CSX Corporation");
+        knownNames.put("CL", "Colgate-Palmolive");
+        knownNames.put("ITW", "Illinois Tool Works");
+        knownNames.put("NSC", "Norfolk Southern");
+        knownNames.put("APD", "Air Products and Chemicals");
+        knownNames.put("EOG", "EOG Resources");
+        knownNames.put("WM", "Waste Management");
+        knownNames.put("SHW", "Sherwin-Williams");
+        knownNames.put("MCO", "Moody's Corporation");
+        knownNames.put("CCI", "Crown Castle");
+        knownNames.put("EL", "Estée Lauder");
+        knownNames.put("SCHW", "Charles Schwab");
+        knownNames.put("AON", "Aon plc");
+        knownNames.put("HUM", "Humana Inc");
 
         return knownNames.getOrDefault(ticker, ticker);
     }

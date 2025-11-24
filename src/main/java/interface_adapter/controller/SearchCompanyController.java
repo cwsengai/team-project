@@ -2,20 +2,24 @@ package interface_adapter.controller;
 
 import use_case.search_company.SearchCompanyInputBoundary;
 import use_case.search_company.SearchCompanyInputData;
-import use_case.search_company.SearchCompanyOutputBoundary;
 
+/**
+ * Controller for Search Company use case.
+ * Handles user actions to search for companies.
+ */
 public class SearchCompanyController {
-    private SearchCompanyInputBoundary interactor;
+    private final SearchCompanyInputBoundary interactor;
 
-    public SearchCompanyController (SearchCompanyInputBoundary interactor) {
+    public SearchCompanyController(SearchCompanyInputBoundary interactor) {
         this.interactor = interactor;
     }
 
     /**
      * Search for companies matching the query.
-     * @param query Search query (company name or symbol)
+     * @param query Search string (company name or ticker)
      */
     public void searchCompany(String query) {
+        System.out.println("🎮 Controller: Searching for '" + query + "'");
         SearchCompanyInputData inputData = new SearchCompanyInputData(query);
         interactor.execute(inputData);
     }

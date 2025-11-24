@@ -28,13 +28,27 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
         List<CompanyDisplayData> displayList = new ArrayList<>();
 
         for (Company company : outputData.getCompanies()) {
-            String formattedCap = formatMarketCap(company.getMarketCapitalization());
-            String formattedPE = formatPeRatio(company.getPeRatio());
+            // ✅ Handle companies with no data (market cap = 0)
+            String formattedCap;
+            String formattedPE;
+            String country;
+
+            if (company.getMarketCapitalization() > 0) {
+                // Company has full data
+                formattedCap = formatMarketCap(company.getMarketCapitalization());
+                formattedPE = formatPeRatio(company.getPeRatio());
+                country = company.getCountry();
+            } else {
+                // Company has minimal data (just ticker)
+                formattedCap = "—";
+                formattedPE = "—";
+                country = "—";
+            }
 
             displayList.add(new CompanyDisplayData(
                     company.getSymbol(),
                     company.getName(),
-                    company.getCountry(),
+                    country,
                     formattedCap,
                     formattedPE
             ));
@@ -42,12 +56,15 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
 
         viewModel.setSearchResults(displayList);
         page.updateTable(displayList);
+
+        System.out.println("✅ Search found " + displayList.size() + " results");  // ✅ Added log
     }
 
     @Override
     public void presentError(String errorMessage) {
         viewModel.setErrorMessage(errorMessage);
         page.displayError(errorMessage);
+        System.err.println("❌ Search error: " + errorMessage);  // ✅ Added log
     }
 
     private String formatMarketCap(double marketCap) {
