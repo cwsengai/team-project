@@ -4,8 +4,6 @@ import javax.swing.SwingUtilities;
 
 import api.AlphaVantagePriceGateway;
 import api.Api;
-
-import data_access.AlphaVantageCompanyGateway;
 import framework_and_driver.CompanyDetailPage;
 import interface_adapter.CompanyDetailController;
 import interface_adapter.CompanyDetailPresenter;
