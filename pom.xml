@@ -60,18 +60,19 @@
             <version>2.10.1</version>
         </dependency>
 
-        <!-- PostgreSQL JDBC Driver -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.1</version>
-        </dependency>
 
         <!-- dotenv-java for loading .env files -->
         <dependency>
             <groupId>io.github.cdimascio</groupId>
             <artifactId>dotenv-java</artifactId>
             <version>3.0.0</version>
+        </dependency>
+
+        <!-- XChart for data visualization -->
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.8.7</version>
         </dependency>
 
     </dependencies>
