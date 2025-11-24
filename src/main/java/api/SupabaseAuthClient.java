@@ -34,6 +34,7 @@ public class SupabaseAuthClient {
         return sendAuthRequest(url, email, password);
     }
 
+
     public JSONObject signIn(String email, String password) throws IOException {
         String url = supabaseUrl + "/auth/v1/token?grant_type=password";
         return sendAuthRequest(url, email, password);

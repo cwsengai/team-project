@@ -1,12 +1,10 @@
 package app;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import app.ui.PortfolioOrderHistoryTable;
-import app.ui.PortfolioSummaryCard;
-import app.ui.PortfolioSummaryHeader;
-import app.ui.PortfolioSummaryLogin;
-import app.ui.PortfolioSummaryNavBar;
+import app.ui.*;
+
+import java.awt.*;
 
 public class PortfolioSummaryMain {
     public static void main(String[] args) {
@@ -14,8 +12,16 @@ public class PortfolioSummaryMain {
             // === Session Management ===
             data_access.InMemorySessionDataAccessObject userSessionDAO = new data_access.InMemorySessionDataAccessObject();
 
-            // === Login (refactored) ===
-            PortfolioSummaryLogin.loginOrShowDialog(userSessionDAO);
+            // REAL LOGIN
+            LoginPage loginWindow = new LoginPage(null, userSessionDAO);
+            loginWindow.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+            loginWindow.setVisible(true);
+
+            // If user closed without login:
+            if (!loginWindow.wasSuccessful()) {
+                return; // do NOT exit entire app
+            }
+
 
             // === Show the portfolio summary page (main layout and background) ===
             javax.swing.JFrame frame = new javax.swing.JFrame("Portfolio Summary");
