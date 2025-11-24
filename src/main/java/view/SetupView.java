@@ -1,24 +1,15 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.time.format.DateTimeParseException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
 import interface_adapter.setup_simulation.SetupController;
 import interface_adapter.setup_simulation.SetupViewModel;
+
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class SetupView extends JPanel implements PropertyChangeListener {
 
@@ -26,69 +17,129 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     private final SetupController controller;
     private final SetupViewModel viewModel;
 
-    // UI Components
     private final JTextField tickerField = new JTextField(10);
     private final JTextField balanceField = new JTextField("100000.00", 10);
-    private final JTextField startDateField = new JTextField("2024-01-01", 10);
-    private final JTextField endDateField = new JTextField("2024-01-31", 10);
-
-    // Speed Options (5x, 10x, 20x, 30x)
     private final JComboBox<String> speedComboBox;
-
     private final JButton startButton = new JButton(SetupViewModel.START_BUTTON_LABEL);
-    private final JLabel errorLabel = new JLabel(" "); // Space to prevent layout jump
+    private final JLabel errorLabel = new JLabel(" ");
+
+    private final Color BG_COLOR = new Color(245, 247, 250);
+    private final Color CARD_COLOR = Color.WHITE;
+    private final Color PRIMARY_COLOR = new Color(46, 204, 113);
+    private final Color TEXT_COLOR = new Color(52, 73, 94);
+
+    private final Font LABEL_FONT = new Font("SansSerif", Font.BOLD, 18);
+    private final Font INPUT_FONT = new Font("SansSerif", Font.PLAIN, 16);
+    private final Font HINT_FONT = new Font("SansSerif", Font.ITALIC, 14);
 
     public SetupView(SetupController controller, SetupViewModel viewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
 
-        this.setLayout(new BorderLayout(20, 20));
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(50, 50, 50, 50),
-                BorderFactory.createTitledBorder(SetupViewModel.TITLE_LABEL)
+        this.setLayout(new BorderLayout());
+        this.setBackground(BG_COLOR);
+
+        // --- TOP HEADER (Logo + Error) ---
+        JPanel topContainer = new JPanel();
+        topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
+        topContainer.setOpaque(false);
+        topContainer.setBorder(new EmptyBorder(60, 0, 30, 0));
+
+        // Logo
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        logoPanel.setOpaque(false);
+        JLabel logoLabel = new JLabel("✶ BILLIONAIRE");
+        logoLabel.setFont(new Font("SansSerif", Font.BOLD, 48));
+        logoLabel.setForeground(new Color(44, 62, 80));
+        logoPanel.add(logoLabel);
+
+        // Error Label
+        JPanel errorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        errorPanel.setOpaque(false);
+        errorLabel.setForeground(new Color(231, 76, 60));
+        errorLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        errorPanel.add(errorLabel);
+
+        topContainer.add(logoPanel);
+        topContainer.add(errorPanel);
+        this.add(topContainer, BorderLayout.NORTH);
+
+        // --- CENTER FORM (The "Card") ---
+        JPanel centerWrapper = new JPanel(new GridBagLayout());
+        centerWrapper.setOpaque(false);
+
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 30, 35));
+        formPanel.setBackground(CARD_COLOR);
+        formPanel.setBorder(new CompoundBorder(
+                new LineBorder(new Color(220, 220, 220), 2, true),
+                new EmptyBorder(60, 60, 60, 60)
         ));
 
-        // --- 1. Main Input Panel ---
-        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        // Input Fields Styling
+        styleLabelAndInput(formPanel, "Ticker Symbol (e.g., AAPL):", tickerField);
+        styleLabelAndInput(formPanel, "Initial Balance ($):", balanceField);
 
-        // Ticker (Stock Symbol)
-        inputPanel.add(new JLabel("Ticker (e.g., AAPL):"));
-        inputPanel.add(tickerField);
-
-        // Initial Balance
-        inputPanel.add(new JLabel("Initial Balance ($):"));
-        inputPanel.add(balanceField);
-
-        // Start Date
-        inputPanel.add(new JLabel("Start Date (YYYY-MM-DD):"));
-        inputPanel.add(startDateField);
-
-        // End Date
-        inputPanel.add(new JLabel("End Date (YYYY-MM-DD):"));
-        inputPanel.add(endDateField);
-
-        // Speed Multiplier
+        // Speed ComboBox
         String[] speeds = {"5x", "10x", "20x", "30x"};
         speedComboBox = new JComboBox<>(speeds);
         speedComboBox.setSelectedItem("10x");
-        inputPanel.add(new JLabel("Speed Multiplier:"));
-        inputPanel.add(speedComboBox);
+        speedComboBox.setFont(INPUT_FONT);
+        speedComboBox.setBackground(Color.WHITE);
 
-        // --- 2. Button and Error ---
-        errorLabel.setForeground(Color.RED);
-        errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel speedLabel = new JLabel("Simulation Speed:");
+        speedLabel.setFont(LABEL_FONT);
+        speedLabel.setForeground(TEXT_COLOR);
 
-        JPanel controlPanel = new JPanel(new FlowLayout());
-        startButton.setFont(new Font("Arial", Font.BOLD, 14));
-        controlPanel.add(startButton);
+        formPanel.add(speedLabel);
+        formPanel.add(speedComboBox);
 
-        this.add(errorLabel, BorderLayout.NORTH); // Display errors here
-        this.add(inputPanel, BorderLayout.CENTER);
-        this.add(controlPanel, BorderLayout.SOUTH);
 
-        // Bind Action to Controller
+        JLabel hintSpacer = new JLabel("");
+        JLabel speedHint = new JLabel("<html><body style='width: 200px'>Note: 10x speed means 1 minute in real life equals 10 minutes in simulation.</body></html>");
+        speedHint.setFont(HINT_FONT);
+        speedHint.setForeground(Color.GRAY);
+
+        formPanel.add(hintSpacer);
+        formPanel.add(speedHint);
+
+        centerWrapper.add(formPanel);
+        this.add(centerWrapper, BorderLayout.CENTER);
+
+        // --- BOTTOM BUTTON ---
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.setOpaque(false);
+        bottomPanel.setBorder(new EmptyBorder(30, 0, 80, 0));
+
+        startButton.setFont(new Font("SansSerif", Font.BOLD, 22));
+        startButton.setPreferredSize(new Dimension(250, 65));
+        startButton.setBackground(PRIMARY_COLOR);
+        startButton.setForeground(Color.WHITE);
+        startButton.setFocusPainted(false);
+        startButton.setBorderPainted(false);
+        startButton.setOpaque(true);
+        startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        bottomPanel.add(startButton);
+        this.add(bottomPanel, BorderLayout.SOUTH);
+
+        // Bind Action
         startButton.addActionListener(e -> handleStart());
+    }
+
+    private void styleLabelAndInput(JPanel panel, String labelText, JTextField textField) {
+        JLabel label = new JLabel(labelText);
+        label.setFont(LABEL_FONT);
+        label.setForeground(TEXT_COLOR);
+
+        textField.setFont(INPUT_FONT);
+        textField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(189, 195, 199), 2),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+        ));
+
+        panel.add(label);
+        panel.add(textField);
     }
 
     private void handleStart() {
@@ -98,21 +149,17 @@ public class SetupView extends JPanel implements PropertyChangeListener {
             double balance = Double.parseDouble(balanceField.getText());
             int speed = Integer.parseInt(speedComboBox.getSelectedItem().toString().replace("x", ""));
 
-            String startDateStr = startDateField.getText();
-            String endDateStr = endDateField.getText();
+            controller.execute(ticker, balance, speed);
 
-            controller.execute(ticker, balance, speed, startDateStr, endDateStr);
         } catch (NumberFormatException ex) {
-            errorLabel.setText("ERROR: Balance/Speed must be a number.");
-        } catch (DateTimeParseException ex) {
-            errorLabel.setText("ERROR: Date format must be YYYY-MM-DD.");
+            errorLabel.setText("⚠️ Input Error: Balance/Speed must be valid numbers.");
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("error".equals(evt.getPropertyName())) {
-            errorLabel.setText("ERROR: " + viewModel.getError());
+            errorLabel.setText("⚠️ " + viewModel.getError());
         }
     }
 }

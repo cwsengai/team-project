@@ -4,24 +4,21 @@ import java.awt.CardLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Optional;
-import java.util.UUID; // Needed for ID conversion
+import java.util.UUID;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-// 1. Imports for Teammate's API and Data Access
 import api.AlphaVantagePriceGateway;
 import data_access.InMemorySessionDataAccessObject;
 import data_access.SimulationMarketDataAccess;
 import data_access.SupabaseTradeDataAccessObject;
 
-// 2. Imports for Entities and Interfaces
 import entity.Account;
 import entity.SimulatedTradeRecord;
 import use_case.simulated_trade.TradeClosedListener;
 
-// 3. Imports for Adapters
 import interface_adapter.ViewManagerModel;
 import interface_adapter.setup_simulation.SetupController;
 import interface_adapter.setup_simulation.SetupPresenter;
@@ -30,7 +27,6 @@ import interface_adapter.simulated_trading.TradingController;
 import interface_adapter.simulated_trading.TradingPresenter;
 import interface_adapter.simulated_trading.TradingViewModel;
 
-// 4. Imports for Use Cases
 import use_case.PriceDataAccessInterface;
 import use_case.setup_simulation.SetupInputData;
 import use_case.setup_simulation.SetupInteractor;
@@ -38,23 +34,18 @@ import use_case.simulated_trade.SimulatedTradeInteractor;
 import use_case.simulated_trade.SimulationDataAccessInterface;
 import use_case.update_market.UpdateMarketInteractor;
 
-// 5. Imports for Views
 import view.SetupView;
 import view.TradingView;
 import view.ViewManager;
 
 public class SimulatedMain {
 
-    // Initialize base data source (API Gateway -> Simulation Adapter)
     private static final PriceDataAccessInterface baseGateway = new AlphaVantagePriceGateway();
     private static final SimulationDataAccessInterface simulationDAO = new SimulationMarketDataAccess(baseGateway);
-
-    // Global state to temporarily hold Setup data
     private static Optional<SetupInputData> setupInput = Optional.empty();
 
     /**
-     * Factory Listener: Responsible for dynamically creating the Trading components
-     * when the view switches from "Setup" to "Trading".
+     * Factory Listener: Handles Setup -> Trading transition
      */
     private static class TradingViewFactoryListener implements PropertyChangeListener {
 
@@ -63,76 +54,75 @@ public class SimulatedMain {
         private final TradingViewModel tradingViewModel;
         private final ViewManagerModel viewManagerModel;
 
-        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout, TradingViewModel tradingViewModel,
-                                          ViewManagerModel viewManagerModel) {
+        private final SetupViewModel setupViewModel;
+
+        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout,
+                                          TradingViewModel tradingViewModel,
+                                          ViewManagerModel viewManagerModel,
+                                          SetupViewModel setupViewModel) {
             this.views = views;
             this.cardLayout = cardLayout;
             this.tradingViewModel = tradingViewModel;
             this.viewManagerModel = viewManagerModel;
+            this.setupViewModel = setupViewModel;
         }
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            // Only execute when switching to "trading" view and input data is ready
             if (viewManagerModel.getActiveView().equals(TradingViewModel.VIEW_NAME) && setupInput.isPresent()) {
                 SetupInputData input = setupInput.get();
                 String ticker = input.getTicker();
 
-                // --- A. Initialize Teammate's Environment (Session & Database) ---
+                // --- 1. Environment Setup ---
                 InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
                 SupabaseTradeDataAccessObject tradeDAO = new SupabaseTradeDataAccessObject();
                 try {
-                    // Auto-login a random user to get a valid session/ID
                     util.SupabaseRandomUserUtil.createAndLoginRandomUser(sessionDAO);
                 } catch (Exception e) {
-                    throw new RuntimeException("Failed to create random user for session", e);
+                    throw new RuntimeException("Failed to create session", e);
                 }
 
-                // --- B. Get User ID ---
-                // Convert UUID to String for the Account entity
                 String userId = sessionDAO.getCurrentUserId().toString();
 
-                // --- C. Create Core Entity: Account ---
+                // --- 2. Core Entity Setup ---
                 Account account = new Account(input.getInitialBalance(), userId);
 
-                // --- D. Connect Database via Observer Pattern ---
-                // Register a listener to the Account. When a trade closes, this code runs.
                 account.addTradeClosedListener(new TradeClosedListener() {
                     @Override
                     public void onTradeClosed(SimulatedTradeRecord record) {
-                        System.out.println(">> Observer Triggered: Saving trade to Supabase...");
+                        System.out.println(">> Observer: Saving trade to Supabase...");
                         try {
-                            // Convert String ID back to UUID for teammate's DAO
                             UUID userUuid = UUID.fromString(record.getUserId());
-
-                            // Call teammate's save method
                             tradeDAO.saveTrade(record, userUuid);
                         } catch (Exception e) {
-                            System.err.println("Failed to save trade: " + e.getMessage());
+                            System.err.println("DB Save Failed: " + e.getMessage());
                         }
                     }
                 });
 
-                // --- E. Assemble Clean Architecture Components ---
-                TradingPresenter tradingPresenter = new TradingPresenter(tradingViewModel);
+                // --- 3. Clean Architecture Assembly ---
 
-                // 1. Market Engine Interactor
+                TradingPresenter tradingPresenter = new TradingPresenter(
+                        tradingViewModel,
+                        viewManagerModel,
+                        setupViewModel
+                );
+
                 UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(
                         simulationDAO, tradingPresenter, account, ticker
                 );
                 updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
 
-                // 2. Trade Execution Interactor
-                // (Clean constructor: no DAO passed here, handled by Observer above)
                 SimulatedTradeInteractor tradeInteractor = new SimulatedTradeInteractor(
                         tradingPresenter, account
                 );
 
-                // 3. Controller
-                TradingController tradingController = new TradingController(updateMarketInteractor, tradeInteractor);
+                TradingController tradingController = new TradingController(
+                        updateMarketInteractor, tradeInteractor, tradingPresenter
+                );
 
-                // --- F. View Switching ---
-                views.removeAll(); // Clear old views
+                // --- 4. View Creation ---
+                views.removeAll();
 
                 TradingView tradingView = new TradingView(tradingController, tradingViewModel);
                 views.add(tradingView, TradingViewModel.VIEW_NAME);
@@ -141,19 +131,18 @@ public class SimulatedMain {
                 views.revalidate();
                 views.repaint();
 
-                // --- G. Start Engine (Async Data Loading) ---
+                // --- 5. Start Engine ---
                 new Thread(() -> {
-                    System.out.println("Starting asynchronous data loading for " + ticker + "...");
+                    System.out.println("Loading data for " + ticker + "...");
                     updateMarketInteractor.loadData(ticker);
                 }).start();
 
-                // Clear setup data
                 setupInput = Optional.empty();
             }
         }
     }
 
-    // --- Final Setup Presenter (Intercepts input data) ---
+    // Final Setup Presenter
     public static class FinalSetupPresenter extends SetupPresenter {
         public FinalSetupPresenter(ViewManagerModel viewManagerModel, TradingViewModel tradingViewModel, SetupViewModel setupViewModel) {
             super(viewManagerModel, tradingViewModel, setupViewModel);
@@ -161,14 +150,12 @@ public class SimulatedMain {
 
         @Override
         public void prepareSuccessView(SetupInputData input) {
-            // Capture data globally
             SimulatedMain.setupInput = Optional.of(input);
-            // Proceed with view switch
             super.prepareSuccessView(input);
         }
     }
 
-    // --- Main Entry Point ---
+    // Main Entry Point
     public static void main(String[] args) {
         JFrame application = new JFrame(TradingViewModel.TITLE_LABEL);
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -182,7 +169,7 @@ public class SimulatedMain {
         TradingViewModel tradingViewModel = new TradingViewModel();
         SetupViewModel setupViewModel = new SetupViewModel();
 
-        // Setup Components
+        // Setup Assembly
         SetupPresenter finalSetupPresenter = new FinalSetupPresenter(
                 viewManagerModel, tradingViewModel, setupViewModel
         );
@@ -191,21 +178,20 @@ public class SimulatedMain {
         );
         SetupController setupController = new SetupController(setupInteractor);
 
-        // Views
+        // Init Views
         SetupView setupView = new SetupView(setupController, setupViewModel);
         view.TradingView tradingPlaceholder = new view.TradingView(null, tradingViewModel);
 
         views.add(setupView, SetupViewModel.VIEW_NAME);
         views.add(tradingPlaceholder, TradingViewModel.VIEW_NAME);
 
-        // Listeners
         viewManagerModel.addPropertyChangeListener(new TradingViewFactoryListener(
-                views, cardLayout, tradingViewModel, viewManagerModel
+                views, cardLayout, tradingViewModel, viewManagerModel, setupViewModel
         ));
 
         new ViewManager(views, cardLayout, viewManagerModel);
 
-        // Start Application
+        // Launch
         viewManagerModel.setActiveView(SetupViewModel.VIEW_NAME);
         viewManagerModel.firePropertyChanged();
 
