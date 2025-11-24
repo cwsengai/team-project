@@ -798,7 +798,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         // ✅ Don't close current window - just open new one
         SwingUtilities.invokeLater(() -> {
             try {
-                app.PortfolioSummaryMain.main(new String[]{});
+                app.PortfolioSummaryMain.open(null);
             } catch (Exception ex) {
                 System.err.println("❌ Error opening Portfolio Summary page: " + ex.getMessage());
                 ex.printStackTrace();
