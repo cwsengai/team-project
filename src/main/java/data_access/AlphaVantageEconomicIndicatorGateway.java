@@ -1,13 +1,14 @@
 package data_access;
 
-import api.Api;
-import entity.EconomicIndicator;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import use_case.EconomicIndicatorGateway;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import api.Api;
+import entity.EconomicIndicator;
+import use_case.EconomicIndicatorGateway;
 
 /**
  * Implementation of EconomicIndicatorGateway using Alpha Vantage API.

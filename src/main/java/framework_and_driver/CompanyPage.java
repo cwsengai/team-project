@@ -215,6 +215,13 @@ public class CompanyPage extends JFrame {
             }
         });
 
+        // Bind Zoom In button event
+        zoomIn.addActionListener(e -> {
+            if (chartPanel != null) {
+                chartPanel.performZoom(); // Call the public method we wrote in ChartPanel
+            }
+        });
+
         intervalPanel.add(btn5min);
         intervalPanel.add(btn1day);
         intervalPanel.add(btn1week);
@@ -290,6 +297,7 @@ public class CompanyPage extends JFrame {
     // REFRESH METHODS
     // ---------------------------------------------------------
     private void refreshCompany() {
+        // 1. Error handling (keep unchanged)
         if (companyVM.error != null) {
             errorLabel.setText(companyVM.error);
             return;
@@ -297,13 +305,31 @@ public class CompanyPage extends JFrame {
 
         errorLabel.setText("");
 
+        // 2. Update text information (keep unchanged)
         nameLabel.setText("Name: " + companyVM.name);
         sectorLabel.setText("Sector: " + companyVM.sector);
         industryLabel.setText("Industry: " + companyVM.industry);
         descriptionArea.setText(companyVM.description);
 
+        // 3. Update current Ticker
         currentTicker = companyVM.symbol;
-        if (chartController != null) chartController.setCurrentTicker(currentTicker);
+        
+        // --- Core modification start ---
+        if (chartController != null) {
+            // Step 1: Tell controller which stock is current
+            chartController.setCurrentTicker(currentTicker);
+            
+            // Step 2: Tell chart component to enable Zoom functionality
+            if (chartPanel != null) {
+                chartPanel.enableZoom(currentTicker);
+            }
+
+            // Step 3: [Critical!] Force refresh data once (simulate clicking "1 day")
+            // Without this line, the chart will never update!
+            System.out.println("Auto refreshing chart data: " + currentTicker); // Debug
+            chartController.handleTimeChange("1D");
+        }
+        // --- Core modification end ---
     }
 
     private void refreshFinancials() {
