@@ -2,71 +2,119 @@ package app;
 
 import javax.swing.SwingUtilities;
 
-import api.AlphaVantagePriceGateway;
 import api.Api;
-import framework_and_driver.CompanyDetailPage;
-import interface_adapter.CompanyDetailController;
-import interface_adapter.CompanyDetailPresenter;
+import api.AlphaVantagePriceGateway;
+
+import framework_and_driver.CompanyPage;
+import framework_and_driver.ChartViewAdapter;
+
 import interface_adapter.IntervalController;
-import use_case.CompanyDetailInputBoundary;
+import interface_adapter.PriceChartPresenter;
+
+import interface_adapter.controller.CompanyController;
+import interface_adapter.controller.FinancialStatementController;
+import interface_adapter.controller.NewsController;
+
+import interface_adapter.presenter.CompanyPresenter;
+import interface_adapter.presenter.FinancialStatementPresenter;
+import interface_adapter.presenter.NewsPresenter;
+
+import interface_adapter.view_model.CompanyViewModel;
+import interface_adapter.view_model.FinancialStatementViewModel;
+import interface_adapter.view_model.NewsViewModel;
+
+import data_access.AlphaVantageCompanyGateway;
+import data_access.AlphaVantageFinancialStatementGateway;
+import data_access.AlphaVantageNewsGateway;
+
+import use_case.company.CompanyInteractor;
+import use_case.financial_statement.FinancialStatementInteractor;
+import use_case.news.NewsInteractor;
 import use_case.GetPriceByIntervalInteractor;
-import use_case.PriceChartOutputBoundary;
 import use_case.PriceDataAccessInterface;
-import use_case.ViewCompanyDetailInteractor;
+import use_case.PriceChartOutputBoundary;
+
 
 public class CompanyMain {
 
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() -> {
-            // Initialize API
-            Api api = new Api("demo"); // TODO: Replace with actual API key
-            
-            // Create gateways
-            // Use api.AlphaVantageCompanyGateway which implements use_case.CompanyGateway
-            use_case.CompanyGateway companyGateway = new api.AlphaVantageCompanyGateway();
-            
-            // Create adapters for gateways that implement different interfaces
-            data_access.AlphaVantageFinancialStatementGateway financialStatementGateway = 
-                    new data_access.AlphaVantageFinancialStatementGateway(api);
-            use_case.FinancialGateway financialGateway = 
-                    new data_access.FinancialGatewayAdapter(financialStatementGateway);
-            
-            data_access.AlphaVantageNewsGateway oldNewsGateway = 
-                    new data_access.AlphaVantageNewsGateway(api);
-            use_case.NewsGateway newsGateway = 
-                    new data_access.NewsGatewayAdapter(oldNewsGateway);
-            
-            PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
-            
-            // Create UI
-            CompanyDetailPage companyDetailPage = new CompanyDetailPage();
-            
-            // Create presenter (implements both CompanyDetailOutputBoundary and PriceChartOutputBoundary)
-            CompanyDetailPresenter presenter = new CompanyDetailPresenter(companyDetailPage);
-            
-            // Create interactors
-            CompanyDetailInputBoundary companyInteractor = new ViewCompanyDetailInteractor(
-                    companyGateway, financialGateway, newsGateway, presenter);
-            
-            PriceChartOutputBoundary pricePresenter = presenter; // Same presenter handles both
-            GetPriceByIntervalInteractor priceInteractor = new GetPriceByIntervalInteractor(
-                    priceGateway, pricePresenter);
-            
-            // Create controllers
-            CompanyDetailController companyController = new CompanyDetailController(companyInteractor);
-            IntervalController chartController = new IntervalController(priceInteractor);
-            
-            // Wire up controllers
-            companyDetailPage.setChartController(chartController);
-            
-            // Set visible
-            companyDetailPage.setVisible(true);
-            
-            // Load default company (e.g., AAPL) for demo
-            companyController.handleCompanyDetailRequest("AAPL");
-            
-            // Load initial chart data
-            chartController.handleTimeChange("1D");
+
+            // -----------------------------
+            // API + GATEWAYS
+            // -----------------------------
+            Api api = new Api("demo");
+
+            AlphaVantageCompanyGateway companyGateway =
+                    new AlphaVantageCompanyGateway(api);
+
+            AlphaVantageFinancialStatementGateway fsGateway =
+                    new AlphaVantageFinancialStatementGateway(api);
+
+            AlphaVantageNewsGateway newsGateway =
+                    new AlphaVantageNewsGateway(api);
+
+            PriceDataAccessInterface priceGateway =
+                    new AlphaVantagePriceGateway();
+
+            // -----------------------------
+            // VIEW MODELS
+            // -----------------------------
+            CompanyViewModel companyVM = new CompanyViewModel();
+            FinancialStatementViewModel fsVM = new FinancialStatementViewModel();
+            NewsViewModel newsVM = new NewsViewModel();
+
+            // -----------------------------
+            // UI
+            // -----------------------------
+            CompanyPage ui = new CompanyPage(companyVM, fsVM, newsVM);
+
+            // -----------------------------
+            // CHART ADAPTER
+            // -----------------------------
+            ChartViewAdapter chartAdapter = new ChartViewAdapter(ui);
+
+            // -----------------------------
+            // CHART PRESENTER
+            // -----------------------------
+            PriceChartOutputBoundary pricePresenter =
+                    new PriceChartPresenter(chartAdapter);
+
+            // -----------------------------
+            // INTERACTORS
+            // -----------------------------
+            CompanyInteractor companyInteractor =
+                    new CompanyInteractor(companyGateway, new CompanyPresenter(companyVM));
+
+            FinancialStatementInteractor fsInteractor =
+                    new FinancialStatementInteractor(fsGateway, new FinancialStatementPresenter(fsVM));
+
+            NewsInteractor newsInteractor =
+                    new NewsInteractor(newsGateway, new NewsPresenter(newsVM));
+
+            GetPriceByIntervalInteractor priceInteractor =
+                    new GetPriceByIntervalInteractor(priceGateway, pricePresenter);
+
+            // -----------------------------
+            // CONTROLLERS
+            // -----------------------------
+            CompanyController companyController =
+                    new CompanyController(companyInteractor);
+
+            FinancialStatementController fsController =
+                    new FinancialStatementController(fsInteractor);
+
+            NewsController newsController =
+                    new NewsController(newsInteractor);
+
+            IntervalController intervalController =
+                    new IntervalController(priceInteractor);
+
+            // inject controllers into UI
+            ui.setControllers(companyController, fsController, newsController, intervalController);
+
+            ui.setVisible(true);
         });
     }
 }
