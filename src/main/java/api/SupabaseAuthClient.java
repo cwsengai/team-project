@@ -13,6 +13,13 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class SupabaseAuthClient {
+        /**
+         * Signs in with the given email and password and returns the JWT (access_token), or null on failure.
+         */
+        public String loginAndGetJwt(String email, String password) throws IOException {
+            JSONObject result = signIn(email, password);
+            return result.optString("access_token", null);
+        }
     private final String supabaseUrl;
     private final String supabaseApiKey;
     private final OkHttpClient client = new OkHttpClient();
@@ -24,30 +31,16 @@ public class SupabaseAuthClient {
 
     public JSONObject signUp(String email, String password) throws IOException {
         String url = supabaseUrl + "/auth/v1/signup";
-        JSONObject json = new JSONObject();
-        json.put("email", email);
-        json.put("password", password);
-        RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("apikey", supabaseApiKey)
-                .addHeader("Content-Type", "application/json")
-                .post(body)
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-			ResponseBody responseBody = response.body();
-			String resp;
-			if (responseBody != null) {
-				resp = responseBody.string();
-			} else {
-				resp = "";
-			}
-            return new JSONObject(resp);
-        }
+        return sendAuthRequest(url, email, password);
     }
+
 
     public JSONObject signIn(String email, String password) throws IOException {
         String url = supabaseUrl + "/auth/v1/token?grant_type=password";
+        return sendAuthRequest(url, email, password);
+    }
+
+    private JSONObject sendAuthRequest(String url, String email, String password) throws IOException {
         JSONObject json = new JSONObject();
         json.put("email", email);
         json.put("password", password);
@@ -59,13 +52,8 @@ public class SupabaseAuthClient {
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-			ResponseBody responseBody = response.body();
-			String resp;
-			if (responseBody != null) {
-				resp = responseBody.string();
-			} else {
-				resp = "";
-			}
+            ResponseBody responseBody = response.body();
+            String resp = (responseBody != null) ? responseBody.string() : "";
             return new JSONObject(resp);
         }
     }
