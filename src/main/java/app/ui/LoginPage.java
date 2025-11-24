@@ -159,6 +159,7 @@ public class LoginPage extends JFrame {
                 var result = auth.signUp(email, password);
                 String jwt = result.optString("access_token", null);
 
+
                 if (jwt == null) {
                     status.setText("Signup failed (email may already exist)");
                     return;

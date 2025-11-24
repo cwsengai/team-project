@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import app.ui.LoginPage;
 import data_access.InMemorySessionDataAccessObject;
 
+
 public class LoginTest {
     public static void main(String[] args) {
         InMemorySessionDataAccessObject session = new InMemorySessionDataAccessObject();

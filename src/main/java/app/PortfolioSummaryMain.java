@@ -29,6 +29,7 @@ public class PortfolioSummaryMain {
             frame.setSize(900, 700);
             frame.setLocationRelativeTo(null);
 
+
             // Main background panel with light grey color
             javax.swing.JPanel background = new javax.swing.JPanel();
             background.setBackground(new java.awt.Color(0xF7, 0xF7, 0xF7));
