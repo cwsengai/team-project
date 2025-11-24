@@ -8,15 +8,19 @@ public class TradingController {
 
     private final UpdateMarketInputBoundary updateMarketInteractor;
     private final SimulatedTradeInputBoundary tradeInteractor;
+    // ✅ 新增：为了支持返回按钮，必须持有 Presenter
+    private final TradingPresenter tradingPresenter;
 
+    // ✅ 修改：构造函数增加 TradingPresenter 参数
     public TradingController(UpdateMarketInputBoundary updateMarketInteractor,
-                             SimulatedTradeInputBoundary tradeInteractor) {
+                             SimulatedTradeInputBoundary tradeInteractor,
+                             TradingPresenter tradingPresenter) {
         this.updateMarketInteractor = updateMarketInteractor;
         this.tradeInteractor = tradeInteractor;
+        this.tradingPresenter = tradingPresenter;
     }
 
     //Triggered by the View's Timer (e.g., every second).
-
     public void executeTimerTick() {
         updateMarketInteractor.executeExecuteTick();
     }
@@ -30,5 +34,10 @@ public class TradingController {
                 currentPrice
         );
         tradeInteractor.executeTrade(inputData);
+    }
+
+    // ✅ 新增：处理返回按钮点击
+    public void executeGoBack() {
+        tradingPresenter.prepareGoBackView();
     }
 }
