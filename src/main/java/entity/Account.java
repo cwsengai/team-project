@@ -9,23 +9,25 @@ import java.time.LocalDateTime;
 
 public class Account {
     // Core Funds
+    private final String userId;
     private double balance;
     private final double initialBalance;
     private double maxEquity;
 
     // Holdings and Listeners
     private final Map<String, Position> positions = new HashMap<>();
-    private final List<TradeClosedListener> listeners = new ArrayList<>(); // ✅ New: Event Listeners
+    private final List<TradeClosedListener> listeners = new ArrayList<>();
 
     // Performance Stats (Counters for Figma Summary)
     private int totalTrades = 0;
     private int winningTrades = 0;
     private double maxGain = 0.0;
 
-    public Account(double initialBalance) {
+    public Account(double initialBalance, String userId) {
         this.initialBalance = initialBalance;
         this.balance = initialBalance;
         this.maxEquity = initialBalance;
+        this.userId = userId;
     }
 
     // --- Observer Pattern Methods ---
@@ -70,7 +72,8 @@ public class Account {
                     price, // Exit Price
                     realizedPnL,
                     time, // Simplified entry time
-                    time // Exit time (current time)
+                    time, // Exit time (current time)
+                    this.userId
             );
 
             for (TradeClosedListener listener : listeners) {

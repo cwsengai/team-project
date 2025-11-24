@@ -12,6 +12,7 @@ public class SimulatedTradeRecord {
     private final double realizedPnL;
     private final LocalDateTime entryTime;
     private final LocalDateTime exitTime;
+    private final String userId;
 
     public SimulatedTradeRecord(String ticker,
                                 boolean isLong,
@@ -20,7 +21,8 @@ public class SimulatedTradeRecord {
                                 double exitPrice,
                                 double realizedPnL,
                                 LocalDateTime entryTime,
-                                LocalDateTime exitTime) {
+                                LocalDateTime exitTime,
+                                String userId) {
         this.ticker = ticker;
         this.isLong = isLong;
         this.quantity = quantity;
@@ -29,6 +31,7 @@ public class SimulatedTradeRecord {
         this.realizedPnL = realizedPnL;
         this.entryTime = entryTime;
         this.exitTime = exitTime;
+        this.userId = userId;
     }
 
     public String getTicker() {
@@ -55,6 +58,7 @@ public class SimulatedTradeRecord {
     public LocalDateTime getExitTime() {
         return exitTime;
     }
+    public String getUserId() { return userId; }
 
     @Override
     public String toString() {

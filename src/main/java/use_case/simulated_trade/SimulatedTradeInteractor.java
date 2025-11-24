@@ -1,23 +1,16 @@
 package use_case.simulated_trade;
 
-import java.time.LocalDateTime;
-
 import entity.Account;
-import use_case.session.SessionDataAccessInterface;
+import java.time.LocalDateTime;
 
 public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
 
     private final SimulatedTradeOutputBoundary presenter;
     private final Account account;
-    private final SimulatedTradeDataAccessInterface dataAccess;
-    private final SessionDataAccessInterface sessionDataAccess;
 
-    public SimulatedTradeInteractor(SimulatedTradeOutputBoundary presenter, Account account,
-                                    SimulatedTradeDataAccessInterface dataAccess, SessionDataAccessInterface sessionDataAccess) {
+    public SimulatedTradeInteractor(SimulatedTradeOutputBoundary presenter, Account account) {
         this.presenter = presenter;
         this.account = account;
-        this.dataAccess = dataAccess;
-        this.sessionDataAccess = sessionDataAccess;
     }
 
     @Override
@@ -29,7 +22,7 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
 
         LocalDateTime tradeTime = LocalDateTime.now();
 
-        // 1. Validate input amount
+        // 1. Validate input amount (omitted for brevity)
         if (amountUSD <= 0) {
             presenter.prepareFailView("Amount must be positive.");
             return;
@@ -43,7 +36,7 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
             return;
         }
 
-        // 3. Check for sufficient funds
+        // 3. Check for sufficient funds (simplified)
         double totalCost = quantity * price;
         if (isBuy && account.getBalance() < totalCost) {
             presenter.prepareFailView("Insufficient funds.");
