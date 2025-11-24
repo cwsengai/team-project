@@ -2,22 +2,31 @@ package interface_adapter.simulated_trading;
 
 import use_case.simulated_trade.SimulatedTradeOutputBoundary;
 import use_case.simulated_trade.SimulatedTradeOutputData;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.setup_simulation.SetupViewModel;
 import use_case.update_market.UpdateMarketOutputBoundary;
 import use_case.update_market.UpdateMarketOutputData;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.setup_simulation.SetupViewModel;
 
 import java.text.DecimalFormat;
 
 public class TradingPresenter implements UpdateMarketOutputBoundary, SimulatedTradeOutputBoundary {
 
     private final TradingViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
+    private final SetupViewModel setupViewModel;
 
     private final DecimalFormat moneyFormat = new DecimalFormat("$#,##0.00");
     private final DecimalFormat pctFormat = new DecimalFormat("0.00%");
 
-    public TradingPresenter(TradingViewModel viewModel) {
+    public TradingPresenter(TradingViewModel viewModel, ViewManagerModel viewManagerModel, SetupViewModel setupViewModel) {
         this.viewModel = viewModel;
+        this.viewManagerModel = viewManagerModel;
+        this.setupViewModel = setupViewModel;
+    }
+
+    public void prepareGoBackView() {
+        viewManagerModel.setActiveView(SetupViewModel.VIEW_NAME);
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override

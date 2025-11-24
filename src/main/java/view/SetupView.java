@@ -20,6 +20,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     private final JTextField balanceField = new JTextField("100000.00", 10);
 
 
+
     // Speed Options (5x, 10x, 20x, 30x)
     private final JComboBox<String> speedComboBox;
 
@@ -43,7 +44,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
 
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         logoPanel.setOpaque(false);
-        JLabel logoLabel = new JLabel("💰 BILLIONAIRE");
+        JLabel logoLabel = new JLabel("✶ BILLIONAIRE");
         logoLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
         logoLabel.setForeground(new Color(50, 50, 50));
         logoPanel.add(logoLabel);
