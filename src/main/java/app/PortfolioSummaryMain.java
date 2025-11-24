@@ -56,7 +56,10 @@ public class PortfolioSummaryMain {
             contentPanel.add(new PortfolioSummaryNavBar(frame));
             contentPanel.add(new PortfolioSummaryHeader());
             contentPanel.add(new PortfolioSummaryCard());
-            contentPanel.add(new PortfolioOrderHistoryTable());
+            // Pass userId and DAO to PortfolioOrderHistoryTable
+            data_access.SupabaseTradeDataAccessObject tradeDAO = new data_access.SupabaseTradeDataAccessObject();
+            java.util.UUID userId = userSessionDAO.getCurrentUserId();
+            contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeDAO));
 
             // Add contentPanel to background (centered)
             background.add(contentPanel, BorderLayout.CENTER);
