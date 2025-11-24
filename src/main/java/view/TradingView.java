@@ -129,11 +129,23 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
 
         backButton.addActionListener(e -> {
-            if (controller != null) controller.executeGoBack();
+            // 1. 关闭当前窗口 (你的 Simulated Trading)
+            java.awt.Window currentWindow = SwingUtilities.getWindowAncestor(this);
+            if (currentWindow != null) {
+                currentWindow.dispose();
+            }
+
+
+            try {
+                app.CompanyListMain.main(null);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Failed to launch Company List: " + ex.getMessage());
+                ex.printStackTrace();
+            }
         });
 
         orderHistoryButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Full Order History View is not implemented in this demo.")
+                JOptionPane.showMessageDialog(this, "History feature coming soon!")
         );
 
         if (this.controller != null) {
