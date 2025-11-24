@@ -98,7 +98,7 @@
 //
 //        // GOOGL position
 //        Position googlPosition = new Position("GOOGL");
-//        googlPosition.addTrade(new Trade("T002", "GOOGL", 5, 130.0,
+//        googlPosition.addTrade(new Trade("T002", "GOOGL", 5, 1p30.0,
 //                LocalDateTime.now().minusDays(20), true));
 //        portfolio.addPosition(googlPosition);
 //

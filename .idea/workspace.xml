@@ -4,61 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50c8dc4f-ad34-4d4a-86a2-b56f4bca2e25" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/TradeClosedListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SimulationMarketDataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulatedTradeInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/simulated_trade/SimulatedTradeInteractor.java" afterDir="false" />
-    </list>
+    <list default="true" id="6d9630df-f41a-4773-99e2-d0356a41c55b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
-  <component name="ProjectId" id="35rf3jDENtLj4RY2w3p2rrLnF6B" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.CompanyMain.executor": "Run",
-    "Application.SimulatedMain.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/simulated-trading",
-    "kotlin-language-version-configured": "true"
-  }
-}]]></component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="50c8dc4f-ad34-4d4a-86a2-b56f4bca2e25" name="Changes" comment="" />
-      <created>1763872914098</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1763872914098</updated>
-    </task>
     <servers />
   </component>
 </project>
