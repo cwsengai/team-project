@@ -93,18 +93,47 @@ public class CompanyDetailPage extends JFrame {
         headerPanel.add(companyNameLabel, BorderLayout.WEST);
         headerPanel.add(tradeButton, BorderLayout.EAST);
 
+        // Chart panel using buildChartPanel method
+        JPanel chartPanelContainer = buildChartPanel();
+
+        panel.add(headerPanel, BorderLayout.NORTH);
+        panel.add(chartPanelContainer, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    // ---------------------------------------------------------
+    // LEFT SIDE — CHART PANEL (Revised)
+    // ---------------------------------------------------------
+    private JPanel buildChartPanel() {
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Header (Title + Trade Button)
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        JLabel title = new JLabel("Company Chart", SwingConstants.LEFT);
+        title.setFont(new Font("SansSerif", Font.BOLD, 22));
+
+        JButton tradeButton = new JButton("Trade");
+        tradeButton.setBackground(new Color(200, 200, 200));
+        tradeButton.setFocusPainted(false);
+
+        headerPanel.add(title, BorderLayout.WEST);
+        headerPanel.add(tradeButton, BorderLayout.EAST);
+
         // Chart panel
         chartPanel = new ChartPanel();
         chartPanel.setPreferredSize(new java.awt.Dimension(1200, 700));
         chartPanel.setMinimumSize(new java.awt.Dimension(1000, 600));
 
-        // Time interval buttons
+        // Interval buttons
         JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JButton btn5min = new JButton("5min");
         JButton btn1day = new JButton("1 day");
         JButton btn1week = new JButton("1 week");
         JButton zoomIn = new JButton("Zoom in");
-        
+
         btn5min.addActionListener(e -> {
             if (chartController != null && currentTicker != null) {
                 chartController.handleTimeChange("5M");
@@ -121,18 +150,26 @@ public class CompanyDetailPage extends JFrame {
             }
         });
 
+        // Add click listener for Zoom in button
+        zoomIn.addActionListener(e -> {
+            if (chartPanel != null) {
+                // Call the public method we just added in ChartPanel
+                chartPanel.performZoom();
+            }
+        });
+
         intervalPanel.add(btn5min);
         intervalPanel.add(btn1day);
         intervalPanel.add(btn1week);
         intervalPanel.add(zoomIn);
 
-        // Combine price panel and interval panel
-        JPanel bottomControlPanel = new JPanel(new BorderLayout());
-        bottomControlPanel.add(intervalPanel, BorderLayout.CENTER);
+        // Bottom Container (Contains only buttons now)
+        JPanel bottom = new JPanel(new BorderLayout());
+        bottom.add(intervalPanel, BorderLayout.SOUTH);
 
         panel.add(headerPanel, BorderLayout.NORTH);
         panel.add(chartPanel, BorderLayout.CENTER);
-        panel.add(bottomControlPanel, BorderLayout.SOUTH);
+        panel.add(bottom, BorderLayout.SOUTH);
 
         return panel;
     }
@@ -226,6 +263,11 @@ public class CompanyDetailPage extends JFrame {
         // Update chart controller with new ticker
         if (chartController != null) {
             chartController.setCurrentTicker(this.currentTicker);
+        }
+        
+        // Tell chart panel which stock is current, enable Zoom functionality
+        if (chartPanel != null) {
+            chartPanel.enableZoom(this.currentTicker);
         }
     }
 

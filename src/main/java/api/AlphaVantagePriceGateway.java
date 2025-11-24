@@ -82,6 +82,11 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
             
             // Check for API error messages
             if (root.has("Error Message") || root.has("Note")) {
+                // If Note (usually API rate limit), log and return empty list instead of crashing
+                if (root.has("Note")) {
+                    System.out.println("API Limit Reached or Note: " + root.getString("Note"));
+                    return pricePoints; // Return empty list to avoid crash
+                }
                 throw new RuntimeException("API Error: " + root.toString());
             }
             
@@ -117,7 +122,11 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 pricePoints.add(pricePoint);
             }
             
+            // Sort by timestamp in ascending order (oldest to newest)
+            pricePoints.sort((p1, p2) -> p1.getTimestamp().compareTo(p2.getTimestamp()));
+            
         } catch (Exception e) {
+            e.printStackTrace(); // Print error stack for debugging
             throw new RuntimeException("Failed to parse price data: " + e.getMessage(), e);
         }
         
