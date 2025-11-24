@@ -215,6 +215,13 @@ public class CompanyPage extends JFrame {
             }
         });
 
+        // Bind Zoom In button event
+        zoomIn.addActionListener(e -> {
+            if (chartPanel != null) {
+                chartPanel.performZoom(); // Call the public method we wrote in ChartPanel
+            }
+        });
+
         intervalPanel.add(btn5min);
         intervalPanel.add(btn1day);
         intervalPanel.add(btn1week);
@@ -304,6 +311,11 @@ public class CompanyPage extends JFrame {
 
         currentTicker = companyVM.symbol;
         if (chartController != null) chartController.setCurrentTicker(currentTicker);
+        
+        // Tell ChartPanel the current stock ticker, otherwise it won't know which stock to zoom
+        if (chartPanel != null) {
+            chartPanel.enableZoom(currentTicker);
+        }
     }
 
     private void refreshFinancials() {
