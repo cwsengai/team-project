@@ -61,6 +61,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
 
     @Override
     public void executeExecuteTick() {
+        // --- Safety Checks ---
         if (allCandles == null || allCandles.isEmpty() || candleIndex >= allCandles.size()) {
             presenter.prepareFailView("Simulation Data Ended");
             return;
@@ -71,7 +72,6 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
         }
 
         double currentPrice = currentMinuteTicks.get(tickIndex);
-
         String currentTicker = this.simulationTicker;
 
         // Update Account and Get Equity
@@ -81,7 +81,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
         Map<String, Position> currentPositions = account.getPositions();
         historyTicksForChart.add(currentPrice);
 
-        // Package and Send Output Data
+        // 3. Package and Send Output Data (13 Arguments total now)
         UpdateMarketOutputData outputData = new UpdateMarketOutputData(
                 currentPrice,
                 currentEquity,
@@ -89,16 +89,16 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
                 account.getMaxDrawdown(currentEquity),
                 account.getBalance(),
 
-                // --- Pass Stats (13 arguments total) ---
+                // --- Pass Stats ---
                 account.getTotalTrades(),
                 account.getWinningTrades(),
                 account.getMaxGain(),
                 account.getLosingTrades(),
-                account.getWinRate(), // 👈 FIX 3: This was the missing 13th argument
+                account.getWinRate(),
 
                 historyTicksForChart,
                 currentPositions,
-                null
+                null // Error string
         );
 
         presenter.prepareSuccessView(outputData);
@@ -114,6 +114,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
             if (candleIndex < allCandles.size()) {
                 int ticks = calculateTicksPerCandle();
                 currentMinuteTicks = dataAccess.generateTicks(allCandles.get(candleIndex), ticks);
+
             }
         }
     }
