@@ -1,51 +1,71 @@
 package framework_and_driver;
 
 import java.awt.Color;
-
+import java.awt.Font;
 import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.CategorySeries.CategorySeriesRenderStyle;
 import org.knowm.xchart.style.Styler;
 
 /**
- * Utility class for applying consistent styling to XChart charts.
+ * Utility class for applying "Billionaire" UI style to XChart.
  */
 public class ChartStyler {
 
-    /**
-     * Apply default styling to a chart.
-     * This includes legend position, grid lines, background colors, and axis label rotation.
-     * 
-     * @param chart The chart to style
-     */
+    // Color definitions: Finance blue, white background, dark gray text
+    public static final Color FINANCE_BLUE = new Color(0, 122, 255); 
+    public static final Color BG_COLOR = Color.WHITE;
+    public static final Color GRID_COLOR = new Color(245, 245, 245); 
+    public static final Color TEXT_COLOR = new Color(80, 80, 80);
+
     public static void applyDefaultStyle(CategoryChart chart) {
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
-        chart.getStyler().setPlotGridLinesVisible(true);
-        chart.getStyler().setPlotBackgroundColor(Color.WHITE);
-        chart.getStyler().setChartBackgroundColor(Color.WHITE);
-        chart.getStyler().setAxisTickLabelsColor(Color.BLACK);
-        chart.getStyler().setPlotGridLinesColor(new Color(220, 220, 220));
-        chart.getStyler().setXAxisLabelRotation(0); // No rotation for cleaner look
+        // 1. Base background
+        chart.getStyler().setChartBackgroundColor(BG_COLOR);
+        chart.getStyler().setPlotBackgroundColor(BG_COLOR);
+        
+        // 2. Hide extra borders and legend (Clean Look)
+        chart.getStyler().setChartTitleVisible(false);
+        chart.getStyler().setLegendVisible(false);
         chart.getStyler().setPlotBorderVisible(false);
-        chart.getStyler().setChartTitleVisible(true);
-        chart.getStyler().setChartTitleFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 16));
+        
+        // 3. Axis styling
+        chart.getStyler().setAxisTickLabelsColor(TEXT_COLOR);
+        chart.getStyler().setAxisTickLabelsFont(new Font("SansSerif", Font.PLAIN, 11));
+        
+        // Hide axis titles (X: Date, Y: Price) for minimalism
+        chart.getStyler().setXAxisTitleVisible(false);
+        chart.getStyler().setYAxisTitleVisible(false);
+
+        // 4. Grid lines - Only keep horizontal grid lines for easier price reading
+        chart.getStyler().setPlotGridLinesVisible(true);
+        chart.getStyler().setPlotGridLinesColor(GRID_COLOR);
+        chart.getStyler().setPlotGridVerticalLinesVisible(false); 
+        chart.getStyler().setPlotGridHorizontalLinesVisible(true);
     }
 
-    /**
-     * Apply styling optimized for line charts (smooth, clean appearance)
-     */
     public static void applyLineChartStyle(CategoryChart chart) {
         applyDefaultStyle(chart);
-        chart.getStyler().setLegendVisible(false); // Hide legend for cleaner line charts
-        chart.getStyler().setMarkerSize(0); // No markers for smooth line
-        // Note: Line width is set when adding series, not in styler
+        
+        // --- Core Fix ---
+        // Force line chart mode (default is Bar)
+        chart.getStyler().setDefaultSeriesRenderStyle(CategorySeriesRenderStyle.Line);
+        
+        // Ensure Y-axis auto-scaling (do not force start from 0)
+        chart.getStyler().setYAxisMin(null); 
+        chart.getStyler().setYAxisMax(null);
+
+        // Line styling
+        chart.getStyler().setMarkerSize(0); // Remove data point markers for smooth line
+        chart.getStyler().setSeriesColors(new Color[] { FINANCE_BLUE }); // Force blue color
+        
+        // Set chart content size
+        chart.getStyler().setPlotContentSize(0.95); // Chart fill ratio
     }
 
-    /**
-     * Apply styling for candlestick charts
-     */
     public static void applyCandlestickStyle(CategoryChart chart) {
         applyDefaultStyle(chart);
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.OutsideE);
-        chart.getStyler().setMarkerSize(4); // Smaller markers for candlestick
+        // For candlestick charts, use similar minimal style
+        chart.getStyler().setDefaultSeriesRenderStyle(CategorySeriesRenderStyle.Line);
+        chart.getStyler().setMarkerSize(0);
+        chart.getStyler().setSeriesColors(new Color[] { FINANCE_BLUE });
     }
 }
-
