@@ -4,7 +4,7 @@ import java.awt.CardLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.UUID; // Needed for ID conversion
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -62,17 +62,13 @@ public class SimulatedMain {
         private final CardLayout cardLayout;
         private final TradingViewModel tradingViewModel;
         private final ViewManagerModel viewManagerModel;
-        private final SetupViewModel setupViewModel;
 
-        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout,
-                                          TradingViewModel tradingViewModel,
-                                          ViewManagerModel viewManagerModel,
-                                          SetupViewModel setupViewModel) {
+        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout, TradingViewModel tradingViewModel,
+                                          ViewManagerModel viewManagerModel) {
             this.views = views;
             this.cardLayout = cardLayout;
             this.tradingViewModel = tradingViewModel;
             this.viewManagerModel = viewManagerModel;
-            this.setupViewModel = setupViewModel;
         }
 
         @Override
@@ -93,18 +89,23 @@ public class SimulatedMain {
                 }
 
                 // --- B. Get User ID ---
+                // Convert UUID to String for the Account entity
                 String userId = sessionDAO.getCurrentUserId().toString();
 
                 // --- C. Create Core Entity: Account ---
                 Account account = new Account(input.getInitialBalance(), userId);
 
                 // --- D. Connect Database via Observer Pattern ---
+                // Register a listener to the Account. When a trade closes, this code runs.
                 account.addTradeClosedListener(new TradeClosedListener() {
                     @Override
                     public void onTradeClosed(SimulatedTradeRecord record) {
                         System.out.println(">> Observer Triggered: Saving trade to Supabase...");
                         try {
+                            // Convert String ID back to UUID for teammate's DAO
                             UUID userUuid = UUID.fromString(record.getUserId());
+
+                            // Call teammate's save method
                             tradeDAO.saveTrade(record, userUuid);
                         } catch (Exception e) {
                             System.err.println("Failed to save trade: " + e.getMessage());
@@ -113,12 +114,7 @@ public class SimulatedMain {
                 });
 
                 // --- E. Assemble Clean Architecture Components ---
-
-                TradingPresenter tradingPresenter = new TradingPresenter(
-                        tradingViewModel,
-                        viewManagerModel,
-                        setupViewModel
-                );
+                TradingPresenter tradingPresenter = new TradingPresenter(tradingViewModel);
 
                 // 1. Market Engine Interactor
                 UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(
@@ -127,12 +123,13 @@ public class SimulatedMain {
                 updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
 
                 // 2. Trade Execution Interactor
+                // (Clean constructor: no DAO passed here, handled by Observer above)
                 SimulatedTradeInteractor tradeInteractor = new SimulatedTradeInteractor(
                         tradingPresenter, account
                 );
 
                 // 3. Controller
-                TradingController tradingController = new TradingController(updateMarketInteractor, tradeInteractor, tradingPresenter);
+                TradingController tradingController = new TradingController(updateMarketInteractor, tradeInteractor);
 
                 // --- F. View Switching ---
                 views.removeAll(); // Clear old views
@@ -203,7 +200,7 @@ public class SimulatedMain {
 
         // Listeners
         viewManagerModel.addPropertyChangeListener(new TradingViewFactoryListener(
-                views, cardLayout, tradingViewModel, viewManagerModel, setupViewModel
+                views, cardLayout, tradingViewModel, viewManagerModel
         ));
 
         new ViewManager(views, cardLayout, viewManagerModel);

@@ -5,7 +5,6 @@ import interface_adapter.simulated_trading.TradingState;
 import interface_adapter.simulated_trading.TradingViewModel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder; // Need this for spacing
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -45,9 +44,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
     private final JButton sellButton = new JButton(TradingViewModel.SELL_BUTTON_LABEL);
     private final PriceChartPanel chartPanel = new PriceChartPanel();
 
-    private final JButton backButton = new JButton("Back");
-    private final JButton orderHistoryButton = new JButton("View All Order History");
-
     private final Timer timer = new Timer(1000, this);
 
     public TradingView(TradingController controller, TradingViewModel viewModel) {
@@ -61,26 +57,18 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
         this.setLayout(new BorderLayout());
 
-        // --- 1. TOP HEADER (Modified for Back Button) ---
+        // --- 1. TOP HEADER ---
         JPanel headerPanel = new JPanel(new BorderLayout());
-
-        // Left Side: Cash
         JPanel cashPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         cashPanel.add(new JLabel("Available Virtual Money: "));
         cashPanel.add(availableCashLabel);
 
-        // Center: Ticker
         tickerLabel.setFont(new Font("Arial", Font.BOLD, 20));
         JPanel tickerPanel = new JPanel();
         tickerPanel.add(tickerLabel);
 
-        JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        rightHeader.add(backButton);
-
-        headerPanel.add(cashPanel, BorderLayout.WEST);
+        headerPanel.add(cashPanel, BorderLayout.NORTH);
         headerPanel.add(tickerPanel, BorderLayout.SOUTH);
-        headerPanel.add(rightHeader, BorderLayout.EAST); // Add Back Button
-
         this.add(headerPanel, BorderLayout.NORTH);
 
         // --- 2. RIGHT PANEL (Controls) ---
@@ -93,47 +81,15 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         chartPanel.setPreferredSize(new Dimension(800, 450));
         centerContainer.add(chartPanel);
 
-        JPanel walletSection = new JPanel(new BorderLayout());
-        walletSection.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
-        walletSection.setBorder(new EmptyBorder(10, 5, 0, 5));
-
-        // Wallet Header
-        JPanel walletHeader = new JPanel(new BorderLayout());
-        JLabel walletTitle = new JLabel("Wallet Holdings");
-        walletTitle.setFont(new Font("Arial", Font.BOLD, 14));
-        walletTitle.setBorder(new EmptyBorder(0, 5, 5, 0));
-
-        // Style History Button
-        orderHistoryButton.setForeground(Color.BLUE);
-        orderHistoryButton.setBorderPainted(false);
-        orderHistoryButton.setContentAreaFilled(false);
-        orderHistoryButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        orderHistoryButton.setHorizontalAlignment(SwingConstants.RIGHT);
-
-        walletHeader.add(walletTitle, BorderLayout.WEST);
-        walletHeader.add(orderHistoryButton, BorderLayout.EAST);
-
-        walletSection.add(walletHeader, BorderLayout.NORTH);
-
         JScrollPane walletScrollPane = new JScrollPane(walletTable);
-        walletScrollPane.setPreferredSize(new Dimension(800, 150)); // Keep original sizing logic if preferred, or rely on parent layout
-        walletSection.add(walletScrollPane, BorderLayout.CENTER);
-
-        // Add wallet section to container
-        centerContainer.add(walletSection);
+        walletScrollPane.setPreferredSize(new Dimension(800, 150));
+        walletScrollPane.setBorder(BorderFactory.createTitledBorder("Wallet Holdings"));
+        centerContainer.add(walletScrollPane);
 
         this.add(centerContainer, BorderLayout.CENTER);
 
         // --- 4. BOTTOM PANEL (Summary Stats) ---
         this.add(createSummaryPanel(), BorderLayout.SOUTH);
-
-        backButton.addActionListener(e -> {
-            if (controller != null) controller.executeGoBack();
-        });
-
-        orderHistoryButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "Full Order History View is not implemented in this demo.")
-        );
 
         if (this.controller != null) {
             timer.start();
@@ -241,12 +197,9 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         losingTradesLabel.setText(state.getLosingTrades());
         winRateLabel.setText(state.getWinRate());
 
-        // 2. Update Chart & Ticker (Original Logic Preserved)
-        chartPanel.updateData(state.getChartData()); // Old method signature without timestamps
+        // 2. Update Chart & Ticker
+        chartPanel.updateData(state.getChartData());
         tickerLabel.setText(state.getTicker());
-
-        // If you updated PriceChartPanel to take 2 args, you MUST change the above line to:
-        // chartPanel.updateData(state.getChartData(), state.getChartTimestamps());
 
         // 3. Update Wallet Table (with 8 columns)
         updateWalletTable(state.getPositions(), state.getCurrentPrice());
