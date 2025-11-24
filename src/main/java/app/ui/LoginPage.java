@@ -1,15 +1,27 @@
 package app.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import api.SupabaseAuthClient;
 import data_access.EnvConfig;
 import use_case.session.SessionDataAccessInterface;
 
-public class LoginPage extends JFrame {
+public class LoginPage extends JDialog {
 
     private boolean success = false;
     private final SessionDataAccessInterface sessionDAO;
@@ -19,12 +31,12 @@ public class LoginPage extends JFrame {
     private CardLayout cardLayout;
 
     public LoginPage(JFrame parent, SessionDataAccessInterface sessionDAO) {
+        super(parent, "Billionaire — Login / Signup", true); // true = modal
         this.sessionDAO = sessionDAO;
 
-        setTitle("Billionaire — Login / Signup");
         setSize(420, 360);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(parent);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // === Top Buttons ===
         JButton loginTab = new JButton("Login");
@@ -45,7 +57,7 @@ public class LoginPage extends JFrame {
         mainPanel.add(buildLoginPanel(), "login");
         mainPanel.add(buildSignupPanel(), "signup");
 
-        // === Frame Layout ===
+        // === Dialog Layout ===
         setLayout(new BorderLayout());
         add(tabPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
@@ -53,8 +65,6 @@ public class LoginPage extends JFrame {
         // Actions
         loginTab.addActionListener(e -> cardLayout.show(mainPanel, "login"));
         signupTab.addActionListener(e -> cardLayout.show(mainPanel, "signup"));
-
-        setVisible(true);
     }
 
     // ===============================================================

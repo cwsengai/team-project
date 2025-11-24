@@ -24,12 +24,14 @@ public class PortfolioSummaryMain {
             data_access.InMemorySessionDataAccessObject userSessionDAO = new data_access.InMemorySessionDataAccessObject();
 
             // REAL LOGIN
+
             LoginPage loginWindow = new LoginPage(null, userSessionDAO);
             loginWindow.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-            loginWindow.setVisible(true);
+            loginWindow.setVisible(true); // Now blocks until login dialog is closed
 
             // If user closed without login:
             if (!loginWindow.wasSuccessful()) {
+                System.out.println("Login cancelled or failed.");
                 return; // do NOT exit entire app
             }
 
