@@ -364,8 +364,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         gbc.gridx = 2;
         economicIndicatorsPanel.add(createStyledLabel("Last Updated", true), gbc);
 
-        gbc.gridx = 3;
-        economicIndicatorsPanel.add(createStyledLabel("Details", true), gbc);
+//        gbc.gridx = 3;
+//        economicIndicatorsPanel.add(createStyledLabel("Details", true), gbc);
 
         // Separator
         gbc.gridy = 1;
@@ -418,16 +418,16 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         panel.add(createStyledLabel(date, false), gbc);
 
         gbc.gridx = 3;
-        JButton detailsButton = new JButton("View Details");
-        detailsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        detailsButton.setBorderPainted(false);
-        detailsButton.setContentAreaFilled(false);
-        detailsButton.setForeground(LINK_COLOR);
-        detailsButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        detailsButton.setHorizontalAlignment(SwingConstants.LEFT);
-        detailsButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Viewing details for: " + name));
-
-        panel.add(detailsButton, gbc);
+//        JButton detailsButton = new JButton("View Details");
+//        detailsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//        detailsButton.setBorderPainted(false);
+//        detailsButton.setContentAreaFilled(false);
+//        detailsButton.setForeground(LINK_COLOR);
+//        detailsButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+//        detailsButton.setHorizontalAlignment(SwingConstants.LEFT);
+//        detailsButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Viewing details for: " + name));
+//
+//        panel.add(detailsButton, gbc);
     }
 
     private JLabel createStyledLabel(String text, boolean bold) {
