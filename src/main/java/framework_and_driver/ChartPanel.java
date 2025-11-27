@@ -25,7 +25,7 @@ import entity.ChartViewModel;
 import entity.TimeInterval; // Must import this
 
 // --- Dependencies ---
-import data_access.AlphaVantagePriceGateway;
+import dataaccess.AlphaVantagePriceGateway;
 import interface_adapter.controller.IntervalController;
 import interface_adapter.presenter.PriceChartPresenter;
 import use_case.price_chart.GetPriceByIntervalInteractor;

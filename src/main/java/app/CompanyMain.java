@@ -3,7 +3,7 @@ package app;
 import javax.swing.SwingUtilities;
 
 import api.Api;
-import data_access.AlphaVantagePriceGateway;
+import dataaccess.AlphaVantagePriceGateway;
 
 import framework_and_driver.CompanyPage;
 import framework_and_driver.ChartViewAdapter;
@@ -23,9 +23,9 @@ import interface_adapter.view_model.CompanyViewModel;
 import interface_adapter.view_model.FinancialStatementViewModel;
 import interface_adapter.view_model.NewsViewModel;
 
-import data_access.AlphaVantageCompanyGateway;
-import data_access.AlphaVantageFinancialStatementGateway;
-import data_access.AlphaVantageNewsGateway;
+import dataaccess.AlphaVantageCompanyGateway;
+import dataaccess.AlphaVantageFinancialStatementGateway;
+import dataaccess.AlphaVantageNewsGateway;
 
 import use_case.company.CompanyInteractor;
 import use_case.financial_statement.FinancialStatementInteractor;

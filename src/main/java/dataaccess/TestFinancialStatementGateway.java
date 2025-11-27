@@ -1,6 +1,5 @@
-package data_access;
+package dataaccess;
 
-import data_access.AlphaVantageFinancialStatementGateway;
 import entity.FinancialStatement;
 import api.Api;
 

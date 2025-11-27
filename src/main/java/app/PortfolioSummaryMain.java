@@ -21,7 +21,7 @@ public class PortfolioSummaryMain {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // === Session Management ===
-            data_access.InMemorySessionDataAccessObject userSessionDAO = new data_access.InMemorySessionDataAccessObject();
+            dataaccess.InMemorySessionDataAccessObject userSessionDAO = new dataaccess.InMemorySessionDataAccessObject();
 
             // REAL LOGIN
 
@@ -57,7 +57,7 @@ public class PortfolioSummaryMain {
             contentPanel.add(new PortfolioSummaryHeader());
             contentPanel.add(new PortfolioSummaryCard());
             // Pass userId and DAO to PortfolioOrderHistoryTable
-            data_access.SupabaseTradeDataAccessObject tradeDAO = new data_access.SupabaseTradeDataAccessObject();
+            dataaccess.SupabaseTradeDataAccessObject tradeDAO = new dataaccess.SupabaseTradeDataAccessObject();
             java.util.UUID userId = userSessionDAO.getCurrentUserId();
             contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeDAO));
 

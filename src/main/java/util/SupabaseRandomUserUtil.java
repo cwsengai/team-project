@@ -3,7 +3,7 @@ package util;
 import java.io.IOException;
 
 import api.SupabaseAuthClient;
-import data_access.EnvConfig;
+import dataaccess.EnvConfig;
 import use_case.session.SessionDataAccessInterface;
 
 public class SupabaseRandomUserUtil {

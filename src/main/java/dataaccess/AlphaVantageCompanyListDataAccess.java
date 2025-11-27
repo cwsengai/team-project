@@ -1,4 +1,4 @@
-package data_access;
+package dataaccess;
 
 import entity.Company;
 import use_case.company.CompanyGateway;

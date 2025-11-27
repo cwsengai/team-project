@@ -2,7 +2,7 @@ package hmbstnks;
 
 import javax.swing.JFrame;
 import app.ui.LoginPage;
-import data_access.InMemorySessionDataAccessObject;
+import dataaccess.InMemorySessionDataAccessObject;
 
 
 public class LoginTest {

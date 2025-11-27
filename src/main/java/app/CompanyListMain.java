@@ -1,12 +1,12 @@
 package app;
 
 import api.Api;
-import data_access.AlphaVantageCompanyGateway;
-import data_access.AlphaVantageCompanyListDataAccess;
-import data_access.AlphaVantageSearchDataAccess;
-import data_access.AlphaVantageMarketIndexGateway;
-import data_access.AlphaVantageEconomicIndicatorGateway;
-import data_access.Top100Companies;
+import dataaccess.AlphaVantageCompanyGateway;
+import dataaccess.AlphaVantageCompanyListDataAccess;
+import dataaccess.AlphaVantageSearchDataAccess;
+import dataaccess.AlphaVantageMarketIndexGateway;
+import dataaccess.AlphaVantageEconomicIndicatorGateway;
+import dataaccess.Top100Companies;
 import entity.Company;
 import entity.EconomicIndicator;
 import entity.MarketIndex;

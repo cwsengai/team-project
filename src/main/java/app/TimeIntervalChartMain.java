@@ -1,6 +1,6 @@
 package app;
 
-import data_access.AlphaVantagePriceGateway;
+import dataaccess.AlphaVantagePriceGateway;
 import framework_and_driver.ChartWindow;
 import interface_adapter.controller.IntervalController;
 import interface_adapter.presenter.PriceChartPresenter;

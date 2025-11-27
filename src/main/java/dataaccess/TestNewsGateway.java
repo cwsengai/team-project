@@ -1,6 +1,5 @@
-package data_access;
+package dataaccess;
 import api.Api;
-import data_access.AlphaVantageNewsGateway;
 import entity.NewsArticle;
 
 import java.util.List;

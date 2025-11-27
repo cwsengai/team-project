@@ -1,4 +1,4 @@
-package data_access;
+package dataaccess;
 
 import api.Api;
 import entity.MarketIndex;

@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import data_access.EnvConfig;
+import dataaccess.EnvConfig;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

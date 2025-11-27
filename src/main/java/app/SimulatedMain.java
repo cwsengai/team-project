@@ -10,10 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import data_access.AlphaVantagePriceGateway;
-import data_access.InMemorySessionDataAccessObject;
-import data_access.SimulationMarketDataAccess;
-import data_access.SupabaseTradeDataAccessObject;
+import dataaccess.AlphaVantagePriceGateway;
+import dataaccess.InMemorySessionDataAccessObject;
+import dataaccess.SimulationMarketDataAccess;
+import dataaccess.SupabaseTradeDataAccessObject;
 
 import entity.Account;
 import entity.SimulatedTradeRecord;

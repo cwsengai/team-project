@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import api.SupabaseAuthClient;
-import data_access.EnvConfig;
+import dataaccess.EnvConfig;
 import use_case.session.SessionDataAccessInterface;
 
 public class LoginPage extends JDialog {

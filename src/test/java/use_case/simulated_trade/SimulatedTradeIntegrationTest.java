@@ -10,8 +10,8 @@ import interface_adapter.view_model.ViewManagerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import data_access.InMemorySessionDataAccessObject;
-import data_access.SupabaseTradeDataAccessObject;
+import dataaccess.InMemorySessionDataAccessObject;
+import dataaccess.SupabaseTradeDataAccessObject;
 import entity.Account;
 import interface_adapter.simulated_trading.TradingPresenter;
 import interface_adapter.simulated_trading.TradingViewModel;
