@@ -1,4 +1,4 @@
-package use_case;
+package use_case.price_chart;
 import java.util.List;
 
 import entity.PricePoint;

@@ -8,7 +8,7 @@ import interface_adapter.view_model.CompanyViewModel;
 import interface_adapter.view_model.FinancialStatementViewModel;
 import interface_adapter.view_model.NewsViewModel;
 
-import interface_adapter.IntervalController;
+import interface_adapter.controller.IntervalController;
 
 import javax.swing.*;
 import java.awt.*;

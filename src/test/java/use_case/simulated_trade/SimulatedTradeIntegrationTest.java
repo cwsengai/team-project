@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+import interface_adapter.view_model.ViewManagerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +53,7 @@ public class SimulatedTradeIntegrationTest {
         });
         presenter = new TradingPresenter(
             new TradingViewModel(),
-            new interface_adapter.ViewManagerModel(),
+            new ViewManagerModel(),
             new interface_adapter.setup_simulation.SetupViewModel()
         );
         tradeInteractor = new SimulatedTradeInteractor(presenter, account);

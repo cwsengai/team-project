@@ -1,4 +1,4 @@
-package api;
+package data_access;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import entity.TimeInterval;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import use_case.PriceDataAccessInterface;
+import use_case.price_chart.PriceDataAccessInterface;
 
 
 public class AlphaVantagePriceGateway implements PriceDataAccessInterface {

@@ -1,4 +1,4 @@
-package use_case;
+package interface_adapter.price_chart;
 
 import entity.Company;
 import entity.FinancialStatement;

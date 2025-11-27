@@ -1,14 +1,16 @@
+package app;
+
 import javax.swing.SwingUtilities;
 
-import api.AlphaVantagePriceGateway;
+import data_access.AlphaVantagePriceGateway;
 import framework_and_driver.ChartWindow;
-import interface_adapter.IntervalController;
-import interface_adapter.PriceChartPresenter;
-import use_case.GetPriceByIntervalInteractor;
-import use_case.PriceChartOutputBoundary;
-import use_case.PriceDataAccessInterface;
+import interface_adapter.controller.IntervalController;
+import interface_adapter.presenter.PriceChartPresenter;
+import use_case.price_chart.GetPriceByIntervalInteractor;
+import use_case.price_chart.PriceChartOutputBoundary;
+import use_case.price_chart.PriceDataAccessInterface;
 
-public class Main {
+public class TimeIntervalChartMain {
     public static void main(String[] args) {
         System.out.println("--- Starting UC4 Price Chart Module (GUI) ---");
 

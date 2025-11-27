@@ -2,7 +2,7 @@ package data_access;
 
 import entity.PricePoint;
 import entity.TimeInterval;
-import use_case.PriceDataAccessInterface;
+import use_case.price_chart.PriceDataAccessInterface;
 import use_case.simulated_trade.SimulationDataAccessInterface;
 
 import java.util.ArrayList;

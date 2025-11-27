@@ -1,7 +1,8 @@
-package use_case;
+package use_case.price_chart;
 
 import entity.PricePoint;
 import entity.TimeInterval;
+
 import java.util.List;
 import javax.swing.SwingUtilities;
 

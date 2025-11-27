@@ -1,7 +1,7 @@
-package interface_adapter;
+package interface_adapter.controller;
 
 import entity.TimeInterval;
-import use_case.PriceInputBoundary;
+import use_case.price_chart.PriceInputBoundary;
 
 public class IntervalController {
 

@@ -1,4 +1,4 @@
-package use_case;
+package interface_adapter.price_chart;
 
 /**
  * CompanyDetailInputBoundary is ViewCompanyDetailInteractor 's Input Port)。

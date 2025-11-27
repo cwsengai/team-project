@@ -1,6 +1,6 @@
 package view;
 
-import interface_adapter.ViewManagerModel;
+import interface_adapter.view_model.ViewManagerModel;
 
 import javax.swing.JPanel;
 import java.awt.CardLayout;

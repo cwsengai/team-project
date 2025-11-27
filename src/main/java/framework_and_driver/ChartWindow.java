@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import entity.ChartViewModel;
-import interface_adapter.IntervalController;
+import interface_adapter.controller.IntervalController;
 
 public class ChartWindow extends JFrame {
 

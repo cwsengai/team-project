@@ -3,13 +3,13 @@ package app;
 import javax.swing.SwingUtilities;
 
 import api.Api;
-import api.AlphaVantagePriceGateway;
+import data_access.AlphaVantagePriceGateway;
 
 import framework_and_driver.CompanyPage;
 import framework_and_driver.ChartViewAdapter;
 
-import interface_adapter.IntervalController;
-import interface_adapter.PriceChartPresenter;
+import interface_adapter.controller.IntervalController;
+import interface_adapter.presenter.PriceChartPresenter;
 
 import interface_adapter.controller.CompanyController;
 import interface_adapter.controller.FinancialStatementController;
@@ -30,9 +30,9 @@ import data_access.AlphaVantageNewsGateway;
 import use_case.company.CompanyInteractor;
 import use_case.financial_statement.FinancialStatementInteractor;
 import use_case.news.NewsInteractor;
-import use_case.GetPriceByIntervalInteractor;
-import use_case.PriceDataAccessInterface;
-import use_case.PriceChartOutputBoundary;
+import use_case.price_chart.GetPriceByIntervalInteractor;
+import use_case.price_chart.PriceDataAccessInterface;
+import use_case.price_chart.PriceChartOutputBoundary;
 
 
 public class CompanyMain {

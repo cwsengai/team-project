@@ -4,7 +4,7 @@ import use_case.simulated_trade.SimulatedTradeOutputBoundary;
 import use_case.simulated_trade.SimulatedTradeOutputData;
 import use_case.update_market.UpdateMarketOutputBoundary;
 import use_case.update_market.UpdateMarketOutputData;
-import interface_adapter.ViewManagerModel;
+import interface_adapter.view_model.ViewManagerModel;
 import interface_adapter.setup_simulation.SetupViewModel;
 
 import java.text.DecimalFormat;

@@ -1,6 +1,6 @@
 package interface_adapter.setup_simulation;
 
-import interface_adapter.ViewManagerModel;
+import interface_adapter.view_model.ViewManagerModel;
 import interface_adapter.simulated_trading.TradingViewModel;
 import use_case.setup_simulation.SetupOutputBoundary;
 import use_case.setup_simulation.SetupInputData;
