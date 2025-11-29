@@ -37,47 +37,55 @@ public class SimulatedTradeRecord {
     public String getTicker() {
         return ticker;
     }
+
     public boolean isLong() {
         return isLong;
     }
+
     public int getQuantity() {
         return quantity;
     }
+
     public double getEntryPrice() {
         return entryPrice;
     }
+
     public double getExitPrice() {
         return exitPrice;
     }
+
     public double getRealizedPnL() {
         return realizedPnL;
     }
+
     public LocalDateTime getEntryTime() {
         return entryTime;
     }
+
     public LocalDateTime getExitTime() {
         return exitTime;
     }
-    public String getUserId() { return userId; }
+
+    public String getUserId() {
+        return userId;
+    }
 
     @Override
     public String toString() {
-        return "SimulatedTradingRecord{" +
-                "ticker='" + ticker + '\'' +
-                ", isLong=" + isLong +
-                ", quantity=" + quantity +
-                ", entryPrice=" + entryPrice +
-                ", exitPrice=" + exitPrice +
-                ", realizedPnL=" + realizedPnL +
-                ", entryTime=" + entryTime +
-                ", exitTime=" + exitTime +
-                '}';
+        return "SimulatedTradingRecord{"
+                + "ticker='" + ticker + '\''
+                + ", isLong=" + isLong
+                + ", quantity=" + quantity
+                + ", entryPrice=" + entryPrice
+                + ", exitPrice=" + exitPrice
+                + ", realizedPnL=" + realizedPnL
+                + ", entryTime=" + entryTime
+                + ", exitTime=" + exitTime
+                + '}';
     }
 }
 
-
-
-//SimulatedTradingRecord rec = new SimulatedTradingRecord(
+// SimulatedTradingRecord rec = new SimulatedTradingRecord(
 //        "TSLA",
 //        true,            // true = buy/long    false = sell/short
 //        5,               // quantity

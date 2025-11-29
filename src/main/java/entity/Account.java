@@ -5,24 +5,50 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import use_case.simulated_trade.TradeClosedListener; // Essential for notifying external components
 
+import use_case.simulated_trade.TradeClosedListener;
+
+/**
+ * Represents a trading account tracking balance, positions,
+ * trade statistics, and equity performance.
+ */
 public class Account {
-    // Core Funds
+
+    private static final double ZERO = 0.0;
+
+    /** User ID for tracking owner of the account. */
     private final String userId;
+
+    /** Current available balance. */
     private double balance;
+
+    /** Initial starting balance. */
     private final double initialBalance;
+
+    /** Highest historical equity value. */
     private double maxEquity;
 
-    // Holdings and Listeners
+    /** Open positions keyed by ticker symbol. */
     private final Map<String, Position> positions = new HashMap<>();
+
+    /** Listeners to be notified when trades close. */
     private final List<TradeClosedListener> listeners = new ArrayList<>();
 
-    // Performance Stats (Counters for Figma Summary)
-    private int totalTrades = 0;
-    private int winningTrades = 0;
-    private double maxGain = 0.0;
+    /** Total number of closed trades. */
+    private int totalTrades;
 
+    /** Total number of winning trades. */
+    private int winningTrades;
+
+    /** Largest single realized gain. */
+    private double maxGain = ZERO;
+
+    /**
+     * Constructs an Account.
+     *
+     * @param initialBalance starting balance
+     * @param userId user identifier
+     */
     public Account(double initialBalance, String userId) {
         this.initialBalance = initialBalance;
         this.balance = initialBalance;
@@ -30,48 +56,70 @@ public class Account {
         this.userId = userId;
     }
 
-    // --- Observer Pattern Methods ---
+    /**
+     * Adds a listener that will be notified when a trade closes.
+     *
+     * @param listener trade close listener
+     */
     public void addTradeClosedListener(TradeClosedListener listener) {
         this.listeners.add(listener);
     }
-    // --------------------------------
 
-    // Executes a trade logic: updates cash, updates position, updates stats.
-    public void executeTrade(String ticker, boolean isBuyAction, int quantity, double price, LocalDateTime time) {
-        double transactionValue = quantity * price;
+    /**
+     * Executes a trade and updates account balance, positions, and stats.
+     *
+     * @param ticker ticker symbol
+     * @param isBuyAction true if buy, false if sell
+     * @param quantity number of shares
+     * @param price trade price
+     * @param time trade time
+     */
+    public void executeTrade(String ticker, boolean isBuyAction, int quantity,
+                             double price, LocalDateTime time) {
+
+        final double transactionValue = quantity * price;
+
         if (isBuyAction) {
             balance -= transactionValue;
-        } else {
+        }
+        else {
             balance += transactionValue;
         }
 
-        // Save current state before update for history record
-        double entryPriceBefore = positions.containsKey(ticker) ? positions.get(ticker).getAvgPrice() : 0.0;
-        boolean wasLong = positions.containsKey(ticker) && positions.get(ticker).isLong();
+        double entryPriceBefore = ZERO;
+        boolean wasLong = false;
+
+        if (positions.containsKey(ticker)) {
+            final Position existing = positions.get(ticker);
+            entryPriceBefore = existing.getAvgPrice();
+            wasLong = existing.isLong();
+        }
 
         positions.putIfAbsent(ticker, new Position(ticker, isBuyAction, 0, 0));
-        Position position = positions.get(ticker);
-        double realizedPnL = position.update(isBuyAction, quantity, price);
+        final Position position = positions.get(ticker);
 
-        if (realizedPnL != 0) {
+        final double realizedPnL = position.update(isBuyAction, quantity, price);
+
+        if (realizedPnL != ZERO) {
             totalTrades++;
 
-            if (realizedPnL > 0) {
+            if (realizedPnL > ZERO) {
                 winningTrades++;
             }
+
             if (realizedPnL > maxGain) {
                 maxGain = realizedPnL;
             }
 
-            SimulatedTradeRecord record = new SimulatedTradeRecord(
+            final SimulatedTradeRecord record = new SimulatedTradeRecord(
                     ticker,
-                    wasLong, // Direction of the position being closed
-                    quantity, // Quantity closed/affected
-                    entryPriceBefore, // Average Entry Price
-                    price, // Exit Price
+                    wasLong,
+                    quantity,
+                    entryPriceBefore,
+                    price,
                     realizedPnL,
-                    time, // Simplified entry time
-                    time, // Exit time (current time)
+                    time,
+                    time,
                     this.userId
             );
 
@@ -85,19 +133,33 @@ public class Account {
         }
     }
 
-    // Calculates the real-time Total Equity (Net Worth).
+    /**
+     * Calculates current total equity.
+     *
+     * @param currentPrice price of the currently updated ticker
+     * @param currentTicker ticker being updated
+     * @return total equity
+     */
     public double calculateTotalEquity(double currentPrice, String currentTicker) {
-        double totalUnrealizedPnL = 0.0;
-        double totalPositionCostBasis = 0.0;
+        double totalUnrealizedPnL = ZERO;
+        double totalCostBasis = ZERO;
 
         for (Position pos : positions.values()) {
-            double priceToUse = pos.getTicker().equals(currentTicker) ? currentPrice : pos.getAvgPrice();
+            final boolean isCurrent = pos.getTicker().equals(currentTicker);
+            final double referencePrice;
+            if (isCurrent) {
+                referencePrice = currentPrice;
+            }
+            else {
+                referencePrice = pos.getAvgPrice();
+            }
 
-            totalUnrealizedPnL += pos.getUnrealizedPnL(priceToUse);
-            totalPositionCostBasis += pos.getQuantity() * pos.getAvgPrice();
+            totalUnrealizedPnL += pos.getUnrealizedPnL(referencePrice);
+            totalCostBasis += pos.getQuantity() * pos.getAvgPrice();
         }
 
-        double currentEquity = balance + totalPositionCostBasis + totalUnrealizedPnL;
+        final double currentEquity = balance + totalCostBasis + totalUnrealizedPnL;
+
         if (currentEquity > maxEquity) {
             maxEquity = currentEquity;
         }
@@ -105,56 +167,111 @@ public class Account {
         return currentEquity;
     }
 
-    // UI: "available virtual money"
+    /**
+     * Returns available balance.
+     *
+     * @return balance
+     */
     public double getBalance() {
         return balance;
     }
 
-    // UI: "Total Profit"
+    /**
+     * Returns total profit.
+     *
+     * @param currentEquity current total equity
+     * @return profit
+     */
     public double getTotalProfit(double currentEquity) {
         return currentEquity - initialBalance;
     }
 
-    // UI: "Total Return Rate"
+    /**
+     * Returns total return rate.
+     *
+     * @param currentEquity current total equity
+     * @return return percentage
+     */
     public double getTotalReturnRate(double currentEquity) {
-        if (initialBalance == 0)
-            return 0.0;
-        return (currentEquity - initialBalance) / initialBalance;
+        final double rate;
+        if (initialBalance == ZERO) {
+            rate = ZERO;
+        }
+        else {
+            rate = (currentEquity - initialBalance) / initialBalance;
+        }
+        return rate;
     }
 
-    // UI: "Max Drawdown"
+    /**
+     * Returns maximum drawdown.
+     *
+     * @param currentEquity current equity
+     * @return max drawdown
+     */
     public double getMaxDrawdown(double currentEquity) {
-        return Math.max(0.0, maxEquity - currentEquity);
+        final double diff = maxEquity - currentEquity;
+        return Math.max(ZERO, diff);
     }
 
-    // UI: "Max Gain"
+    /**
+     * Returns maximum single realized gain.
+     *
+     * @return max gain
+     */
     public double getMaxGain() {
         return maxGain;
     }
 
-    // UI: "Total Trades#"
+    /**
+     * Returns number of completed trades.
+     *
+     * @return count of trades
+     */
     public int getTotalTrades() {
         return totalTrades;
     }
 
-    // UI: "Winning Trades#"
+    /**
+     * Returns number of winning trades.
+     *
+     * @return winning trades count
+     */
     public int getWinningTrades() {
         return winningTrades;
     }
 
-    // UI: "Win Rate"
+    /**
+     * Returns win rate.
+     *
+     * @return win rate between 0–1
+     */
     public double getWinRate() {
-        if (totalTrades == 0)
-            return 0.0;
-        return (double) winningTrades / totalTrades;
+        final double rate;
+        if (totalTrades == 0) {
+            rate = ZERO;
+        }
+        else {
+            rate = (double) winningTrades / totalTrades;
+        }
+        return rate;
     }
 
-    // UI: "Losing Trades"
+    /**
+     * Returns number of losing trades.
+     *
+     * @return losing trades count
+     */
     public int getLosingTrades() {
-        return totalTrades - winningTrades;
+        final int result = totalTrades - winningTrades;
+        return result;
     }
 
-    // UI: "Wallet"
+    /**
+     * Returns open positions.
+     *
+     * @return position map
+     */
     public Map<String, Position> getPositions() {
         return positions;
     }

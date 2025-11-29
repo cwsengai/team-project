@@ -3,6 +3,7 @@ package app;
 import java.awt.CardLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,38 +15,42 @@ import dataaccess.AlphaVantagePriceGateway;
 import dataaccess.InMemorySessionDataAccessObject;
 import dataaccess.SimulationMarketDataAccess;
 import dataaccess.SupabaseTradeDataAccessObject;
-
 import entity.Account;
-import entity.SimulatedTradeRecord;
-import use_case.simulated_trade.TradeClosedListener;
-
-import interface_adapter.view_model.ViewManagerModel;
 import interface_adapter.setup_simulation.SetupController;
 import interface_adapter.setup_simulation.SetupPresenter;
 import interface_adapter.setup_simulation.SetupViewModel;
 import interface_adapter.simulated_trading.TradingController;
 import interface_adapter.simulated_trading.TradingPresenter;
 import interface_adapter.simulated_trading.TradingViewModel;
-
+import interface_adapter.view_model.ViewManagerModel;
 import use_case.price_chart.PriceDataAccessInterface;
 import use_case.setup_simulation.SetupInputData;
 import use_case.setup_simulation.SetupInteractor;
 import use_case.simulated_trade.SimulatedTradeInteractor;
 import use_case.simulated_trade.SimulationDataAccessInterface;
 import use_case.update_market.UpdateMarketInteractor;
-
 import view.SetupView;
 import view.TradingView;
 import view.ViewManager;
+/**
+ * Main entry point for launching the simulated trading system.
+ */
 
 public class SimulatedMain {
 
-    private static final PriceDataAccessInterface baseGateway = new AlphaVantagePriceGateway();
-    private static final SimulationDataAccessInterface simulationDAO = new SimulationMarketDataAccess(baseGateway);
+    private static final int WINDOW_WIDTH = 1300;
+    private static final int WINDOW_HEIGHT = 750;
+
+    private static final PriceDataAccessInterface BASE_GATEWAY =
+            new AlphaVantagePriceGateway();
+
+    private static final SimulationDataAccessInterface SIMULATION_DAO =
+            new SimulationMarketDataAccess(BASE_GATEWAY);
+
     private static Optional<SetupInputData> setupInput = Optional.empty();
 
     /**
-     * Factory Listener: Handles Setup -> Trading transition
+     * Listens for view changes and constructs TradingView when Setup is completed.
      */
     private static class TradingViewFactoryListener implements PropertyChangeListener {
 
@@ -53,13 +58,13 @@ public class SimulatedMain {
         private final CardLayout cardLayout;
         private final TradingViewModel tradingViewModel;
         private final ViewManagerModel viewManagerModel;
-
         private final SetupViewModel setupViewModel;
 
-        public TradingViewFactoryListener(JPanel views, CardLayout cardLayout,
-                                          TradingViewModel tradingViewModel,
-                                          ViewManagerModel viewManagerModel,
-                                          SetupViewModel setupViewModel) {
+        TradingViewFactoryListener(JPanel views,
+                                   CardLayout cardLayout,
+                                   TradingViewModel tradingViewModel,
+                                   ViewManagerModel viewManagerModel,
+                                   SetupViewModel setupViewModel) {
             this.views = views;
             this.cardLayout = cardLayout;
             this.tradingViewModel = tradingViewModel;
@@ -69,82 +74,94 @@ public class SimulatedMain {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if (viewManagerModel.getActiveView().equals(TradingViewModel.VIEW_NAME) && setupInput.isPresent()) {
-                SetupInputData input = setupInput.get();
-                String ticker = input.getTicker();
 
-                // --- 1. Environment Setup ---
-                InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
-                SupabaseTradeDataAccessObject tradeDAO = new SupabaseTradeDataAccessObject();
-                try {
-                    util.SupabaseRandomUserUtil.createAndLoginRandomUser(sessionDAO);
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to create session", e);
-                }
+            final String active = viewManagerModel.getActiveView();
+            final boolean shouldBuildTrading =
+                    active.equals(TradingViewModel.VIEW_NAME) && setupInput.isPresent();
 
-                String userId = sessionDAO.getCurrentUserId().toString();
-
-                // --- 2. Core Entity Setup ---
-                Account account = new Account(input.getInitialBalance(), userId);
-
-                account.addTradeClosedListener(new TradeClosedListener() {
-                    @Override
-                    public void onTradeClosed(SimulatedTradeRecord record) {
-                        System.out.println(">> Observer: Saving trade to Supabase...");
-                        try {
-                            UUID userUuid = UUID.fromString(record.getUserId());
-                            tradeDAO.saveTrade(record, userUuid);
-                        } catch (Exception e) {
-                            System.err.println("DB Save Failed: " + e.getMessage());
-                        }
-                    }
-                });
-
-                // --- 3. Clean Architecture Assembly ---
-
-                TradingPresenter tradingPresenter = new TradingPresenter(
-                        tradingViewModel,
-                        viewManagerModel,
-                        setupViewModel
-                );
-
-                UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(
-                        simulationDAO, tradingPresenter, account, ticker
-                );
-                updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
-
-                SimulatedTradeInteractor tradeInteractor = new SimulatedTradeInteractor(
-                        tradingPresenter, account
-                );
-
-                TradingController tradingController = new TradingController(
-                        updateMarketInteractor, tradeInteractor, tradingPresenter
-                );
-
-                // --- 4. View Creation ---
-                views.removeAll();
-
-                TradingView tradingView = new TradingView(tradingController, tradingViewModel);
-                views.add(tradingView, TradingViewModel.VIEW_NAME);
-
-                cardLayout.show(views, TradingViewModel.VIEW_NAME);
-                views.revalidate();
-                views.repaint();
-
-                // --- 5. Start Engine ---
-                new Thread(() -> {
-                    System.out.println("Loading data for " + ticker + "...");
-                    updateMarketInteractor.loadData(ticker);
-                }).start();
-
-                setupInput = Optional.empty();
+            if (!shouldBuildTrading) {
+                return;
             }
+
+            final SetupInputData input = setupInput.get();
+            final String ticker = input.getTicker();
+
+            // --- 1. Session / Data Setup ---
+            final InMemorySessionDataAccessObject sessionDAO =
+                    new InMemorySessionDataAccessObject();
+
+            final SupabaseTradeDataAccessObject tradeDAO =
+                    new SupabaseTradeDataAccessObject();
+
+            try {
+                util.SupabaseRandomUserUtil.createAndLoginRandomUser(sessionDAO);
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Failed to create random user", e);
+            }
+
+            final String userId =
+                    sessionDAO.getCurrentUserId().toString();
+
+            // --- 2. Core Entity ---
+            final Account account =
+                    new Account(input.getInitialBalance(), userId);
+
+            account.addTradeClosedListener(newRecord -> {
+                try {
+                    final UUID uuid = UUID.fromString(newRecord.getUserId());
+                    tradeDAO.saveTrade(newRecord, uuid);
+                }
+                catch (RuntimeException ex) {
+                    System.err.println("Failed to save trade: " + ex.getMessage());
+                }
+            });
+
+            // --- 3. Use-Case Wiring ---
+
+            final TradingPresenter tradingPresenter =
+                    new TradingPresenter(tradingViewModel, viewManagerModel, setupViewModel);
+
+            final UpdateMarketInteractor updateMarketInteractor =
+                    new UpdateMarketInteractor(SIMULATION_DAO, tradingPresenter, account, ticker);
+
+            updateMarketInteractor.setSpeed(input.getSpeedMultiplier());
+
+            final SimulatedTradeInteractor tradeInteractor =
+                    new SimulatedTradeInteractor(tradingPresenter, account);
+
+            final TradingController tradingController =
+                    new TradingController(updateMarketInteractor, tradeInteractor, tradingPresenter);
+
+            // --- 4. View Construction ---
+
+            views.removeAll();
+            final TradingView tradingView =
+                    new TradingView(tradingController, tradingViewModel);
+
+            views.add(tradingView, TradingViewModel.VIEW_NAME);
+
+            cardLayout.show(views, TradingViewModel.VIEW_NAME);
+
+            views.revalidate();
+            views.repaint();
+
+            // --- 5. Start Engine ---
+            final Thread loader = new Thread(() -> updateMarketInteractor.loadData(ticker));
+            loader.start();
+
+            setupInput = Optional.empty();
         }
     }
 
-    // Final Setup Presenter
+    /**
+     * Final Presenter to capture Setup success and store input.
+     */
     public static class FinalSetupPresenter extends SetupPresenter {
-        public FinalSetupPresenter(ViewManagerModel viewManagerModel, TradingViewModel tradingViewModel, SetupViewModel setupViewModel) {
+
+        public FinalSetupPresenter(ViewManagerModel viewManagerModel,
+                                   TradingViewModel tradingViewModel,
+                                   SetupViewModel setupViewModel) {
             super(viewManagerModel, tradingViewModel, setupViewModel);
         }
 
@@ -155,39 +172,51 @@ public class SimulatedMain {
         }
     }
 
-    // Main Entry Point
+    /**
+     * Application entry point.
+     */
     public static void main(String[] args) {
-        JFrame application = new JFrame(TradingViewModel.TITLE_LABEL);
+
+        // Frame
+        final JFrame application =
+                new JFrame(TradingViewModel.TITLE_LABEL);
+
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        CardLayout cardLayout = new CardLayout();
-        JPanel views = new JPanel(cardLayout);
+        final CardLayout cardLayout = new CardLayout();
+
+        final JPanel views = new JPanel(cardLayout);
         application.add(views);
 
-        // Models
-        ViewManagerModel viewManagerModel = new ViewManagerModel();
-        TradingViewModel tradingViewModel = new TradingViewModel();
-        SetupViewModel setupViewModel = new SetupViewModel();
+        // View Models
+        final ViewManagerModel viewManagerModel = new ViewManagerModel();
+        final TradingViewModel tradingViewModel = new TradingViewModel();
+        final SetupViewModel setupViewModel = new SetupViewModel();
 
-        // Setup Assembly
-        SetupPresenter finalSetupPresenter = new FinalSetupPresenter(
-                viewManagerModel, tradingViewModel, setupViewModel
-        );
-        SetupInteractor setupInteractor = new SetupInteractor(
-                finalSetupPresenter, simulationDAO
-        );
-        SetupController setupController = new SetupController(setupInteractor);
+        // Use-Case Assembly
+        final SetupPresenter setupPresenter =
+                new FinalSetupPresenter(viewManagerModel, tradingViewModel, setupViewModel);
 
-        // Init Views
-        SetupView setupView = new SetupView(setupController, setupViewModel);
-        view.TradingView tradingPlaceholder = new view.TradingView(null, tradingViewModel);
+        final SetupInteractor setupInteractor =
+                new SetupInteractor(setupPresenter, SIMULATION_DAO);
+
+        final SetupController setupController =
+                new SetupController(setupInteractor);
+
+        // Views
+        final SetupView setupView = new SetupView(setupController, setupViewModel);
+        final TradingView placeholderTradingView =
+                new TradingView(null, tradingViewModel);
 
         views.add(setupView, SetupViewModel.VIEW_NAME);
-        views.add(tradingPlaceholder, TradingViewModel.VIEW_NAME);
+        views.add(placeholderTradingView, TradingViewModel.VIEW_NAME);
 
-        viewManagerModel.addPropertyChangeListener(new TradingViewFactoryListener(
-                views, cardLayout, tradingViewModel, viewManagerModel, setupViewModel
-        ));
+        // Listener
+        viewManagerModel.addPropertyChangeListener(
+                new TradingViewFactoryListener(
+                        views, cardLayout, tradingViewModel, viewManagerModel, setupViewModel
+                )
+        );
 
         new ViewManager(views, cardLayout, viewManagerModel);
 
@@ -196,7 +225,7 @@ public class SimulatedMain {
         viewManagerModel.firePropertyChanged();
 
         application.pack();
-        application.setSize(1300, 750);
+        application.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         application.setVisible(true);
     }
 }
