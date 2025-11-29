@@ -88,14 +88,16 @@ public class Account {
     // Calculates the real-time Total Equity (Net Worth).
     public double calculateTotalEquity(double currentPrice, String currentTicker) {
         double totalUnrealizedPnL = 0.0;
+        double totalPositionCostBasis = 0.0;
 
         for (Position pos : positions.values()) {
             double priceToUse = pos.getTicker().equals(currentTicker) ? currentPrice : pos.getAvgPrice();
 
             totalUnrealizedPnL += pos.getUnrealizedPnL(priceToUse);
+            totalPositionCostBasis += pos.getQuantity() * pos.getAvgPrice();
         }
 
-        double currentEquity = balance + totalUnrealizedPnL;
+        double currentEquity = balance + totalPositionCostBasis + totalUnrealizedPnL;
         if (currentEquity > maxEquity) {
             maxEquity = currentEquity;
         }
