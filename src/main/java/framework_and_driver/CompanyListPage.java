@@ -793,17 +793,30 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
      * Keeps current window open and opens PortfolioSummaryMain in a new window.
      */
     private void openPortfolioSummaryPage() {
-        System.out.println("👤 Opening Portfolio Summary page...");
-
-        // ✅ Don't close current window - just open new one
         SwingUtilities.invokeLater(() -> {
             try {
-                app.PortfolioSummaryMain.main(new String[]{});
-            } catch (Exception ex) {
-                System.err.println("❌ Error opening Portfolio Summary page: " + ex.getMessage());
-                ex.printStackTrace();
+                // Step 1: Create a session object
+                dataaccess.InMemorySessionDataAccessObject sessionDAO =
+                        new dataaccess.InMemorySessionDataAccessObject();
 
-                // Show error dialog
+                // Step 2: Open login window
+                app.ui.LoginPage loginWindow = new app.ui.LoginPage(null, sessionDAO);
+                loginWindow.setVisible(true);
+
+                // Step 3: If login failed, stop
+                if (!loginWindow.wasSuccessful()) {
+                    JOptionPane.showMessageDialog(this, "Login cancelled.");
+                    return;
+                }
+
+                // Step 4: Get userId
+                java.util.UUID userId = sessionDAO.getCurrentUserId();
+
+                // Step 5: Open the new Portfolio Summary window
+                app.PortfolioSummaryMain.show(userId, sessionDAO);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this,
                         "Failed to open portfolio summary: " + ex.getMessage(),
                         "Error",
@@ -811,6 +824,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             }
         });
     }
+
 
     /**
      * Custom renderer for table cells to provide alternating row colors and styling.

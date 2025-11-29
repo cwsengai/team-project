@@ -14,6 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
+
 import entity.Position;
 
 public class TradingView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -135,7 +137,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
                 currentWindow.dispose();
             }
 
-
             try {
                 app.CompanyListMain.main(null);
             } catch (Exception ex) {
@@ -144,9 +145,19 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             }
         });
 
-        orderHistoryButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "History feature coming soon!")
-        );
+        // ✅ SIMPLIFIED: delegate to controller, which knows session + userId
+        orderHistoryButton.addActionListener(e -> {
+            if (controller == null) {
+                JOptionPane.showMessageDialog(this, "Simulation not fully initialized.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                controller.executeOpenPortfolioSummary();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to open summary: " + ex.getMessage());
+            }
+        });
 
         if (this.controller != null) {
             timer.start();
@@ -259,9 +270,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         chartPanel.updateData(state.getChartData()); // Old method signature without timestamps
         tickerLabel.setText(state.getTicker());
 
-        // If you updated PriceChartPanel to take 2 args, you MUST change the above line to:
-        // chartPanel.updateData(state.getChartData(), state.getChartTimestamps());
-
         // 3. Update Wallet Table (with 8 columns)
         updateWalletTable(state.getPositions(), state.getCurrentPrice());
     }
@@ -282,16 +290,15 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
                 String simplifiedTime = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
-
                 walletTableModel.addRow(new Object[]{
                         p.getTicker(),
                         p.isLong() ? "Buy" : "Sell",
-                        String.format("%,.2f usd", totalCostBasis), // Col 4: Amount(USD) (Total Cost)
-                        simplifiedTime,// Col 5: Buying Time
-                        String.format("%,.2f", p.getAvgPrice()),   // Col 6: Buying Price (Avg Unit Cost)
-                        String.format("%,.2f", currentPrice),      // Col 7: Current Price
-                        String.format("%,.2f usd", unrealizedPnL),  // Col 8: Unrealized Profit
-                        String.format("%.3f%%", returnRate * 100) // Col 9: Unrealized Ret Rate (Still 9 columns needed for full data)
+                        String.format("%,.2f usd", totalCostBasis),
+                        simplifiedTime,
+                        String.format("%,.2f", p.getAvgPrice()),
+                        String.format("%,.2f", currentPrice),
+                        String.format("%,.2f usd", unrealizedPnL),
+                        String.format("%.3f%%", returnRate * 100)
                 });
             }
         } catch (NumberFormatException e) {

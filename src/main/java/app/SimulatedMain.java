@@ -124,7 +124,10 @@ public class SimulatedMain {
                 );
 
                 TradingController tradingController = new TradingController(
-                        updateMarketInteractor, tradeInteractor, tradingPresenter
+                        updateMarketInteractor,
+                        tradeInteractor,
+                        tradingPresenter,
+                        sessionDAO     // ← the missing argument
                 );
 
                 // --- 4. View Creation ---
