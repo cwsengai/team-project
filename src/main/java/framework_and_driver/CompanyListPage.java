@@ -120,24 +120,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         });
         headerPanel.add(tradeButton);
 
-        // Add spacer between buttons
-        headerPanel.add(Box.createHorizontalStrut(15));
-
-        // Sign In Button
-        JButton signInButton = new JButton("Sign In");
-        signInButton.setBackground(ACCENT_COLOR);
-        signInButton.setForeground(Color.WHITE);
-        signInButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        signInButton.setFocusPainted(false);
-        signInButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
-        signInButton.setOpaque(true); // Ensure color renders on all OS
-        signInButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        signInButton.addActionListener(e -> {
-            // ✅ Navigate to PortfolioSummaryMain
-            openPortfolioSummaryPage();
-        });
-        headerPanel.add(signInButton);
-
         return headerPanel;
     }
 
