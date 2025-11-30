@@ -21,45 +21,73 @@ import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.style.Styler;
 
-import entity.ChartViewModel;
-import entity.TimeInterval; // Must import this
-
-// --- Dependencies ---
 import dataaccess.AlphaVantagePriceGateway;
+import entity.ChartViewModel;
+import entity.TimeInterval;
 import interfaceadapter.controller.IntervalController;
 import interfaceadapter.presenter.PriceChartPresenter;
 import usecase.price_chart.GetPriceByIntervalInteractor;
 import usecase.price_chart.PriceChartOutputBoundary;
 import usecase.price_chart.PriceDataAccessInterface;
 
+@SuppressWarnings({"checkstyle:ClassDataAbstractionCoupling", "checkstyle:SuppressWarnings"})
 public class ChartPanel extends JPanel {
+
+    private static final String EMPTY_STRING = " ";
+    private static final int FONT_SIZE_MONOSPACED = 12;
+    private static final int BORDER_TOP = 5;
+    private static final int BORDER_LEFT = 10;
+    private static final int BORDER_BOTTOM = 5;
+    private static final int BORDER_RIGHT = 10;
+    private static final int PERCENTAGE_MULTIPLIER = 100;
+    private static final int COLOR_GREEN_R = 0;
+    private static final int COLOR_GREEN_G = 150;
+    private static final int COLOR_GREEN_B = 0;
+    private static final int COLOR_RED_R = 200;
+    private static final int COLOR_RED_G = 0;
+    private static final int COLOR_RED_B = 0;
+    private static final int FONT_SIZE_SANS_SERIF = 12;
+    private static final int TOOLTIP_ALPHA_R = 255;
+    private static final int TOOLTIP_ALPHA_G = 255;
+    private static final int TOOLTIP_ALPHA_B = 255;
+    private static final int TOOLTIP_ALPHA_A = 230;
+    private static final int MAX_POINTS = 90;
+    private static final int TARGET_LABEL_COUNT_FIVE_MIN = 12;
+    private static final int TARGET_LABEL_COUNT_OTHER = 8;
+    private static final int MIN_LENGTH_FOR_TIME = 16;
+    private static final int TIME_SUBSTRING_START = 1;
+    private static final int TIME_SUBSTRING_END = 6;
+    private static final int DATE_SUBSTRING_START = 5;
+    private static final int DATE_SUBSTRING_END = 10;
+    private static final int MIN_LENGTH_FOR_DATE = 10;
+    private static final int GRAY_COLOR_R = 80;
+    private static final int GRAY_COLOR_G = 80;
+    private static final int GRAY_COLOR_B = 80;
 
     private JPanel chartContainer;
     private JLabel infoLabel;
-    private String linkedTicker = null;
+    private String linkedTicker;
 
-    // Color constants
-    private final Color TEXT_COLOR = new Color(80, 80, 80);
-    private final Color BG_COLOR = Color.WHITE;
+    private final Color textColor = new Color(GRAY_COLOR_R, GRAY_COLOR_G, GRAY_COLOR_B);
+    private final Color bgColor = Color.WHITE;
 
     public ChartPanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); 
-        setBackground(BG_COLOR);
-        
-        // 1. Chart area
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        setBackground(bgColor);
+
         chartContainer = new JPanel(new BorderLayout());
-        chartContainer.setBackground(BG_COLOR);
-        
-        JLabel placeholder = new JLabel("Waiting for data...", SwingConstants.CENTER);
+        chartContainer.setBackground(bgColor);
+
+        final JLabel placeholder = new JLabel("Waiting for data...", SwingConstants.CENTER);
         chartContainer.add(placeholder, BorderLayout.CENTER);
         add(chartContainer, BorderLayout.CENTER);
 
-        // 2. Bottom info bar
-        infoLabel = new JLabel(" ");
-        infoLabel.setFont(new Font("Monospaced", Font.PLAIN, 12)); 
-        infoLabel.setForeground(TEXT_COLOR);
-        infoLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        infoLabel = new JLabel(EMPTY_STRING);
+        infoLabel.setFont(new Font("Monospaced", Font.PLAIN, FONT_SIZE_MONOSPACED));
+        infoLabel.setForeground(textColor);
+        infoLabel.setBorder(BorderFactory.createEmptyBorder(
+            BORDER_TOP, BORDER_LEFT, BORDER_BOTTOM, BORDER_RIGHT));
         infoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         add(infoLabel, BorderLayout.SOUTH);
 
@@ -75,189 +103,261 @@ public class ChartPanel extends JPanel {
     }
 
     /**
-     * Enable zoom functionality
+     * Enable zoom functionality.
+     *
+     * @param ticker the ticker symbol to enable zoom for
      */
     public void enableZoom(String ticker) {
         this.linkedTicker = ticker;
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         chartContainer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-    
+
     /**
-     * [New] Public method: Manually trigger zoom
-     * Called by external button (Zoom in)
+     * Public method: Manually trigger zoom. Called by external button (Zoom in).
      */
     public void performZoom() {
         if (linkedTicker != null) {
             openZoomWindow(linkedTicker);
-        } else {
+        }
+        else {
             System.out.println("No ticker selected for zoom.");
         }
     }
 
+    @SuppressWarnings({"checkstyle:LambdaBodyLength", "checkstyle:IllegalCatch"})
     private void openZoomWindow(String ticker) {
         SwingUtilities.invokeLater(() -> {
             try {
-                PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
-                ChartWindow zoomWindow = new ChartWindow();
+                final PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
+                final ChartWindow zoomWindow = new ChartWindow();
                 zoomWindow.setTitle("Market Detail: " + ticker);
-                PriceChartOutputBoundary pricePresenter = new PriceChartPresenter(zoomWindow);
-                GetPriceByIntervalInteractor interactor = new GetPriceByIntervalInteractor(priceGateway, pricePresenter);
-                IntervalController intervalController = new IntervalController(interactor);
+                final PriceChartOutputBoundary pricePresenter =
+                    new PriceChartPresenter(zoomWindow);
+                final GetPriceByIntervalInteractor interactor =
+                    new GetPriceByIntervalInteractor(priceGateway, pricePresenter);
+                final IntervalController intervalController =
+                    new IntervalController(interactor);
                 zoomWindow.setController(intervalController);
                 zoomWindow.setVisible(true);
-                // Default load 1D
-                intervalController.handleTimeChange("1D"); 
-            } catch (Exception e) {
-                e.printStackTrace();
+                intervalController.handleTimeChange("1D");
+            }
+            catch (RuntimeException runtimeException) {
+                runtimeException.printStackTrace();
             }
         });
     }
 
+    /**
+     * Updates the chart with the provided view model data.
+     *
+     * @param viewModel the chart view model containing data to display
+     */
+    @SuppressWarnings("checkstyle:IllegalCatch")
     public void updateChart(ChartViewModel viewModel) {
         chartContainer.removeAll();
         try {
-            CategoryChart chart = createLineChart(viewModel);
+            final CategoryChart chart = createLineChart(viewModel);
             updateInfoLabel(viewModel);
-            
-            XChartPanel<CategoryChart> chartPanelComponent = new XChartPanel<>(chart);
-            
+
+            final XChartPanel<CategoryChart> chartPanelComponent =
+                new XChartPanel<>(chart);
+
             chartPanelComponent.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (linkedTicker != null) openZoomWindow(linkedTicker);
+                public void mouseClicked(MouseEvent mouseEvent) {
+                    if (linkedTicker != null) {
+                        openZoomWindow(linkedTicker);
+                    }
                 }
             });
-            
+
             if (linkedTicker != null) {
-                chartPanelComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                chartPanelComponent.setCursor(
+                    Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
-            
+
             chartContainer.add(chartPanelComponent, BorderLayout.CENTER);
             chartContainer.revalidate();
             chartContainer.repaint();
-        } catch (Exception e) {
-            e.printStackTrace();
-            displayError(e.getMessage());
+        }
+        catch (RuntimeException runtimeException) {
+            runtimeException.printStackTrace();
+            displayError(runtimeException.getMessage());
         }
     }
-    
-    private void updateInfoLabel(ChartViewModel viewModel) {
-        List<Double> prices = viewModel.isCandlestick() ? viewModel.getClosePrices() : viewModel.getPrices();
-        
-        if (prices != null && !prices.isEmpty()) {
-            double currentPrice = prices.get(prices.size() - 1);
-            double startPrice = prices.get(0);
-            if (prices.size() > 1) startPrice = prices.get(prices.size() - 2);
-            
-            double change = currentPrice - startPrice;
-            double changePercent = (change / startPrice) * 100;
 
-            DecimalFormat df = new DecimalFormat("0.00");
-            String sign = change >= 0 ? "+" : "";
-            
-            String infoText = String.format("Close: %s   Chg: %s%s (%s%s%%)", 
+    private void updateInfoLabel(ChartViewModel viewModel) {
+        final List<Double> prices;
+        if (viewModel.isCandlestick()) {
+            prices = viewModel.getClosePrices();
+        }
+        else {
+            prices = viewModel.getPrices();
+        }
+
+        if (prices != null && !prices.isEmpty()) {
+            final double currentPrice = prices.get(prices.size() - 1);
+            double startPrice = prices.get(0);
+            if (prices.size() > 1) {
+                startPrice = prices.get(prices.size() - 2);
+            }
+
+            final double change = currentPrice - startPrice;
+            final double changePercent = (change / startPrice) * PERCENTAGE_MULTIPLIER;
+
+            final DecimalFormat df = new DecimalFormat("0.00");
+            final String sign;
+            if (change >= 0) {
+                sign = "+";
+            }
+            else {
+                sign = "";
+            }
+
+            final String infoText = String.format("Close: %s   Chg: %s%s (%s%s%%)",
                     df.format(currentPrice),
                     sign, df.format(change),
                     sign, df.format(changePercent)
             );
-            
+
             infoLabel.setText(infoText);
-            if (change >= 0) infoLabel.setForeground(new Color(0, 150, 0));
-            else infoLabel.setForeground(new Color(200, 0, 0));
-        } else {
+            if (change >= 0) {
+                infoLabel.setForeground(new Color(
+                    COLOR_GREEN_R, COLOR_GREEN_G, COLOR_GREEN_B));
+            }
+            else {
+                infoLabel.setForeground(new Color(
+                    COLOR_RED_R, COLOR_RED_G, COLOR_RED_B));
+            }
+        }
+        else {
             infoLabel.setText("No Data");
         }
     }
 
+    /**
+     * Displays an error message on the chart panel.
+     *
+     * @param message the error message to display
+     */
     public void displayError(String message) {
         chartContainer.removeAll();
         String displayMsg = message;
         if (message != null && message.contains("Series data columns")) {
             displayMsg = "API Limit Reached (Wait 1 min)";
         }
-        JLabel errorLabel = new JLabel("<html><center><p style='color:gray; font-size:14px'>⚠️ " + displayMsg + "</p></center></html>", SwingConstants.CENTER);
+        final String errorHtml = "<html><center><p style='color:gray; " + "font-size:14px'>Warning: " + displayMsg
+            + "</p></center></html>";
+        final JLabel errorLabel = new JLabel(errorHtml, SwingConstants.CENTER);
         chartContainer.add(errorLabel, BorderLayout.CENTER);
         chartContainer.revalidate();
         chartContainer.repaint();
-        infoLabel.setText(" ");
+        infoLabel.setText(EMPTY_STRING);
     }
 
     private CategoryChart createLineChart(ChartViewModel viewModel) {
-        CategoryChart chart = new CategoryChartBuilder()
+        final CategoryChart chart = new CategoryChartBuilder()
                 .width(getWidth())
                 .height(getHeight())
-                .title(viewModel.getTitle()) 
+                .title(viewModel.getTitle())
                 .build();
 
         ChartStyler.applyLineChartStyle(chart);
-        
+
         chart.getStyler().setToolTipType(Styler.ToolTipType.xAndYLabels);
-        chart.getStyler().setToolTipFont(new Font("SansSerif", Font.PLAIN, 12));
-        chart.getStyler().setToolTipBackgroundColor(new Color(255, 255, 255, 230)); 
+        chart.getStyler().setToolTipFont(
+            new Font("SansSerif", Font.PLAIN, FONT_SIZE_SANS_SERIF));
+        chart.getStyler().setToolTipBackgroundColor(new Color(
+            TOOLTIP_ALPHA_R, TOOLTIP_ALPHA_G, TOOLTIP_ALPHA_B, TOOLTIP_ALPHA_A));
         chart.getStyler().setToolTipBorderColor(Color.LIGHT_GRAY);
 
-        List<String> labels = viewModel.getLabels();
-        List<Double> prices = viewModel.isCandlestick() ? viewModel.getClosePrices() : viewModel.getPrices();
-        TimeInterval interval = viewModel.getInterval();
-        
-        // 1. Data sampling (prevent too many points)
-        int maxPoints = 90; 
-        List<String> sampledLabels = new ArrayList<>();
-        List<Double> sampledPrices = new ArrayList<>();
-        sampleData(labels, prices, sampledLabels, sampledPrices, maxPoints);
+        final List<String> labels = viewModel.getLabels();
+        final List<Double> prices;
+        if (viewModel.isCandlestick()) {
+            prices = viewModel.getClosePrices();
+        }
+        else {
+            prices = viewModel.getPrices();
+        }
+        final TimeInterval interval = viewModel.getInterval();
 
-        // 2. Label formatting (5M shows time, 1D shows date)
-        List<String> formattedLabels = new ArrayList<>();
+        final List<String> sampledLabels = new ArrayList<>();
+        final List<Double> sampledPrices = new ArrayList<>();
+        sampleData(labels, prices, sampledLabels, sampledPrices, MAX_POINTS);
+
+        final List<String> formattedLabels = new ArrayList<>();
         for (String raw : sampledLabels) {
             formattedLabels.add(formatLabel(raw, interval));
         }
 
-        // 3. Label sparsification (prevent text overlap)
-        // If 5M (short text), can show more (12 labels)
-        // If 1D/1W (long text), show fewer (8 labels)
-        int targetLabelCount = (interval == TimeInterval.FIVE_MINUTES) ? 12 : 8;
-        List<String> finalLabels = sparsifyLabels(formattedLabels, targetLabelCount); 
+        final int targetLabelCount;
+        if (interval == TimeInterval.FIVE_MINUTES) {
+            targetLabelCount = TARGET_LABEL_COUNT_FIVE_MIN;
+        }
+        else {
+            targetLabelCount = TARGET_LABEL_COUNT_OTHER;
+        }
+        final List<String> finalLabels =
+            sparsifyLabels(formattedLabels, targetLabelCount);
 
         chart.addSeries("StockPrice", finalLabels, sampledPrices);
         return chart;
     }
 
-    // --- New: Smart label formatting ---
     private String formatLabel(String raw, TimeInterval interval) {
-        if (raw == null || raw.isEmpty()) return "";
-        
-        // Original format is usually: "2025-11-24T13:30:00" or "2025-11-24"
-        // We decide which part to keep based on Interval
-        
-        if (interval == TimeInterval.FIVE_MINUTES) {
-            // 5M: Only want "HH:mm" (e.g., 13:30)
-            // Assume raw contains 'T' or space separator
-            if (raw.length() >= 16) {
-                // Find position of T or space
-                int tIndex = raw.indexOf('T');
-                if (tIndex == -1) tIndex = raw.indexOf(' ');
-                
-                if (tIndex != -1 && tIndex + 6 <= raw.length()) {
-                    return raw.substring(tIndex + 1, tIndex + 6); // Extract HH:mm
-                }
-            }
-            return raw; // If format is wrong, return as is
-            
-        } else {
-            // 1D / 1W: Only want "MM-dd" (e.g., 11-24)
-            if (raw.length() >= 10) {
-                return raw.substring(5, 10); // Extract MM-dd
-            }
-            return raw;
+        final String formattedLabel;
+        if (raw == null || raw.isEmpty()) {
+            formattedLabel = "";
         }
+        else if (interval == TimeInterval.FIVE_MINUTES) {
+            formattedLabel = formatTimeLabel(raw);
+        }
+        else {
+            formattedLabel = formatDateLabel(raw);
+        }
+        return formattedLabel;
     }
 
-    private void sampleData(List<String> srcLabels, List<Double> srcPrices, 
-                            List<String> destLabels, List<Double> destPrices, int maxPoints) {
-        int dataSize = srcLabels.size();
+    private String formatTimeLabel(String raw) {
+        String result = null;
+        if (raw.length() >= MIN_LENGTH_FOR_TIME) {
+            final int tIndex = raw.indexOf('T');
+            final int spaceIndex = raw.indexOf(' ');
+            final int separatorIndex;
+            if (tIndex != -1) {
+                separatorIndex = tIndex;
+            }
+            else {
+                separatorIndex = spaceIndex;
+            }
+
+            if (separatorIndex != -1 && separatorIndex + TIME_SUBSTRING_END <= raw.length()) {
+                result = raw.substring(
+                        separatorIndex + TIME_SUBSTRING_START,
+                        separatorIndex + TIME_SUBSTRING_END);
+            }
+        }
+        if (result == null) {
+            result = raw;
+        }
+        return result;
+    }
+
+    private String formatDateLabel(String raw) {
+        String result = raw;
+        if (raw.length() >= MIN_LENGTH_FOR_DATE) {
+            result = raw.substring(DATE_SUBSTRING_START, DATE_SUBSTRING_END);
+        }
+        return result;
+    }
+
+    private void sampleData(List<String> srcLabels, List<Double> srcPrices,
+                            List<String> destLabels, List<Double> destPrices,
+                            int maxPoints) {
+        final int dataSize = srcLabels.size();
         if (dataSize > maxPoints) {
-            int step = (int) Math.ceil((double) dataSize / maxPoints);
+            final int step = (int) Math.ceil((double) dataSize / maxPoints);
             for (int i = 0; i < dataSize; i += step) {
                 destLabels.add(srcLabels.get(i));
                 destPrices.add(srcPrices.get(i));
@@ -266,20 +366,22 @@ public class ChartPanel extends JPanel {
                 destLabels.add(srcLabels.get(dataSize - 1));
                 destPrices.add(srcPrices.get(dataSize - 1));
             }
-        } else {
+        }
+        else {
             destLabels.addAll(srcLabels);
             destPrices.addAll(srcPrices);
         }
     }
-    
+
     private List<String> sparsifyLabels(List<String> labels, int targetLabelCount) {
-        List<String> result = new ArrayList<>();
-        int step = Math.max(1, labels.size() / targetLabelCount);
+        final List<String> result = new ArrayList<>();
+        final int step = Math.max(1, labels.size() / targetLabelCount);
         for (int i = 0; i < labels.size(); i++) {
             if (i == 0 || i == labels.size() - 1 || i % step == 0) {
                 result.add(labels.get(i));
-            } else {
-                result.add(" "); 
+            }
+            else {
+                result.add(EMPTY_STRING);
             }
         }
         return result;
