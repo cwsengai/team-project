@@ -16,9 +16,9 @@ import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
 import entity.SimulatedTradeRecord;
-import use_case.portfolio_statistics.PortfolioStatisticsInputData;
-import use_case.portfolio_statistics.PortfolioStatisticsInteractor;
-import use_case.portfolio_statistics.PortfolioStatisticsOutputData;
+import usecase.portfolio_statistics.PortfolioStatisticsInputData;
+import usecase.portfolio_statistics.PortfolioStatisticsInteractor;
+import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 import usecase.session.SessionDataAccessInterface;
 
 public class PortfolioSummaryMain {
