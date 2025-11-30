@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.json.JSONObject;
 
-import use_case.session.SessionDataAccessInterface;
+import usecase.session.SessionDataAccessInterface;
 
 public class InMemorySessionDataAccessObject implements SessionDataAccessInterface {
     private String jwtToken;

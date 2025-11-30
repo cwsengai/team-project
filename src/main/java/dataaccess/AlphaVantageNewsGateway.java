@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import api.Api;
 
 import entity.NewsArticle;
-import use_case.news.NewsGateway;
+import usecase.news.NewsGateway;
 
 public class AlphaVantageNewsGateway implements NewsGateway {
     private final Api api;

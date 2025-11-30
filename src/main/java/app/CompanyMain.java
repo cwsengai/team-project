@@ -8,31 +8,31 @@ import dataaccess.AlphaVantagePriceGateway;
 import framework_and_driver.CompanyPage;
 import framework_and_driver.ChartViewAdapter;
 
-import interface_adapter.controller.IntervalController;
-import interface_adapter.presenter.PriceChartPresenter;
+import interfaceadapter.controller.IntervalController;
+import interfaceadapter.presenter.PriceChartPresenter;
 
-import interface_adapter.controller.CompanyController;
-import interface_adapter.controller.FinancialStatementController;
-import interface_adapter.controller.NewsController;
+import interfaceadapter.controller.CompanyController;
+import interfaceadapter.controller.FinancialStatementController;
+import interfaceadapter.controller.NewsController;
 
-import interface_adapter.presenter.CompanyPresenter;
-import interface_adapter.presenter.FinancialStatementPresenter;
-import interface_adapter.presenter.NewsPresenter;
+import interfaceadapter.presenter.CompanyPresenter;
+import interfaceadapter.presenter.FinancialStatementPresenter;
+import interfaceadapter.presenter.NewsPresenter;
 
-import interface_adapter.view_model.CompanyViewModel;
-import interface_adapter.view_model.FinancialStatementViewModel;
-import interface_adapter.view_model.NewsViewModel;
+import interfaceadapter.view_model.CompanyViewModel;
+import interfaceadapter.view_model.FinancialStatementViewModel;
+import interfaceadapter.view_model.NewsViewModel;
 
 import dataaccess.AlphaVantageCompanyGateway;
 import dataaccess.AlphaVantageFinancialStatementGateway;
 import dataaccess.AlphaVantageNewsGateway;
 
-import use_case.company.CompanyInteractor;
-import use_case.financial_statement.FinancialStatementInteractor;
-import use_case.news.NewsInteractor;
-import use_case.price_chart.GetPriceByIntervalInteractor;
-import use_case.price_chart.PriceDataAccessInterface;
-import use_case.price_chart.PriceChartOutputBoundary;
+import usecase.company.CompanyInteractor;
+import usecase.financial_statement.FinancialStatementInteractor;
+import usecase.news.NewsInteractor;
+import usecase.price_chart.GetPriceByIntervalInteractor;
+import usecase.price_chart.PriceDataAccessInterface;
+import usecase.price_chart.PriceChartOutputBoundary;
 
 
 public class CompanyMain {

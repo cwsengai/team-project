@@ -26,11 +26,11 @@ import entity.TimeInterval; // Must import this
 
 // --- Dependencies ---
 import dataaccess.AlphaVantagePriceGateway;
-import interface_adapter.controller.IntervalController;
-import interface_adapter.presenter.PriceChartPresenter;
-import use_case.price_chart.GetPriceByIntervalInteractor;
-import use_case.price_chart.PriceChartOutputBoundary;
-import use_case.price_chart.PriceDataAccessInterface;
+import interfaceadapter.controller.IntervalController;
+import interfaceadapter.presenter.PriceChartPresenter;
+import usecase.price_chart.GetPriceByIntervalInteractor;
+import usecase.price_chart.PriceChartOutputBoundary;
+import usecase.price_chart.PriceDataAccessInterface;
 
 public class ChartPanel extends JPanel {
 

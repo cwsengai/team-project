@@ -2,8 +2,8 @@ package dataaccess;
 
 import entity.PricePoint;
 import entity.TimeInterval;
-import use_case.price_chart.PriceDataAccessInterface;
-import use_case.simulated_trade.SimulationDataAccessInterface;
+import usecase.price_chart.PriceDataAccessInterface;
+import usecase.simulated_trade.SimulationDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;

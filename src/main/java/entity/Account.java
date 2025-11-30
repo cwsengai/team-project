@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import use_case.simulated_trade.TradeClosedListener;
+import usecase.simulated_trade.TradeClosedListener;
 
 /**
  * Represents a trading account tracking balance, positions,

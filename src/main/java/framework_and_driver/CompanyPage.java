@@ -1,14 +1,14 @@
 package framework_and_driver;
 
-import interface_adapter.controller.CompanyController;
-import interface_adapter.controller.FinancialStatementController;
-import interface_adapter.controller.NewsController;
+import interfaceadapter.controller.CompanyController;
+import interfaceadapter.controller.FinancialStatementController;
+import interfaceadapter.controller.NewsController;
 
-import interface_adapter.view_model.CompanyViewModel;
-import interface_adapter.view_model.FinancialStatementViewModel;
-import interface_adapter.view_model.NewsViewModel;
+import interfaceadapter.view_model.CompanyViewModel;
+import interfaceadapter.view_model.FinancialStatementViewModel;
+import interfaceadapter.view_model.NewsViewModel;
 
-import interface_adapter.controller.IntervalController;
+import interfaceadapter.controller.IntervalController;
 
 import javax.swing.*;
 import java.awt.*;

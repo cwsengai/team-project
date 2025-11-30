@@ -13,7 +13,7 @@ import java.util.Map;
 import api.Api;
 
 import entity.FinancialStatement;
-import use_case.financial_statement.FinancialStatementGateway;
+import usecase.financial_statement.FinancialStatementGateway;
 
 
 public class AlphaVantageFinancialStatementGateway implements FinancialStatementGateway {

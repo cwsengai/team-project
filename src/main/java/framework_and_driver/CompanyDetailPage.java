@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import entity.CompanyDetailViewModel;
-import interface_adapter.controller.IntervalController;
+import interfaceadapter.controller.IntervalController;
 
 /**
  * Company detail page UI component that displays stock chart.

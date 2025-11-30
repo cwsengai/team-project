@@ -1,7 +1,7 @@
 package dataaccess;
 
 import entity.Company;
-import use_case.search_company.SearchCompanyDataAccess;
+import usecase.search_company.SearchCompanyDataAccess;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

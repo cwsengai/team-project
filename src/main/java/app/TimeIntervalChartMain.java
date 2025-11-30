@@ -4,11 +4,11 @@ import javax.swing.SwingUtilities;
 
 import dataaccess.AlphaVantagePriceGateway;
 import framework_and_driver.ChartWindow;
-import interface_adapter.controller.IntervalController;
-import interface_adapter.presenter.PriceChartPresenter;
-import use_case.price_chart.GetPriceByIntervalInteractor;
-import use_case.price_chart.PriceChartOutputBoundary;
-import use_case.price_chart.PriceDataAccessInterface;
+import interfaceadapter.controller.IntervalController;
+import interfaceadapter.presenter.PriceChartPresenter;
+import usecase.price_chart.GetPriceByIntervalInteractor;
+import usecase.price_chart.PriceChartOutputBoundary;
+import usecase.price_chart.PriceDataAccessInterface;
 
 public class TimeIntervalChartMain {
     public static void main(String[] args) {
