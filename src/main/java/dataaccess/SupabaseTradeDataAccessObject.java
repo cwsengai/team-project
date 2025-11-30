@@ -2,7 +2,6 @@
 package dataaccess;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +73,6 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
         }
     }
 
-    /**
-     * Fetches all trades for a given user from Supabase.
-     */
     public List<SimulatedTradeRecord> fetchTradesForUser(UUID userId) {
         List<SimulatedTradeRecord> trades = new ArrayList<>();
         String url = EnvConfig.getSupabaseUrl() + "/rest/v1/trades?user_id=eq." + userId.toString();
@@ -95,13 +91,15 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to fetch trades: " + response.code());
+                ResponseBody errorBody = response.body();
+                String errorResp = errorBody != null ? errorBody.string() : "No response body";
+                throw new IOException("Failed to fetch trades: " + response.code() + " - " + errorResp);
             }
             ResponseBody responseBody = response.body();
             if (responseBody == null) return trades;
             String resp = responseBody.string();
             JsonArray arr = gson.fromJson(resp, JsonArray.class);
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
             for (JsonElement el : arr) {
                 JsonObject obj = el.getAsJsonObject();
                 try {
@@ -112,12 +110,13 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
                         obj.get("entry_price").getAsDouble(),
                         obj.get("exit_price").getAsDouble(),
                         obj.get("realized_pnl").getAsDouble(),
-                        LocalDateTime.parse(obj.get("entry_time").getAsString(), formatter),
-                        LocalDateTime.parse(obj.get("exit_time").getAsString(), formatter),
+                        java.time.OffsetDateTime.parse(obj.get("entry_time").getAsString(), formatter).toLocalDateTime(),
+                        java.time.OffsetDateTime.parse(obj.get("exit_time").getAsString(), formatter).toLocalDateTime(),
                         obj.get("user_id").getAsString()
                     );
                     trades.add(record);
                 } catch (Exception parseEx) {
+                    System.err.println("Failed to parse trade record: " + parseEx.getMessage());
                     // skip malformed record
                 }
             }

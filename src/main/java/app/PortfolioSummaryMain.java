@@ -2,6 +2,7 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.List;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -14,6 +15,10 @@ import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
+import entity.SimulatedTradeRecord;
+import use_case.portfolio_statistics.PortfolioStatisticsInputData;
+import use_case.portfolio_statistics.PortfolioStatisticsInteractor;
+import use_case.portfolio_statistics.PortfolioStatisticsOutputData;
 import usecase.session.SessionDataAccessInterface;
 
 public class PortfolioSummaryMain {
@@ -47,10 +52,20 @@ public class PortfolioSummaryMain {
         // Add UI components
         contentPanel.add(new PortfolioSummaryNavBar(frame));
         contentPanel.add(new PortfolioSummaryHeader());
-        contentPanel.add(new PortfolioSummaryCard());
 
-        // Order History Table (needs the correct userId)
+        // Fetch trades and calculate statistics
         dataaccess.SupabaseTradeDataAccessObject tradeDAO = new dataaccess.SupabaseTradeDataAccessObject();
+        List<SimulatedTradeRecord> trades = tradeDAO.fetchTradesForUser(userId);
+
+        // Fetch initial balance from database
+        dataaccess.SupabasePortfolioDataAccessObject portfolioDAO = new dataaccess.SupabasePortfolioDataAccessObject();
+        double initialBalance = portfolioDAO.getInitialBalance(userId);
+
+        PortfolioStatisticsInteractor statsInteractor = new PortfolioStatisticsInteractor();
+        PortfolioStatisticsInputData statsInput = new PortfolioStatisticsInputData(trades, initialBalance);
+        PortfolioStatisticsOutputData stats = statsInteractor.calculateStatistics(statsInput);
+
+        contentPanel.add(new PortfolioSummaryCard(stats));
         contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeDAO));
 
         // Attach components to frame

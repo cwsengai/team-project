@@ -13,6 +13,7 @@ import javax.swing.WindowConstants;
 import dataaccess.AlphaVantagePriceGateway;
 import dataaccess.InMemorySessionDataAccessObject;
 import dataaccess.SimulationMarketDataAccess;
+import dataaccess.SupabasePortfolioDataAccessObject;
 import dataaccess.SupabaseTradeDataAccessObject;
 
 import entity.Account;
@@ -93,10 +94,13 @@ public class SimulatedMain {
                 // --- 2. Core Entity Setup ---
                 Account account = new Account(input.getInitialBalance(), userId);
 
+                // Save portfolio to database
+                SupabasePortfolioDataAccessObject portfolioDAO = new SupabasePortfolioDataAccessObject();
+                portfolioDAO.savePortfolio(UUID.fromString(userId), input.getInitialBalance());
+
                 account.addTradeClosedListener(new TradeClosedListener() {
                     @Override
                     public void onTradeClosed(SimulatedTradeRecord record) {
-                        System.out.println(">> Observer: Saving trade to Supabase...");
                         try {
                             UUID userUuid = UUID.fromString(record.getUserId());
                             tradeDAO.saveTrade(record, userUuid);

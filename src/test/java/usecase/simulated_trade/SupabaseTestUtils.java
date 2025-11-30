@@ -35,7 +35,11 @@ public class SupabaseTestUtils {
                 .build();
         try (Response response = client.newCall(signupRequest).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to sign up user: " + response.code() + " - " + response.body().string());
+                ResponseBody responseBodyObj = response.body();
+                if (responseBodyObj == null) {
+                    throw new IOException("Failed to sign up user: response body is null");
+                }
+                throw new IOException("Failed to sign up user: " + response.code() + " - " + responseBodyObj.string());
             }
         }
         // 2. Log in user
@@ -51,7 +55,11 @@ public class SupabaseTestUtils {
                 .build();
         try (Response response = client.newCall(loginRequest).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to log in user: " + response.code() + " - " + response.body().string());
+                ResponseBody responseBodyObj = response.body();
+                if (responseBodyObj == null) {
+                    throw new IOException("Failed to log in user: response body is null");
+                }
+                throw new IOException("Failed to log in user: " + response.code() + " - " + responseBodyObj.string());
             }
             ResponseBody responseBodyObj = response.body();
             if (responseBodyObj == null) {

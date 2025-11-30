@@ -49,8 +49,7 @@ public class PortfolioOrderHistoryTable extends JPanel {
                 data[i][5] = t.getEntryPrice();
                 data[i][6] = t.getExitPrice();
                 data[i][7] = t.getRealizedPnL();
-                // No ROI calculation in entity, so leave blank or compute if needed
-                data[i][8] = "";
+                data[i][8] = String.format("%.2f%%", t.getReturnRate());
             }
         } catch (Exception ex) {
             data = new Object[0][columns.length];
