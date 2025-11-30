@@ -14,7 +14,7 @@ import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
-import usecase.session.SessionDataAccessInterface;
+import use_case.session.SessionDataAccessInterface;
 
 public class PortfolioSummaryMain {
 

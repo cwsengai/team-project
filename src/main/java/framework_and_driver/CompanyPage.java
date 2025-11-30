@@ -102,14 +102,7 @@ public class CompanyPage extends JFrame {
         JLabel logo = new JLabel("✶ BILLIONAIRE", SwingConstants.LEFT);
         logo.setFont(new Font("SansSerif", Font.BOLD, 16));
 
-        // Login button
-        JButton loginButton = new JButton("Signup/ Login");
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setBackground(Color.BLACK);
-        loginButton.setFocusPainted(false);
-
         panel.add(logo, BorderLayout.WEST);
-        panel.add(loginButton, BorderLayout.EAST);
 
         return panel;
     }
