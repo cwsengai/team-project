@@ -23,12 +23,14 @@ public class PortfolioStatisticsInteractor {
         // Calculate max gain (highest positive PnL)
         double maxGain = trades.stream()
             .mapToDouble(SimulatedTradeRecord::getRealizedPnL)
+            .filter(pnl -> pnl > 0)
             .max()
             .orElse(0.0);
 
         // Calculate max drawdown (most negative PnL, but show as positive for display)
         double maxDrawdownValue = trades.stream()
             .mapToDouble(SimulatedTradeRecord::getRealizedPnL)
+            .filter(pnl -> pnl < 0)
             .min()
             .orElse(0.0);
         double maxDrawdown = Math.abs(maxDrawdownValue); // Show as positive
