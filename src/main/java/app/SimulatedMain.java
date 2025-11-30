@@ -35,9 +35,9 @@ import usecase.simulated_trade.SimulatedTradeInteractor;
 import usecase.simulated_trade.SimulationDataAccessInterface;
 import usecase.update_market.UpdateMarketInteractor;
 
-import view.SetupView;
-import view.TradingView;
-import view.ViewManager;
+import app.ui.view.SetupView;
+import app.ui.view.TradingView;
+import app.ui.view.ViewManager;
 
 public class SimulatedMain {
 
@@ -193,7 +193,7 @@ public class SimulatedMain {
 
         // Init Views
         SetupView setupView = new SetupView(setupController, setupViewModel);
-        view.TradingView tradingPlaceholder = new view.TradingView(null, tradingViewModel);
+        TradingView tradingPlaceholder = new TradingView(null, tradingViewModel);
 
         views.add(setupView, SetupViewModel.VIEW_NAME);
         views.add(tradingPlaceholder, TradingViewModel.VIEW_NAME);
