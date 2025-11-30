@@ -2,6 +2,7 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.Base64;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -9,6 +10,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import org.json.JSONObject;
 
 import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
@@ -26,6 +29,28 @@ public class PortfolioSummaryMain {
      *  to open the Portfolio Summary page **without logging in again**.
      */
     public static void show(UUID userId, SessionDataAccessInterface sessionDAO) {
+
+        // Debug logs
+        System.out.println("PortfolioSummary.show called with userId: " + userId);
+        String jwt = sessionDAO.getJwtToken();
+        if (jwt != null) {
+            try {
+                String[] parts = jwt.split("\\.");
+                if (parts.length >= 2) {
+                    String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]));
+                    JSONObject payload = new JSONObject(payloadJson);
+                    String email = payload.optString("email", "unknown");
+                    String sub = payload.optString("sub", "unknown");
+                    System.out.println("User email from JWT: " + email);
+                    System.out.println("User sub (ID) from JWT: " + sub);
+                    System.out.println("Session userId matches JWT sub: " + userId.toString().equals(sub));
+                }
+            } catch (Exception e) {
+                System.out.println("Error decoding JWT: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No JWT token in session");
+        }
 
         // === Build the Portfolio Summary window ===
         JFrame frame = new JFrame("Portfolio Summary");
@@ -51,6 +76,12 @@ public class PortfolioSummaryMain {
 
         // Order History Table (needs the correct userId)
         dataaccess.SupabaseTradeDataAccessObject tradeDAO = new dataaccess.SupabaseTradeDataAccessObject();
+        try {
+            var trades = tradeDAO.fetchTradesForUser(userId);
+            System.out.println("Fetched " + trades.size() + " trades for user " + userId);
+        } catch (Exception e) {
+            System.out.println("Error fetching trades: " + e.getMessage());
+        }
         contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeDAO));
 
         // Attach components to frame
