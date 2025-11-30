@@ -1,4 +1,4 @@
-package use_case.portfolio_statistics;
+package usecase.portfolio_statistics;
 
 import java.time.LocalDateTime;
 import java.util.List;
