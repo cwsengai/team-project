@@ -19,7 +19,7 @@ import entity.SimulatedTradeRecord;
 import use_case.portfolio_statistics.PortfolioStatisticsInputData;
 import use_case.portfolio_statistics.PortfolioStatisticsInteractor;
 import use_case.portfolio_statistics.PortfolioStatisticsOutputData;
-import use_case.session.SessionDataAccessInterface;
+import usecase.session.SessionDataAccessInterface;
 
 public class PortfolioSummaryMain {
 
