@@ -1,8 +1,8 @@
 package view;
 
-import interface_adapter.simulated_trading.TradingController;
-import interface_adapter.simulated_trading.TradingState;
-import interface_adapter.simulated_trading.TradingViewModel;
+import interfaceadapter.simulated_trading.TradingController;
+import interfaceadapter.simulated_trading.TradingState;
+import interfaceadapter.simulated_trading.TradingViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

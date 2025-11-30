@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.setup_simulation.SetupController;
-import interface_adapter.setup_simulation.SetupViewModel;
+import interfaceadapter.setup_simulation.SetupController;
+import interfaceadapter.setup_simulation.SetupViewModel;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;

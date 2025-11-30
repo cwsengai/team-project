@@ -1,11 +1,23 @@
 package entity;
 
+/**
+ * Represents a trading position with direction, quantity, and average entry price.
+ */
 public class Position {
-    private final String ticker;
-    private boolean isLong;       // true = Long, false = Short
-    private int quantity;         // Absolute quantity (always >= 0)
-    private double avgPrice;      // Weighted average cost price
 
+    private final String ticker;
+    private boolean isLong;
+    private int quantity;
+    private double avgPrice;
+
+    /**
+     * Constructs a Position.
+     *
+     * @param ticker   stock ticker
+     * @param isLong   true for long, false for short
+     * @param quantity initial quantity
+     * @param avgPrice initial average price
+     */
     public Position(String ticker, boolean isLong, int quantity, double avgPrice) {
         this.ticker = ticker;
         this.isLong = isLong;
@@ -14,57 +26,123 @@ public class Position {
     }
 
     /**
-     * Updates position based on trade action.
-     * @return Realized PnL (only returns value when reducing or closing position).
+     * Updates the position with a new trade.
+     *
+     * @param isBuyAction true if buy, false if sell
+     * @param tradeQty    traded quantity
+     * @param tradePrice  traded price
+     * @return realized PnL if closing/reducing, 0 otherwise
      */
     public double update(boolean isBuyAction, int tradeQty, double tradePrice) {
-        // Determine if adding to position (Same direction) or reducing/flipping (Opposite direction)
-        boolean isIncrease = (isLong && isBuyAction) || (!isLong && !isBuyAction);
+
+        double realizedPnl = 0.0;
+
+        final boolean isIncrease =
+                isLong && isBuyAction || !isLong && !isBuyAction;
 
         if (quantity == 0) {
-            this.isLong = isBuyAction;
-            this.quantity = tradeQty;
-            this.avgPrice = tradePrice;
-            return 0.0;
+            isLong = isBuyAction;
+            quantity = tradeQty;
+            avgPrice = tradePrice;
+
         }
+        else {
 
-        if (isIncrease) {
-            // Calculate new Weighted Average Price
-            double totalCost = (avgPrice * quantity) + (tradePrice * tradeQty);
-            quantity += tradeQty;
-            avgPrice = totalCost / quantity;
-            return 0.0;
-        } else {
-            double pnl = 0.0;
-            // PnL logic: (Sell - Cost) for Long; (Cost - Sell) for Short
-            double priceDiff = isLong ? (tradePrice - avgPrice) : (avgPrice - tradePrice);
+            if (isIncrease) {
+                final double totalCost = avgPrice * quantity + tradePrice * tradeQty;
+                quantity = quantity + tradeQty;
+                avgPrice = totalCost / quantity;
 
-            if (tradeQty <= quantity) {
-                // Partial or full close
-                pnl = priceDiff * tradeQty;
-                quantity -= tradeQty;
-            } else {
-                // Position Flip: Close current -> Open reverse
-                pnl = priceDiff * quantity; // Realize PnL on existing quantity
-
-                // Open new position with remaining qty
-                this.quantity = tradeQty - quantity;
-                this.isLong = !this.isLong;
-                this.avgPrice = tradePrice;
             }
-            return pnl;
+            else {
+
+                final double priceDifference;
+                if (isLong) {
+                    priceDifference = tradePrice - avgPrice;
+                }
+                else {
+                    priceDifference = avgPrice - tradePrice;
+                }
+
+                if (tradeQty <= quantity) {
+                    realizedPnl = priceDifference * tradeQty;
+                    quantity = quantity - tradeQty;
+                }
+                else {
+                    realizedPnl = priceDifference * quantity;
+
+                    final int remaining = tradeQty - quantity;
+                    quantity = remaining;
+                    isLong = !isLong;
+                    avgPrice = tradePrice;
+                }
+            }
         }
+
+        return realizedPnl;
     }
+
+    /**
+     * Computes unrealized PnL of this position.
+     *
+     * @param currentPrice current market price
+     * @return unrealized PnL
+     */
 
     public double getUnrealizedPnL(double currentPrice) {
-        if (quantity == 0) return 0.0;
-        // Short position profits when price drops (Avg > Current)
-        double diff = isLong ? (currentPrice - avgPrice) : (avgPrice - currentPrice);
-        return diff * quantity;
+
+        double result = 0.0;
+
+        if (quantity == 0) {
+            result = 0.0;
+        }
+        else {
+            final double difference;
+            if (isLong) {
+                difference = currentPrice - avgPrice;
+            }
+            else {
+                difference = avgPrice - currentPrice;
+            }
+            result = difference * quantity;
+        }
+
+        return result;
+    }
+    /**
+     * Returns ticker symbol.
+     *
+     * @return ticker
+     */
+
+    public String getTicker() {
+        return ticker;
     }
 
-    public String getTicker() { return ticker; }
-    public boolean isLong() { return isLong; }
-    public int getQuantity() { return quantity; }
-    public double getAvgPrice() { return avgPrice; }
+    /**
+     * Returns whether the position is long.
+     *
+     * @return true if long
+     */
+    public boolean isLong() {
+        return isLong;
+    }
+
+    /**
+     * Returns quantity.
+     *
+     * @return quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * Returns average entry price.
+     *
+     * @return average price
+     */
+    public double getAvgPrice() {
+        return avgPrice;
+    }
 }

@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 
 import api.SupabaseAuthClient;
 import dataaccess.EnvConfig;
-import use_case.session.SessionDataAccessInterface;
+import usecase.session.SessionDataAccessInterface;
 
 public class LoginPage extends JDialog {
 

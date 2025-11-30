@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import api.Api;
 import entity.EconomicIndicator;
-import use_case.EconomicIndicatorGateway;
+import usecase.EconomicIndicatorGateway;
 
 /**
  * Implementation of EconomicIndicatorGateway using Alpha Vantage API.

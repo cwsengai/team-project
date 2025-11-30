@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import api.SupabaseAuthClient;
 import dataaccess.EnvConfig;
-import use_case.session.SessionDataAccessInterface;
+import usecase.session.SessionDataAccessInterface;
 
 public class SupabaseRandomUserUtil {
     /**

@@ -6,7 +6,7 @@ import java.util.List;
 import api.Api;
 
 import entity.Company;
-import use_case.company.CompanyGateway;
+import usecase.company.CompanyGateway;
 
 
 public class AlphaVantageCompanyGateway implements CompanyGateway {

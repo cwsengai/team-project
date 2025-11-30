@@ -1,9 +1,9 @@
 // File: src/main/java/framework_and_driver/CompanyListPage.java
 package framework_and_driver;
 
-import interface_adapter.company_list.CompanyDisplayData;
-import interface_adapter.controller.CompanyListController;
-import interface_adapter.controller.SearchCompanyController;
+import interfaceadapter.company_list.CompanyDisplayData;
+import interfaceadapter.controller.CompanyListController;
+import interfaceadapter.controller.SearchCompanyController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

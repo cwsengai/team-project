@@ -3,7 +3,7 @@ package dataaccess;
 import api.Api;
 import entity.MarketIndex;
 import org.json.JSONObject;
-import use_case.MarketIndexGateway;
+import usecase.MarketIndexGateway;
 
 import java.util.ArrayList;
 import java.util.List;

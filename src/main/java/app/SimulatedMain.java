@@ -17,22 +17,22 @@ import dataaccess.SupabaseTradeDataAccessObject;
 
 import entity.Account;
 import entity.SimulatedTradeRecord;
-import use_case.simulated_trade.TradeClosedListener;
+import usecase.simulated_trade.TradeClosedListener;
 
-import interface_adapter.view_model.ViewManagerModel;
-import interface_adapter.setup_simulation.SetupController;
-import interface_adapter.setup_simulation.SetupPresenter;
-import interface_adapter.setup_simulation.SetupViewModel;
-import interface_adapter.simulated_trading.TradingController;
-import interface_adapter.simulated_trading.TradingPresenter;
-import interface_adapter.simulated_trading.TradingViewModel;
+import interfaceadapter.view_model.ViewManagerModel;
+import interfaceadapter.setup_simulation.SetupController;
+import interfaceadapter.setup_simulation.SetupPresenter;
+import interfaceadapter.setup_simulation.SetupViewModel;
+import interfaceadapter.simulated_trading.TradingController;
+import interfaceadapter.simulated_trading.TradingPresenter;
+import interfaceadapter.simulated_trading.TradingViewModel;
 
-import use_case.price_chart.PriceDataAccessInterface;
-import use_case.setup_simulation.SetupInputData;
-import use_case.setup_simulation.SetupInteractor;
-import use_case.simulated_trade.SimulatedTradeInteractor;
-import use_case.simulated_trade.SimulationDataAccessInterface;
-import use_case.update_market.UpdateMarketInteractor;
+import usecase.price_chart.PriceDataAccessInterface;
+import usecase.setup_simulation.SetupInputData;
+import usecase.setup_simulation.SetupInteractor;
+import usecase.simulated_trade.SimulatedTradeInteractor;
+import usecase.simulated_trade.SimulationDataAccessInterface;
+import usecase.update_market.UpdateMarketInteractor;
 
 import view.SetupView;
 import view.TradingView;

@@ -1,25 +1,26 @@
 package entity;
+
 import java.time.LocalDateTime;
 
 public class SimulatedOrder {
     private final String orderId;
-    private final String ticker;   //Stock code
-    private final boolean isLong;   //（true = buy，false = short）
+    private final String ticker;
+    private final boolean isLong;
     private final int quantity;
-    private final double limitPrice;   //Limit order price
-    private LocalDateTime entryTime;   //entry time
+    private final double limitPrice;
+    private LocalDateTime entryTime;
     private double entryPrice;
     private boolean isFilled;
 
     public SimulatedOrder(String orderId, String ticker, boolean isLong, int quantity,
-                          double limitPrice,  LocalDateTime entryTime) {
+                          double limitPrice, LocalDateTime entryTime) {
         this.orderId = orderId;
         this.ticker = ticker;
         this.isLong = isLong;
         this.quantity = quantity;
         this.limitPrice = limitPrice;
         this.entryTime = entryTime;
-        this.entryPrice = 0.0;  // no price before fill
+        this.entryPrice = 0.0;
         this.isFilled = false;
     }
 
