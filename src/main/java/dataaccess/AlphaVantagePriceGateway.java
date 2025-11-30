@@ -19,6 +19,7 @@ import usecase.price_chart.PriceDataAccessInterface;
 
 public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
 
+    private final String apiKey = EnvConfig.getAlphaVantageApiKey();
     private static final String BASE_URL = "https://www.alphavantage.co/query?";
     private static final String NOTE_KEY = "Note";
     
