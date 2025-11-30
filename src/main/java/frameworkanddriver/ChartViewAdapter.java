@@ -1,4 +1,4 @@
-package framework_and_driver;
+package frameworkanddriver;
 
 import entity.ChartViewModel;
 

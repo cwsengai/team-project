@@ -5,8 +5,8 @@ import javax.swing.SwingUtilities;
 import api.Api;
 import dataaccess.AlphaVantagePriceGateway;
 
-import framework_and_driver.CompanyPage;
-import framework_and_driver.ChartViewAdapter;
+import frameworkanddriver.CompanyPage;
+import frameworkanddriver.ChartViewAdapter;
 
 import interfaceadapter.controller.IntervalController;
 import interfaceadapter.presenter.PriceChartPresenter;

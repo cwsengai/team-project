@@ -1,5 +1,5 @@
 // File: src/main/java/framework_and_driver/CompanyListPage.java
-package framework_and_driver;
+package frameworkanddriver;
 
 import interfaceadapter.company_list.CompanyDisplayData;
 import interfaceadapter.controller.CompanyListController;
@@ -13,12 +13,6 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.EventObject;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.table.TableCellEditor;
 
 
 /**

@@ -3,7 +3,7 @@ package interfaceadapter.presenter;
 import interfaceadapter.price_chart.CompanyDetailOutputBoundary;
 import usecase.price_chart.PriceChartOutputBoundary;
 import entity.*;
-import framework_and_driver.CompanyDetailPage;
+import frameworkanddriver.CompanyDetailPage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

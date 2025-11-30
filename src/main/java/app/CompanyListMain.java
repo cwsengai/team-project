@@ -10,7 +10,7 @@ import dataaccess.Top100Companies;
 import entity.Company;
 import entity.EconomicIndicator;
 import entity.MarketIndex;
-import framework_and_driver.CompanyListPage;
+import frameworkanddriver.CompanyListPage;
 import interfaceadapter.company_list.CompanyDisplayData;
 import interfaceadapter.controller.CompanyListController;
 import interfaceadapter.controller.SearchCompanyController;

@@ -16,7 +16,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import usecase.price_chart.PriceDataAccessInterface;
 
-
 public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
 
     private final String apiKey = "3TEXXG3G3UXFI7E2";
@@ -39,7 +38,6 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
         }
     }
     // -----------------------------------------------------
-
 
     @Override
     public List<PricePoint> getPriceHistory(String ticker, TimeInterval interval) throws Exception {
@@ -65,14 +63,14 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 .append("&apikey=").append(apiKey);
 
         if (interval == TimeInterval.FIVE_MINUTES) {
-            urlBuilder.append("&interval=").append("5min"); // Required parameter for intraday data
+            urlBuilder.append("&interval=").append("5min");
+            // Required parameter for intraday data
         }
 
         String jsonResponse = sendHttpRequest(urlBuilder.toString());
 
         return parseJsonToPricePoints(jsonResponse, interval);
     }
-
 
     private List<PricePoint> parseJsonToPricePoints(String jsonResponse, TimeInterval interval) {
         List<PricePoint> pricePoints = new ArrayList<>();
@@ -85,7 +83,8 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 // If Note (usually API rate limit), log and return empty list instead of crashing
                 if (root.has("Note")) {
                     System.out.println("API Limit Reached or Note: " + root.getString("Note"));
-                    return pricePoints; // Return empty list to avoid crash
+                    return pricePoints;
+                    // Return empty list to avoid crash
                 }
                 throw new RuntimeException("API Error: " + root.toString());
             }
@@ -94,7 +93,8 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
             String timeSeriesKey = getTimeSeriesKey(interval);
             
             if (!root.has(timeSeriesKey)) {
-                return pricePoints; // Return empty list if no data
+                return pricePoints;
+                // Return empty list if no data
             }
             
             JSONObject timeSeries = root.getJSONObject(timeSeriesKey);
@@ -125,8 +125,10 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
             // Sort by timestamp in ascending order (oldest to newest)
             pricePoints.sort((p1, p2) -> p1.getTimestamp().compareTo(p2.getTimestamp()));
             
-        } catch (Exception e) {
-            e.printStackTrace(); // Print error stack for debugging
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            // Print error stack for debugging
             throw new RuntimeException("Failed to parse price data: " + e.getMessage(), e);
         }
         

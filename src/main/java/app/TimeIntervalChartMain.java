@@ -3,7 +3,7 @@ package app;
 import javax.swing.SwingUtilities;
 
 import dataaccess.AlphaVantagePriceGateway;
-import framework_and_driver.ChartWindow;
+import frameworkanddriver.ChartWindow;
 import interfaceadapter.controller.IntervalController;
 import interfaceadapter.presenter.PriceChartPresenter;
 import usecase.price_chart.GetPriceByIntervalInteractor;
@@ -32,10 +32,8 @@ public class TimeIntervalChartMain {
         // 5. CONTROLLER (Interface Adapter)
         IntervalController intervalController = new IntervalController(interactor);
 
-
         // 6. WIRING (Connecting the pieces)
         chartWindow.setController(intervalController);
-
         SwingUtilities.invokeLater(() -> {
             chartWindow.setVisible(true);
         });

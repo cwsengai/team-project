@@ -1,10 +1,9 @@
-package framework_and_driver;
+package frameworkanddriver;
 
 import java.awt.Color;
 import java.awt.Font;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.CategorySeries.CategorySeriesRenderStyle;
-import org.knowm.xchart.style.Styler;
 
 /**
  * Utility class for applying "Billionaire" UI style to XChart.

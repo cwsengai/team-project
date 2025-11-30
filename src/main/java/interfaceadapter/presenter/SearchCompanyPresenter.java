@@ -5,7 +5,7 @@ import interfaceadapter.company_list.CompanyDisplayData;
 import interfaceadapter.view_model.SearchCompanyViewModel;
 import usecase.search_company.SearchCompanyOutputBoundary;
 import usecase.search_company.SearchCompanyOutputData;
-import framework_and_driver.CompanyListPage;
+import frameworkanddriver.CompanyListPage;
 
 import java.util.ArrayList;
 import java.util.List;

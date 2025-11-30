@@ -1,7 +1,7 @@
 package interfaceadapter.presenter;
 
 import entity.Company;
-import framework_and_driver.CompanyListPage;
+import frameworkanddriver.CompanyListPage;
 import interfaceadapter.company_list.CompanyDisplayData;
 import interfaceadapter.view_model.CompanyListViewModel;
 import usecase.company_list.CompanyListOutputBoundary;
