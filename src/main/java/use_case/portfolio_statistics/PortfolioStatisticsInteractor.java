@@ -9,9 +9,10 @@ public class PortfolioStatisticsInteractor {
 
     public PortfolioStatisticsOutputData calculateStatistics(PortfolioStatisticsInputData input) {
         List<SimulatedTradeRecord> trades = input.getTrades();
+        double initialBalance = input.getInitialBalance();
 
         if (trades.isEmpty()) {
-            return new PortfolioStatisticsOutputData(0, 0, 0, 0, 0, 0, 0, null, null);
+            return new PortfolioStatisticsOutputData(0, 0, 0, 0, 0, 0, 0, 0, null, null);
         }
 
         // Calculate total profit
@@ -44,6 +45,9 @@ public class PortfolioStatisticsInteractor {
         // Calculate win rate
         double winRate = trades.isEmpty() ? 0 : (double) winningTrades / trades.size() * 100;
 
+        // Calculate total return rate
+        double totalReturnRate = initialBalance > 0 ? (totalProfit / initialBalance) * 100 : 0;
+
         // Find trading span
         LocalDateTime earliest = trades.stream()
             .map(SimulatedTradeRecord::getEntryTime)
@@ -57,7 +61,7 @@ public class PortfolioStatisticsInteractor {
 
         return new PortfolioStatisticsOutputData(
             totalProfit, maxGain, maxDrawdown, trades.size(),
-            winningTrades, losingTrades, winRate, earliest, latest
+            winningTrades, losingTrades, winRate, totalReturnRate, earliest, latest
         );
     }
 }

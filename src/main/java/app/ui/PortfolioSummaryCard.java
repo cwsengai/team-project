@@ -72,7 +72,7 @@ public class PortfolioSummaryCard extends JPanel {
         leftCol.add(new JLabel("Total Profit:"));
         leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.getTotalProfit())));
         leftCol.add(new JLabel("Total Return Rate:"));
-        leftCol.add(rightAlignLabel("N/A")); // TODO: Calculate with initial balance
+        leftCol.add(rightAlignLabel(PERCENT_FORMAT.format(stats.getTotalReturnRate())));
         leftCol.add(new JLabel("Max Gain:"));
         leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.getMaxGain())));
         leftCol.add(new JLabel("Max Drawdown:"));

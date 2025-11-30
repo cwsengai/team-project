@@ -10,12 +10,13 @@ public class PortfolioStatisticsOutputData {
     private final int winningTrades;
     private final int losingTrades;
     private final double winRate;
+    private final double totalReturnRate;
     private final LocalDateTime earliestTrade;
     private final LocalDateTime latestTrade;
 
     public PortfolioStatisticsOutputData(double totalProfit, double maxGain, double maxDrawdown,
                                        int totalTrades, int winningTrades, int losingTrades,
-                                       double winRate, LocalDateTime earliestTrade, LocalDateTime latestTrade) {
+                                       double winRate, double totalReturnRate, LocalDateTime earliestTrade, LocalDateTime latestTrade) {
         this.totalProfit = totalProfit;
         this.maxGain = maxGain;
         this.maxDrawdown = maxDrawdown;
@@ -23,6 +24,7 @@ public class PortfolioStatisticsOutputData {
         this.winningTrades = winningTrades;
         this.losingTrades = losingTrades;
         this.winRate = winRate;
+        this.totalReturnRate = totalReturnRate;
         this.earliestTrade = earliestTrade;
         this.latestTrade = latestTrade;
     }
@@ -34,6 +36,7 @@ public class PortfolioStatisticsOutputData {
     public int getWinningTrades() { return winningTrades; }
     public int getLosingTrades() { return losingTrades; }
     public double getWinRate() { return winRate; }
+    public double getTotalReturnRate() { return totalReturnRate; }
     public LocalDateTime getEarliestTrade() { return earliestTrade; }
     public LocalDateTime getLatestTrade() { return latestTrade; }
 

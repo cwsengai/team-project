@@ -57,8 +57,12 @@ public class PortfolioSummaryMain {
         dataaccess.SupabaseTradeDataAccessObject tradeDAO = new dataaccess.SupabaseTradeDataAccessObject();
         List<SimulatedTradeRecord> trades = tradeDAO.fetchTradesForUser(userId);
 
+        // Fetch initial balance from database
+        dataaccess.SupabasePortfolioDataAccessObject portfolioDAO = new dataaccess.SupabasePortfolioDataAccessObject();
+        double initialBalance = portfolioDAO.getInitialBalance(userId);
+
         PortfolioStatisticsInteractor statsInteractor = new PortfolioStatisticsInteractor();
-        PortfolioStatisticsInputData statsInput = new PortfolioStatisticsInputData(trades);
+        PortfolioStatisticsInputData statsInput = new PortfolioStatisticsInputData(trades, initialBalance);
         PortfolioStatisticsOutputData stats = statsInteractor.calculateStatistics(statsInput);
 
         contentPanel.add(new PortfolioSummaryCard(stats));
