@@ -1,4 +1,4 @@
-package view;
+package app.ui.view;
 
 import interfaceadapter.view_model.ViewManagerModel;
 
@@ -21,7 +21,7 @@ public class ViewManager implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("view")) {
+        if (evt.getPropertyName().equals("app/ui/view")) {
             String viewModelName = (String) evt.getNewValue();
             cardLayout.show(views, viewModelName);
         }

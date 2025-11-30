@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import use_case.portfolio_statistics.PortfolioStatisticsOutputData;
+import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 
 public class PortfolioSummaryCard extends JPanel {
     private static final DecimalFormat CURRENCY_FORMAT = new DecimalFormat("$#,##0.00");

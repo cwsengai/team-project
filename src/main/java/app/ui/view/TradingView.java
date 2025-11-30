@@ -1,4 +1,4 @@
-package view;
+package app.ui.view;
 
 import interfaceadapter.simulated_trading.TradingController;
 import interfaceadapter.simulated_trading.TradingState;
@@ -14,7 +14,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import entity.Position;
 

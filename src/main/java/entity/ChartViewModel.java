@@ -4,10 +4,14 @@ import java.util.List;
 
 public class ChartViewModel {
 
-    private final String title; // "DOW | DAILY Price"
-    private final List<String> labels; // X
-    private final List<Double> prices; // Y
-    private final TimeInterval interval; // Time interval for sampling strategy
+    private final String title;
+    // "DOW | DAILY Price"
+    private final List<String> labels;
+    // X
+    private final List<Double> prices;
+    // Y
+    private final TimeInterval interval;
+    // Time interval for sampling strategy
     
     // For candlestick charts (OHLC data)
     private final List<Double> openPrices;
@@ -35,7 +39,8 @@ public class ChartViewModel {
                          List<Double> lowPrices, List<Double> closePrices, TimeInterval interval) {
         this.title = title;
         this.labels = labels;
-        this.prices = null; // Not used for candlestick
+        this.prices = null;
+        // Not used for candlestick
         this.interval = interval;
         this.openPrices = openPrices;
         this.highPrices = highPrices;

@@ -84,7 +84,8 @@ class EntityLayerTest {
         // 5. Cover some boundary calculations in Account
         assertEquals(200.0, account.getTotalProfit(10200.0));
         assertTrue(account.getTotalReturnRate(10200.0) > 0);
-        assertEquals(0.0, account.getMaxDrawdown(10200.0)); // No drawdown
+        assertEquals(0.0, account.getMaxDrawdown());
+        // No drawdown
     }
 
     // --- 3. Cover Account Edge Cases (e.g., initial denominator is 0) ---

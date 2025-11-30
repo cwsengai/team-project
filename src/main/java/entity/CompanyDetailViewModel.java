@@ -4,10 +4,16 @@ import java.util.List;
 
 public class CompanyDetailViewModel {
 
+    private static final String NOT_AVAILABLE = "N/A";
+    private static final double TRILLION_THRESHOLD = 1e12;
+    private static final double BILLION_THRESHOLD = 1e9;
+    private static final double MILLION_THRESHOLD = 1e6;
+
     private final String ticker;
     private final String name;
     private final String sector;
-    private final String marketCapFormatted; // (e.g., $2.8T)
+    private final String marketCapFormatted;
+    // (e.g., $2.8T)
     private final String peRatioFormatted;
 
     private final String latestRevenue;
@@ -27,29 +33,66 @@ public class CompanyDetailViewModel {
             this.latestRevenue = formatLargeNumber(financials.getTotalRevenue());
             this.latestNetIncome = formatLargeNumber(financials.getNetIncome());
             this.latestBalanceSheetPeriod = financials.getFiscalDateEnding().toString();
-        } else {
-            this.latestRevenue = "N/A";
-            this.latestNetIncome = "N/A";
-            this.latestBalanceSheetPeriod = "N/A";
+        }
+        else {
+            this.latestRevenue = NOT_AVAILABLE;
+            this.latestNetIncome = NOT_AVAILABLE;
+            this.latestBalanceSheetPeriod = NOT_AVAILABLE;
         }
 
         this.recentNews = news;
     }
 
-    public String getTicker() { return ticker; }
-    public String getName() { return name; }
-    public String getSector() { return sector; }
-    public String getMarketCapFormatted() { return marketCapFormatted; }
-    public String getPeRatioFormatted() { return peRatioFormatted; }
-    public String getLatestRevenue() { return latestRevenue; }
-    public String getLatestNetIncome() { return latestNetIncome; }
-    public String getLatestBalanceSheetPeriod() { return latestBalanceSheetPeriod; }
-    public List<NewsArticle> getRecentNews() { return recentNews; }
+    public String getTicker() {
+        return ticker;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public String getMarketCapFormatted() {
+        return marketCapFormatted;
+    }
+
+    public String getPeRatioFormatted() {
+        return peRatioFormatted;
+    }
+
+    public String getLatestRevenue() {
+        return latestRevenue;
+    }
+
+    public String getLatestNetIncome() {
+        return latestNetIncome;
+    }
+
+    public String getLatestBalanceSheetPeriod() {
+        return latestBalanceSheetPeriod;
+    }
+
+    public List<NewsArticle> getRecentNews() {
+        return recentNews;
+    }
 
     private String formatLargeNumber(double number) {
-        if (number >= 1e12) return String.format("$%.1fT", number / 1e12);
-        if (number >= 1e9) return String.format("$%.1fB", number / 1e9);
-        if (number >= 1e6) return String.format("$%.1fM", number / 1e6);
-        return String.format("$%.0f", number);
+        final String formattedNumber;
+        if (number >= TRILLION_THRESHOLD) {
+            formattedNumber = String.format("$%.1fT", number / TRILLION_THRESHOLD);
+        }
+        else if (number >= BILLION_THRESHOLD) {
+            formattedNumber = String.format("$%.1fB", number / BILLION_THRESHOLD);
+        }
+        else if (number >= MILLION_THRESHOLD) {
+            formattedNumber = String.format("$%.1fM", number / MILLION_THRESHOLD);
+        }
+        else {
+            formattedNumber = String.format("$%.0f", number);
+        }
+        return formattedNumber;
     }
 }
