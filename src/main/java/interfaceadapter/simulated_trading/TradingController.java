@@ -4,48 +4,38 @@ import usecase.simulated_trade.SimulatedTradeInputBoundary;
 import usecase.simulated_trade.SimulatedTradeInputData;
 import usecase.update_market.UpdateMarketInputBoundary;
 
-/**
- * Controller responsible for handling user actions in the trading view.
- * Delegates requests to market update and trade execution interactors.
- */
+// ⭐ ADDED
+import dataaccess.InMemorySessionDataAccessObject;
+
 public class TradingController {
 
     private final UpdateMarketInputBoundary updateMarketInteractor;
     private final SimulatedTradeInputBoundary tradeInteractor;
+    // ✅ Existing: must hold presenter to support "Back" button
     private final TradingPresenter tradingPresenter;
 
-    /**
-     * Constructs a TradingController.
-     *
-     * @param updateMarketInteractor interactor handling market update ticks
-     * @param tradeInteractor interactor responsible for executing trades
-     * @param tradingPresenter presenter used for returning to the previous view
-     */
+    // ⭐ Store the current logged-in user's session
+    private final InMemorySessionDataAccessObject sessionDAO;
+
+    // ⭐ UPDATED: added InMemorySessionDataAccessObject to the constructor
     public TradingController(UpdateMarketInputBoundary updateMarketInteractor,
                              SimulatedTradeInputBoundary tradeInteractor,
-                             TradingPresenter tradingPresenter) {
+                             TradingPresenter tradingPresenter,
+                             InMemorySessionDataAccessObject sessionDAO) {
         this.updateMarketInteractor = updateMarketInteractor;
         this.tradeInteractor = tradeInteractor;
         this.tradingPresenter = tradingPresenter;
+        this.sessionDAO = sessionDAO;
     }
 
-    /**
-     * Executes a timer-triggered market update tick.
-     */
+    // Triggered by the View's Timer (e.g., every second)
     public void executeTimerTick() {
         updateMarketInteractor.executeExecuteTick();
     }
 
-    /**
-     * Executes a buy or sell trade request.
-     *
-     * @param ticker the ticker symbol being traded
-     * @param amount the monetary amount the user wishes to trade
-     * @param isBuy true for buy, false for sell
-     * @param currentPrice the current market price
-     */
+    // Triggered by Buy/Sell buttons
     public void executeTrade(String ticker, double amount, boolean isBuy, double currentPrice) {
-        final SimulatedTradeInputData inputData = new SimulatedTradeInputData(
+        SimulatedTradeInputData inputData = new SimulatedTradeInputData(
                 ticker,
                 isBuy,
                 amount,
@@ -54,10 +44,25 @@ public class TradingController {
         tradeInteractor.executeTrade(inputData);
     }
 
-    /**
-     * Returns the user to the previous view.
-     */
+    // ✅ Handle "Back" button click
     public void executeGoBack() {
         tradingPresenter.prepareGoBackView();
+    }
+
+    // ⭐ Used by “View All Order History” button
+    public void executeOpenPortfolioSummary() {
+        java.util.UUID userId = sessionDAO.getCurrentUserId();
+        if (userId == null) {
+            System.err.println("No logged-in user; cannot open summary.");
+            return;
+        }
+
+        // Open the summary window, reusing the existing session
+        app.PortfolioSummaryMain.show(userId, sessionDAO);
+    }
+
+    // Optional: allow other classes to access the session
+    public InMemorySessionDataAccessObject getSessionDAO() {
+        return sessionDAO;
     }
 }

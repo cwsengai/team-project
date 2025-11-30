@@ -13,6 +13,12 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.EventObject;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.table.TableCellEditor;
 
 
 /**
@@ -113,24 +119,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             openSimulatePage();
         });
         headerPanel.add(tradeButton);
-
-        // Add spacer between buttons
-        headerPanel.add(Box.createHorizontalStrut(15));
-
-        // Sign In Button
-        JButton signInButton = new JButton("Sign In");
-        signInButton.setBackground(ACCENT_COLOR);
-        signInButton.setForeground(Color.WHITE);
-        signInButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        signInButton.setFocusPainted(false);
-        signInButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
-        signInButton.setOpaque(true); // Ensure color renders on all OS
-        signInButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        signInButton.addActionListener(e -> {
-            // ✅ Navigate to PortfolioSummaryMain
-            openPortfolioSummaryPage();
-        });
-        headerPanel.add(signInButton);
 
         return headerPanel;
     }
@@ -787,17 +775,30 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
      * Keeps current window open and opens PortfolioSummaryMain in a new window.
      */
     private void openPortfolioSummaryPage() {
-        System.out.println("👤 Opening Portfolio Summary page...");
-
-        // ✅ Don't close current window - just open new one
         SwingUtilities.invokeLater(() -> {
             try {
-                app.PortfolioSummaryMain.main(new String[]{});
-            } catch (Exception ex) {
-                System.err.println("❌ Error opening Portfolio Summary page: " + ex.getMessage());
-                ex.printStackTrace();
+                // Step 1: Create a session object
+                dataaccess.InMemorySessionDataAccessObject sessionDAO =
+                        new dataaccess.InMemorySessionDataAccessObject();
 
-                // Show error dialog
+                // Step 2: Open login window
+                app.ui.LoginPage loginWindow = new app.ui.LoginPage(null, sessionDAO);
+                loginWindow.setVisible(true);
+
+                // Step 3: If login failed, stop
+                if (!loginWindow.wasSuccessful()) {
+                    JOptionPane.showMessageDialog(this, "Login cancelled.");
+                    return;
+                }
+
+                // Step 4: Get userId
+                java.util.UUID userId = sessionDAO.getCurrentUserId();
+
+                // Step 5: Open the new Portfolio Summary window
+                app.PortfolioSummaryMain.show(userId, sessionDAO);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this,
                         "Failed to open portfolio summary: " + ex.getMessage(),
                         "Error",
@@ -805,6 +806,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             }
         });
     }
+
 
     /**
      * Custom renderer for table cells to provide alternating row colors and styling.
