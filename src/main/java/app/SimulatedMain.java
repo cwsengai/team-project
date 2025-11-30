@@ -96,7 +96,6 @@ public class SimulatedMain {
                 account.addTradeClosedListener(new TradeClosedListener() {
                     @Override
                     public void onTradeClosed(SimulatedTradeRecord record) {
-                        System.out.println(">> Observer: Saving trade to Supabase...");
                         try {
                             UUID userUuid = UUID.fromString(record.getUserId());
                             tradeDAO.saveTrade(record, userUuid);
