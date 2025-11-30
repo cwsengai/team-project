@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import data_access.SupabaseTradeDataAccessObject;
+import dataaccess.SupabaseTradeDataAccessObject;
 
 public class PortfolioOrderHistoryTable extends JPanel {
     public PortfolioOrderHistoryTable(UUID userId, SupabaseTradeDataAccessObject tradeDAO) {

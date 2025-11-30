@@ -3,8 +3,8 @@ package util;
 import java.io.IOException;
 
 import api.SupabaseAuthClient;
-import data_access.EnvConfig;
-import use_case.session.SessionDataAccessInterface;
+import dataaccess.EnvConfig;
+import usecase.session.SessionDataAccessInterface;
 
 public class SupabaseRandomUserUtil {
     /**

@@ -1,12 +1,12 @@
 import javax.swing.SwingUtilities;
 
 import api.AlphaVantagePriceGateway;
-import framework_and_driver.ChartWindow;
-import interface_adapter.IntervalController;
-import interface_adapter.PriceChartPresenter;
-import use_case.GetPriceByIntervalInteractor;
-import use_case.PriceChartOutputBoundary;
-import use_case.PriceDataAccessInterface;
+import frameworkanddriver.ChartWindow;
+import interfaceadapter.IntervalController;
+import interfaceadapter.PriceChartPresenter;
+import usecase.GetPriceByIntervalInteractor;
+import usecase.PriceChartOutputBoundary;
+import usecase.PriceDataAccessInterface;
 
 public class Main {
     public static void main(String[] args) {

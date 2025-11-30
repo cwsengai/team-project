@@ -18,8 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import api.SupabaseAuthClient;
-import data_access.EnvConfig;
-import use_case.session.SessionDataAccessInterface;
+import dataaccess.EnvConfig;
+import usecase.session.SessionDataAccessInterface;
 
 public class LoginPage extends JDialog {
 

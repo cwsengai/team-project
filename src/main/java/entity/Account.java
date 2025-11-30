@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import use_case.simulated_trade.TradeClosedListener; // Essential for notifying external components
+import usecase.simulated_trade.TradeClosedListener; // Essential for notifying external components
 
 public class Account {
     // Core Funds

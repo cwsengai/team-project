@@ -2,18 +2,18 @@ package entity;
 
 import java.time.LocalDate;
 
-
 public class FinancialStatement {
     private final String symbol;
     private final String currency;
+
     private final LocalDate fiscalDateEnding;
 
-    //Balance sheet
+    // Balance sheet
     private final long totalAssets;
     private final long totalLiabilities;
     private final long totalShareholderEquity;
 
-    //Income statement
+    // Income statement
     private final long totalRevenue;
     private final long grossProfit;
     private final long costOfRevenue;
@@ -21,7 +21,7 @@ public class FinancialStatement {
     private final long ebit;
     private final long netIncome;
 
-    //Cash Flow
+    // Cash Flow
     private final long operatingCashFlow;
     private final long capitalExpenditures;
     private final long cashFlowFromInvesting;
@@ -69,26 +69,72 @@ public class FinancialStatement {
         this.dividendPayout = dividendPayout;
     }
 
-    public String getSymbol() { return symbol; }
-    public String getCurrency() { return currency; }
-    public LocalDate getFiscalDateEnding() { return fiscalDateEnding; }
+    public String getSymbol() {
+        return symbol;
+    }
 
-    public long getTotalAssets() { return totalAssets; }
-    public long getTotalLiabilities() { return totalLiabilities; }
-    public long getTotalShareholderEquity() { return totalShareholderEquity; }
+    public String getCurrency() {
+        return currency;
+    }
 
-    public long getTotalRevenue() { return totalRevenue; }
-    public long getGrossProfit() { return grossProfit; }
-    public long getCostOfRevenue() { return costOfRevenue; }
-    public long getOperatingExpenses() { return operatingExpenses; }
-    public long getEbit() { return ebit; }
-    public long getNetIncome() { return netIncome; }
+    public LocalDate getFiscalDateEnding() {
+        return fiscalDateEnding;
+    }
 
-    public long getOperatingCashFlow() { return operatingCashFlow; }
-    public long getCapitalExpenditures() { return capitalExpenditures; }
-    public long getCashFlowFromInvesting() { return cashFlowFromInvesting; }
-    public long getCashFlowFromFinancing() { return cashFlowFromFinancing; }
-    public long getDividendPayout() { return dividendPayout; }
+    public long getTotalAssets() {
+        return totalAssets;
+    }
 
+    public long getTotalLiabilities() {
+        return totalLiabilities;
+    }
+
+    public long getTotalShareholderEquity() {
+        return totalShareholderEquity;
+    }
+
+    public long getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public long getGrossProfit() {
+        return grossProfit;
+    }
+
+    public long getCostOfRevenue() {
+        return costOfRevenue;
+    }
+
+    public long getOperatingExpenses() {
+        return operatingExpenses;
+    }
+
+    public long getEbit() {
+        return ebit;
+    }
+
+    public long getNetIncome() {
+        return netIncome;
+    }
+
+    public long getOperatingCashFlow() {
+        return operatingCashFlow;
+    }
+
+    public long getCapitalExpenditures() {
+        return capitalExpenditures;
+    }
+
+    public long getCashFlowFromInvesting() {
+        return cashFlowFromInvesting;
+    }
+
+    public long getCashFlowFromFinancing() {
+        return cashFlowFromFinancing;
+    }
+
+    public long getDividendPayout() {
+        return dividendPayout;
+    }
 
 }

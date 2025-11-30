@@ -14,7 +14,7 @@ import entity.TimeInterval;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import use_case.PriceDataAccessInterface;
+import usecase.PriceDataAccessInterface;
 
 
 public class AlphaVantagePriceGateway implements PriceDataAccessInterface {

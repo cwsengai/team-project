@@ -12,7 +12,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONObject;
 
 import entity.Company;
-import use_case.CompanyGateway;
+import usecase.CompanyGateway;
 
 public class AlphaVantageCompanyGateway implements CompanyGateway {
 

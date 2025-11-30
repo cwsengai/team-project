@@ -1,0 +1,43 @@
+package interfaceadapter.simulated_trading;
+
+import usecase.simulated_trade.SimulatedTradeInputBoundary;
+import usecase.simulated_trade.SimulatedTradeInputData;
+import usecase.update_market.UpdateMarketInputBoundary;
+
+public class TradingController {
+
+    private final UpdateMarketInputBoundary updateMarketInteractor;
+    private final SimulatedTradeInputBoundary tradeInteractor;
+    // ✅ 新增：为了支持返回按钮，必须持有 Presenter
+    private final TradingPresenter tradingPresenter;
+
+    // ✅ 修改：构造函数增加 TradingPresenter 参数
+    public TradingController(UpdateMarketInputBoundary updateMarketInteractor,
+                             SimulatedTradeInputBoundary tradeInteractor,
+                             TradingPresenter tradingPresenter) {
+        this.updateMarketInteractor = updateMarketInteractor;
+        this.tradeInteractor = tradeInteractor;
+        this.tradingPresenter = tradingPresenter;
+    }
+
+    //Triggered by the View's Timer (e.g., every second).
+    public void executeTimerTick() {
+        updateMarketInteractor.executeExecuteTick();
+    }
+
+    //Triggered by Buy/Sell buttons;.
+    public void executeTrade(String ticker, double amount, boolean isBuy, double currentPrice) {
+        SimulatedTradeInputData inputData = new SimulatedTradeInputData(
+                ticker,
+                isBuy,
+                amount,
+                currentPrice
+        );
+        tradeInteractor.executeTrade(inputData);
+    }
+
+    // ✅ 新增：处理返回按钮点击
+    public void executeGoBack() {
+        tradingPresenter.prepareGoBackView();
+    }
+}
