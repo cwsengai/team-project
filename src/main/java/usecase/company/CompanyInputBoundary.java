@@ -1,5 +1,13 @@
 package usecase.company;
 
+/**
+ * Handles the input for the company use case.
+ */
 public interface CompanyInputBoundary {
-    void fetchCompany(String symbol);
+    /**
+     * Executes the use case with the provided input data.
+     *
+     * @param data the input data
+     */
+    void execute(CompanyInputData data);
 }
