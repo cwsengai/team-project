@@ -1,4 +1,4 @@
-package view;
+package app.ui.view;
 
 import javax.swing.*;
 import java.awt.*;

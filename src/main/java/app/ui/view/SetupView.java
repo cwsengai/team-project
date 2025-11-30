@@ -1,4 +1,4 @@
-package view;
+package app.ui.view;
 
 import interfaceadapter.setup_simulation.SetupController;
 import interfaceadapter.setup_simulation.SetupViewModel;

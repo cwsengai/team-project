@@ -86,7 +86,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
                 currentPrice,
                 currentEquity,
                 account.getTotalReturnRate(currentEquity),
-                account.getMaxDrawdown(currentEquity),
+                account.getMaxDrawdown(),
                 account.getBalance(),
 
                 // --- Pass Stats ---
