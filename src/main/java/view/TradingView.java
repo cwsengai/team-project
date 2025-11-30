@@ -5,7 +5,7 @@ import interface_adapter.simulated_trading.TradingState;
 import interface_adapter.simulated_trading.TradingViewModel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder; // Need this for spacing
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
+
 import entity.Position;
 
 public class TradingView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -79,7 +81,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
         headerPanel.add(cashPanel, BorderLayout.WEST);
         headerPanel.add(tickerPanel, BorderLayout.SOUTH);
-        headerPanel.add(rightHeader, BorderLayout.EAST); // Add Back Button
+        headerPanel.add(rightHeader, BorderLayout.EAST);
 
         this.add(headerPanel, BorderLayout.NORTH);
 
@@ -116,25 +118,20 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         walletSection.add(walletHeader, BorderLayout.NORTH);
 
         JScrollPane walletScrollPane = new JScrollPane(walletTable);
-        walletScrollPane.setPreferredSize(new Dimension(800, 150)); // Keep original sizing logic if preferred, or rely on parent layout
+        walletScrollPane.setPreferredSize(new Dimension(800, 150));
         walletSection.add(walletScrollPane, BorderLayout.CENTER);
 
-        // Add wallet section to container
         centerContainer.add(walletSection);
-
         this.add(centerContainer, BorderLayout.CENTER);
 
         // --- 4. BOTTOM PANEL (Summary Stats) ---
         this.add(createSummaryPanel(), BorderLayout.SOUTH);
 
-
         backButton.addActionListener(e -> {
-            // 1. 关闭当前窗口 (你的 Simulated Trading)
             java.awt.Window currentWindow = SwingUtilities.getWindowAncestor(this);
             if (currentWindow != null) {
                 currentWindow.dispose();
             }
-
 
             try {
                 app.CompanyListMain.main(null);
@@ -144,9 +141,19 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             }
         });
 
-        orderHistoryButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "History feature coming soon!")
-        );
+        // Simplified: delegate to controller, which knows session + userId
+        orderHistoryButton.addActionListener(e -> {
+            if (controller == null) {
+                JOptionPane.showMessageDialog(this, "Simulation not fully initialized.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                controller.executeOpenPortfolioSummary();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to open summary: " + ex.getMessage());
+            }
+        });
 
         if (this.controller != null) {
             timer.start();
@@ -162,7 +169,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         panel.add(amountField);
         panel.add(Box.createVerticalStrut(10));
 
-        // ✅ Button Styling
         buyButton.setBackground(new Color(0, 150, 0));
         buyButton.setForeground(Color.BLACK);
         buyButton.setOpaque(true);
@@ -184,7 +190,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         JPanel summaryPanel = new JPanel(new GridLayout(4, 2, 10, 5));
         summaryPanel.setBorder(BorderFactory.createTitledBorder("Portfolio Summary"));
 
-        // 8 metrics, 4 rows, 2 columns each
         summaryPanel.add(createStatPanel("Total Equity", totalProfitLabel));
         summaryPanel.add(createStatPanel("Total Return Rate", totalReturnLabel));
 
@@ -244,7 +249,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             JOptionPane.showMessageDialog(this, state.getError());
         }
 
-        // 1. Update Labels
         availableCashLabel.setText(state.getAvailableCash());
         totalProfitLabel.setText(state.getTotalProfit());
         totalReturnLabel.setText(state.getTotalReturnRate());
@@ -255,14 +259,9 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         losingTradesLabel.setText(state.getLosingTrades());
         winRateLabel.setText(state.getWinRate());
 
-        // 2. Update Chart & Ticker (Original Logic Preserved)
-        chartPanel.updateData(state.getChartData()); // Old method signature without timestamps
+        chartPanel.updateData(state.getChartData());
         tickerLabel.setText(state.getTicker());
 
-        // If you updated PriceChartPanel to take 2 args, you MUST change the above line to:
-        // chartPanel.updateData(state.getChartData(), state.getChartTimestamps());
-
-        // 3. Update Wallet Table (with 8 columns)
         updateWalletTable(state.getPositions(), state.getCurrentPrice());
     }
 
@@ -282,16 +281,15 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
                 String simplifiedTime = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
-
                 walletTableModel.addRow(new Object[]{
                         p.getTicker(),
                         p.isLong() ? "Buy" : "Sell",
-                        String.format("%,.2f usd", totalCostBasis), // Col 4: Amount(USD) (Total Cost)
-                        simplifiedTime,// Col 5: Buying Time
-                        String.format("%,.2f", p.getAvgPrice()),   // Col 6: Buying Price (Avg Unit Cost)
-                        String.format("%,.2f", currentPrice),      // Col 7: Current Price
-                        String.format("%,.2f usd", unrealizedPnL),  // Col 8: Unrealized Profit
-                        String.format("%.3f%%", returnRate * 100) // Col 9: Unrealized Ret Rate (Still 9 columns needed for full data)
+                        String.format("%,.2f usd", totalCostBasis),
+                        simplifiedTime,
+                        String.format("%,.2f", p.getAvgPrice()),
+                        String.format("%,.2f", currentPrice),
+                        String.format("%,.2f usd", unrealizedPnL),
+                        String.format("%.3f%%", returnRate * 100)
                 });
             }
         } catch (NumberFormatException e) {

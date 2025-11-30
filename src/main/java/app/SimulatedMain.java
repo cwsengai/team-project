@@ -73,16 +73,22 @@ public class SimulatedMain {
                 SetupInputData input = setupInput.get();
                 String ticker = input.getTicker();
 
-                // --- 1. Environment Setup ---
+                // ---------------------------------------------------------------------
+                // 1. REAL LOGIN (your login page) — REPLACED ONLY THIS PART
+                // ---------------------------------------------------------------------
                 InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
-                SupabaseTradeDataAccessObject tradeDAO = new SupabaseTradeDataAccessObject();
-                try {
-                    util.SupabaseRandomUserUtil.createAndLoginRandomUser(sessionDAO);
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to create session", e);
+
+                app.ui.LoginPage loginWindow = new app.ui.LoginPage(null, sessionDAO);
+                loginWindow.setVisible(true);
+
+                if (!loginWindow.wasSuccessful()) {
+                    throw new RuntimeException("User cancelled login.");
                 }
 
+                SupabaseTradeDataAccessObject tradeDAO = new SupabaseTradeDataAccessObject();
+
                 String userId = sessionDAO.getCurrentUserId().toString();
+                // ---------------------------------------------------------------------
 
                 // --- 2. Core Entity Setup ---
                 Account account = new Account(input.getInitialBalance(), userId);
@@ -118,7 +124,10 @@ public class SimulatedMain {
                 );
 
                 TradingController tradingController = new TradingController(
-                        updateMarketInteractor, tradeInteractor, tradingPresenter
+                        updateMarketInteractor,
+                        tradeInteractor,
+                        tradingPresenter,
+                        sessionDAO     // ← the missing argument
                 );
 
                 // --- 4. View Creation ---
