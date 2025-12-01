@@ -125,7 +125,7 @@ public class Company {
         this.marketCapitalization = value;
     }
 
-    public float getEPS() {
+    public float getEps() {
         return eps;
     }
 
