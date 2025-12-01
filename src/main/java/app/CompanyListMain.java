@@ -1,28 +1,39 @@
+
 package app;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import api.Api;
-import dataaccess.*;
+import dataaccess.AlphaVantageCompanyGateway;
+import dataaccess.AlphaVantageCompanyListDataAccess;
+import dataaccess.AlphaVantageEconomicIndicatorGateway;
+import dataaccess.AlphaVantageMarketIndexGateway;
+import dataaccess.AlphaVantageSearchDataAccess;
+import dataaccess.CompanyNameMapper;
+import dataaccess.Top100Companies;
 import entity.Company;
 import entity.EconomicIndicator;
 import entity.MarketIndex;
 import frameworkanddriver.CompanyListPage;
 import interfaceadapter.company_list.CompanyDisplayData;
+import interfaceadapter.company_list.DataFormatters;
 import interfaceadapter.controller.CompanyListController;
 import interfaceadapter.controller.SearchCompanyController;
 import interfaceadapter.presenter.CompanyListPresenter;
 import interfaceadapter.presenter.SearchCompanyPresenter;
-import interfaceadapter.company_list.DataFormatters;
 import interfaceadapter.view_model.CompanyListViewModel;
 import interfaceadapter.view_model.SearchCompanyViewModel;
 import usecase.company.CompanyGateway;
 import usecase.company_list.CompanyListInteractor;
 import usecase.search_company.SearchCompanyInteractor;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Main entry point for the Company List application.
@@ -143,6 +154,7 @@ public class CompanyListMain {
 
     /**
      * Start progressive data loading in background.
+     * @param CompanyListPage page.
      */
     private static void startDataLoading(
             CompanyListPage page,

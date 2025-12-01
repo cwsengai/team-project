@@ -1,10 +1,12 @@
+
 package dataaccess;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.Company;
 import usecase.company.CompanyGateway;
 import usecase.company_list.CompanyListDataAccess;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Data access implementation for Company List use case.
