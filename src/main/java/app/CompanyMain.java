@@ -1,9 +1,11 @@
 package app;
 
+import java.util.Optional;
 import javax.swing.SwingUtilities;
 
 import api.Api;
 import dataaccess.AlphaVantagePriceGateway;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import frameworkanddriver.CompanyPage;
 import frameworkanddriver.ChartViewAdapter;
@@ -39,25 +41,29 @@ public class CompanyMain {
 
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(() -> {
+        final Dotenv dotenv = Dotenv.load();
+        final String apiKey = Optional.ofNullable(dotenv.get("ALPHA_VANTAGE_API_KEY"))
+                .filter(key -> !key.isEmpty())
+                .orElse("demo");
+
+
+            SwingUtilities.invokeLater(() -> {
 
             // -----------------------------
             // API + GATEWAYS
             // -----------------------------
-            Api api = new Api("demo");
+                final Api api = new Api(apiKey);
+                final AlphaVantageCompanyGateway companyGateway =
+                        new AlphaVantageCompanyGateway(api);
 
-            AlphaVantageCompanyGateway companyGateway =
-                    new AlphaVantageCompanyGateway(api);
+                final AlphaVantageFinancialStatementGateway fsGateway =
+                        new AlphaVantageFinancialStatementGateway(api);
 
-            AlphaVantageFinancialStatementGateway fsGateway =
-                    new AlphaVantageFinancialStatementGateway(api);
+                final AlphaVantageNewsGateway newsGateway =
+                        new AlphaVantageNewsGateway(api);
 
-            AlphaVantageNewsGateway newsGateway =
-                    new AlphaVantageNewsGateway(api);
-
-            PriceDataAccessInterface priceGateway =
-                    new AlphaVantagePriceGateway();
-
+                final PriceDataAccessInterface priceGateway =
+                        new AlphaVantagePriceGateway();
             // -----------------------------
             // VIEW MODELS
             // -----------------------------
