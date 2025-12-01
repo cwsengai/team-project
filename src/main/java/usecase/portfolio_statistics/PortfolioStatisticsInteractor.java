@@ -2,16 +2,46 @@ package usecase.portfolio_statistics;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import entity.SimulatedTradeRecord;
 
-public class PortfolioStatisticsInteractor {
+public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBoundary {
+
+    private final PortfolioTradeGateway tradeGateway;
+    private final PortfolioBalanceGateway balanceGateway;
+    private final PortfolioStatisticsOutputBoundary outputBoundary;
+
+    public PortfolioStatisticsInteractor(PortfolioTradeGateway tradeGateway,
+                                         PortfolioBalanceGateway balanceGateway,
+                                         PortfolioStatisticsOutputBoundary outputBoundary) {
+        this.tradeGateway = tradeGateway;
+        this.balanceGateway = balanceGateway;
+        this.outputBoundary = outputBoundary;
+    }
+
+    // Default no-arg constructor for tests and backward compatibility.
+    public PortfolioStatisticsInteractor() {
+        this.tradeGateway = null;
+        this.balanceGateway = null;
+        this.outputBoundary = null;
+    }
+
+    @Override
+    public void requestPortfolioSummary(UUID userId) {
+        List<SimulatedTradeRecord> trades = tradeGateway.fetchTradesForUser(userId);
+        double initialBalance = balanceGateway.getInitialBalance(userId);
+
+        PortfolioStatisticsInputData input = new PortfolioStatisticsInputData(trades, initialBalance);
+        PortfolioStatisticsOutputData stats = calculateStatistics(input);
+        outputBoundary.present(stats);
+    }
 
     public PortfolioStatisticsOutputData calculateStatistics(PortfolioStatisticsInputData input) {
         List<SimulatedTradeRecord> trades = input.getTrades();
         double initialBalance = input.getInitialBalance();
 
-        if (trades.isEmpty()) {
+        if (trades == null || trades.isEmpty()) {
             return new PortfolioStatisticsOutputData(0, 0, 0, 0, 0, 0, 0, 0, null, null);
         }
 

@@ -2,7 +2,6 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.List;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -11,13 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import app.gateway.SupabaseTradeGatewayAdapter;
 import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
-import entity.SimulatedTradeRecord;
-import usecase.portfolio_statistics.PortfolioStatisticsInputData;
-import usecase.portfolio_statistics.PortfolioStatisticsInteractor;
 import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 import usecase.session.SessionDataAccessInterface;
 
@@ -58,21 +55,12 @@ public class PortfolioSummaryMain {
         contentPanel.add(new PortfolioSummaryNavBar(frame));
         contentPanel.add(new PortfolioSummaryHeader());
 
-        // Fetch trades and calculate statistics
-        final dataaccess.SupabaseTradeDataAccessObject tradeDAO = new dataaccess.SupabaseTradeDataAccessObject();
-        final List<SimulatedTradeRecord> trades = tradeDAO.fetchTradesForUser(userId);
-
-        // Fetch initial balance from database
-        final dataaccess.SupabasePortfolioDataAccessObject portfolioDAO =
-                new dataaccess.SupabasePortfolioDataAccessObject();
-        final double initialBalance = portfolioDAO.getInitialBalance(userId);
-
-        final PortfolioStatisticsInteractor statsInteractor = new PortfolioStatisticsInteractor();
-        final PortfolioStatisticsInputData statsInput = new PortfolioStatisticsInputData(trades, initialBalance);
-        final PortfolioStatisticsOutputData stats = statsInteractor.calculateStatistics(statsInput);
+        // Fetch trades and calculate statistics via clean assembler/gateways
+        final SupabaseTradeGatewayAdapter tradeGateway = new SupabaseTradeGatewayAdapter();
+        final PortfolioStatisticsOutputData stats = PortfolioSummaryAssembler.buildOutputData(userId);
 
         contentPanel.add(new PortfolioSummaryCard(stats));
-        contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeDAO));
+        contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeGateway));
 
         // Attach components to frame
         background.add(contentPanel, BorderLayout.CENTER);
