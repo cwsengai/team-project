@@ -1,9 +1,11 @@
 package app;
 
+import java.util.Optional;
 import javax.swing.SwingUtilities;
 
 import api.Api;
 import dataaccess.AlphaVantagePriceGateway;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import frameworkanddriver.CompanyPage;
 import frameworkanddriver.ChartViewAdapter;
@@ -34,30 +36,32 @@ import usecase.price_chart.GetPriceByIntervalInteractor;
 import usecase.price_chart.PriceDataAccessInterface;
 import usecase.price_chart.PriceChartOutputBoundary;
 
+import dataaccess.EnvConfig;
+
 
 public class CompanyMain {
 
     public static void main(String[] args) {
+            final EnvConfig envConfig = new EnvConfig();
+            final String apiKey = envConfig.getAlphaVantageApiKey();
 
-        SwingUtilities.invokeLater(() -> {
+            SwingUtilities.invokeLater(() -> {
 
             // -----------------------------
             // API + GATEWAYS
             // -----------------------------
-            Api api = new Api("demo");
+                final Api api = new Api(apiKey);
+                final AlphaVantageCompanyGateway companyGateway =
+                        new AlphaVantageCompanyGateway(api);
 
-            AlphaVantageCompanyGateway companyGateway =
-                    new AlphaVantageCompanyGateway(api);
+                final AlphaVantageFinancialStatementGateway fsGateway =
+                        new AlphaVantageFinancialStatementGateway(api);
 
-            AlphaVantageFinancialStatementGateway fsGateway =
-                    new AlphaVantageFinancialStatementGateway(api);
+                final AlphaVantageNewsGateway newsGateway =
+                        new AlphaVantageNewsGateway(api);
 
-            AlphaVantageNewsGateway newsGateway =
-                    new AlphaVantageNewsGateway(api);
-
-            PriceDataAccessInterface priceGateway =
-                    new AlphaVantagePriceGateway();
-
+                final PriceDataAccessInterface priceGateway =
+                        new AlphaVantagePriceGateway();
             // -----------------------------
             // VIEW MODELS
             // -----------------------------
