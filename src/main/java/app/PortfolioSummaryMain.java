@@ -15,7 +15,6 @@ import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
-import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 import usecase.session.SessionDataAccessInterface;
 
 public class PortfolioSummaryMain {
@@ -57,9 +56,9 @@ public class PortfolioSummaryMain {
 
         // Fetch trades and calculate statistics via clean assembler/gateways
         final SupabaseTradeGatewayAdapter tradeGateway = new SupabaseTradeGatewayAdapter();
-        final PortfolioStatisticsOutputData stats = PortfolioSummaryAssembler.buildOutputData(userId);
+        final interfaceadapter.view_model.PortfolioSummaryViewModel viewModel = PortfolioSummaryAssembler.buildSummary(userId);
 
-        contentPanel.add(new PortfolioSummaryCard(stats));
+        contentPanel.add(new PortfolioSummaryCard(viewModel));
         contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeGateway));
 
         // Attach components to frame
