@@ -74,6 +74,7 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     // UI BUILDING
     // ---------------------------------------------------------
+
     private void buildUI() {
         setTitle("Stock Analysis Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -306,12 +307,12 @@ public class CompanyPage extends JFrame {
 
         // 3. Update current Ticker
         currentTicker = companyVM.symbol;
-        
+
         // --- Core modification start ---
         if (chartController != null) {
             // Step 1: Tell controller which stock is current
             chartController.setCurrentTicker(currentTicker);
-            
+
             // Step 2: Tell chart component to enable Zoom functionality
             if (chartPanel != null) {
                 chartPanel.enableZoom(currentTicker);
@@ -347,6 +348,14 @@ public class CompanyPage extends JFrame {
         return chartPanel;
     }
 
+    public void setInitialSymbol(String symbol) {
+        symbolField.setText(symbol);
+
+        if (companyController != null) companyController.onCompanySelected(symbol);
+        if (fsController != null) fsController.onFinancialRequest(symbol);
+        if (newsController != null) newsController.onNewsRequest(symbol);
+        if (chartController != null) chartController.setCurrentTicker(symbol);
+    }
 
 }
 

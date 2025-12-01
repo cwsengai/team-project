@@ -42,8 +42,17 @@ import dataaccess.EnvConfig;
 public class CompanyMain {
 
     public static void main(String[] args) {
-            final EnvConfig envConfig = new EnvConfig();
-            final String apiKey = envConfig.getAlphaVantageApiKey();
+        final EnvConfig envConfig = new EnvConfig();
+        final String apiKey = envConfig.getAlphaVantageApiKey();
+
+        String preloadedSymbol = null;
+
+        if (args != null && args.length > 0) {
+            preloadedSymbol = args[0];
+            System.out.println("Starting CompanyPage with preloaded symbol: " + preloadedSymbol);
+        }
+
+        final String symbolForLambda = preloadedSymbol;
 
             SwingUtilities.invokeLater(() -> {
 
@@ -118,6 +127,9 @@ public class CompanyMain {
             // inject controllers into UI
             ui.setControllers(companyController, fsController, newsController, intervalController);
 
+            if (symbolForLambda != null) {
+                ui.setInitialSymbol(symbolForLambda);
+            }
             ui.setVisible(true);
         });
     }
