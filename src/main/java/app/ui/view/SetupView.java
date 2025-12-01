@@ -1,15 +1,16 @@
 package app.ui.view;
 
-import interfaceadapter.setup_simulation.SetupController;
-import interfaceadapter.setup_simulation.SetupViewModel;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+
+import interfaceadapter.setup_simulation.SetupController;
+import interfaceadapter.setup_simulation.SetupViewModel;
 
 public class SetupView extends JPanel implements PropertyChangeListener {
 
@@ -41,21 +42,21 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.setBackground(BG_COLOR);
 
         // --- TOP HEADER (Logo + Error) ---
-        JPanel topContainer = new JPanel();
+        final JPanel topContainer = new JPanel();
         topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
         topContainer.setOpaque(false);
         topContainer.setBorder(new EmptyBorder(60, 0, 30, 0));
 
         // Logo
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        final JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         logoPanel.setOpaque(false);
-        JLabel logoLabel = new JLabel("✶ BILLIONAIRE");
+        final JLabel logoLabel = new JLabel("✶ BILLIONAIRE");
         logoLabel.setFont(new Font("SansSerif", Font.BOLD, 48));
         logoLabel.setForeground(new Color(44, 62, 80));
         logoPanel.add(logoLabel);
 
         // Error Label
-        JPanel errorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        final JPanel errorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         errorPanel.setOpaque(false);
         errorLabel.setForeground(new Color(231, 76, 60));
         errorLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -66,10 +67,10 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.add(topContainer, BorderLayout.NORTH);
 
         // --- CENTER FORM (The "Card") ---
-        JPanel centerWrapper = new JPanel(new GridBagLayout());
+        final JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setOpaque(false);
 
-        JPanel formPanel = new JPanel(new GridLayout(4, 2, 30, 35));
+        final JPanel formPanel = new JPanel(new GridLayout(4, 2, 30, 35));
         formPanel.setBackground(CARD_COLOR);
         formPanel.setBorder(new CompoundBorder(
                 new LineBorder(new Color(220, 220, 220), 2, true),
@@ -81,22 +82,22 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         styleLabelAndInput(formPanel, "Initial Balance ($):", balanceField);
 
         // Speed ComboBox
-        String[] speeds = {"5x", "10x", "20x", "30x"};
+        final String[] speeds = {"5x", "10x", "20x", "30x"};
         speedComboBox = new JComboBox<>(speeds);
         speedComboBox.setSelectedItem("10x");
         speedComboBox.setFont(INPUT_FONT);
         speedComboBox.setBackground(Color.WHITE);
 
-        JLabel speedLabel = new JLabel("Simulation Speed:");
+        final JLabel speedLabel = new JLabel("Simulation Speed:");
         speedLabel.setFont(LABEL_FONT);
         speedLabel.setForeground(TEXT_COLOR);
 
         formPanel.add(speedLabel);
         formPanel.add(speedComboBox);
 
-
-        JLabel hintSpacer = new JLabel("");
-        JLabel speedHint = new JLabel("<html><body style='width: 200px'>Note: 10x speed means 1 minute in real life equals 10 minutes in simulation.</body></html>");
+        final JLabel hintSpacer = new JLabel("");
+        final JLabel speedHint = new JLabel("<html><body style='width: 200px'>Note: 10x speed means 1 minute "
+                + "in real life equals 10 minutes in simulation.</body></html>");
         speedHint.setFont(HINT_FONT);
         speedHint.setForeground(Color.GRAY);
 
@@ -107,7 +108,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.add(centerWrapper, BorderLayout.CENTER);
 
         // --- BOTTOM BUTTON ---
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        final JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(new EmptyBorder(30, 0, 80, 0));
 
@@ -124,11 +125,11 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         // Bind Action
-        startButton.addActionListener(e -> handleStart());
+        startButton.addActionListener(pressstart -> handleStart());
     }
 
     private void styleLabelAndInput(JPanel panel, String labelText, JTextField textField) {
-        JLabel label = new JLabel(labelText);
+        final JLabel label = new JLabel(labelText);
         label.setFont(LABEL_FONT);
         label.setForeground(TEXT_COLOR);
 
@@ -145,13 +146,14 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     private void handleStart() {
         errorLabel.setText(" ");
         try {
-            String ticker = tickerField.getText().toUpperCase();
-            double balance = Double.parseDouble(balanceField.getText());
-            int speed = Integer.parseInt(speedComboBox.getSelectedItem().toString().replace("x", ""));
+            final String ticker = tickerField.getText().toUpperCase();
+            final double balance = Double.parseDouble(balanceField.getText());
+            final int speed = Integer.parseInt(speedComboBox.getSelectedItem().toString().replace("x", ""));
 
             controller.execute(ticker, balance, speed);
 
-        } catch (NumberFormatException ex) {
+        }
+        catch (NumberFormatException ex) {
             errorLabel.setText("⚠️ Input Error: Balance/Speed must be valid numbers.");
         }
     }
@@ -163,6 +165,11 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Sets the initial ticker symbol in the input field.
+     *
+     * @param symbol the ticker symbol to display
+     */
     public void setInitialSymbol(String symbol) {
         tickerField.setText(symbol);
     }

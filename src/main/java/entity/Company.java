@@ -8,7 +8,7 @@ import java.util.List;
  * Uses symbol as the primary identifier (no database IDs).
  */
 public class Company {
-    private final String symbol;  // Primary key
+    private final String symbol;
     private String name;
     private String description;
     private String sector;

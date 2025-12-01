@@ -71,17 +71,27 @@ public class SimulatedTradeRecord {
     }
 
     /**
-     * Calculate the return rate (ROI) for this trade as a percentage.
-     * For long positions: ((exitPrice - entryPrice) / entryPrice) * 100
-     * For short positions: ((entryPrice - exitPrice) / entryPrice) * 100
+     * Calculates the return rate (ROI) for this trade as a percentage.
+     *
+     * <p>
+     * For long positions, the formula used is:<br>
+     * <code>((exitPrice - entryPrice) / entryPrice) * 100</code><br>
+     * For short positions, the formula used is:<br>
+     * <code>((entryPrice - exitPrice) / entryPrice) * 100</code>
+     * </p>
+     *
+     * @return the return rate as a percentage; returns {@code 0.0} if the entry
+     *         price is zero to avoid division by zero
      */
     public double getReturnRate() {
         if (entryPrice == 0) {
-            return 0.0; // Avoid division by zero
+            // Avoid division by zero
+            return 0.0;
         }
         if (isLong) {
             return ((exitPrice - entryPrice) / entryPrice) * 100;
-        } else {
+        }
+        else {
             return ((entryPrice - exitPrice) / entryPrice) * 100;
         }
     }

@@ -12,7 +12,8 @@ public class EnvConfig {
     static {
         // Load .env file from project root
         dotenv = Dotenv.configure()
-            .ignoreIfMissing() // Don't crash if .env doesn't exist (e.g., in production)
+            // Don't crash if .env doesn't exist (e.g., in production)
+            .ignoreIfMissing()
             .load();
     }
 

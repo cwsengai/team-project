@@ -86,7 +86,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             }
 
             // Log the raw response for debugging
-            System.out.println("  📄 Response preview: " + jsonResponse.substring(0, Math.min(200, jsonResponse.length())));
+            System.out.println("  📄 Response preview: "
+                    + jsonResponse.substring(0, Math.min(200, jsonResponse.length())));
 
             JSONObject json = new JSONObject(jsonResponse);
 
@@ -145,8 +146,10 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                 if (json.has(key)) {
                     try {
                         Object val = json.get(key);
-                        System.out.println("  📋 Found key '" + key + "': " + val.toString().substring(0, Math.min(100, val.toString().length())));
-                    } catch (Exception e) {
+                        System.out.println("  📋 Found key '" + key + "': "
+                                + val.toString().substring(0, Math.min(100, val.toString().length())));
+                    }
+                    catch (Exception ex) {
                         // Ignore
                     }
                 }
@@ -156,9 +159,10 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.err.println("  📄 Full response: " + jsonResponse);
             return null;
 
-        } catch (Exception e) {
-            System.err.println("  ❌ Exception fetching " + name + ": " + e.getMessage());
-            e.printStackTrace();
+        }
+        catch (Exception ex) {
+            System.err.println("  ❌ Exception fetching " + name + ": " + ex.getMessage());
+            ex.printStackTrace();
             return null;
         }
     }
@@ -172,7 +176,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     // GDP is in billions
                     if (val > 1000) {
                         return String.format("%.2f Trillion USD", val / 1000.0);
-                    } else {
+                    }
+                    else {
                         return String.format("%.2f Billion USD", val);
                     }
 
@@ -187,13 +192,19 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                 default:
                     return value;
             }
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException ex) {
             return value;
         }
     }
 
     /**
-     * Fallback dummy data if all API calls fail.
+     * Returns a predefined list of economic indicators used as fallback data
+     * when all external API calls fail. These values are static placeholders
+     * intended to keep the UI functional and provide approximate context for
+     * the user when real data cannot be retrieved.
+     *
+     * @return a list of fallback {@link EconomicIndicator} objects
      */
     private List<EconomicIndicator> getDummyIndicators() {
         System.out.println("  ⚠️ Using fallback data for all economic indicators");

@@ -1,14 +1,20 @@
 package dataaccess;
 
-import entity.FinancialStatement;
-import api.Api;
-
 import java.util.List;
+
+import api.Api;
+import entity.FinancialStatement;
 
 public class TestFinancialStatementGateway {
 
+    /**
+     * Entry point for testing the financial statement retrieval module.
+     * Initializes the API client, constructs the financial statement gateway,
+     * and retrieves the financial statements for a predefined stock symbol.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
-
 
         String apiKey = "demo";
 
@@ -16,7 +22,8 @@ public class TestFinancialStatementGateway {
         AlphaVantageFinancialStatementGateway gateway =
                 new AlphaVantageFinancialStatementGateway(api);
 
-        String symbol = "IBM"; // try a stable ticker with long history
+        // try a stable ticker with long history
+        String symbol = "IBM";
 
         System.out.println("Fetching financial statements for: " + symbol);
 
