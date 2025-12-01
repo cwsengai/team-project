@@ -177,6 +177,8 @@ public class CompanyPage extends JFrame {
         JButton tradeButton = new JButton("Trade");
         tradeButton.setBackground(new Color(200, 200, 200));
         tradeButton.setFocusPainted(false);
+        currentTicker = companyVM.symbol;
+        tradeButton.addActionListener( ex -> enterTradingPage(currentTicker));
 
         headerPanel.add(title, BorderLayout.WEST);
         headerPanel.add(tradeButton, BorderLayout.EAST);
@@ -355,6 +357,24 @@ public class CompanyPage extends JFrame {
         if (fsController != null) fsController.onFinancialRequest(symbol);
         if (newsController != null) newsController.onNewsRequest(symbol);
         if (chartController != null) chartController.setCurrentTicker(symbol);
+    }
+
+    public void enterTradingPage(String symbol) {
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                app.SimulatedMain.main(new String[] {symbol});
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
     }
 
 }

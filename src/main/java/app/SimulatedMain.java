@@ -170,6 +170,16 @@ public class SimulatedMain {
 
     // Main Entry Point
     public static void main(String[] args) {
+
+        String preloadedSymbol = null;
+
+        if (args != null && args.length > 0) {
+            preloadedSymbol = args[0];
+            System.out.println("Starting CompanyPage with preloaded symbol: " + preloadedSymbol);
+        }
+
+        final String symbolForLambda = preloadedSymbol;
+
         JFrame application = new JFrame(TradingViewModel.TITLE_LABEL);
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -210,6 +220,11 @@ public class SimulatedMain {
 
         application.pack();
         application.setSize(1300, 750);
+
+        if (symbolForLambda != null) {
+            setupView.setInitialSymbol(symbolForLambda);
+        }
+
         application.setVisible(true);
     }
 }

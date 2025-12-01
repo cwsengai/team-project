@@ -162,4 +162,8 @@ public class SetupView extends JPanel implements PropertyChangeListener {
             errorLabel.setText("⚠️ " + viewModel.getError());
         }
     }
+
+    public void setInitialSymbol(String symbol) {
+        tickerField.setText(symbol);
+    }
 }
