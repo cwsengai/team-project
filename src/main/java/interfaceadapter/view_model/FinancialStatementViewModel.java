@@ -1,11 +1,10 @@
 package interfaceadapter.view_model;
 
-import entity.FinancialStatement;
 import java.util.List;
 
 public class FinancialStatementViewModel {
 
-    public List<FinancialStatement> statements;
+    public List<String> statements;
     public String formattedOutput;
     public String error;
 

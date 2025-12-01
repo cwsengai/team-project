@@ -22,7 +22,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     private final String apiKey = EnvConfig.getAlphaVantageApiKey();
     private static final String BASE_URL = "https://www.alphavantage.co/query?";
     private static final String NOTE_KEY = "Note";
-
+    
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private String sendHttpRequest(String urlString) throws IOException {
