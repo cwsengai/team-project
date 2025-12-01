@@ -1,12 +1,10 @@
 package interfaceadapter.view_model;
 
-import entity.NewsArticle;
-
 import java.util.List;
 
 public class NewsViewModel {
 
-    public List<NewsArticle> articles;
+    public List<String> articles;
 
     public String formattedNews;
 
