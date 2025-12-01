@@ -1,19 +1,20 @@
 // File: src/main/java/framework_and_driver/CompanyListPage.java
+
 package frameworkanddriver;
 
-import interfaceadapter.company_list.CompanyDisplayData;
-import interfaceadapter.controller.CompanyListController;
-import interfaceadapter.controller.SearchCompanyController;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
+import interfaceadapter.company_list.CompanyDisplayData;
+import interfaceadapter.controller.CompanyListController;
+import interfaceadapter.controller.SearchCompanyController;
 
 /**
  * Main page showing company list and search functionality.
@@ -77,8 +78,13 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Creates the header panel with the title, Trade button, and Sign In button.
-     * Fixed: Uses BoxLayout to ensure buttons are always visible on the right.
+     * Creates the header panel for the application UI. The header contains the
+     * application logo on the left and action buttons (such as the Trade button)
+     * aligned to the right. A horizontal glue element is used with a
+     * {@link BoxLayout} to ensure stable spacing and correct alignment across
+     * different window sizes.
+     *
+     * @return a fully configured {@link JPanel} representing the application header
      */
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel();
@@ -100,12 +106,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
 
         // Trade Button
         JButton tradeButton = new JButton("Trade");
-        tradeButton.setBackground(new Color(0, 120, 215));  // Blue color
+        tradeButton.setBackground(new Color(0, 120, 215));
         tradeButton.setForeground(Color.WHITE);
         tradeButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         tradeButton.setFocusPainted(false);
         tradeButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
-        tradeButton.setOpaque(true); // Ensure color renders on all OS
+        tradeButton.setOpaque(true);
         tradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         tradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         tradeButton.addActionListener(e -> {
@@ -118,7 +124,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Create the main content panel which holds all sections.
+     * Creates the main content panel that holds all major UI sections of the
+     * dashboard, including stock charts, economic indicators, and the company
+     * list. The panel uses a vertical {@link BoxLayout} to stack sections from
+     * top to bottom with controlled spacing between them.
+     *
+     * @return a fully configured {@link JPanel} containing all dashboard sections
      */
     private JPanel createContentPanel() {
         JPanel contentPanel = new JPanel();
@@ -147,7 +158,13 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Create the panel for the main stock indices.
+     * Creates the panel used to display the application's main stock indices.
+     * The panel is styled with padding, a border, and a background color that
+     * matches the header theme. It uses a {@link GridBagLayout} to support
+     * flexible positioning of index cards. Upon creation, the panel shows a
+     * loading state by invoking {@link #refreshMarketIndices()}.
+     *
+     * @return a configured {@link JPanel} for displaying stock index information
      */
     private JPanel createStockChartsPanel() {
         marketIndicesPanel = new JPanel(new GridBagLayout());
@@ -166,6 +183,13 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         return marketIndicesPanel;
     }
 
+    /**
+     * Updates the list of market indices displayed in the dashboard and triggers
+     * a UI refresh on the Swing event-dispatch thread. Calling this method
+     * replaces any previously loaded market index data.
+     *
+     * @param indices the list of market indices to display
+     */
     public void setMarketIndices(List<entity.MarketIndex> indices) {
         this.marketIndices = indices;
         SwingUtilities.invokeLater(this::refreshMarketIndices);
@@ -195,13 +219,14 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         gbc.gridx = 3;
         marketIndicesPanel.add(createStyledLabel("Change %", true), gbc);
 
-        gbc.gridx = 4;  // Added Details column header
+        // Added Details column header
+        gbc.gridx = 4;
         marketIndicesPanel.add(createStyledLabel("Details", true), gbc);
 
         // Separator
         gbc.gridy = 1;
         gbc.gridx = 0;
-        gbc.gridwidth = 5;  // Changed from 4 to 5
+        gbc.gridwidth = 5;
         JSeparator separator = new JSeparator();
         separator.setForeground(new Color(230, 230, 230));
         marketIndicesPanel.add(separator, gbc);
@@ -215,7 +240,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             addMarketIndexRowGB(marketIndicesPanel, gbc, row++, "S&P 500", "Loading...", "...", "...");
             addMarketIndexRowGB(marketIndicesPanel, gbc, row++, "NASDAQ", "Loading...", "...", "...");
             addMarketIndexRowGB(marketIndicesPanel, gbc, row++, "Dow Jones", "Loading...", "...", "...");
-        } else {
+        }
+        else {
             // Show real data
             int row = 2;
             for (entity.MarketIndex index : marketIndices) {
@@ -242,7 +268,16 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Add market index row with color and View Details button.
+     * Adds a single market index row to the given panel using a.
+     *
+     * @param panel the panel to which the row is added
+     * @param gbc the GridBagConstraints used to position the row
+     * @param row the row index to place the components at
+     * @param name the display name of the market index
+     * @param price the formatted price value of the index
+     * @param change the formatted daily absolute change
+     * @param changePercent the formatted daily percent change
+     * @param colorType a style hint (e.g., "positive", "negative") determining row color
      */
     private void addMarketIndexRowGB(JPanel panel, GridBagConstraints gbc, int row,
                                      String name, String price, String change, String changePercent, String colorType) {
@@ -263,7 +298,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         JLabel changeLabel = createStyledLabel(change, false);
         if ("positive".equals(colorType)) {
             changeLabel.setForeground(POSITIVE_CHANGE);
-        } else if ("negative".equals(colorType)) {
+        }
+        else if ("negative".equals(colorType)) {
             changeLabel.setForeground(NEGATIVE_CHANGE);
         }
         panel.add(changeLabel, gbc);
@@ -273,7 +309,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         JLabel changePercentLabel = createStyledLabel(changePercent, false);
         if ("positive".equals(colorType)) {
             changePercentLabel.setForeground(POSITIVE_CHANGE);
-        } else if ("negative".equals(colorType)) {
+        }
+        else if ("negative".equals(colorType)) {
             changePercentLabel.setForeground(NEGATIVE_CHANGE);
         }
         panel.add(changePercentLabel, gbc);
@@ -287,17 +324,21 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         detailsButton.setForeground(LINK_COLOR);
         detailsButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
         detailsButton.setHorizontalAlignment(SwingConstants.LEFT);
-        detailsButton.addActionListener(e -> JOptionPane.showMessageDialog(this,
-                "Viewing details for: " + name + "\n" +
-                        "Current Price: " + price + "\n" +
-                        "Change: " + change + "\n" +
-                        "Change %: " + changePercent));
+        detailsButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Viewing details for: "
+                + name + "\n" + "Current Price: " + price + "\n"
+                + "Change: " + change + "\n"
+                + "Change %: " + changePercent));
 
         panel.add(detailsButton, gbc);
     }
 
     /**
-     * Create economic indicators panel with real data.
+     * Creates the panel used to display economic indicators such as interest rates,
+     * GDP, inflation metrics, and other macroeconomic data. The panel is styled with
+     * padding, a subtle border, and a background color consistent with the header
+     * theme.
+     *
+     * @return a configured {@link JPanel} for displaying economic indicator data
      */
     private JPanel createEconomicIndicatorsPanel() {
         economicIndicatorsPanel = new JPanel(new GridBagLayout());
@@ -315,6 +356,13 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         return economicIndicatorsPanel;
     }
 
+    /**
+     * Updates the list of economic indicators displayed in the dashboard and
+     * triggers a UI refresh on the Swing event-dispatch thread. Calling this
+     * method replaces any previously loaded indicator data.
+     *
+     * @param indicators the list of economic indicators to display
+     */
     public void setEconomicIndicators(List<entity.EconomicIndicator> indicators) {
         this.economicIndicators = indicators;
         SwingUtilities.invokeLater(this::refreshEconomicIndicators);
@@ -358,7 +406,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             // Show loading for all 6 indicators
             int row = 2;
             addIndicatorRowGB(economicIndicatorsPanel, gbc, row++, "Loading economic data...", "...", "...");
-        } else {
+        }
+        else {
             // Show real data - ALL of them
             int row = 2;
             for (entity.EconomicIndicator indicator : economicIndicators) {
@@ -379,7 +428,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         }
     }
 
-    private void addIndicatorRowGB(JPanel panel, GridBagConstraints gbc, int row, String name, String value, String date) {
+    private void addIndicatorRowGB(JPanel panel, GridBagConstraints gbc, int row, String name,
+                                   String value, String date) {
         gbc.gridy = row;
 
         gbc.gridx = 0;
@@ -415,6 +465,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
 
     /**
      * Create company list panel with search functionality.
+     *
+     * @return JPanel containing the company list and search bar
      */
     private JPanel createCompanyListPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
@@ -473,7 +525,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 5;  // Only "View" button is editable
+                return column == 5;
             }
         };
 
@@ -493,12 +545,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         companyTable.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField()));
 
         // Adjusted column widths for new columns
-        companyTable.getColumnModel().getColumn(0).setPreferredWidth(80);   // Symbol
-        companyTable.getColumnModel().getColumn(1).setPreferredWidth(200);  // Company
-        companyTable.getColumnModel().getColumn(2).setPreferredWidth(120);  // Country
-        companyTable.getColumnModel().getColumn(3).setPreferredWidth(120);  // Market Cap
-        companyTable.getColumnModel().getColumn(4).setPreferredWidth(100);  // P/E Ratio
-        companyTable.getColumnModel().getColumn(5).setPreferredWidth(80);   // View
+        companyTable.getColumnModel().getColumn(0).setPreferredWidth(80);
+        companyTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+        companyTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+        companyTable.getColumnModel().getColumn(3).setPreferredWidth(120);
+        companyTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+        companyTable.getColumnModel().getColumn(5).setPreferredWidth(80);
 
         JScrollPane scrollPane = new JScrollPane(companyTable);
         scrollPane.setPreferredSize(new Dimension(800, 450));
@@ -526,7 +578,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
             JPanel panel = new JPanel(new GridBagLayout());
             panel.setBackground(table.getBackground());
             panel.add(button);
@@ -538,7 +591,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         private final JButton button;
         private String label;
         private boolean isPushed;
-        private int currentRow;  // ✅ Add this field
+        private int currentRow;
 
         public ButtonEditor(JTextField textField) {
             super(textField);
@@ -556,11 +609,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         }
 
         @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+                                                     int row, int column) {
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             isPushed = true;
-            currentRow = row;  // ✅ Store the row
+            currentRow = row;
             JPanel panel = new JPanel(new GridBagLayout());
             panel.setBackground(table.getBackground());
             panel.add(button);
@@ -571,8 +625,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         public Object getCellEditorValue() {
             if (isPushed) {
                 // ✅ Get company symbol from the table
-                String symbol = (String) companyTable.getValueAt(currentRow, 0);  // Column 0 is Symbol
-                String companyName = (String) companyTable.getValueAt(currentRow, 1);  // Column 1 is Name
+                String symbol = (String) companyTable.getValueAt(currentRow, 0);
+                String companyName = (String) companyTable.getValueAt(currentRow, 1);
 
                 System.out.println("📊 Opening details for: " + symbol + " - " + companyName);
 
@@ -598,6 +652,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         this.searchController = controller;
     }
 
+    /**
+     * Initiates the initial data loading process for the dashboard. This method
+     * serves as a simple wrapper around {@link #runInitialDataLoad()} to provide
+     * a clear and descriptive entry point for triggering the initial load of
+     * market indices, economic indicators, and company data.
+     */
     public void loadInitialData() {
         runInitialDataLoad();
     }
@@ -626,13 +686,15 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                     }
                 }.execute();
             }
-        } else if (query.length() < 2) {
+        }
+        else if (query.length() < 2) {
             System.out.println("⚠️ Query too short (less than 2 characters)");
             JOptionPane.showMessageDialog(this,
                     "Please enter at least 2 characters to search.",
                     "Search",
                     JOptionPane.INFORMATION_MESSAGE);
-        } else {
+        }
+        else {
             System.out.println("🔍 Executing search for: " + query);
             searchController.searchCompany(query);
         }
@@ -656,9 +718,11 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if ("companies".equals(evt.getPropertyName())) {
             SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
-        } else if ("searchResults".equals(evt.getPropertyName())) {
+        }
+        else if ("searchResults".equals(evt.getPropertyName())) {
             SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
-        } else if ("error".equals(evt.getPropertyName())) {
+        }
+        else if ("error".equals(evt.getPropertyName())) {
             String error = (String) evt.getNewValue();
             SwingUtilities.invokeLater(() -> {
                 if (error != null && !error.isEmpty()) displayError(error);
@@ -666,21 +730,32 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Updates the company table with the provided list of {@link CompanyDisplayData}.
+     * All existing rows are cleared before the new data is inserted. If the list is
+     * {@code null} or empty, a single placeholder row is added indicating that no
+     * companies were found. After updating the model, the table is revalidated and
+     * repainted to refresh the UI.
+     *
+     * @param companies the list of company display data to populate the table with,
+     *                  or {@code null} to show an empty state message
+     */
     public void updateTable(List<CompanyDisplayData> companies) {
         tableModel.setRowCount(0);
         if (companies != null && !companies.isEmpty()) {
             for (CompanyDisplayData company : companies) {
                 Object[] row = {
-                        company.getSymbol(),
-                        company.getName(),
-                        company.getCountry(),
-                        company.getFormattedMarketCap(),
-                        company.getFormattedPeRatio(),
-                        "View"
+                    company.getSymbol(),
+                    company.getName(),
+                    company.getCountry(),
+                    company.getFormattedMarketCap(),
+                    company.getFormattedPeRatio(),
+                    "View"
                 };
                 tableModel.addRow(row);
             }
-        } else {
+        }
+        else {
             Object[] emptyRow = {"", "No companies found", "", "", "", ""};
             tableModel.addRow(emptyRow);
         }
@@ -688,14 +763,27 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         companyTable.repaint();
     }
 
+    /**
+     * Displays an error message to the user in a modal dialog using a standard
+     * Swing {@link JOptionPane}. The dialog is shown relative to this component
+     * and includes the default error icon.
+     *
+     * @param message the error message to display
+     */
     public void displayError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Updates the displayed company list by delegating to {@link #updateTable(List)}.
+     * This method provides a clearer semantic entry point for updating the UI when
+     * company list data changes.
+     *
+     * @param companies the list of company information to display
+     */
     public void updateCompanyList(List<CompanyDisplayData> companies) {
         updateTable(companies);
     }
-
 
     /**
      * Navigate to the Simulate Trading page.
@@ -716,7 +804,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         SwingUtilities.invokeLater(() -> {
             try {
                 app.SimulatedMain.main(new String[]{});
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 System.err.println("❌ Error opening Simulate page: " + ex.getMessage());
                 ex.printStackTrace();
 
@@ -751,7 +840,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             try {
                 // Pass the symbol to CompanyMain
                 app.CompanyMain.main(new String[]{symbol});
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 System.err.println("❌ Error opening Company Details page: " + ex.getMessage());
                 ex.printStackTrace();
 
@@ -791,7 +881,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                 // Step 5: Open the new Portfolio Summary window
                 app.PortfolioSummaryMain.show(userId, sessionDAO);
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this,
                         "Failed to open portfolio summary: " + ex.getMessage(),
@@ -800,7 +891,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             }
         });
     }
-
 
     /**
      * Custom renderer for table cells to provide alternating row colors and styling.
@@ -821,16 +911,16 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             // Alternating row colors (makes table easier to read)
             if (isSelected) {
                 c.setBackground(table.getSelectionBackground());
-            } else if (row % 2 == 0) {
-                c.setBackground(HEADER_BG_COLOR);           // White
-            } else {
-                c.setBackground(new Color(250, 250, 250));  // Light gray
+            }
+            else if (row % 2 == 0) {
+                c.setBackground(HEADER_BG_COLOR);
+            }
+            else {
+                c.setBackground(new Color(250, 250, 250));
             }
 
             return c;
         }
     }
-
-
 
 }

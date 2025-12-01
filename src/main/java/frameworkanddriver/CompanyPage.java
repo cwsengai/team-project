@@ -1,17 +1,16 @@
 package frameworkanddriver;
 
+import java.awt.*;
+
+import javax.swing.*;
+
 import interfaceadapter.controller.CompanyController;
 import interfaceadapter.controller.FinancialStatementController;
+import interfaceadapter.controller.IntervalController;
 import interfaceadapter.controller.NewsController;
-
 import interfaceadapter.view_model.CompanyViewModel;
 import interfaceadapter.view_model.FinancialStatementViewModel;
 import interfaceadapter.view_model.NewsViewModel;
-
-import interfaceadapter.controller.IntervalController;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class CompanyPage extends JFrame {
 
@@ -61,6 +60,17 @@ public class CompanyPage extends JFrame {
         buildUI();
     }
 
+    /**
+     * Assigns the various controllers used by this view to handle user actions
+     * related to company data, financial statements, news retrieval, and chart
+     * interval updates. This method wires the view to its corresponding
+     * application logic components.
+     *
+     * @param companyController the controller responsible for company-related actions
+     * @param fsController the controller for fetching financial statement data
+     * @param newsController the controller for retrieving news articles
+     * @param chartController the controller handling chart interval changes
+     */
     public void setControllers(CompanyController companyController,
                                FinancialStatementController fsController,
                                NewsController newsController,
@@ -170,7 +180,7 @@ public class CompanyPage extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
+        final JPanel headerPanel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("Company Chart", SwingConstants.LEFT);
         title.setFont(new Font("SansSerif", Font.BOLD, 22));
 
@@ -178,7 +188,7 @@ public class CompanyPage extends JFrame {
         tradeButton.setBackground(new Color(200, 200, 200));
         tradeButton.setFocusPainted(false);
         currentTicker = companyVM.symbol;
-        tradeButton.addActionListener( ex -> enterTradingPage(currentTicker));
+        tradeButton.addActionListener(ex -> enterTradingPage(currentTicker));
 
         headerPanel.add(title, BorderLayout.WEST);
         headerPanel.add(tradeButton, BorderLayout.EAST);
@@ -189,11 +199,11 @@ public class CompanyPage extends JFrame {
         chartPanel.setMinimumSize(new java.awt.Dimension(1000, 600));
 
         // Interval buttons
-        JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        final JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JButton btn5min = new JButton("5min");
         JButton btn1day = new JButton("1 day");
         JButton btn1week = new JButton("1 week");
-        JButton zoomIn = new JButton("Zoom in");
+        final JButton zoomIn = new JButton("Zoom in");
 
         btn5min.addActionListener(e -> {
             if (chartController != null && currentTicker != null) {
@@ -214,7 +224,7 @@ public class CompanyPage extends JFrame {
         // Bind Zoom In button event
         zoomIn.addActionListener(e -> {
             if (chartPanel != null) {
-                chartPanel.performZoom(); // Call the public method we wrote in ChartPanel
+                chartPanel.performZoom();
             }
         });
 
@@ -322,7 +332,7 @@ public class CompanyPage extends JFrame {
 
             // Step 3: [Critical!] Force refresh data once (simulate clicking "1 day")
             // Without this line, the chart will never update!
-            System.out.println("Auto refreshing chart data: " + currentTicker); // Debug
+            System.out.println("Auto refreshing chart data: " + currentTicker);
             chartController.handleTimeChange("1D");
         }
         // --- Core modification end ---
@@ -337,10 +347,24 @@ public class CompanyPage extends JFrame {
     }
 
     // chart presenter integration:
+    /**
+     * Updates the displayed chart using the data provided in the given
+     * This delegates the update to the chart panel,
+     * which handles rendering and visual refresh.
+     *
+     * @param vm the chart view model containing the data to render
+     */
     public void updateChart(entity.ChartViewModel vm) {
         chartPanel.updateChart(vm);
     }
 
+    /**
+     * Displays an error message to the user in a modal dialog using
+     * The dialog is shown relative to this
+     * component and includes the default error icon.
+     *
+     * @param message the error message to display
+     */
     public void displayError(String message) {
         javax.swing.JOptionPane.showMessageDialog(this, message, "Error",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -350,6 +374,13 @@ public class CompanyPage extends JFrame {
         return chartPanel;
     }
 
+    /**
+     * Sets the initial ticker symbol in the symbol input field and triggers all
+     * relevant controllers to load their corresponding data. This method is used
+     * to initialize the dashboard with a preselected company symbol.
+     *
+     * @param symbol the ticker symbol to load and display
+     */
     public void setInitialSymbol(String symbol) {
         symbolField.setText(symbol);
 
@@ -359,6 +390,14 @@ public class CompanyPage extends JFrame {
         if (chartController != null) chartController.setCurrentTicker(symbol);
     }
 
+    /**
+     * Transitions the user from the current dashboard to the trading simulator page.
+     * The parent window is closed, and the trading module is launched on the Swing
+     * event-dispatch thread. The specified symbol is forwarded to the simulator as
+     * the preloaded ticker.
+     *
+     * @param symbol the ticker symbol to initialize the trading simulator with
+     */
     public void enterTradingPage(String symbol) {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
@@ -378,7 +417,3 @@ public class CompanyPage extends JFrame {
     }
 
 }
-
-
-
-
