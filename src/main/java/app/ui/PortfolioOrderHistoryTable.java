@@ -22,7 +22,7 @@ public class PortfolioOrderHistoryTable extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(24, 0, 0, 0));
 
         // Section header
-        JLabel sectionHeader = new JLabel("Order History");
+        final JLabel sectionHeader = new JLabel("Order History");
         sectionHeader.setFont(new Font("SansSerif", Font.BOLD, 16));
         sectionHeader.setForeground(new Color(0x1A, 0x73, 0xE8));
         sectionHeader.setOpaque(true);
@@ -33,14 +33,15 @@ public class PortfolioOrderHistoryTable extends JPanel {
         add(sectionHeader, BorderLayout.NORTH);
 
         // Table data (will be loaded from DB)
-        String[] columns = {"Name", "Type", "Amount (USD)", "Purchase Time", "Selling Time", "Purchase Price", "Selling Price", "Profit / PnL", "Return Rate / ROI"};
+        final String[] columns = {"Name", "Type", "Amount (USD)", "Purchase Time", "Selling Time", "Purchase Price",
+            "Selling Price", "Profit / PnL", "Return Rate / ROI"};
 
         Object[][] data;
         try {
-            var trades = tradeDAO.fetchTradesForUser(userId);
+            final var trades = tradeDAO.fetchTradesForUser(userId);
             data = new Object[trades.size()][columns.length];
             for (int i = 0; i < trades.size(); i++) {
-                var t = trades.get(i);
+                final var t = trades.get(i);
                 data[i][0] = t.getTicker();
                 data[i][1] = t.isLong() ? "long" : "short";
                 data[i][2] = t.getQuantity();
@@ -51,10 +52,11 @@ public class PortfolioOrderHistoryTable extends JPanel {
                 data[i][7] = t.getRealizedPnL();
                 data[i][8] = String.format("%.2f%%", t.getReturnRate());
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             data = new Object[0][columns.length];
         }
-        JTable table = new JTable(data, columns);
+        final JTable table = new JTable(data, columns);
         table.setFont(new Font("SansSerif", Font.PLAIN, 13));
         table.setRowHeight(28);
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
@@ -66,7 +68,7 @@ public class PortfolioOrderHistoryTable extends JPanel {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         // Scroll pane for table
-        JScrollPane scrollPane = new JScrollPane(table);
+        final JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBackground(new Color(0xF7, 0xF7, 0xF7));
         scrollPane.setPreferredSize(new Dimension(800, 200));

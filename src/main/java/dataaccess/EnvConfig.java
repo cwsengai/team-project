@@ -12,7 +12,8 @@ public class EnvConfig {
     static {
         // Load .env file from project root
         dotenv = Dotenv.configure()
-            .ignoreIfMissing() // Don't crash if .env doesn't exist (e.g., in production)
+            // Don't crash if .env doesn't exist (e.g., in production)
+            .ignoreIfMissing()
             .load();
     }
 
@@ -31,7 +32,7 @@ public class EnvConfig {
 
     // API Keys
     public static String getAlphaVantageApiKey() {
-        return dotenv.get("ALPHA_VANTAGE_API_KEY", "");
+        return dotenv.get("ALPHA_VANTAGE_API_KEY", "demo");
     }
 
     // Application Settings

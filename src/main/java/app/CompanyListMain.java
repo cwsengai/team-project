@@ -41,14 +41,22 @@ import usecase.search_company.SearchCompanyInteractor;
  */
 public class CompanyListMain {
 
+    /**
+     * Entry point for the application. Initializes the GUI on the Swing
+     * event-dispatch thread and displays the main window. If an unexpected
+     * exception occurs during startup, an error dialog is shown.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
                 createAndShowGUI();
-            } catch (Exception e) {
-                e.printStackTrace();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(null,
-                        "Error starting application: " + e.getMessage(),
+                        "Error starting application: " + ex.getMessage(),
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -57,37 +65,37 @@ public class CompanyListMain {
 
     private static void createAndShowGUI() {
         // Setup UI components
-        CompanyListPage page = new CompanyListPage();
-        CompanyListViewModel companyListViewModel = new CompanyListViewModel();
-        SearchCompanyViewModel searchViewModel = new SearchCompanyViewModel();
+        final CompanyListPage page = new CompanyListPage();
+        final CompanyListViewModel companyListViewModel = new CompanyListViewModel();
+        final SearchCompanyViewModel searchViewModel = new SearchCompanyViewModel();
 
         companyListViewModel.addPropertyChangeListener(page);
         searchViewModel.addPropertyChangeListener(page);
 
         // Setup API
-        String apiKey = getApiKey();
-        Api api = new Api(apiKey);
-        CompanyGateway companyGateway = new AlphaVantageCompanyGateway(api);
+        final String apiKey = getApiKey();
+        final Api api = new Api(apiKey);
+        final CompanyGateway companyGateway = new AlphaVantageCompanyGateway(api);
 
         // Setup presenters
-        CompanyListPresenter companyListPresenter =
+        final CompanyListPresenter companyListPresenter =
                 new CompanyListPresenter(page, companyListViewModel);
-        SearchCompanyPresenter searchPresenter =
+        final SearchCompanyPresenter searchPresenter =
                 new SearchCompanyPresenter(page, searchViewModel);
 
         // Initialize search functionality
-        AlphaVantageSearchDataAccess searchDataAccess =
+        final AlphaVantageSearchDataAccess searchDataAccess =
                 new AlphaVantageSearchDataAccess(new ArrayList<>());
-        SearchCompanyInteractor searchInteractor =
+        final SearchCompanyInteractor searchInteractor =
                 new SearchCompanyInteractor(searchDataAccess, searchPresenter);
-        SearchCompanyController searchController =
+        final SearchCompanyController searchController =
                 new SearchCompanyController(searchInteractor);
         page.setSearchController(searchController);
 
         System.out.println("Search controller initialized");
 
         // Create and show window
-        JFrame frame = createFrame(page);
+        final JFrame frame = createFrame(page);
         frame.setVisible(true);
         System.out.println("Window opened!");
 
@@ -99,10 +107,13 @@ public class CompanyListMain {
     }
 
     /**
-     * Get API key from environment or use demo key.
+     * Retrieves the Alpha Vantage API key from the system environment.
+     * If no key is found, a warning is printed and the default demo key is used.
+     *
+     * @return the configured API key, or "demo" if none is set
      */
     private static String getApiKey() {
-        String apiKey = System.getenv("ALPHA_VANTAGE_API_KEY");
+        final String apiKey = System.getenv("ALPHA_VANTAGE_API_KEY");
         if (apiKey == null || apiKey.isEmpty()) {
             System.err.println("WARNING: ALPHA_VANTAGE_API_KEY environment variable not set!");
             System.err.println("Set it with: export ALPHA_VANTAGE_API_KEY=your_key_here");
@@ -112,10 +123,13 @@ public class CompanyListMain {
     }
 
     /**
-     * Create the main application frame.
+     * Creates and configures the main application frame.
+     *
+     * @param page the main UI page to display in the frame
+     * @return a configured {@link JFrame} instance
      */
     private static JFrame createFrame(CompanyListPage page) {
-        JFrame frame = new JFrame("Billionaire - Stock Market Database");
+        final JFrame frame = new JFrame("Billionaire - Stock Market Database");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(page);
         frame.setSize(1200, 800);
@@ -124,22 +138,26 @@ public class CompanyListMain {
     }
 
     /**
-     * Display initial table with all 100 company names.
+     * Populates the initial table view with all 100 company tickers and names.
+     * Only the top three companies begin loading full data immediately.
+     *
+     * @param page the UI page whose table will be updated
      */
     private static void displayInitialTable(CompanyListPage page) {
-        List<String> allTickers = Top100Companies.getAll();
-        List<CompanyDisplayData> initialDisplay = new ArrayList<>();
+        final List<String> allTickers = Top100Companies.getAll();
+        final List<CompanyDisplayData> initialDisplay = new ArrayList<>();
 
         for (int i = 0; i < allTickers.size(); i++) {
-            String ticker = allTickers.get(i);
-            String companyName = CompanyNameMapper.getCompanyName(ticker);
+            final String ticker = allTickers.get(i);
+            final String companyName = CompanyNameMapper.getCompanyName(ticker);
 
             if (i < 3) {
                 // Top 3 will load full data
                 initialDisplay.add(new CompanyDisplayData(
                         ticker, companyName, "—", "Loading...", "Loading..."
                 ));
-            } else {
+            }
+            else {
                 // Rest show name only
                 initialDisplay.add(new CompanyDisplayData(
                         ticker, companyName, "—", "—", "—"
@@ -163,7 +181,7 @@ public class CompanyListMain {
             CompanyListPresenter companyListPresenter,
             AlphaVantageSearchDataAccess searchDataAccess) {
 
-        CompanyDataLoader loader = new CompanyDataLoader(
+        final CompanyDataLoader loader = new CompanyDataLoader(
                 page, api, companyGateway, companyListPresenter, searchDataAccess
         );
         loader.execute();
@@ -175,6 +193,7 @@ public class CompanyListMain {
      * Handles progressive loading of company data in the background.
      * Loads market indices, economic indicators, and company details asynchronously.
      *
+     * <p></p>
      * This is an inner class because it's only used by CompanyListMain during startup.
      */
     private static class CompanyDataLoader extends SwingWorker<Void, Object> {
@@ -211,9 +230,10 @@ public class CompanyListMain {
 
                 System.out.println("All data loaded! (" + loadedCompanies.size() + " companies with full data)");
 
-            } catch (Exception e) {
-                System.err.println("Error during data loading: " + e.getMessage());
-                e.printStackTrace();
+            }
+            catch (Exception ex) {
+                System.err.println("Error during data loading: " + ex.getMessage());
+                ex.printStackTrace();
             }
             return null;
         }
@@ -222,16 +242,17 @@ public class CompanyListMain {
             new Thread(() -> {
                 try {
                     System.out.println("📈 Loading market indices...");
-                    AlphaVantageMarketIndexGateway marketIndexGateway =
+                    final AlphaVantageMarketIndexGateway marketIndexGateway =
                             new AlphaVantageMarketIndexGateway(api);
-                    List<MarketIndex> indices = marketIndexGateway.getMarketIndices();
+                    final List<MarketIndex> indices = marketIndexGateway.getMarketIndices();
 
                     SwingUtilities.invokeLater(() -> {
                         page.setMarketIndices(indices);
                         System.out.println("Market indices loaded!");
                     });
-                } catch (Exception e) {
-                    System.err.println("Market indices error: " + e.getMessage());
+                }
+                catch (Exception ex) {
+                    System.err.println("Market indices error: " + ex.getMessage());
                 }
             }).start();
         }
@@ -240,23 +261,24 @@ public class CompanyListMain {
             new Thread(() -> {
                 try {
                     System.out.println("Loading economic indicators...");
-                    AlphaVantageEconomicIndicatorGateway economicGateway =
+                    final AlphaVantageEconomicIndicatorGateway economicGateway =
                             new AlphaVantageEconomicIndicatorGateway(api);
-                    List<EconomicIndicator> indicators = economicGateway.getEconomicIndicators();
+                    final List<EconomicIndicator> indicators = economicGateway.getEconomicIndicators();
 
                     SwingUtilities.invokeLater(() -> {
                         page.setEconomicIndicators(indicators);
                         System.out.println("Economic indicators loaded!");
                     });
-                } catch (Exception e) {
-                    System.err.println("Economic indicators error: " + e.getMessage());
+                }
+                catch (Exception ex) {
+                    System.err.println("Economic indicators error: " + ex.getMessage());
                 }
             }).start();
         }
 
         private void loadTop3Companies() throws Exception {
             System.out.println("Loading detailed data for top 3 companies...");
-            List<String> top3Tickers = allTickers.subList(0, Math.min(3, allTickers.size()));
+            final List<String> top3Tickers = allTickers.subList(0, Math.min(3, allTickers.size()));
 
             int count = 0;
             for (String ticker : top3Tickers) {
@@ -264,7 +286,7 @@ public class CompanyListMain {
                     count++;
                     System.out.println(String.format("  Loading %d/3: %s", count, ticker));
 
-                    Company company = companyGateway.fetchOverview(ticker);
+                    final Company company = companyGateway.fetchOverview(ticker);
 
                     if (company != null && company.getName() != null && !company.getName().isEmpty()) {
                         loadedCompanies.put(ticker, company);
@@ -274,7 +296,8 @@ public class CompanyListMain {
                         SwingUtilities.invokeLater(() -> {
                             searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values()));
                         });
-                    } else {
+                    }
+                    else {
                         System.err.println("  ⚠️ No data for " + ticker);
                     }
 
@@ -282,19 +305,21 @@ public class CompanyListMain {
                         Thread.sleep(12000);
                     }
 
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                     System.err.println("Interrupted");
                     break;
-                } catch (Exception e) {
-                    System.err.println("Error: " + e.getMessage());
+                }
+                catch (Exception ex) {
+                    System.err.println("Error: " + ex.getMessage());
                 }
             }
         }
 
         private void setupCompanyListController() {
             if (!loadedCompanies.isEmpty()) {
-                AlphaVantageCompanyListDataAccess companyListDataAccess =
+                final AlphaVantageCompanyListDataAccess companyListDataAccess =
                         new AlphaVantageCompanyListDataAccess(companyGateway, true) {
                             @Override
                             public List<Company> getCompanyList() {
@@ -302,10 +327,10 @@ public class CompanyListMain {
                             }
                         };
 
-                CompanyListInteractor companyListInteractor =
+                final CompanyListInteractor companyListInteractor =
                         new CompanyListInteractor(companyListDataAccess, companyListPresenter);
 
-                CompanyListController companyListController =
+                final CompanyListController companyListController =
                         new CompanyListController(companyListInteractor);
 
                 SwingUtilities.invokeLater(() -> {
@@ -324,13 +349,13 @@ public class CompanyListMain {
         }
 
         private void updateTableWithLoadedData() {
-            List<CompanyDisplayData> currentDisplay = new ArrayList<>();
+            final List<CompanyDisplayData> currentDisplay = new ArrayList<>();
 
             for (int i = 0; i < allTickers.size(); i++) {
-                String ticker = allTickers.get(i);
+                final String ticker = allTickers.get(i);
 
                 if (loadedCompanies.containsKey(ticker)) {
-                    Company company = loadedCompanies.get(ticker);
+                    final Company company = loadedCompanies.get(ticker);
                     currentDisplay.add(new CompanyDisplayData(
                             company.getSymbol(),
                             company.getName(),
@@ -338,7 +363,8 @@ public class CompanyListMain {
                             DataFormatters.formatMarketCap(company.getMarketCapitalization()),
                             DataFormatters.formatPeRatio(company.getPeRatio())
                     ));
-                } else if (i < 3) {
+                }
+                else if (i < 3) {
                     currentDisplay.add(new CompanyDisplayData(
                             ticker,
                             CompanyNameMapper.getCompanyName(ticker),
@@ -346,7 +372,8 @@ public class CompanyListMain {
                             "Loading...",
                             "Loading..."
                     ));
-                } else {
+                }
+                else {
                     currentDisplay.add(new CompanyDisplayData(
                             ticker,
                             CompanyNameMapper.getCompanyName(ticker),

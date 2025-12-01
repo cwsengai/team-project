@@ -7,6 +7,7 @@ import java.util.Map;
  * Maps ticker symbols to company names.
  * Provides display names for companies when full data isn't loaded from API.
  *
+ * <p></p>
  * Location: Data Access Layer
  * Purpose: Provides company name data without API calls
  */
@@ -24,7 +25,10 @@ public class CompanyNameMapper {
     }
 
     /**
-     * Create the mapping of all 100 company names.
+     * Creates and returns a mapping of all 100 company ticker symbols to
+     * their corresponding full company names.
+     *
+     * @return a map where each key is a stock ticker and each value is its full company name
      */
     private static Map<String, String> createNameMap() {
         Map<String, String> names = new HashMap<>();

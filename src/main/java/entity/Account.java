@@ -40,8 +40,9 @@ public class Account {
     /** Total number of winning trades. */
     private int winningTrades;
 
-    /** Largest single realized gain. */
+    /** Largest single realized gain . */
     private double maxGain = ZERO;
+    private double maxDrawdown = ZERO;
 
     /**
      * Constructs an Account.
@@ -106,9 +107,14 @@ public class Account {
             if (realizedPnL > ZERO) {
                 winningTrades++;
             }
-
             if (realizedPnL > maxGain) {
                 maxGain = realizedPnL;
+            }
+            if (realizedPnL < 0) {
+                final double tradeLoss = Math.abs(realizedPnL);
+                if (tradeLoss > maxDrawdown) {
+                    maxDrawdown = tradeLoss;
+                }
             }
 
             final SimulatedTradeRecord record = new SimulatedTradeRecord(
@@ -153,7 +159,6 @@ public class Account {
             else {
                 referencePrice = pos.getAvgPrice();
             }
-
             totalUnrealizedPnL += pos.getUnrealizedPnL(referencePrice);
             totalCostBasis += pos.getQuantity() * pos.getAvgPrice();
         }
@@ -206,12 +211,10 @@ public class Account {
     /**
      * Returns maximum drawdown.
      *
-     * @param currentEquity current equity
      * @return max drawdown
      */
-    public double getMaxDrawdown(double currentEquity) {
-        final double diff = maxEquity - currentEquity;
-        return Math.max(ZERO, diff);
+    public double getMaxDrawdown() {
+        return maxDrawdown;
     }
 
     /**

@@ -27,7 +27,7 @@ public class PortfolioSummaryCard extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(24, 0, 24, 0));
 
         // Card container
-        JPanel card = new JPanel();
+        final JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBackground(new Color(0xF0, 0xF0, 0xF0));
         card.setBorder(BorderFactory.createCompoundBorder(
@@ -38,7 +38,7 @@ public class PortfolioSummaryCard extends JPanel {
         card.setOpaque(true);
 
         // Title pill
-        JLabel title = new JLabel("Portfolio Summary", SwingConstants.CENTER);
+        final JLabel title = new JLabel("Portfolio Summary", SwingConstants.CENTER);
         title.setFont(new Font("SansSerif", Font.BOLD, 18));
         title.setForeground(new Color(0x1A, 0x73, 0xE8));
         title.setOpaque(true);
@@ -50,23 +50,23 @@ public class PortfolioSummaryCard extends JPanel {
         card.add(Box.createVerticalStrut(16));
 
         // Trading Span
-        JLabel tradingSpanLabel = new JLabel("Trading Span:", SwingConstants.CENTER);
+        final JLabel tradingSpanLabel = new JLabel("Trading Span:", SwingConstants.CENTER);
         tradingSpanLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         tradingSpanLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         card.add(tradingSpanLabel);
-        JLabel tradingSpanValue = new JLabel(stats.getTradingSpanString(), SwingConstants.CENTER);
+        final JLabel tradingSpanValue = new JLabel(stats.getTradingSpanString(), SwingConstants.CENTER);
         tradingSpanValue.setFont(new Font("SansSerif", Font.PLAIN, 14));
         tradingSpanValue.setAlignmentX(Component.CENTER_ALIGNMENT);
         card.add(tradingSpanValue);
         card.add(Box.createVerticalStrut(16));
 
         // Metrics columns
-        JPanel metricsPanel = new JPanel();
+        final JPanel metricsPanel = new JPanel();
         metricsPanel.setOpaque(false);
         metricsPanel.setLayout(new GridLayout(1, 2, 32, 0));
 
         // Left column
-        JPanel leftCol = new JPanel();
+        final JPanel leftCol = new JPanel();
         leftCol.setOpaque(false);
         leftCol.setLayout(new GridLayout(4, 2, 8, 8));
         leftCol.add(new JLabel("Total Profit:"));
@@ -79,7 +79,7 @@ public class PortfolioSummaryCard extends JPanel {
         leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.getMaxDrawdown())));
 
         // Right column
-        JPanel rightCol = new JPanel();
+        final JPanel rightCol = new JPanel();
         rightCol.setOpaque(false);
         rightCol.setLayout(new GridLayout(4, 2, 8, 8));
         rightCol.add(new JLabel("Total Trades#:"));
@@ -99,7 +99,7 @@ public class PortfolioSummaryCard extends JPanel {
     }
 
     private JLabel rightAlignLabel(String text) {
-        JLabel label = new JLabel(text, SwingConstants.RIGHT);
+        final JLabel label = new JLabel(text, SwingConstants.RIGHT);
         label.setFont(new Font("SansSerif", Font.PLAIN, 14));
         return label;
     }

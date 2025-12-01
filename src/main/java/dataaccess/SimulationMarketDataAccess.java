@@ -1,20 +1,19 @@
 package dataaccess;
 
-import entity.PricePoint;
-import entity.TimeInterval;
-import usecase.price_chart.PriceDataAccessInterface;
-import usecase.simulated_trade.SimulationDataAccessInterface;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import entity.PricePoint;
+import entity.TimeInterval;
+import usecase.price_chart.PriceDataAccessInterface;
+import usecase.simulated_trade.SimulationDataAccessInterface;
+
 public class SimulationMarketDataAccess implements SimulationDataAccessInterface {
 
     private final PriceDataAccessInterface realDataGateway;
     private final Random random = new Random();
-
 
     public SimulationMarketDataAccess(PriceDataAccessInterface realDataGateway) {
         this.realDataGateway = realDataGateway;
@@ -24,8 +23,9 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
     public List<PricePoint> loadHistory(String ticker) {
         try {
             return realDataGateway.getPriceHistory(ticker, TimeInterval.FIVE_MINUTES);
-        } catch (Exception e) {
-            System.err.println("Simulation Data Load Error: " + e.getMessage());
+        }
+        catch (Exception ex) {
+            System.err.println("Simulation Data Load Error: " + ex.getMessage());
             return new ArrayList<>();
         }
     }
@@ -46,7 +46,8 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
         // 2. Randomize positions (ensure valid bounds)
         if (numberOfTicks < 4) {
             fillInterpolation(ticks, 0, numberOfTicks - 1);
-        } else {
+        }
+        else {
             int idx1 = 1 + random.nextInt(numberOfTicks - 3);
             int idx2 = idx1 + 1 + random.nextInt(numberOfTicks - idx1 - 1);
 
@@ -69,7 +70,9 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
         double endVal = array[endIndex];
         int steps = endIndex - startIndex;
 
-        if (steps <= 0) return;
+        if (steps <= 0) {
+            return;
+        }
         double stepValue = (endVal - startVal) / steps;
 
         for (int i = 1; i < steps; i++) {

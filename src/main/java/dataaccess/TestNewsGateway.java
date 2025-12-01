@@ -1,10 +1,19 @@
 package dataaccess;
-import api.Api;
-import entity.NewsArticle;
 
 import java.util.List;
 
+import api.Api;
+import entity.NewsArticle;
+
 public class TestNewsGateway {
+    /**
+     * Demonstration entry point for testing the AlphaVantageNewsGateway.
+     * Initializes the API client using a demo key, retrieves news articles
+     * for a sample ticker symbol, and prints basic information about the
+     * returned results.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         // replace "YOUR_KEY" with a real key
         Api api = new Api("demo");

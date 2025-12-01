@@ -351,7 +351,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         final JLabel changeLabel = createStyledLabel(change, false);
         if ("positive".equals(colorType)) {
             changeLabel.setForeground(POSITIVE_CHANGE);
-        } else if ("negative".equals(colorType)) {
+        }
+        else if ("negative".equals(colorType)) {
             changeLabel.setForeground(NEGATIVE_CHANGE);
         }
         panel.add(changeLabel, gbc);
@@ -361,7 +362,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         final JLabel changePercentLabel = createStyledLabel(changePercent, false);
         if ("positive".equals(colorType)) {
             changePercentLabel.setForeground(POSITIVE_CHANGE);
-        } else if ("negative".equals(colorType)) {
+        }
+        else if ("negative".equals(colorType)) {
             changePercentLabel.setForeground(NEGATIVE_CHANGE);
         }
         panel.add(changePercentLabel, gbc);
@@ -546,7 +548,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         this.tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 5;  // Only "View" button is editable
+                return column == 5;
             }
         };
 
@@ -744,7 +746,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if ("companies".equals(evt.getPropertyName())) {
             SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
-        } else if ("searchResults".equals(evt.getPropertyName())) {
+        }
+        else if ("searchResults".equals(evt.getPropertyName())) {
             SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
         } else if ("error".equals(evt.getPropertyName())) {
             final String error = (String) evt.getNewValue();

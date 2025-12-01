@@ -1,13 +1,12 @@
 package dataaccess;
 
-import org.json.JSONObject;
 import java.util.List;
 
-import api.Api;
+import org.json.JSONObject;
 
+import api.Api;
 import entity.Company;
 import usecase.company.CompanyGateway;
-
 
 public class AlphaVantageCompanyGateway implements CompanyGateway {
     private final Api api;
@@ -18,12 +17,13 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
 
     @Override
     public Company fetchOverview(String symbol) {
-        String jsonString;
+        final String jsonString;
         try {
             jsonString = api.getOverview(symbol);
-        } catch (Exception e) {
+        }
+        catch (Exception ex) {
             // handle or log as appropriate; returning null for now
-            e.printStackTrace();
+            ex.printStackTrace();
             return null;
         }
 
@@ -31,7 +31,7 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
             return null;
         }
 
-        JSONObject json = new JSONObject(jsonString);
+        final JSONObject json = new JSONObject(jsonString);
 
         return new Company(
                 json.optString("Symbol"),
@@ -46,8 +46,10 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
                 (float) json.optDouble("DividendPerShare"),
                 (float) json.optDouble("DividendYield"),
                 (float) json.optDouble("Beta"),
-                List.of(), // Placeholder for financial statements
-                List.of()  // Placeholder for news articles
+                // Placeholder for financial statements
+                List.of(),
+                // Placeholder for news articles
+                List.of()
         );
     }
 

@@ -19,7 +19,7 @@ public class ViewManagerModel {
 
     // Notify listeners (ViewManager) when the active view changes
     public void firePropertyChanged() {
-        support.firePropertyChange("view", null, this.activeView);
+        support.firePropertyChange("app/ui/view", null, this.activeView);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

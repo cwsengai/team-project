@@ -93,7 +93,7 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
             final int quantity = (int) (amount / price);
             final boolean tooSmallQuantity = quantity <= 0;
             if (tooSmallQuantity) {
-                error = "Amount is too low to purchase one unit.";
+                error = "Amount too low to buy 1 share.";
             }
         }
 
