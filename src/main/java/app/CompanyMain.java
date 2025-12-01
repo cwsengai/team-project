@@ -36,16 +36,14 @@ import usecase.price_chart.GetPriceByIntervalInteractor;
 import usecase.price_chart.PriceDataAccessInterface;
 import usecase.price_chart.PriceChartOutputBoundary;
 
+import dataaccess.EnvConfig;
+
 
 public class CompanyMain {
 
     public static void main(String[] args) {
-
-        final Dotenv dotenv = Dotenv.load();
-        final String apiKey = Optional.ofNullable(dotenv.get("ALPHA_VANTAGE_API_KEY"))
-                .filter(key -> !key.isEmpty())
-                .orElse("demo");
-
+            final EnvConfig envConfig = new EnvConfig();
+            final String apiKey = envConfig.getAlphaVantageApiKey();
 
             SwingUtilities.invokeLater(() -> {
 
