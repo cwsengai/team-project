@@ -134,4 +134,35 @@ class SearchCompanyInteractorTest {
         public List<Company> getResults() { return results; }
         public String getErrorMessage() { return errorMessage; }
     }
+
+    @Test
+    void failureQueryIsNull() {
+        // 1. Arrange
+        SearchCompanyInputData inputData = new SearchCompanyInputData(null);
+
+        SearchCompanyOutputBoundary failurePresenter = new SearchCompanyOutputBoundary() {
+            @Override
+            public void presentSearchResults(SearchCompanyOutputData outputData) {
+                fail("Should not present success for null query");
+            }
+
+            @Override
+            public void presentError(String errorMessage) {
+                // Fixed: Added period at the end
+                assertEquals("Search query must have at least 2 characters.", errorMessage);
+            }
+        };
+
+        SearchCompanyDataAccess ignoreDataAccess = new SearchCompanyDataAccess() {
+            @Override
+            public List<Company> searchCompanies(String query) {
+                return null;
+            }
+        };
+
+        SearchCompanyInteractor interactor = new SearchCompanyInteractor(ignoreDataAccess, failurePresenter);
+
+        // 2. Act
+        interactor.execute(inputData);
+    }
 }
