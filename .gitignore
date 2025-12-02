@@ -37,3 +37,7 @@ build/
 ### Environment Files ###
 .env
 .env*
+
+### uml
+diagrams/
+out/

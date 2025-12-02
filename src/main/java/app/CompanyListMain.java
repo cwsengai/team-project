@@ -1,3 +1,4 @@
+
 package app;
 
 import java.util.ArrayList;
@@ -5,10 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import api.Api;
-import dataaccess.*;
+import dataaccess.AlphaVantageCompanyGateway;
+import dataaccess.AlphaVantageCompanyListDataAccess;
+import dataaccess.AlphaVantageEconomicIndicatorGateway;
+import dataaccess.AlphaVantageMarketIndexGateway;
+import dataaccess.AlphaVantageSearchDataAccess;
+import dataaccess.CompanyNameMapper;
+import dataaccess.Top100Companies;
 import entity.Company;
 import entity.EconomicIndicator;
 import entity.MarketIndex;
@@ -161,13 +171,8 @@ public class CompanyListMain {
     }
 
     /**
-     * Starts background loading of market indices, indicators, and company data.
-     *
-     * @param page the UI page to update as data loads
-     * @param api the API used to retrieve external data
-     * @param companyGateway gateway for company storage and retrieval
-     * @param companyListPresenter presenter for updating the UI
-     * @param searchDataAccess data access for Alpha Vantage search operations
+     * Start progressive data loading in background.
+     * @param CompanyListPage page.
      */
     private static void startDataLoading(
             CompanyListPage page,
