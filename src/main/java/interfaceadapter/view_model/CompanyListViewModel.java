@@ -9,7 +9,6 @@ import interfaceadapter.company_list.CompanyDisplayData;
 
 public class CompanyListViewModel {
     private List<CompanyDisplayData> companies = new ArrayList<>();
-    private String errorMessage = "";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /**

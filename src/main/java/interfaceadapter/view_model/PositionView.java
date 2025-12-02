@@ -5,19 +5,10 @@ package interfaceadapter.view_model;
  * Contains formatted data ready for presentation in the UI.
  */
 public class PositionView {
-    private final String ticker;
-    private final int quantity;
-    private final double averageCost;
-    private final double marketPrice;
     private final double marketValue;
     private final double gain;
 
-    public PositionView(String ticker, int quantity, double averageCost,
-                       double marketPrice, double marketValue, double gain) {
-        this.ticker = ticker;
-        this.quantity = quantity;
-        this.averageCost = averageCost;
-        this.marketPrice = marketPrice;
+    public PositionView(double marketValue, double gain) {
         this.marketValue = marketValue;
         this.gain = gain;
     }

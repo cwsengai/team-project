@@ -112,7 +112,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
 
                 System.out.println("✅ Successfully fetched " + name + ": $" + price + " (" + changePercent + "%)");
 
-                return new MarketIndex(indexSymbol, name, price, change, changePercent);
+                return new MarketIndex(name, price, change, changePercent);
             }
 
             System.err.println("No 'Global Quote' in response for " + symbol);
@@ -147,13 +147,13 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         // Return realistic dummy data based on actual ranges
         switch (symbol.toUpperCase()) {
             case "SPY":
-                return new MarketIndex("SPY", "S&P 500", 579.32, 0.75, 0.13);
+                return new MarketIndex("S&P 500", 579.32, 0.75, 0.13);
             case "QQQ":
-                return new MarketIndex("QQQ", "NASDAQ", 520.15, -1.09, -0.21);
+                return new MarketIndex("NASDAQ", 520.15, -1.09, -0.21);
             case "DIA":
-                return new MarketIndex("DIA", "Dow Jones", 438.56, 0.70, 0.16);
+                return new MarketIndex("Dow Jones", 438.56, 0.70, 0.16);
             default:
-                return new MarketIndex(symbol, name, 0.0, 0.0, 0.0);
+                return new MarketIndex(name, 0.0, 0.0, 0.0);
         }
     }
 
@@ -167,9 +167,9 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
      */
     private List<MarketIndex> getDummyIndices() {
         List<MarketIndex> dummyList = new ArrayList<>();
-        dummyList.add(new MarketIndex("SPY", "S&P 500", 579.32, 0.75, 0.13));
-        dummyList.add(new MarketIndex("QQQ", "NASDAQ", 520.15, -1.09, -0.21));
-        dummyList.add(new MarketIndex("DIA", "Dow Jones", 438.56, 0.70, 0.16));
+        dummyList.add(new MarketIndex("S&P 500", 579.32, 0.75, 0.13));
+        dummyList.add(new MarketIndex("NASDAQ", 520.15, -1.09, -0.21));
+        dummyList.add(new MarketIndex("Dow Jones", 438.56, 0.70, 0.16));
         return dummyList;
     }
 }

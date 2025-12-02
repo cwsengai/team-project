@@ -35,9 +35,4 @@ public class EnvConfig {
         return dotenv.get("ALPHA_VANTAGE_API_KEY", "demo");
     }
 
-    // Application Settings
-    public static String getAppEnv() {
-        return dotenv.get("APP_ENV", "development");
-    }
-
 }

@@ -7,11 +7,9 @@ import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 public class PortfolioSummaryPresenter implements PortfolioStatisticsOutputBoundary {
 
     private PortfolioSummaryViewModel viewModel;
-    private PortfolioStatisticsOutputData outputData;
 
     @Override
     public void present(PortfolioStatisticsOutputData outputData) {
-        this.outputData = outputData;
         this.viewModel = new PortfolioSummaryViewModel(
             outputData.getTotalProfit(),
             outputData.getMaxGain(),
@@ -30,7 +28,4 @@ public class PortfolioSummaryPresenter implements PortfolioStatisticsOutputBound
         return viewModel;
     }
 
-    public PortfolioStatisticsOutputData getOutputData() {
-        return outputData;
-    }
 }

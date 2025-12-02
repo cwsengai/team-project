@@ -76,21 +76,20 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     return new EconomicIndicator(
                             "Federal Funds Rate",
                             value + " %",
-                            date,
-                            "FEDERAL_FUNDS_RATE"
+                            date
                     );
                 }
             }
 
             // Fallback if API fails
             System.out.println("    ⚠️ Federal Funds Rate: Using fallback data");
-            return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01", "FEDERAL_FUNDS_RATE");
+            return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
 
         }
         catch (Exception ex) {
             System.out.println("    ⚠️ Federal Funds Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
-            return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01", "FEDERAL_FUNDS_RATE");
+            return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
         }
     }
 
@@ -129,20 +128,19 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     return new EconomicIndicator(
                             "U.S. Real GDP",
                             formatted,
-                            date,
-                            "REAL_GDP"
+                            date
                     );
                 }
             }
 
             System.out.println("    ⚠️ Real GDP: Using fallback data");
-            return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01", "REAL_GDP");
+            return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
 
         }
         catch (Exception ex) {
             System.out.println("    ⚠️ Real GDP fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
-            return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01", "REAL_GDP");
+            return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
         }
     }
 
@@ -176,20 +174,19 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     return new EconomicIndicator(
                             "Unemployment Rate",
                             value + " %",
-                            date,
-                            "UNEMPLOYMENT"
+                            date
                     );
                 }
             }
 
             System.out.println("    ⚠️ Unemployment Rate: Using fallback data");
-            return new EconomicIndicator("Unemployment Rate", "3.7 %", "2025-10-01", "UNEMPLOYMENT");
+            return new EconomicIndicator("Unemployment Rate", "3.7 %", "2025-10-01");
 
         }
         catch (Exception ex) {
             System.out.println("    ⚠️ Unemployment Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
-            return new EconomicIndicator("Unemployment Rate", "3.7 %", "2025-10-01", "UNEMPLOYMENT");
+            return new EconomicIndicator("Unemployment Rate", "3.7 %", "2025-10-01");
         }
     }
 
@@ -223,20 +220,19 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     return new EconomicIndicator(
                             "Treasury Yield (10Y)",
                             value + " %",
-                            date,
-                            "TREASURY_YIELD"
+                            date
                     );
                 }
             }
 
             System.out.println("    ⚠️ Treasury Yield: Using fallback data");
-            return new EconomicIndicator("Treasury Yield (10Y)", "4.5 %", "2025-11-20", "TREASURY_YIELD");
+            return new EconomicIndicator("Treasury Yield (10Y)", "4.5 %", "2025-11-20");
 
         }
         catch (Exception ex) {
             System.out.println("    ⚠️ Treasury Yield fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
-            return new EconomicIndicator("Treasury Yield (10Y)", "4.5 %", "2025-11-20", "TREASURY_YIELD");
+            return new EconomicIndicator("Treasury Yield (10Y)", "4.5 %", "2025-11-20");
         }
     }
 
@@ -262,20 +258,19 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     return new EconomicIndicator(
                             "Consumer Price Index",
                             value,
-                            date,
-                            "CPI"
+                            date
                     );
                 }
             }
 
             System.out.println("    ⚠️ CPI: Using fallback data");
-            return new EconomicIndicator("Consumer Price Index", "3.2 %", "2025-10-01", "CPI");
+            return new EconomicIndicator("Consumer Price Index", "3.2 %", "2025-10-01");
 
         }
         catch (Exception ex) {
             System.out.println("    ⚠️ CPI fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
-            return new EconomicIndicator("Consumer Price Index", "3.2 %", "2025-10-01", "CPI");
+            return new EconomicIndicator("Consumer Price Index", "3.2 %", "2025-10-01");
         }
     }
 
@@ -300,20 +295,19 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
                     return new EconomicIndicator(
                             "Inflation Rate",
                             value + " %",
-                            date,
-                            "INFLATION"
+                            date
                     );
                 }
             }
 
             System.out.println("    ⚠️ Inflation Rate: Using fallback data");
-            return new EconomicIndicator("Inflation Rate", "2.4 %", "2025-11-20", "INFLATION");
+            return new EconomicIndicator("Inflation Rate", "2.4 %", "2025-11-20");
 
         }
         catch (Exception ex) {
             System.out.println("    ⚠️ Inflation Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
-            return new EconomicIndicator("Inflation Rate", "2.4 %", "2025-11-20", "INFLATION");
+            return new EconomicIndicator("Inflation Rate", "2.4 %", "2025-11-20");
         }
     }
 }

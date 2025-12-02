@@ -42,7 +42,7 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
             List<Double> openPrices = priceData.stream()
                     .map(p -> p.getOpen() != null ? p.getOpen() : 0.0)
                     .collect(Collectors.toList());
-            List<Double> highPrices = priceData.stream()
+            priceData.stream()
                     .map(p -> p.getHigh() != null ? p.getHigh() : 0.0)
                     .collect(Collectors.toList());
             List<Double> lowPrices = priceData.stream()
@@ -55,7 +55,7 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
             viewModel = new ChartViewModel(
                     ticker + " | " + interval.name(), 
                     labels, 
-                    openPrices, highPrices, lowPrices, closePrices, interval
+                    openPrices, lowPrices, closePrices, interval
             );
         }
         else {

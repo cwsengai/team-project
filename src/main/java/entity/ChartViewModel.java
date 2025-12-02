@@ -12,11 +12,7 @@ public class ChartViewModel {
     // Y
     private final TimeInterval interval;
     // Time interval for sampling strategy
-    
-    // For candlestick charts (OHLC data)
-    private final List<Double> openPrices;
-    private final List<Double> highPrices;
-    private final List<Double> lowPrices;
+
     private final List<Double> closePrices;
     private final boolean isCandlestick;
 
@@ -26,25 +22,19 @@ public class ChartViewModel {
         this.labels = labels;
         this.prices = prices;
         this.interval = interval;
-        this.openPrices = null;
-        this.highPrices = null;
-        this.lowPrices = null;
         this.closePrices = null;
         this.isCandlestick = false;
     }
 
     // Constructor for candlestick chart (OHLC data)
     public ChartViewModel(String title, List<String> labels, 
-                         List<Double> openPrices, List<Double> highPrices, 
-                         List<Double> lowPrices, List<Double> closePrices, TimeInterval interval) {
+                         List<Double> openPrices,
+                          List<Double> lowPrices, List<Double> closePrices, TimeInterval interval) {
         this.title = title;
         this.labels = labels;
         this.prices = null;
         // Not used for candlestick
         this.interval = interval;
-        this.openPrices = openPrices;
-        this.highPrices = highPrices;
-        this.lowPrices = lowPrices;
         this.closePrices = closePrices;
         this.isCandlestick = true;
     }

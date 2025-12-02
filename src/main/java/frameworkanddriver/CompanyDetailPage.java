@@ -24,18 +24,6 @@ public class CompanyDetailPage extends JFrame {
     private IntervalController chartController;
     private String currentTicker;
 
-    public CompanyDetailPage() {
-        super("Company Details");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1600, 1000);
-        setLayout(new BorderLayout());
-
-        // Add chart panel
-        add(buildChartPanel(), BorderLayout.CENTER);
-
-        setLocationRelativeTo(null);
-    }
-
     // ---------------------------------------------------------
     // LEFT SIDE — CHART PANEL (Revised)
     // ---------------------------------------------------------
@@ -142,16 +130,6 @@ public class CompanyDetailPage extends JFrame {
         if (chartPanel != null) {
             chartPanel.updateChart(chartViewModel);
         }
-    }
-
-    /**
-     * Sets the chart controller responsible for handling time interval
-     * selection and related chart update actions.
-     *
-     * @param controller the interval controller to associate with this chart view
-     */
-    public void setChartController(IntervalController controller) {
-        this.chartController = controller;
     }
 
     /**

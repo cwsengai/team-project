@@ -4,14 +4,12 @@ package entity;
  * Represents a major stock market index.
  */
 public class MarketIndex {
-    private final String symbol;
     private final String name;
     private final double price;
     private final double change;
     private final double changePercent;
 
-    public MarketIndex(String symbol, String name, double price, double change, double changePercent) {
-        this.symbol = symbol;
+    public MarketIndex(String name, double price, double change, double changePercent) {
         this.name = name;
         this.price = price;
         this.change = change;

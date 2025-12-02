@@ -15,14 +15,14 @@ public class NewsPresenter implements NewsOutputBoundary {
     @Override
     public void presentNews(NewsOutputData data) {
         viewmodel.setError(null);
-        viewmodel.setArticles(data.getStatements());
+        viewmodel.setArticles();
         viewmodel.setFormattedNews(String.join("\n", data.getStatements()));
         viewmodel.notifyListener();
     }
 
     @Override
     public void presentError(String message) {
-        viewmodel.setArticles(null);
+        viewmodel.setArticles();
         viewmodel.setFormattedNews("");
         viewmodel.setError(message);
         viewmodel.notifyListener();

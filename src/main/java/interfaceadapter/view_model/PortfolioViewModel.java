@@ -8,18 +8,13 @@ import java.time.format.DateTimeFormatter;
  * Contains formatted data ready for presentation in the UI.
  */
 public class PortfolioViewModel {
-    private final String portfolioId;
-    private final PositionView[] positions;
     private final double realizedGain;
     private final double unrealizedGain;
     private final double totalGain;
     private final LocalDateTime snapshotTime;
 
-    public PortfolioViewModel(String portfolioId, PositionView[] positions,
-                            double realizedGain, double unrealizedGain,
-                            double totalGain, LocalDateTime snapshotTime) {
-        this.portfolioId = portfolioId;
-        this.positions = positions;
+    public PortfolioViewModel(double realizedGain, double unrealizedGain,
+                              double totalGain, LocalDateTime snapshotTime) {
         this.realizedGain = realizedGain;
         this.unrealizedGain = unrealizedGain;
         this.totalGain = totalGain;

@@ -305,7 +305,7 @@ public class CompanyListMain {
 
                     if (company != null && company.getName() != null && !company.getName().isEmpty()) {
                         loadedCompanies.put(ticker, company);
-                        publish(new CompanyUpdate(ticker, company));
+                        publish(new CompanyUpdate(ticker));
                         System.out.println("  ✅ " + company.getName());
 
                         SwingUtilities.invokeLater(() -> searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values())));
@@ -407,12 +407,8 @@ public class CompanyListMain {
          * Helper class for passing company updates.
          */
         private static class CompanyUpdate {
-            final String ticker;
-            final Company company;
 
-            CompanyUpdate(String ticker, Company company) {
-                this.ticker = ticker;
-                this.company = company;
+            CompanyUpdate(String ticker) {
             }
         }
     }

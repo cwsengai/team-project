@@ -47,38 +47,6 @@ public class CompanyDetailViewModel {
         return ticker;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSector() {
-        return sector;
-    }
-
-    public String getMarketCapFormatted() {
-        return marketCapFormatted;
-    }
-
-    public String getPeRatioFormatted() {
-        return peRatioFormatted;
-    }
-
-    public String getLatestRevenue() {
-        return latestRevenue;
-    }
-
-    public String getLatestNetIncome() {
-        return latestNetIncome;
-    }
-
-    public String getLatestBalanceSheetPeriod() {
-        return latestBalanceSheetPeriod;
-    }
-
-    public List<NewsArticle> getRecentNews() {
-        return recentNews;
-    }
-
     private String formatLargeNumber(double number) {
         final String formattedNumber;
         if (number >= TRILLION_THRESHOLD) {

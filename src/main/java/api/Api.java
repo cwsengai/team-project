@@ -18,24 +18,11 @@ public class Api {
     private static final String BASE_URL = "https://www.alphavantage.co/query";
     private static final String FUNC_OVERVIEW = "OVERVIEW";
 
-    private static final String FUNC_TIME_SERIES_INTRADAY = "TIME_SERIES_INTRADAY";
-    private static final String FUNC_TIME_SERIES_DAILY_ADJUSTED = "TIME_SERIES_DAILY_ADJUSTED";
-    private static final String FUNC_TIME_SERIES_WEEKLY_ADJUSTED = "TIME_SERIES_WEEKLY_ADJUSTED";
-
     private static final String FUNC_INCOME_STATEMENT = "INCOME_STATEMENT";
     private static final String FUNC_BALANCE_SHEET = "BALANCE_SHEET";
     private static final String FUNC_CASH_FLOW = "CASH_FLOW";
 
     private static final String FUNC_NEWS_SENTIMENT = "NEWS_SENTIMENT";
-
-    // Added by Keliu.
-    // Some finals needed for economic indicators
-    private static final String FUNC_REAL_GDP = "REAL_GDP";
-    private static final String FUNC_FEDERAL_FUNDS_RATE = "FEDERAL_FUNDS_RATE";
-    private static final String FUNC_CPI = "CPI";
-    private static final String FUNC_INFLATION = "INFLATION";
-    private static final String FUNC_UNEMPLOYMENT = "UNEMPLOYMENT";
-    private static final String FUNC_TREASURY_YIELD = "TREASURY_YIELD";
 
     private static final String FUNC_GLOBAL_QUOTE = "GLOBAL_QUOTE";
     // end of Keliu's implementation.
@@ -92,45 +79,6 @@ public class Api {
     public String getOverview(String symbol) throws Exception {
 
         final String url = BASE_URL + FUNC_LABEL + FUNC_OVERVIEW + SYMBOL_LABEL + symbol + API_LABEL + apiKey;
-        return fetch(url);
-    }
-
-    /**
-     * Retrieves intraday time-series market data.
-     *
-     * @param symbol the stock ticker symbol
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getFuncTimeSeriesIntraday(String symbol) throws Exception {
-        final String url = BASE_URL + FUNC_LABEL + FUNC_TIME_SERIES_INTRADAY + SYMBOL_LABEL + symbol
-                + "&interval=5min&apikey=" + apiKey;
-        return fetch(url);
-    }
-
-    /**
-     * Retrieves daily adjusted time-series market data.
-     *
-     * @param symbol the stock ticker symbol
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getFuncTimeSeriesDailyAdjusted(String symbol) throws Exception {
-        final String url = BASE_URL + FUNC_LABEL + FUNC_TIME_SERIES_DAILY_ADJUSTED + SYMBOL_LABEL + symbol
-                + API_LABEL + apiKey;
-        return fetch(url);
-    }
-
-    /**
-     * Retrieves weekly adjusted time-series market data.
-     *
-     * @param symbol the stock ticker symbol
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getFuncTimeSeriesWeeklyAdjusted(String symbol) throws Exception {
-        final String url = BASE_URL + FUNC_LABEL + FUNC_TIME_SERIES_WEEKLY_ADJUSTED + SYMBOL_LABEL + symbol
-                + API_LABEL + apiKey;
         return fetch(url);
     }
 
@@ -210,64 +158,5 @@ public class Api {
     }
 
     // Helper methods
-    /**
-     * Retrieves real GDP data.
-     *
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getRealGdp() throws Exception {
-        return getEconomicIndicator(FUNC_REAL_GDP, "annual");
-    }
-
-    /**
-     * Retrieves the federal funds rate (monthly).
-     *
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getFederalFundsRate() throws Exception {
-        return getEconomicIndicator(FUNC_FEDERAL_FUNDS_RATE, MONTHLY_LABEL);
-    }
-
-    /**
-     * Retrieves the Consumer Price Index (CPI).
-     *
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getCpi() throws Exception {
-        return getEconomicIndicator(FUNC_CPI, MONTHLY_LABEL);
-    }
-
-    /**
-     * Retrieves inflation data.
-     *
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getInflation() throws Exception {
-        return getEconomicIndicator(FUNC_INFLATION, MONTHLY_LABEL);
-    }
-
-    /**
-     * Retrieves unemployment rate data.
-     *
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getUnemploymentRate() throws Exception {
-        return getEconomicIndicator(FUNC_UNEMPLOYMENT, MONTHLY_LABEL);
-    }
-
-    /**
-     * Retrieves treasury yield data.
-     *
-     * @return the JSON response as a string
-     * @throws Exception if the request fails
-     */
-    public String getTreasuryYield() throws Exception {
-        return getEconomicIndicator(FUNC_TREASURY_YIELD, MONTHLY_LABEL);
-    }
 
 }

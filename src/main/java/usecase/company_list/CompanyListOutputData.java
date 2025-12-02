@@ -33,12 +33,4 @@ public class CompanyListOutputData {
         return companies;
     }
 
-    /**
-     * Returns whether the retrieval operation was successful.
-     *
-     * @return true if successful, false otherwise
-     */
-    public boolean isSuccess() {
-        return success;
-    }
 }

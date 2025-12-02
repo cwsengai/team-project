@@ -1,10 +1,6 @@
 package interfaceadapter.view_model;
 
-import java.util.List;
-
 public class NewsViewModel {
-
-    private List<String> articles;
 
     private String formattedNews;
 
@@ -25,8 +21,7 @@ public class NewsViewModel {
         }
     }
 
-    public void setArticles(List<String> articles) {
-        this.articles = articles;
+    public void setArticles() {
     }
 
     public String getFormattedNews() {

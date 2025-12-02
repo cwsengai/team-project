@@ -75,7 +75,7 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
             viewModel = new ChartViewModel(
                     ticker + " | " + interval.name(), 
                     labels, 
-                    openPrices, highPrices, lowPrices, closePrices, interval
+                    openPrices, lowPrices, closePrices, interval
             );
         }
         else {

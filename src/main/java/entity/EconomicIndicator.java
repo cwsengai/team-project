@@ -7,13 +7,11 @@ public class EconomicIndicator {
     private final String name;
     private final String value;
     private final String lastUpdated;
-    private final String apiFunction;
 
-    public EconomicIndicator(String name, String value, String lastUpdated, String apiFunction) {
+    public EconomicIndicator(String name, String value, String lastUpdated) {
         this.name = name;
         this.value = value;
         this.lastUpdated = lastUpdated;
-        this.apiFunction = apiFunction;
     }
 
     public String getName() {
