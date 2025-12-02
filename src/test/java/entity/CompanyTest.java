@@ -1,16 +1,15 @@
 package entity;
 
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
 
 class CompanyTest {
-
     @Test
     void testFullConstructorAndGetters() {
         FinancialStatement fs = new FinancialStatement(
@@ -25,6 +24,7 @@ class CompanyTest {
         NewsArticle na = new NewsArticle(
                 "AAPL",
                 "Sample Title",
+                // now use safe url
                 "https://example.com",
                 LocalDateTime.now(),
                 "Sample summary",
