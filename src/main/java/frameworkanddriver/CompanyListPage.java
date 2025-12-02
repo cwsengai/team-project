@@ -605,7 +605,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     /**
      * Renderer for the button in the JTable.
      */
-    private class ButtonRenderer extends DefaultTableCellRenderer {
+    private static class ButtonRenderer extends DefaultTableCellRenderer {
         private final JButton button;
 
         ButtonRenderer() {
@@ -892,7 +892,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     /**
      * Custom renderer for table cells to provide alternating row colors and styling.
      */
-    private class CustomTableRenderer extends DefaultTableCellRenderer {
+    private static class CustomTableRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus,

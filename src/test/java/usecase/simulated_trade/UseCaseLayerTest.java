@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UseCaseLayerTest {
 
     // Mock OutputBoundary (Presenter)
-    private class MockPresenter implements SimulatedTradeOutputBoundary {
+    private static class MockPresenter implements SimulatedTradeOutputBoundary {
         SimulatedTradeOutputData successData;
         String failMessage;
 

@@ -16,10 +16,6 @@ public class AlphaVantageCompanyListDataAccess implements CompanyListDataAccess 
     private final CompanyGateway gateway;
     private final boolean useSampleData;
 
-    public AlphaVantageCompanyListDataAccess(CompanyGateway gateway) {
-        this(gateway, true);
-    }
-
     public AlphaVantageCompanyListDataAccess(CompanyGateway gateway, boolean useSampleData) {
         this.gateway = gateway;
         this.useSampleData = useSampleData;
