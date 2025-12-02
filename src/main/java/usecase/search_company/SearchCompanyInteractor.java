@@ -7,6 +7,9 @@ import entity.Company;
 /**
  * Interactor for the Search Company use case.
  * Handles business rules and communicates results to the presenter.
+ * 
+ * @param dataAccess the data access interface for querying companies
+ * @param presenter  the presenter that formats and returns results
  */
 public record SearchCompanyInteractor(SearchCompanyDataAccess dataAccess,
                                       SearchCompanyOutputBoundary presenter) implements SearchCompanyInputBoundary {

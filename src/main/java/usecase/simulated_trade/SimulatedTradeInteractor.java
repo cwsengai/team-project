@@ -6,6 +6,9 @@ import entity.Account;
 
 /**
  * Interactor responsible for executing a simulated trade.
+ * 
+ * @param presenter the presenter that formats and returns results
+ * @param account   the account on which the trade is executed
  */
 public record SimulatedTradeInteractor(SimulatedTradeOutputBoundary presenter,
                                        Account account) implements SimulatedTradeInputBoundary {

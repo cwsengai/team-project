@@ -6,6 +6,11 @@ import java.time.format.DateTimeFormatter;
 /**
  * View model for portfolio display.
  * Contains formatted data ready for presentation in the UI.
+ * 
+ * @param realizedGain   the realized gain of the portfolio
+ * @param unrealizedGain the unrealized gain of the portfolio
+ * @param totalGain      the total gain of the portfolio
+ * @param snapshotTime   the time the portfolio snapshot was taken
  */
 public record PortfolioViewModel(double realizedGain, double unrealizedGain, double totalGain,
                                  LocalDateTime snapshotTime) {

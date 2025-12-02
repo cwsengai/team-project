@@ -3,6 +3,8 @@ package usecase.search_company;
 /**
  * Input data for the Search Company use case.
  * Contains the search query entered by the user.
+ * 
+ * @param query the keyword or text used for searching companies
  */
 public record SearchCompanyInputData(String query) {
 

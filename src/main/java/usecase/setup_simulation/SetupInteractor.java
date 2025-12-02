@@ -2,6 +2,8 @@ package usecase.setup_simulation;
 
 /**
  * Interactor for handling the setup simulation use case.
+ * 
+ * @param presenter the presenter that formats and returns results
  */
 public record SetupInteractor(SetupOutputBoundary presenter) implements SetupInputBoundary {
 

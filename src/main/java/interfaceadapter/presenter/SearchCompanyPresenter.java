@@ -14,6 +14,9 @@ import usecase.search_company.SearchCompanyOutputData;
 /**
  * Presenter for Search Company use case.
  * Formats search results for display in the UI.
+ * 
+ * @param page      the UI page to update with results
+ * @param viewModel the view model holding formatted data
  */
 public record SearchCompanyPresenter(CompanyListPage page,
                                      SearchCompanyViewModel viewModel) implements SearchCompanyOutputBoundary {
