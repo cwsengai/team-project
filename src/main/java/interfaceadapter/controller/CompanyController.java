@@ -7,6 +7,7 @@ import usecase.company.CompanyInputData;
  * Controller for handling company selection actions.
  * Receives user input from the interface layer and forwards it
  * to the corresponding use case interactor.
+ * @param interactor the input boundary for the company use case
  */
 public record CompanyController(CompanyInputBoundary interactor) {
 

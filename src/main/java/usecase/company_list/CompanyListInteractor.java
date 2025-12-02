@@ -8,6 +8,8 @@ import entity.Company;
 /**
  * Interactor for the Company List use case.
  * Contains the business logic for loading and displaying company information.
+ * @param dataAccess the data access interface used to retrieve company data
+ * @param presenter  the output boundary responsible for formatting the result
  */
 public record CompanyListInteractor(CompanyListDataAccess dataAccess,
         CompanyListOutputBoundary presenter) implements CompanyListInputBoundary {

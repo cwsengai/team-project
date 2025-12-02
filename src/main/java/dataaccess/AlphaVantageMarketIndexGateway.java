@@ -15,6 +15,7 @@ import usecase.MarketIndexGateway;
  * - SPY: Tracks S&P 500
  * - QQQ: Tracks NASDAQ-100
  * - DIA: Tracks Dow Jones Industrial Average
+ * @param api the Alpha Vantage API client
  */
 public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGateway {
     // ETF symbols that track major indices

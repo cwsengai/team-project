@@ -5,6 +5,7 @@ import usecase.company_list.CompanyListInputBoundary;
 /**
  * Controller for Company List use case.
  * Handles user actions to load the top companies list.
+ * @param interactor the input boundary for the company list use case
  */
 public record CompanyListController(CompanyListInputBoundary interactor) {
 
