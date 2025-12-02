@@ -6,7 +6,8 @@ import usecase.price_chart.PriceInputBoundary;
 public class IntervalController {
 
     private final PriceInputBoundary priceInteractor;
-    private String currentTicker = "AAPL"; // Default ticker
+    private String currentTicker = "AAPL";
+    // Default ticker
 
     public IntervalController(PriceInputBoundary interactor) {
         this.priceInteractor = interactor;
