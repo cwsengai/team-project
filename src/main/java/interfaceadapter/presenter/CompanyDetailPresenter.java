@@ -1,13 +1,20 @@
 package interfaceadapter.presenter;
 
-import interfaceadapter.price_chart.CompanyDetailOutputBoundary;
-import usecase.price_chart.PriceChartOutputBoundary;
-import entity.*;
-import frameworkanddriver.CompanyDetailPage;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import entity.ChartViewModel;
+import entity.Company;
+import entity.CompanyDetailViewModel;
+import entity.FinancialStatement;
+import entity.NewsArticle;
+import entity.PricePoint;
+import entity.TimeInterval;
+import frameworkanddriver.CompanyDetailPage;
+import interfaceadapter.price_chart.CompanyDetailOutputBoundary;
+import usecase.price_chart.PriceChartOutputBoundary;
 
 public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, PriceChartOutputBoundary {
 
@@ -42,12 +49,12 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
 
         List<String> labels = priceData.stream()
                 .map(p -> formatTimestamp(p.getTimestamp(), interval))
-                .collect(java.util.stream.Collectors.toList());
+                .collect(Collectors.toList());
 
         // Check if we have complete OHLC data for candlestick chart
         boolean hasOHLCData = priceData.stream()
-                .allMatch(p -> p.getOpen() != null && p.getHigh() != null && 
-                              p.getLow() != null && p.getClose() != null);
+                .allMatch(p -> p.getOpen() != null && p.getHigh() != null
+                        && p.getLow() != null && p.getClose() != null);
 
         ChartViewModel viewModel;
         
@@ -55,28 +62,38 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
             // Create candlestick chart with OHLC data
             List<Double> openPrices = priceData.stream()
                     .map(p -> p.getOpen() != null ? p.getOpen() : 0.0)
-                    .collect(java.util.stream.Collectors.toList());
+                    .collect(Collectors.toList());
             List<Double> highPrices = priceData.stream()
                     .map(p -> p.getHigh() != null ? p.getHigh() : 0.0)
-                    .collect(java.util.stream.Collectors.toList());
+                    .collect(Collectors.toList());
             List<Double> lowPrices = priceData.stream()
                     .map(p -> p.getLow() != null ? p.getLow() : 0.0)
-                    .collect(java.util.stream.Collectors.toList());
+                    .collect(Collectors.toList());
             List<Double> closePrices = priceData.stream()
                     .map(p -> p.getClose() != null ? p.getClose() : 0.0)
-                    .collect(java.util.stream.Collectors.toList());
+                    .collect(Collectors.toList());
 
             viewModel = new ChartViewModel(
                     ticker + " | " + interval.name(), 
                     labels, 
                     openPrices, highPrices, lowPrices, closePrices, interval
             );
-        } else {
+        }
+        else {
             // Create simple line chart with close prices
             List<Double> prices = priceData.stream()
-                    .map(p -> p.getClose() != null ? p.getClose() : 
-                             (p.getPrice() != 0.0 ? p.getPrice() : 0.0))
-                    .collect(java.util.stream.Collectors.toList());
+                    .map(p -> {
+                        if (p.getClose() != null) {
+                            return p.getClose();
+                        }
+                        else if (p.getPrice() != 0.0) {
+                            return p.getPrice();
+                        }
+                        else {
+                            return 0.0;
+                        }
+                    })
+                    .collect(Collectors.toList());
 
             viewModel = new ChartViewModel(ticker + " | " + interval.name(), labels, prices, interval);
         }

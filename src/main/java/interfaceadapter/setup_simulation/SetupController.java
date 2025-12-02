@@ -23,12 +23,11 @@ public class SetupController {
     }
 
     /**
-     * Executes the setup use case by creating a {@code SetupInputData} object
-     * and passing it to the interactor.
+     * Executes the setup simulation use case with the provided parameters.
      *
-     * @param ticker the stock ticker symbol to simulate
-     * @param initialBalance the starting balance for the simulation
-     * @param speedMultiplier the speed at which the simulation should run
+     * @param ticker the stock ticker symbol for the simulation
+     * @param initialBalance the initial balance for the trading account
+     * @param speedMultiplier the speed multiplier for the simulation
      */
     public void execute(String ticker, double initialBalance, int speedMultiplier) {
         final SetupInputData inputData =
