@@ -739,20 +739,17 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (null != evt.getPropertyName()) {
             switch (evt.getPropertyName()) {
-                case "companies":
-                case "searchResults":
-                    SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
-                    break;
-                case "error":
+                case "companies", "searchResults" -> SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
+                case "error" -> {
                     final String error = (String) evt.getNewValue();
                     SwingUtilities.invokeLater(() -> {
                         if (error != null && !error.isEmpty()) {
                             displayError(error);
                         }
-                    }); 
-                    break;
-                default:
-                    break;
+                    });
+                }
+                default -> {
+                }
             }
         }
     }

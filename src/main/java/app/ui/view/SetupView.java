@@ -1,11 +1,25 @@
 package app.ui.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -31,7 +45,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     public SetupView(SetupController controller, SetupViewModel viewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
-        this.viewModel.addPropertyChangeListener(this);
+        // Listener registration deferred until after full construction
 
         this.setLayout(new BorderLayout());
         Color BG_COLOR = new Color(245, 247, 250);
@@ -126,6 +140,9 @@ public class SetupView extends JPanel implements PropertyChangeListener {
 
         // Bind Action
         startButton.addActionListener(pressstart -> handleStart());
+
+        // Defer registering this view as a property change listener until after construction
+        SwingUtilities.invokeLater(() -> viewModel.addPropertyChangeListener(this));
     }
 
     private void styleLabelAndInput(JPanel panel, String labelText, JTextField textField) {

@@ -15,7 +15,8 @@ public record AlphaVantageCompanyGateway(Api api) implements CompanyGateway {
         final String jsonString;
         try {
             jsonString = api.getOverview(symbol);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             // handle or log as appropriate; returning null for now
             System.err.println("AlphaVantageCompanyGateway.fetchOverview error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {

@@ -34,7 +34,8 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
             indicators.add(fetchCPI());
             indicators.add(fetchInflationRate());
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.err.println("⚠️ Error fetching economic indicators: " + ex.getMessage());
             // Return partial data if some indicators failed
             if (indicators.isEmpty()) {
@@ -83,7 +84,8 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
             System.out.println("    ⚠️ Federal Funds Rate: Using fallback data");
             return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println("    ⚠️ Federal Funds Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
@@ -133,7 +135,8 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
             System.out.println("    ⚠️ Real GDP: Using fallback data");
             return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println("    ⚠️ Real GDP fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");

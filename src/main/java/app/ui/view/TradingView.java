@@ -65,7 +65,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
     public TradingView(TradingController controller, TradingViewModel viewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
-        this.viewModel.addPropertyChangeListener(this);
+        // Listener registration deferred until after full construction
 
         final String[] columnNames = {
             "Name",
@@ -184,6 +184,9 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
                 JOptionPane.showMessageDialog(this, "Failed to open summary: " + ex.getMessage());
             }
         });
+
+        // Defer registering this view as a property change listener until after construction
+        SwingUtilities.invokeLater(() -> viewModel.addPropertyChangeListener(this));
 
         if (this.controller != null) {
             Timer timer = new Timer(1000, this);
