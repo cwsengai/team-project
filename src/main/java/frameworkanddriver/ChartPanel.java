@@ -143,7 +143,10 @@ public class ChartPanel extends JPanel {
                 intervalController.handleTimeChange("1D");
             }
             catch (RuntimeException runtimeException) {
-                runtimeException.printStackTrace();
+                System.err.println("ChartPanel openZoomWindow runtime error: " + runtimeException.getMessage());
+                for (StackTraceElement ste : runtimeException.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
             }
         });
     }
@@ -182,7 +185,10 @@ public class ChartPanel extends JPanel {
             chartContainer.repaint();
         }
         catch (RuntimeException runtimeException) {
-            runtimeException.printStackTrace();
+            System.err.println("ChartPanel updateChart runtime error: " + runtimeException.getMessage());
+            for (StackTraceElement ste : runtimeException.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             displayError(runtimeException.getMessage());
         }
     }

@@ -28,7 +28,10 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
             jsonString_balance = api.getFuncBalanceSheet(symbol);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            System.err.println("AlphaVantageFinancialStatementGateway balance fetch error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
 
@@ -37,7 +40,10 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
             jsonString_income = api.getFuncIncomeStatement(symbol);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            System.err.println("AlphaVantageFinancialStatementGateway income fetch error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
 
@@ -46,7 +52,10 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
             jsonString_cashflow = api.getFuncCashFlow(symbol);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            System.err.println("AlphaVantageFinancialStatementGateway cashflow fetch error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
 

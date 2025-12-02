@@ -112,7 +112,10 @@ public class LoginPage extends JDialog {
 
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                System.err.println("LoginPage login error: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
                 status.setText("Login failed.");
             }
         });
@@ -172,9 +175,12 @@ public class LoginPage extends JDialog {
 
             }
             catch (Exception ex) {
-                ex.printStackTrace();
-                status.setText("Signup failed.");
-            }
+                    System.err.println("LoginPage signup error: " + ex.getMessage());
+                    for (StackTraceElement ste : ex.getStackTrace()) {
+                        System.err.println("    at " + ste.toString());
+                    }
+                    status.setText("Signup failed.");
+                }
         });
 
         panel.add(title);
