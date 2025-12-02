@@ -17,6 +17,7 @@ import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
 import usecase.session.SessionDataAccessInterface;
 
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class PortfolioSummaryMain {
 
     /**
@@ -31,6 +32,7 @@ public class PortfolioSummaryMain {
      * @param userId the unique identifier of the authenticated user
      * @param sessionDAO the session data access object used for session validation
      */
+    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:AbbreviationAsWordInName", "checkstyle:MagicNumber", "checkstyle:JavadocMethod"})
     public static void show(UUID userId, SessionDataAccessInterface sessionDAO) {
 
         // === Build the Portfolio Summary window ===

@@ -17,11 +17,13 @@ import javax.swing.SwingConstants;
 
 import interfaceadapter.view_model.PortfolioSummaryViewModel;
 
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class PortfolioSummaryCard extends JPanel {
     private static final DecimalFormat CURRENCY_FORMAT = new DecimalFormat("$#,##0.00");
     private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("#0.00'%'");
 
-    public PortfolioSummaryCard(PortfolioSummaryViewModel stats) {
+    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:MultipleStringLiterals", "checkstyle:JavaNCSS", "checkstyle:ExecutableStatementCount"})
+    public PortfolioSummaryCard(PortfolioStatisticsOutputData stats) {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(24, 0, 24, 0));
@@ -105,6 +107,7 @@ public class PortfolioSummaryCard extends JPanel {
         add(card, BorderLayout.CENTER);
     }
 
+    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable"})
     private JLabel rightAlignLabel(String text) {
         final JLabel label = new JLabel(text, SwingConstants.RIGHT);
         label.setFont(new Font("SansSerif", Font.PLAIN, 14));

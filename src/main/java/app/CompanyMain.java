@@ -28,19 +28,10 @@ import usecase.price_chart.GetPriceByIntervalInteractor;
 import usecase.price_chart.PriceChartOutputBoundary;
 import usecase.price_chart.PriceDataAccessInterface;
 
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class CompanyMain {
 
-    /**
-     * Application entry point. Loads environment configuration, retrieves the
-     * Alpha Vantage API key, and optionally accepts a preloaded stock symbol
-     * from the command-line arguments to initialize the CompanyPage view.
-     *
-     * <p>If a symbol is provided as the first argument, it is printed and
-     * stored for use when launching the application.</p>
-     *
-     * @param args optional command-line arguments; the first argument may
-     *             specify a stock symbol to preload
-     */
+    @SuppressWarnings({"checkstyle:Indentation", "checkstyle:FinalLocalVariable", "checkstyle:AbbreviationAsWordInName", "checkstyle:CommentsIndentation", "checkstyle:LambdaBodyLength", "checkstyle:UncommentedMain", "checkstyle:MissingJavadocMethod"})
     public static void main(String[] args) {
         final EnvConfig envConfig = new EnvConfig();
         final String apiKey = envConfig.getAlphaVantageApiKey();

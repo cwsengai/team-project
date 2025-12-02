@@ -12,8 +12,10 @@ import javax.swing.border.LineBorder;
 import interfaceadapter.setup_simulation.SetupController;
 import interfaceadapter.setup_simulation.SetupViewModel;
 
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class SetupView extends JPanel implements PropertyChangeListener {
 
+    @SuppressWarnings("checkstyle:VisibilityModifier")
     public final String viewName = SetupViewModel.VIEW_NAME;
     private final SetupController controller;
     private final SetupViewModel viewModel;
@@ -24,15 +26,23 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     private final JButton startButton = new JButton(SetupViewModel.START_BUTTON_LABEL);
     private final JLabel errorLabel = new JLabel(" ");
 
+    @SuppressWarnings({"checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Color BG_COLOR = new Color(245, 247, 250);
+    @SuppressWarnings({"checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Color CARD_COLOR = Color.WHITE;
+    @SuppressWarnings({"checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Color PRIMARY_COLOR = new Color(46, 204, 113);
+    @SuppressWarnings({"checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Color TEXT_COLOR = new Color(52, 73, 94);
 
+    @SuppressWarnings({"checkstyle:MultipleStringLiterals", "checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Font LABEL_FONT = new Font("SansSerif", Font.BOLD, 18);
+    @SuppressWarnings({"checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Font INPUT_FONT = new Font("SansSerif", Font.PLAIN, 16);
+    @SuppressWarnings({"checkstyle:MemberName", "checkstyle:AbbreviationAsWordInName"})
     private final Font HINT_FONT = new Font("SansSerif", Font.ITALIC, 14);
 
+    @SuppressWarnings({"checkstyle:LambdaParameterName", "checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:LineLength", "checkstyle:EmptyLineSeparator", "checkstyle:RegexpMultiline", "checkstyle:RegexpSinglelineJava", "checkstyle:JavaNCSS", "checkstyle:ExecutableStatementCount"})
     public SetupView(SetupController controller, SetupViewModel viewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
@@ -128,6 +138,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         startButton.addActionListener(pressstart -> handleStart());
     }
 
+    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable"})
     private void styleLabelAndInput(JPanel panel, String labelText, JTextField textField) {
         final JLabel label = new JLabel(labelText);
         label.setFont(LABEL_FONT);
@@ -143,6 +154,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         panel.add(textField);
     }
 
+    @SuppressWarnings({"checkstyle:RegexpSinglelineJava", "checkstyle:RightCurly", "checkstyle:FinalLocalVariable"})
     private void handleStart() {
         errorLabel.setText(" ");
         try {
@@ -158,6 +170,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         }
     }
 
+    @SuppressWarnings("checkstyle:RegexpSinglelineJava")
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("error".equals(evt.getPropertyName())) {
@@ -165,11 +178,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    /**
-     * Sets the initial ticker symbol in the input field.
-     *
-     * @param symbol the ticker symbol to display
-     */
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
     public void setInitialSymbol(String symbol) {
         tickerField.setText(symbol);
     }

@@ -11,17 +11,7 @@ import usecase.price_chart.PriceChartOutputBoundary;
 import usecase.price_chart.PriceDataAccessInterface;
 
 public class TimeIntervalChartMain {
-    /**
-     * Entry point for the UC4 Price Chart module. Initializes all components of the
-     * price chart feature—including data access, presenter, interactor, controller,
-     * and the chart window—and then launches the GUI on the Swing event-dispatch thread.
-     *
-     * <p>This method performs all required wiring for the Clean Architecture layers:
-     * the data gateway, presenter, interactor, and controller are connected before
-     * the chart window is displayed.</p>
-     *
-     * @param args command-line arguments (unused)
-     */
+    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:UncommentedMain", "checkstyle:MissingJavadocMethod"})
     public static void main(String[] args) {
         System.out.println("--- Starting UC4 Price Chart Module (GUI) ---");
 

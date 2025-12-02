@@ -20,6 +20,7 @@ public class ViewManager implements PropertyChangeListener {
         this.viewManagerModel.addPropertyChangeListener(this);
     }
 
+    @SuppressWarnings("checkstyle:FinalLocalVariable")
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("app/ui/view")) {

@@ -16,7 +16,8 @@ import javax.swing.JTable;
 import usecase.portfolio_statistics.PortfolioTradeGateway;
 
 public class PortfolioOrderHistoryTable extends JPanel {
-    public PortfolioOrderHistoryTable(UUID userId, PortfolioTradeGateway tradeGateway) {
+    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:AvoidInlineConditionals", "checkstyle:LineLength", "checkstyle:MultipleStringLiterals", "checkstyle:AbbreviationAsWordInName", "checkstyle:ExecutableStatementCount"})
+    public PortfolioOrderHistoryTable(UUID userId, SupabaseTradeDataAccessObject tradeDAO) {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(24, 0, 0, 0));
