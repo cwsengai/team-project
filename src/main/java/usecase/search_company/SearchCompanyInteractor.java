@@ -12,7 +12,7 @@ import entity.Company;
  * @param presenter  the presenter that formats and returns results
  */
 public record SearchCompanyInteractor(SearchCompanyDataAccess dataAccess,
-                                      SearchCompanyOutputBoundary presenter) implements SearchCompanyInputBoundary {
+        SearchCompanyOutputBoundary presenter) implements SearchCompanyInputBoundary {
 
     private static final int MIN_QUERY_LENGTH = 2;
 
@@ -42,11 +42,9 @@ public record SearchCompanyInteractor(SearchCompanyDataAccess dataAccess,
 
         try {
             List<Company> results = dataAccess.searchCompanies(query);
-            SearchCompanyOutputData outputData =
-                    new SearchCompanyOutputData(results);
+            SearchCompanyOutputData outputData = new SearchCompanyOutputData(results);
             presenter.presentSearchResults(outputData);
-        }
-catch (Exception ex) {
+        } catch (Exception ex) {
             presenter.presentError("Search failed: " + ex.getMessage());
         }
     }

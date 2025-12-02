@@ -36,7 +36,7 @@ public record MarketIndex(String name, double price, double change, double chang
      * change is zero or greater.
      *
      * @return {@code true} if the percentage change is positive or zero;
-     * {@code false} if it is negative
+     *         {@code false} if it is negative
      */
     public boolean isPositive() {
         return changePercent >= 0;

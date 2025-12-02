@@ -14,7 +14,7 @@ import entity.TimeInterval;
  * @param pricePresenter the presenter that formats and outputs results
  */
 public record GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway,
-                                           PriceChartOutputBoundary pricePresenter) implements PriceInputBoundary {
+        PriceChartOutputBoundary pricePresenter) implements PriceInputBoundary {
 
     /**
      * Creates the interactor responsible for retrieving and presenting price data.
@@ -40,12 +40,10 @@ public record GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway
 
             try {
                 priceData = priceGateway.getPriceHistory(ticker, interval);
-            }
-catch (Exception ex) {
+            } catch (Exception ex) {
 
                 SwingUtilities.invokeLater(() -> pricePresenter.presentError(
-                        "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()
-                ));
+                        "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()));
 
                 return;
             }
@@ -53,8 +51,7 @@ catch (Exception ex) {
             SwingUtilities.invokeLater(() -> {
                 if (priceData == null || priceData.isEmpty()) {
                     pricePresenter.presentError(
-                            "No " + interval.name() + " price data found (not found)."
-                    );
+                            "No " + interval.name() + " price data found (not found).");
                 } else {
                     pricePresenter.presentPriceHistory(priceData, ticker, interval);
                 }

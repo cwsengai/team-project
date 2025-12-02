@@ -6,7 +6,7 @@ import java.util.List;
 import entity.FinancialStatement;
 
 public record FinancialStatementInteractor(FinancialStatementGateway gateway,
-                                           FinancialStatementOutputBoundary presenter) implements FinancialStatementInputBoundary {
+        FinancialStatementOutputBoundary presenter) implements FinancialStatementInputBoundary {
 
     @Override
     public void execute(FinancialStatementInputData data) {
@@ -19,15 +19,14 @@ public record FinancialStatementInteractor(FinancialStatementGateway gateway,
             final List<String> formatted = new ArrayList<>();
             final String constant = "\n";
             for (FinancialStatement fs : statements) {
-                final String block =
-                        "Fiscal Year: " + fs.fiscalDateEnding() + constant
-                                + "Revenue: " + fs.totalRevenue() + constant
-                                + "Gross Profit: " + fs.grossProfit() + constant
-                                + "Net Income: " + fs.netIncome() + constant
-                                + "Operating Cash Flow: " + fs.operatingCashFlow() + constant
-                                + "CapEx: " + fs.capitalExpenditures() + constant
-                                + "Dividend Payout: " + fs.dividendPayout() + constant
-                                + "----------------------------------";
+                final String block = "Fiscal Year: " + fs.fiscalDateEnding() + constant
+                        + "Revenue: " + fs.totalRevenue() + constant
+                        + "Gross Profit: " + fs.grossProfit() + constant
+                        + "Net Income: " + fs.netIncome() + constant
+                        + "Operating Cash Flow: " + fs.operatingCashFlow() + constant
+                        + "CapEx: " + fs.capitalExpenditures() + constant
+                        + "Dividend Payout: " + fs.dividendPayout() + constant
+                        + "----------------------------------";
                 formatted.add(block);
             }
 

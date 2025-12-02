@@ -713,7 +713,6 @@
         <module name="ParameterNumber">
             <property name="max" value="30"/>
         </module>
-        <module name="RecordComponentNumber"/>
 
         <!-- Whitespace -->
         <module name="EmptyForInitializerPad"/>
