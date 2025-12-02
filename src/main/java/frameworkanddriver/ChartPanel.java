@@ -64,8 +64,8 @@ public class ChartPanel extends JPanel {
     private static final int GRAY_COLOR_G = 80;
     private static final int GRAY_COLOR_B = 80;
 
-    private JPanel chartContainer;
-    private JLabel infoLabel;
+    private final JPanel chartContainer;
+    private final JLabel infoLabel;
     private String linkedTicker;
 
     public ChartPanel() {

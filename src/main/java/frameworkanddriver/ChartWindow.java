@@ -18,7 +18,7 @@ import interfaceadapter.controller.IntervalController;
 
 public class ChartWindow extends JFrame {
 
-    private ChartPanel chartPanel;
+    private final ChartPanel chartPanel;
     private IntervalController controller;
     
     // UI Constants

@@ -3,8 +3,8 @@ package usecase.news;
 import java.util.List;
 
 public class NewsOutputData {
-    private String symbol;
-    private List<String> statements;
+    private final String symbol;
+    private final List<String> statements;
 
     public NewsOutputData(String symbol, List<String> statements) {
         this.symbol = symbol;

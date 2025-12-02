@@ -8,7 +8,7 @@ public class SimulatedOrder {
     private final boolean isLong;
     private final int quantity;
     private final double limitPrice;
-    private LocalDateTime entryTime;
+    private final LocalDateTime entryTime;
     private double entryPrice;
     private boolean isFilled;
 

@@ -3,8 +3,8 @@ package usecase.financial_statement;
 import java.util.List;
 
 public class FinancialStatementOutputData {
-    private String symbol;
-    private List<String> statements;
+    private final String symbol;
+    private final List<String> statements;
 
     public FinancialStatementOutputData(String symbol, List<String> statements) {
         this.symbol = symbol;

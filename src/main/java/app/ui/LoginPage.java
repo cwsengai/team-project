@@ -26,8 +26,8 @@ public class LoginPage extends JDialog {
     private final SessionDataAccessInterface sessionDAO;
 
     // Main panels
-    private JPanel mainPanel;
-    private CardLayout cardLayout;
+    private final JPanel mainPanel;
+    private final CardLayout cardLayout;
 
     public LoginPage(JFrame parent, SessionDataAccessInterface sessionDAO) {
         super(parent, "Billionaire — Login / Signup", true);
