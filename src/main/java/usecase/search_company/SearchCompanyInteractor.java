@@ -45,7 +45,7 @@ public class SearchCompanyInteractor implements SearchCompanyInputBoundary {
         try {
             List<Company> results = dataAccess.searchCompanies(query);
             SearchCompanyOutputData outputData =
-                    new SearchCompanyOutputData(results, true);
+                    new SearchCompanyOutputData(results);
             presenter.presentSearchResults(outputData);
         }
         catch (Exception ex) {

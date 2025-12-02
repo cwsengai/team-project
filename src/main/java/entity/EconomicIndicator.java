@@ -28,7 +28,4 @@ public class EconomicIndicator {
         return lastUpdated;
     }
 
-    public String getApiFunction() {
-        return apiFunction;
-    }
 }

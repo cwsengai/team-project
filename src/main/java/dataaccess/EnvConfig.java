@@ -40,11 +40,4 @@ public class EnvConfig {
         return dotenv.get("APP_ENV", "development");
     }
 
-    public static boolean isDevelopment() {
-        return "development".equalsIgnoreCase(getAppEnv());
-    }
-
-    public static boolean isProduction() {
-        return "production".equalsIgnoreCase(getAppEnv());
-    }
 }

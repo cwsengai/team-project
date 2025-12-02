@@ -17,9 +17,6 @@ public class TradingController {
     /** Interactor for executing user trades. */
     private final SimulatedTradeInputBoundary tradeInteractor;
 
-    /** Presenter for navigating between views. */
-    private final TradingPresenter tradingPresenter;
-
     /** Current logged-in user session. */
     private final InMemorySessionDataAccessObject sessionDAO;
 
@@ -37,7 +34,6 @@ public class TradingController {
                              InMemorySessionDataAccessObject sessionDAO) {
         this.updateMarketInteractor = updateMarketInteractor;
         this.tradeInteractor = tradeInteractor;
-        this.tradingPresenter = tradingPresenter;
         this.sessionDAO = sessionDAO;
     }
 
@@ -67,13 +63,6 @@ public class TradingController {
     }
 
     /**
-     * Triggered by "Back" button to return to the setup view.
-     */
-    public void executeGoBack() {
-        tradingPresenter.prepareGoBackView();
-    }
-
-    /**
      * Opens the Portfolio Summary page for the current user.
      * Triggered by "View All Order History" button.
      */
@@ -81,19 +70,11 @@ public class TradingController {
         final java.util.UUID userId = sessionDAO.getCurrentUserId();
 
         if (userId != null) {
-            app.PortfolioSummaryMain.show(userId, sessionDAO);
+            app.PortfolioSummaryMain.show(userId);
         }
         else {
             System.err.println("No logged-in user; cannot open summary.");
         }
     }
 
-    /**
-     * Returns the current user's session DAO.
-     *
-     * @return sessionDAO
-     */
-    public InMemorySessionDataAccessObject getSessionDAO() {
-        return sessionDAO;
-    }
 }

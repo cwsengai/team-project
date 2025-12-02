@@ -26,30 +26,6 @@ public class PortfolioViewModel {
         this.snapshotTime = snapshotTime;
     }
 
-    public String getPortfolioId() {
-        return portfolioId;
-    }
-
-    public PositionView[] getPositions() {
-        return positions;
-    }
-
-    public double getRealizedGain() {
-        return realizedGain;
-    }
-
-    public double getUnrealizedGain() {
-        return unrealizedGain;
-    }
-
-    public double getTotalGain() {
-        return totalGain;
-    }
-
-    public LocalDateTime getSnapshotTime() {
-        return snapshotTime;
-    }
-
     public String getFormattedRealizedGain() {
         return String.format("$%.2f", realizedGain);
     }

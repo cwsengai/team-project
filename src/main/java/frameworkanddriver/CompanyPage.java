@@ -45,8 +45,6 @@ public class CompanyPage extends JFrame {
 
     // Chart section
     private ChartPanel chartPanel;
-    private JLabel priceLabel;
-    private JLabel changeLabel;
     private String currentTicker;
 
     // Overview section
@@ -383,10 +381,6 @@ public class CompanyPage extends JFrame {
     public void displayError(String message) {
         javax.swing.JOptionPane.showMessageDialog(this, message, "Error",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-
-    public ChartPanel getChartPanel() {
-        return chartPanel;
     }
 
     /**

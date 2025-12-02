@@ -18,9 +18,6 @@ public class SupabaseTestUtils {
     private static final String SUPABASE_ANON_KEY = EnvConfig.getSupabaseAnonKey();
     private static final OkHttpClient client = new OkHttpClient();
 
-    // Set to false to skip user cleanup after test
-    public static final boolean CLEANUP_USER_AFTER = false;
-
     public static String createUserAndGetJwt(String email, String password) throws IOException {
         // 1. Sign up user
         String signupUrl = SUPABASE_URL + "/auth/v1/signup";

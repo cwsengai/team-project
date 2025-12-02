@@ -7,14 +7,9 @@ public class SetupViewModel {
 
     // ViewManager uses this name
     public static final String VIEW_NAME = "setup";
-    public static final String TITLE_LABEL = "Simulation Setup";
     public static final String START_BUTTON_LABEL = "START";
 
     private String error = null;
-
-    public String getViewName() {
-        return VIEW_NAME;
-    }
 
     /**
      * Sets the error message for this view model.

@@ -25,10 +25,6 @@ public class NewsViewModel {
         }
     }
 
-    public List<String> getArticles() {
-        return articles;
-    }
-
     public void setArticles(List<String> articles) {
         this.articles = articles;
     }

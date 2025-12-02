@@ -204,7 +204,7 @@ public class SimulatedMain {
                 viewManagerModel, tradingViewModel, setupViewModel
         );
         final SetupInteractor setupInteractor = new SetupInteractor(
-                finalSetupPresenter, simulationDAO
+                finalSetupPresenter
         );
         final SetupController setupController = new SetupController(setupInteractor);
 

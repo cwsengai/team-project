@@ -15,7 +15,6 @@ import interfaceadapter.setup_simulation.SetupViewModel;
 
 public class SetupView extends JPanel implements PropertyChangeListener {
 
-    public final String viewName = SetupViewModel.VIEW_NAME;
     private final SetupController controller;
     private final SetupViewModel viewModel;
 

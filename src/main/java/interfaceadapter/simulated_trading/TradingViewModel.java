@@ -21,9 +21,6 @@ public class TradingViewModel {
     /** The label for the sell/short button. */
     public static final String SELL_BUTTON_LABEL = "Sell/Short";
 
-    /** The label for the USD amount input field. */
-    public static final String AMOUNT_LABEL = "Amount(USD)";
-
     /** The current state displayed by this ViewModel. */
     private TradingState state = new TradingState();
 

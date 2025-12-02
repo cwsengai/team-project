@@ -24,25 +24,6 @@ public class CompanyListViewModel {
     }
 
     /**
-     * Sets the error message for this view model.
-     *
-     * @param errorMessage the error message to set
-     */
-    public void setErrorMessage(String errorMessage) {
-        String oldValue = this.errorMessage;
-        this.errorMessage = errorMessage;
-        support.firePropertyChange("error", oldValue, errorMessage);
-    }
-
-    public List<CompanyDisplayData> getCompanies() {
-        return companies;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    /**
      * Adds a property change listener to this view model.
      *
      * @param listener the property change listener to add
@@ -51,12 +32,4 @@ public class CompanyListViewModel {
         support.addPropertyChangeListener(listener);
     }
 
-    /**
-     * Removes a property change listener from this view model.
-     *
-     * @param listener the property change listener to remove
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
 }

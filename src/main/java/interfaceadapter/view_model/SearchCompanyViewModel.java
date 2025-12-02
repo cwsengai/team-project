@@ -38,14 +38,6 @@ public class SearchCompanyViewModel {
         support.firePropertyChange("error", oldValue, errorMessage);
     }
 
-    public List<CompanyDisplayData> getSearchResults() {
-        return searchResults;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
     /**
      * Adds a property change listener to this view model.
      *
@@ -55,12 +47,4 @@ public class SearchCompanyViewModel {
         support.addPropertyChangeListener(listener);
     }
 
-    /**
-     * Removes a property change listener from this view model.
-     *
-     * @param listener the property change listener to remove
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
 }

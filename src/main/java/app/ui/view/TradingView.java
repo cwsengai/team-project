@@ -37,7 +37,6 @@ import interfaceadapter.simulated_trading.TradingViewModel;
 
 public class TradingView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "trading";
     private final TradingViewModel viewModel;
     private final TradingController controller;
 

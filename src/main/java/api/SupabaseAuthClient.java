@@ -1,7 +1,6 @@
 package api;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import org.json.JSONObject;
 
@@ -13,21 +12,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class SupabaseAuthClient {
-    /**
-     * Attempts to sign in using the provided email and password.
-     * On successful authentication, this method returns the issued JWT
-     * access token. If authentication fails or the token is unavailable,
-     * it returns {@code null}.
-     *
-     * @param email    the user's email address
-     * @param password the user's password
-     * @return the JWT access token if sign-in succeeds; {@code null} otherwise
-     * @throws IOException if a network or I/O error occurs during the sign-in process
-     */
-    public String loginAndGetJwt(String email, String password) throws IOException {
-        final JSONObject result = signIn(email, password);
-        return result.optString("access_token", null);
-    }
 
     private final String supabaseApiKey;
     private final String supabaseUrl;
@@ -82,23 +66,4 @@ public class SupabaseAuthClient {
         }
     }
 
-    /**
-     * Utility to create a random user (email, password) and sign up or sign in, returning the JWT.
-     * @return the JWT access token if user creation/sign-in succeeds; {@code null} otherwise
-     * @throws IOException if a network or I/O error occurs during the process
-     */
-    public String createRandomUserAndGetJwt() throws IOException {
-        final String email = "user_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
-        final String password = UUID.randomUUID().toString().replace("-", "");
-        JSONObject result;
-        try {
-            result = signUp(email, password);
-        }
-        catch (IOException | org.json.JSONException ex) {
-            // If user exists, try sign in
-            result = signIn(email, password);
-        }
-        // JWT is in result["access_token"]
-        return result.optString("access_token", null);
-    }
 }

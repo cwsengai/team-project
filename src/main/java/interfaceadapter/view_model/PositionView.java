@@ -22,30 +22,6 @@ public class PositionView {
         this.gain = gain;
     }
 
-    public String getTicker() {
-        return ticker;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getAverageCost() {
-        return averageCost;
-    }
-
-    public double getMarketPrice() {
-        return marketPrice;
-    }
-
-    public double getMarketValue() {
-        return marketValue;
-    }
-
-    public double getGain() {
-        return gain;
-    }
-
     public String getFormattedMarketValue() {
         return String.format("$%.2f", marketValue);
     }

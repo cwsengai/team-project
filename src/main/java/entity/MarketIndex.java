@@ -18,10 +18,6 @@ public class MarketIndex {
         this.changePercent = changePercent;
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
     public String getName() {
         return name;
     }

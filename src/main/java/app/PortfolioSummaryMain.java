@@ -15,7 +15,6 @@ import app.ui.PortfolioOrderHistoryTable;
 import app.ui.PortfolioSummaryCard;
 import app.ui.PortfolioSummaryHeader;
 import app.ui.PortfolioSummaryNavBar;
-import usecase.session.SessionDataAccessInterface;
 
 public class PortfolioSummaryMain {
 
@@ -29,9 +28,8 @@ public class PortfolioSummaryMain {
      * portfolio balance.</p>
      *
      * @param userId the unique identifier of the authenticated user
-     * @param sessionDAO the session data access object used for session validation
      */
-    public static void show(UUID userId, SessionDataAccessInterface sessionDAO) {
+    public static void show(UUID userId) {
 
         // === Build the Portfolio Summary window ===
         final JFrame frame = new JFrame("Portfolio Summary");

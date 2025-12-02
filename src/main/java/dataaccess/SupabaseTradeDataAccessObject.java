@@ -25,7 +25,6 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
     private static final Gson gson = new Gson();
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-    @Override
     public void saveTrade(SimulatedTradeRecord trade, UUID userId) {
         // Build JSON body for Supabase REST API
         JsonObject tradeJson = new JsonObject();

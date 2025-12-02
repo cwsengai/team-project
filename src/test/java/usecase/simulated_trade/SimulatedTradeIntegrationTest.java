@@ -22,8 +22,6 @@ public class SimulatedTradeIntegrationTest {
     private SessionDataAccessInterface sessionDAO;
     private SupabaseTradeDataAccessObject tradeDAO;
     private SimulatedTradeInteractor tradeInteractor;
-    // For propagating exceptions from listener to test
-    private RuntimeException listenerException;
 
     @BeforeEach
     void setup() throws IOException {
@@ -39,13 +37,8 @@ public class SimulatedTradeIntegrationTest {
         Account account = new Account(10000.0, userId); // Pass userId to Account
         // Register the trade save observer (mimic SimulatedMain)
         account.addTradeClosedListener(record -> {
-            try {
-                java.util.UUID userUuid = sessionDAO.getCurrentUserId();
-                tradeDAO.saveTrade(record, userUuid);
-            } catch (RuntimeException e) {
-                listenerException = e;
-                throw e;
-            }
+            java.util.UUID userUuid = sessionDAO.getCurrentUserId();
+            tradeDAO.saveTrade(record, userUuid);
         });
         TradingPresenter presenter = new TradingPresenter(
                 new TradingViewModel(),

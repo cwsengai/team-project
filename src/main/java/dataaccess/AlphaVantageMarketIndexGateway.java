@@ -28,7 +28,6 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         this.api = api;
     }
 
-    @Override
     public List<MarketIndex> getMarketIndices() {
         List<MarketIndex> indices = new ArrayList<>();
 
@@ -56,7 +55,6 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         return indices;
     }
 
-    @Override
     public MarketIndex getMarketIndex(String symbol) {
         try {
             String jsonResponse = api.getGlobalQuote(symbol);

@@ -8,13 +8,6 @@ import java.util.UUID;
 public interface SessionDataAccessInterface {
 
     /**
-     * Returns the current user's JWT token.
-     *
-     * @return the JWT token string, or {@code null} if the user is not logged in
-     */
-    String getJwtToken();
-
-    /**
      * Sets the current user's JWT token.
      *
      * @param jwtToken the JWT token to store for the current user

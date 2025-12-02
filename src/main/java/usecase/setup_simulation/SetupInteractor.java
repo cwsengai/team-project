@@ -1,7 +1,5 @@
 package usecase.setup_simulation;
 
-import usecase.simulated_trade.SimulationDataAccessInterface;
-
 /**
  * Interactor for handling the setup simulation use case.
  */
@@ -13,7 +11,7 @@ public class SetupInteractor implements SetupInputBoundary {
 
     private final SetupOutputBoundary presenter;
 
-    public SetupInteractor(SetupOutputBoundary presenter, SimulationDataAccessInterface dataAccess) {
+    public SetupInteractor(SetupOutputBoundary presenter) {
         this.presenter = presenter;
     }
 

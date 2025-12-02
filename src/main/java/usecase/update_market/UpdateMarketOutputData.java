@@ -177,12 +177,4 @@ public class UpdateMarketOutputData {
         return positions;
     }
 
-    /**
-     * Returns the error message or null if none.
-     *
-     * @return error message
-     */
-    public String getError() {
-        return error;
-    }
 }

@@ -10,7 +10,7 @@ import entity.Company;
 public class SearchCompanyOutputData {
     private final List<Company> companies;
 
-    public SearchCompanyOutputData(List<Company> companies, boolean success) {
+    public SearchCompanyOutputData(List<Company> companies) {
         this.companies = companies;
     }
 

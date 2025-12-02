@@ -10,7 +10,6 @@ import usecase.session.SessionDataAccessInterface;
 public class InMemorySessionDataAccessObject implements SessionDataAccessInterface {
     private String jwtToken;
 
-    @Override
     public String getJwtToken() {
         return jwtToken;
     }

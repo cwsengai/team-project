@@ -7,7 +7,6 @@ import app.gateway.SupabaseTradeGatewayAdapter;
 import interfaceadapter.presenter.PortfolioSummaryPresenter;
 import interfaceadapter.view_model.PortfolioSummaryViewModel;
 import usecase.portfolio_statistics.PortfolioStatisticsInteractor;
-import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 
 /**
  * Assembler for creating and executing the portfolio summary workflow.
@@ -38,23 +37,4 @@ public class PortfolioSummaryAssembler {
         return presenter.getViewModel();
     }
 
-    /**
-     * Builds and executes the portfolio summary workflow,
-     * returning the raw output data from the presenter.
-     *
-     * @param userId the ID of the user requesting output data
-     * @return the generated PortfolioStatisticsOutputData
-     */
-    public static PortfolioStatisticsOutputData buildOutputData(UUID userId) {
-        SupabaseTradeGatewayAdapter tradeGateway = new SupabaseTradeGatewayAdapter();
-        SupabasePortfolioGatewayAdapter portfolioGateway = new SupabasePortfolioGatewayAdapter();
-        PortfolioSummaryPresenter presenter = new PortfolioSummaryPresenter();
-
-        PortfolioStatisticsInteractor interactor = new PortfolioStatisticsInteractor(
-                tradeGateway, portfolioGateway, presenter
-        );
-
-        interactor.requestPortfolioSummary(userId);
-        return presenter.getOutputData();
-    }
 }

@@ -27,7 +27,7 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
         final boolean isBuyAction = inputData.isBuyAction();
         final LocalDateTime tradeTime = LocalDateTime.now();
 
-        String errorMessage = validateInput(amount, price, isBuyAction);
+        String errorMessage = validateInput(amount, price);
 
         boolean success = false;
         SimulatedTradeOutputData outputData = null;
@@ -79,10 +79,9 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
      *
      * @param amount trade amount
      * @param price current market price
-     * @param isBuyAction true if buying
      * @return error message string or null if valid
      */
-    private String validateInput(double amount, double price, boolean isBuyAction) {
+    private String validateInput(double amount, double price) {
         String error = null;
 
         final boolean nonPositiveAmount = amount <= 0;

@@ -55,9 +55,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     private static final int RGB_230 = 230;
     private static final int RGB_120 = 120;
     private static final int RGB_215 = 215;
-    private static final int RGB_133 = 133;
-    private static final int RGB_165 = 165;
-    private static final int RGB_168 = 168;
     private static final int RGB_220 = 220;
     private static final int RGB_250 = 250;
 
@@ -123,19 +120,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     public CompanyListPage() {
         // Just build UI - controllers will be set later
         setupUI();
-    }
-
-    private void runInitialDataLoad() {
-        // Run data loading in background to prevent UI freeze
-        if (this.listController != null) {
-            new SwingWorker<Void, Void>() {
-                @Override
-                protected Void doInBackground() {
-                    CompanyListPage.this.listController.loadCompanyList();
-                    return null;
-                }
-            }.execute();
-        }
     }
 
     private void setupUI() {
@@ -703,13 +687,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
      */
     public void setSearchController(SearchCompanyController controller) {
         this.searchController = controller;
-    }
-
-    /**
-     * Loads the initial data for the page.
-     */
-    public void loadInitialData() {
-        runInitialDataLoad();
     }
 
     private void performSearch() {

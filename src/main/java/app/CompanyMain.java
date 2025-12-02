@@ -42,7 +42,6 @@ public class CompanyMain {
      *             specify a stock symbol to preload
      */
     public static void main(String[] args) {
-        final EnvConfig envConfig = new EnvConfig();
         final String apiKey = EnvConfig.getAlphaVantageApiKey();
 
         String preloadedSymbol = null;

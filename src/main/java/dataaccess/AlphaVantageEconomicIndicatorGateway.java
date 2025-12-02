@@ -22,7 +22,6 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
         this.api = api;
     }
 
-    @Override
     public List<EconomicIndicator> getEconomicIndicators() {
         List<EconomicIndicator> indicators = new ArrayList<>();
 
