@@ -74,4 +74,76 @@ class FinancialStatementInteractorTest {
         assertEquals("TSLA", captured[0].symbol());
         assertFalse(captured[0].statements().isEmpty());
     }
+
+    @Test
+    void testEmptyListTriggersError() {
+        FinancialStatementGateway fakeGateway = s -> List.of();
+
+        StringBuilder error = new StringBuilder();
+
+        FinancialStatementOutputBoundary fakePresenter = new FinancialStatementOutputBoundary() {
+            @Override
+            public void presentFinancialStatement(FinancialStatementOutputData data) {
+                fail("Should not present statements when list is empty");
+            }
+            @Override
+            public void presentError(String message) {
+                error.append(message);
+            }
+        };
+
+        FinancialStatementInteractor interactor =
+                new FinancialStatementInteractor(fakeGateway, fakePresenter);
+
+        interactor.execute(new FinancialStatementInputData("EMPTY"));
+
+        assertTrue(error.toString().contains("No financial statements"));
+    }
+
+    @Test
+    void testMultipleStatementsLoopBranches() {
+        // Two different financial statements
+        FinancialStatement fs1 = new FinancialStatement(
+                "TSLA", "USD",
+                LocalDate.of(2022, 12, 31),
+                1000, 500, 300,
+                2000, 1500, 300, 800, 400, 600,
+                900, 200, 100, 50, 20
+        );
+
+        FinancialStatement fs2 = new FinancialStatement(
+                "TSLA", "USD",
+                LocalDate.of(2023, 12, 31),
+                1100, 550, 350,
+                2100, 1600, 320, 820, 420, 620,
+                920, 220, 120, 60, 25
+        );
+
+        FinancialStatementGateway fakeGateway = symbol -> List.of(fs1, fs2);
+
+        final FinancialStatementOutputData[] captured = new FinancialStatementOutputData[1];
+
+        FinancialStatementOutputBoundary fakePresenter = new FinancialStatementOutputBoundary() {
+            @Override
+            public void presentFinancialStatement(FinancialStatementOutputData data) {
+                captured[0] = data;
+            }
+
+            @Override
+            public void presentError(String message) {
+                fail("Should not present error for valid multi-statement list");
+            }
+        };
+
+        FinancialStatementInteractor interactor =
+                new FinancialStatementInteractor(fakeGateway, fakePresenter);
+
+        interactor.execute(new FinancialStatementInputData("TSLA"));
+
+        assertNotNull(captured[0], "Output should not be null");
+        assertEquals("TSLA", captured[0].getSymbol());
+        assertEquals(2, captured[0].getStatements().size(),
+                "Presenter should receive both formatted statements");
+    }
+
 }
