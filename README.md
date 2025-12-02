@@ -167,10 +167,10 @@ We also used Checkstyle to maintain code quality and adhere to coding standards 
 ![Company Details Page](screenshots/company_details_page.png)
 ### Stock Chart Viewer
 ![Stock Chart Viewer](screenshots/stock_chart_viewer.png)
-### Simulated Trading Interface
-![Simulated Trading Interface](screenshots/simulated_trading_interface.png)
 ### User Authentication Page
 ![User Authentication Page](screenshots/user_authentication_page.png)
+### Simulated Trading Interface
+![Simulated Trading Interface](screenshots/simulated_trading_interface.png)
 ### Portfolio Performance Tracking
 ![Portfolio Performance Tracking](screenshots/portfolio_performance_tracking.png)
 
