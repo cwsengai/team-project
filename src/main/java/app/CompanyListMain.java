@@ -113,11 +113,10 @@ public class CompanyListMain {
      * @return the configured API key, or "demo" if none is set
      */
     private static String getApiKey() {
-        final String apiKey = System.getenv("ALPHA_VANTAGE_API_KEY");
-        if (apiKey == null || apiKey.isEmpty()) {
-            System.err.println("WARNING: ALPHA_VANTAGE_API_KEY environment variable not set!");
-            System.err.println("Set it with: export ALPHA_VANTAGE_API_KEY=your_key_here");
-            return "demo";
+        final String apiKey = dataaccess.EnvConfig.getAlphaVantageApiKey();
+        if (apiKey == null || apiKey.isEmpty() || "demo".equals(apiKey)) {
+            System.err.println("WARNING: ALPHA_VANTAGE_API_KEY not configured; using demo key from EnvConfig.");
+            System.err.println("Set it in a .env file or as an environment variable: ALPHA_VANTAGE_API_KEY=your_key_here");
         }
         return apiKey;
     }

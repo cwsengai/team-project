@@ -38,6 +38,8 @@ build/
 .env
 .env*
 
-### uml
+<<<<<<< HEAD
+### UML diagrams ###
 diagrams/
 out/
+>>>>>>> 1480d08 (refactor: organize imports and update API key retrieval method)
