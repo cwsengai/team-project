@@ -43,7 +43,7 @@ class CompanyListInteractorTest {
     @Test
     void testExecute_EmptyList() {
         // Arrange
-        dataAccess.setCompanies(Arrays.asList());
+        dataAccess.setCompanies(List.of());
 
         // Act
         CompanyListInputData inputData = new CompanyListInputData();

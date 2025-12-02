@@ -26,7 +26,7 @@ class SearchCompanyInteractorTest {
     void testExecute_FindsCompanies() {
         // Arrange
         Company apple = createTestCompany("AAPL", "Apple Inc");
-        dataAccess.setSearchResults(Arrays.asList(apple));
+        dataAccess.setSearchResults(List.of(apple));
 
         // Act
         SearchCompanyInputData inputData = new SearchCompanyInputData("AAPL");
@@ -41,7 +41,7 @@ class SearchCompanyInteractorTest {
     @Test
     void testExecute_NoResults() {
         // Arrange
-        dataAccess.setSearchResults(Arrays.asList());
+        dataAccess.setSearchResults(List.of());
 
         // Act
         SearchCompanyInputData inputData = new SearchCompanyInputData("NONEXISTENT");

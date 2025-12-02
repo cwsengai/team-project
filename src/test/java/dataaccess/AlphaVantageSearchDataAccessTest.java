@@ -77,7 +77,7 @@ class AlphaVantageSearchDataAccessTest {
     @Test
     void testUpdateCache() {
         Company newCompany = createCompany("TSLA", "Tesla Inc");
-        searchDataAccess.updateCache(Arrays.asList(newCompany));
+        searchDataAccess.updateCache(List.of(newCompany));
 
         List<Company> results = searchDataAccess.searchCompanies("TSLA");
         assertFalse(results.isEmpty());

@@ -299,7 +299,7 @@ public class CompanyListMain {
             for (String ticker : top3Tickers) {
                 try {
                     count++;
-                    System.out.println(String.format("  Loading %d/3: %s", count, ticker));
+                    System.out.printf("  Loading %d/3: %s%n", count, ticker);
 
                     final Company company = companyGateway.fetchOverview(ticker);
 
