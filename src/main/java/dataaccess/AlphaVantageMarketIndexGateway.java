@@ -42,13 +42,9 @@ public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGate
             // Fetch Dow Jones
             indices.add(getMarketIndex(DOW_SYMBOL));
 
-        }
-catch (InterruptedException ex) {
+        } catch (InterruptedException ex) {
             System.err.println("Error fetching market indices: " + ex.getMessage());
             // Return whatever we managed to fetch, or dummy data
-            if (indices.isEmpty()) {
-                indices = getDummyIndices();
-            }
         }
 
         return indices;
@@ -101,8 +97,7 @@ catch (InterruptedException ex) {
                 double changePercent;
                 try {
                     changePercent = Double.parseDouble(changePercentStr.replace("%", "").trim());
-                }
-catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     System.err.println("Could not parse change percent for " + symbol + ": " + changePercentStr);
                     changePercent = 0.0;
                 }
@@ -123,8 +118,7 @@ catch (NumberFormatException ex) {
             System.err.println("No 'Global Quote' in response for " + symbol);
             return createDummyIndex(symbol);
 
-        }
-catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("Error fetching " + symbol + ": " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -152,21 +146,5 @@ catch (Exception ex) {
             case "DIA" -> new MarketIndex("Dow Jones", 438.56, 0.70, 0.16);
             default -> new MarketIndex(name, 0.0, 0.0, 0.0);
         };
-    }
-
-    /**
-     * Returns a predefined list of major market indices used as fallback data
-     * when external API requests fail. These static placeholder values allow
-     * the application to continue displaying meaningful market information
-     * even when real-time data cannot be retrieved.
-     *
-     * @return a list of fallback {@link MarketIndex} objects
-     */
-    private List<MarketIndex> getDummyIndices() {
-        List<MarketIndex> dummyList = new ArrayList<>();
-        dummyList.add(new MarketIndex("S&P 500", 579.32, 0.75, 0.13));
-        dummyList.add(new MarketIndex("NASDAQ", 520.15, -1.09, -0.21));
-        dummyList.add(new MarketIndex("Dow Jones", 438.56, 0.70, 0.16));
-        return dummyList;
     }
 }
