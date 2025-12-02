@@ -101,34 +101,34 @@ Noticed: these are just the main user stories that split between the team. There
   - Parameters: Additional parameters such as stock symbol, interval.
   - API key 
 
-These are the functions that are used in our project:
-### Time Series Stock Data APIs
+ These are the functions that are used in our project:
+#### Time Series Stock Data APIs
 Used for generating candlestick charts, price history, and real-time updates.
 
 - `TIME_SERIES_INTRADAY`
-- `TIME_SERIES_DAILY_ADJUSTED`
-- `TIME_SERIES_WEEKLY_ADJUSTED`
-- `GLOBAL_QUOTE`
+  - `TIME_SERIES_DAILY_ADJUSTED`
+  - `TIME_SERIES_WEEKLY_ADJUSTED`
+  - `GLOBAL_QUOTE`
 
-### Fundamental Data APIs
+#### Fundamental Data APIs
 Used for company overview pages, financial statements, and stock evaluation metrics.
 
 - `COMPANY_OVERVIEW`
-- `BALANCE_SHEET`
-- `INCOME_STATEMENT`
-- `CASH_FLOW`
+  - `BALANCE_SHEET`
+  - `INCOME_STATEMENT`
+  - `CASH_FLOW`
 
-### Economic Indicators APIs
+#### Economic Indicators APIs
 Used for macroeconomic analysis and context.
 
 - `REAL_GDP`
-- `FEDERAL_FUNDS_RATE`
-- `CPI` (Consumer Price Index)
-- `INFLATION`
-- `UNEMPLOYMENT`
-- `TREASURY_YIELD`
+  - `FEDERAL_FUNDS_RATE`
+  - `CPI` (Consumer Price Index)
+  - `INFLATION`
+  - `UNEMPLOYMENT`
+  - `TREASURY_YIELD`
 
-### Alpha Intelligence (News & Sentiment)
+#### Alpha Intelligence (News & Sentiment)
 Provides market news filtered by ticker or keyword.
 
 - `NEWS_SENTIMENT`
