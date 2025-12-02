@@ -37,6 +37,13 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
         outputBoundary.present(stats);
     }
 
+    /**
+     * Calculates the portfolio statistics using the user's trades and initial balance.
+     * If no trades are provided, returns statistics with zeroed values.
+     *
+     * @param input the portfolio input data containing trade history and initial balance
+     * @return the calculated portfolio statistics
+     */
     public PortfolioStatisticsOutputData calculateStatistics(PortfolioStatisticsInputData input) {
         List<SimulatedTradeRecord> trades = input.getTrades();
         double initialBalance = input.getInitialBalance();
