@@ -3,7 +3,6 @@ package app;
 import java.awt.CardLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.swing.JFrame;
@@ -37,7 +36,7 @@ public class SimulatedMain {
 
     private static final PriceDataAccessInterface baseGateway = new AlphaVantagePriceGateway();
     private static final SimulationDataAccessInterface simulationDAO = new SimulationMarketDataAccess(baseGateway);
-    private static Optional<SetupInputData> setupInput = Optional.empty();
+    private static SetupInputData setupInput = null;
 
     /**
      * Listener responsible for creating and switching to the TradingView once
@@ -63,8 +62,8 @@ public class SimulatedMain {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if (viewManagerModel.getActiveView().equals(TradingViewModel.VIEW_NAME) && setupInput.isPresent()) {
-                final SetupInputData input = setupInput.get();
+            if (viewManagerModel.getActiveView().equals(TradingViewModel.VIEW_NAME) && setupInput != null) {
+                final SetupInputData input = setupInput;
                 final String ticker = input.getTicker();
 
                 // ---------------------------------------------------------------------
@@ -138,7 +137,7 @@ public class SimulatedMain {
                     updateMarketInteractor.loadData(ticker);
                 }).start();
 
-                setupInput = Optional.empty();
+                setupInput = null;
             }
         }
     }
@@ -152,7 +151,7 @@ public class SimulatedMain {
 
         @Override
         public void prepareSuccessView(SetupInputData input) {
-            SimulatedMain.setupInput = Optional.of(input);
+            SimulatedMain.setupInput = input;
             super.prepareSuccessView(input);
         }
     }
@@ -212,8 +211,7 @@ public class SimulatedMain {
                 views, cardLayout, tradingViewModel, viewManagerModel
         ));
 
-        @SuppressWarnings("unused")
-        final ViewManager viewManager = new ViewManager(views, cardLayout, viewManagerModel);
+        new ViewManager(views, cardLayout, viewManagerModel);
 
         // Launch
         viewManagerModel.setActiveView(SetupViewModel.VIEW_NAME);
