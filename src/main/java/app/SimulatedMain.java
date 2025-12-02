@@ -145,7 +145,7 @@ public class SimulatedMain {
 
     // Final Setup Presenter
     public static class FinalSetupPresenter extends SetupPresenter {
-        public FinalSetupPresenter(ViewManagerModel viewManagerModel, TradingViewModel tradingViewModel,
+        public FinalSetupPresenter(ViewManagerModel viewManagerModel,
                                    SetupViewModel setupViewModel) {
             super(viewManagerModel, setupViewModel);
         }
@@ -194,7 +194,7 @@ public class SimulatedMain {
 
         // Setup Assembly
         final SetupPresenter finalSetupPresenter = new FinalSetupPresenter(
-                viewManagerModel, tradingViewModel, setupViewModel
+                viewManagerModel, setupViewModel
         );
         final SetupInteractor setupInteractor = new SetupInteractor(
                 finalSetupPresenter
