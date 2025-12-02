@@ -56,7 +56,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
     // Wallet Table Components
     private final DefaultTableModel walletTableModel;
-    private final JTable walletTable;
 
     private final JTextField amountField = new JTextField(10);
     private final JButton buyButton = new JButton(TradingViewModel.BUY_BUTTON_LABEL);
@@ -78,7 +77,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             "Unrealized Profit",
             "Unrealized Return Rate"};
         walletTableModel = new DefaultTableModel(columnNames, 0);
-        walletTable = new JTable(walletTableModel);
 
         this.setLayout(new BorderLayout());
 
@@ -138,6 +136,8 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
         walletSection.add(walletHeader, BorderLayout.NORTH);
 
+        // Create the table close to its first use to avoid large declaration-to-use distance
+        final JTable walletTable = new JTable(walletTableModel);
         final JScrollPane walletScrollPane = new JScrollPane(walletTable);
         walletScrollPane.setPreferredSize(new Dimension(800, 150));
         walletSection.add(walletScrollPane, BorderLayout.CENTER);
