@@ -56,6 +56,7 @@ public class SimulatedTradeIntegrationTest {
     }
     
     @Test
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     void testTradeSaveFailsIfNoUser() {
         String ticker = "AAPL";
         double amount = 1500.0;

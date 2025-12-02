@@ -32,9 +32,9 @@ public class InMemorySessionDataAccessObjectTest {
     }
 
     @Test
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     void testGetCurrentUserIdThrowsWhenNoJwt() {
         InMemorySessionDataAccessObject sessionDAO = new InMemorySessionDataAccessObject();
-        
         assertThrows(IllegalStateException.class, sessionDAO::getCurrentUserId);
     }
 }
