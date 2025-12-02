@@ -83,8 +83,8 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
             .filter(t -> t.getRealizedPnL() < 0)
             .count();
 
-        // Calculate win rate
-        double winRate = trades.isEmpty() ? 0 : (double) winningTrades / trades.size() * 100;
+        // Calculate win rate (trades is guaranteed non-empty here)
+        double winRate = (double) winningTrades / trades.size() * 100;
 
         // Calculate total return rate
         double totalReturnRate = initialBalance > 0 ? (totalProfit / initialBalance) * 100 : 0;
