@@ -23,7 +23,10 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
         }
         catch (Exception ex) {
             // handle or log as appropriate; returning null for now
-            ex.printStackTrace();
+            System.err.println("AlphaVantageCompanyGateway.fetchOverview error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
 

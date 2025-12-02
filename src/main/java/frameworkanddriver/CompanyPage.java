@@ -1,8 +1,23 @@
 package frameworkanddriver;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import interfaceadapter.controller.CompanyController;
 import interfaceadapter.controller.FinancialStatementController;
@@ -187,7 +202,7 @@ public class CompanyPage extends JFrame {
         JButton tradeButton = new JButton("Trade");
         tradeButton.setBackground(new Color(200, 200, 200));
         tradeButton.setFocusPainted(false);
-        currentTicker = companyVM.symbol;
+        currentTicker = companyVM.getSymbol();
         tradeButton.addActionListener(ex -> enterTradingPage(currentTicker));
 
         headerPanel.add(title, BorderLayout.WEST);
@@ -304,21 +319,21 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     private void refreshCompany() {
         // 1. Error handling (keep unchanged)
-        if (companyVM.error != null) {
-            errorLabel.setText(companyVM.error);
+        if (companyVM.getError() != null) {
+            errorLabel.setText(companyVM.getError());
             return;
         }
 
         errorLabel.setText("");
 
         // 2. Update text information (keep unchanged)
-        nameLabel.setText("Name: " + companyVM.name);
-        sectorLabel.setText("Sector: " + companyVM.sector);
-        industryLabel.setText("Industry: " + companyVM.industry);
-        descriptionArea.setText(companyVM.description);
+        nameLabel.setText("Name: " + companyVM.getName());
+        sectorLabel.setText("Sector: " + companyVM.getSector());
+        industryLabel.setText("Industry: " + companyVM.getIndustry());
+        descriptionArea.setText(companyVM.getDescription());
 
         // 3. Update current Ticker
-        currentTicker = companyVM.symbol;
+        currentTicker = companyVM.getSymbol();
 
         // --- Core modification start ---
         if (chartController != null) {
@@ -339,11 +354,11 @@ public class CompanyPage extends JFrame {
     }
 
     private void refreshFinancials() {
-        fsArea.setText(fsVM.error != null ? "Error: " + fsVM.error : fsVM.formattedOutput);
+        fsArea.setText(fsVM.getError() != null ? "Error: " + fsVM.getError() : fsVM.getFormattedOutput());
     }
 
     private void refreshNews() {
-        newsArea.setText(newsVM.error != null ? "Error: " + newsVM.error : newsVM.formattedNews);
+        newsArea.setText(newsVM.getError() != null ? "Error: " + newsVM.getError() : newsVM.getFormattedNews());
     }
 
     // chart presenter integration:
@@ -410,10 +425,11 @@ public class CompanyPage extends JFrame {
                 app.SimulatedMain.main(new String[] {symbol});
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                System.err.println("Error launching simulated trading: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
             }
         });
-
     }
-
 }

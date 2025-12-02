@@ -57,7 +57,8 @@ public class PortfolioSummaryCard extends JPanel {
         final String tradingSpanString;
         if (stats.earliest == null || stats.latest == null) {
             tradingSpanString = "No trades";
-        } else {
+        }
+        else {
             tradingSpanString = stats.earliest.toLocalDate() + " to " + stats.latest.toLocalDate();
         }
         final JLabel tradingSpanValue = new JLabel(tradingSpanString, SwingConstants.CENTER);

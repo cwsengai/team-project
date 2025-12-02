@@ -57,7 +57,7 @@ public class GetPriceByIntervalInteractor implements PriceInputBoundary {
             SwingUtilities.invokeLater(() -> {
                 if (priceData == null || priceData.isEmpty()) {
                     pricePresenter.presentError(
-                            "No " + interval.name() + " price data found."
+                            "No " + interval.name() + " price data found (not found)."
                     );
                 }
                 else {
