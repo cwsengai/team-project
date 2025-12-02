@@ -1,7 +1,6 @@
 package interfaceadapter.controller;
 
 import usecase.company_list.CompanyListInputBoundary;
-import usecase.company_list.CompanyListInputData;
 
 /**
  * Controller for Company List use case.
