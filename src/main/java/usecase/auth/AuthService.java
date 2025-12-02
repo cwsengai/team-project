@@ -1,5 +1,7 @@
 package usecase.auth;
 
+import java.io.IOException;
+
 import org.json.JSONObject;
 
 import api.SupabaseAuthClient;
@@ -34,7 +36,7 @@ public class AuthService {
             JSONObject result = auth.signIn(email, password);
             return result.optString("access_token", null);
         }
-        catch (Exception exception) {
+        catch (IOException exception) {
             // Login failed
             System.err.println("AuthService.login error: " + exception.getMessage());
             for (StackTraceElement ste : exception.getStackTrace()) {
@@ -56,7 +58,7 @@ public class AuthService {
             JSONObject result = auth.signUp(email, password);
             return result.optString("access_token", null);
         }
-        catch (Exception exception) {
+        catch (IOException exception) {
             // Signup failed
             System.err.println("AuthService.signup error: " + exception.getMessage());
             for (StackTraceElement ste : exception.getStackTrace()) {

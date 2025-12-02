@@ -43,7 +43,7 @@ public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGate
             indices.add(getMarketIndex(DOW_SYMBOL));
 
         }
-catch (Exception ex) {
+catch (InterruptedException ex) {
             System.err.println("Error fetching market indices: " + ex.getMessage());
             // Return whatever we managed to fetch, or dummy data
             if (indices.isEmpty()) {

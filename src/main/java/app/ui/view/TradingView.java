@@ -264,7 +264,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             controller.executeTrade(viewModel.getState().getTicker(), amount, isBuy, currentPrice);
             amountField.setText("");
         }
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Error in trade input or price data."
                     + " Is simulation running?", "Trade Error", JOptionPane.ERROR_MESSAGE);
         }
