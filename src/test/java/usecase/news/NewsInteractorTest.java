@@ -69,7 +69,7 @@ class NewsInteractorTest {
         NewsArticle a1 = new NewsArticle(
                 "AAPL",
                 "Apple launches new product",
-                "http://example.com/1",
+                "https://example.com/1",
                 LocalDateTime.of(2024, 1, 1, 10, 0),
                 "Summary 1",
                 "Reuters"
@@ -78,7 +78,7 @@ class NewsInteractorTest {
         NewsArticle a2 = new NewsArticle(
                 "AAPL",
                 "Apple expands services division",
-                "http://example.com/2",
+                "https://example.com/2",
                 LocalDateTime.of(2024, 1, 2, 11, 0),
                 "Summary 2",
                 "Bloomberg"
