@@ -1,13 +1,16 @@
 package usecase.company_list;
 
-import entity.Company;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import entity.Company;
 
 class CompanyListInteractorTest {
 
@@ -31,7 +34,7 @@ class CompanyListInteractorTest {
 
         // Act
         CompanyListInputData inputData = new CompanyListInputData();
-        interactor.execute(inputData);
+        interactor.execute();
 
         // Assert
         assertTrue(presenter.wasSuccessCalled());
@@ -47,7 +50,7 @@ class CompanyListInteractorTest {
 
         // Act
         CompanyListInputData inputData = new CompanyListInputData();
-        interactor.execute(inputData);
+        interactor.execute();
 
         // Assert
         assertTrue(presenter.wasSuccessCalled());
@@ -61,7 +64,7 @@ class CompanyListInteractorTest {
 
         // Act
         CompanyListInputData inputData = new CompanyListInputData();
-        interactor.execute(inputData);
+        interactor.execute();
 
         // Assert
         assertTrue(presenter.wasFailureCalled());

@@ -36,7 +36,7 @@ public class CompanyListInteractor implements CompanyListInputBoundary {
      * @param inputData input data for the use case (unused but required by boundary)
      */
     @Override
-    public void execute(CompanyListInputData inputData) {
+    public void execute() {
 
         try {
             // Retrieve companies from data access layer

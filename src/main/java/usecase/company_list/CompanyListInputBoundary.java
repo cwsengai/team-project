@@ -9,7 +9,6 @@ public interface CompanyListInputBoundary {
     /**
      * Executes the Company List use case using the provided input data.
      *
-     * @param inputData the input data for requesting the company list
      */
-    void execute(CompanyListInputData inputData);
+    void execute();
 }

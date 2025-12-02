@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import entity.ChartViewModel;
-import entity.Company;
-import entity.CompanyDetailViewModel;
-import entity.FinancialStatement;
-import entity.NewsArticle;
 import entity.PricePoint;
 import entity.TimeInterval;
 import frameworkanddriver.CompanyDetailPage;
@@ -22,11 +18,6 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
 
     public CompanyDetailPresenter(CompanyDetailPage view) {
         this.view = view;
-    }
-
-    private void presentCompanyDetail(Company companyOverview, FinancialStatement financials, List<NewsArticle> news) {
-        CompanyDetailViewModel viewModel = new CompanyDetailViewModel(companyOverview, financials, news);
-        view.updateCompanyDetails(viewModel);
     }
 
     @Override
@@ -59,13 +50,13 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
         
         if (hasOHLCData && !priceData.isEmpty()) {
             // Create candlestick chart with OHLC data
-            List<Double> openPrices = priceData.stream()
+            priceData.stream()
                     .map(p -> p.getOpen() != null ? p.getOpen() : 0.0)
                     .collect(Collectors.toList());
             priceData.stream()
                     .map(p -> p.getHigh() != null ? p.getHigh() : 0.0)
                     .collect(Collectors.toList());
-            List<Double> lowPrices = priceData.stream()
+            priceData.stream()
                     .map(p -> p.getLow() != null ? p.getLow() : 0.0)
                     .collect(Collectors.toList());
             List<Double> closePrices = priceData.stream()

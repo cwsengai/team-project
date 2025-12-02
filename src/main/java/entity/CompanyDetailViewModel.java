@@ -1,27 +1,18 @@
 package entity;
 
-import java.util.List;
-
 public class CompanyDetailViewModel {
 
-    private static final String NOT_AVAILABLE = "N/A";
     private static final double TRILLION_THRESHOLD = 1e12;
     private static final double BILLION_THRESHOLD = 1e9;
     private static final double MILLION_THRESHOLD = 1e6;
 
     private final String ticker;
 
-    public CompanyDetailViewModel(Company company, FinancialStatement financials, List<NewsArticle> news) {
+    public CompanyDetailViewModel(Company company, FinancialStatement financials) {
         this.ticker = company.getSymbol();
-        String name = company.getName();
-        String sector = company.getSector();
-        String marketCapFormatted = formatLargeNumber(company.getMarketCapitalization());
+        formatLargeNumber(company.getMarketCapitalization());
         // (e.g., $2.8T)
-        String peRatioFormatted = String.format("%.2f", company.getPeRatio());
 
-        String latestBalanceSheetPeriod;
-        String latestNetIncome;
-        String latestRevenue;
         if (financials != null) {
             formatLargeNumber(financials.getTotalRevenue());
             formatLargeNumber(financials.getNetIncome());
@@ -33,7 +24,7 @@ public class CompanyDetailViewModel {
         return ticker;
     }
 
-    private String formatLargeNumber(double number) {
+    private void formatLargeNumber(double number) {
         final String formattedNumber;
         if (number >= TRILLION_THRESHOLD) {
             formattedNumber = String.format("$%.1fT", number / TRILLION_THRESHOLD);
@@ -47,6 +38,5 @@ public class CompanyDetailViewModel {
         else {
             formattedNumber = String.format("$%.0f", number);
         }
-        return formattedNumber;
     }
 }

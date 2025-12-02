@@ -21,6 +21,6 @@ public class CompanyListController {
     public void loadCompanyList() {
         // Create empty input data (no parameters needed for loading full list)
         CompanyListInputData inputData = new CompanyListInputData();
-        interactor.execute(inputData);
+        interactor.execute();
     }
 }
