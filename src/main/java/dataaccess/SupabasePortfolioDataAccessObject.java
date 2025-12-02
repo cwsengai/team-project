@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,8 +18,13 @@ public class SupabasePortfolioDataAccessObject {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     /**
-     * Get the initial balance for a user's portfolio.
-     * If no portfolio exists, returns the default initial balance.
+     * Retrieves the initial balance for the specified user's portfolio.
+     * If no portfolio record is found for the user, this method returns the
+     * application's default initial balance value.
+     *
+     * @param userId the unique identifier of the user whose initial balance is being requested
+     * @return the user's initial portfolio balance, or the default value if none is stored
+     * @throws RuntimeException if the Supabase service role key is missing or not configured
      */
     public double getInitialBalance(UUID userId) {
         String url = EnvConfig.getSupabaseUrl() + "/rest/v1/portfolio?user_id=eq." + userId.toString();
@@ -46,7 +50,8 @@ public class SupabasePortfolioDataAccessObject {
 
             ResponseBody responseBody = response.body();
             if (responseBody == null) {
-                return 100000.00; // Default initial balance
+                // Default initial balance
+                return 100000.00;
             }
 
             String resp = responseBody.string();
@@ -64,16 +69,25 @@ public class SupabasePortfolioDataAccessObject {
                 return portfolio.get("cash_balance").getAsDouble();
             }
 
-            return 100000.00; // Fallback
+            // Fallback
+            return 100000.00;
 
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to fetch portfolio via Supabase REST API", e);
+        }
+        catch (IOException ex) {
+            throw new RuntimeException("Failed to fetch portfolio via Supabase REST API", ex);
         }
     }
 
     /**
-     * Create or update a portfolio record for a user.
-     * This should be called when setting up a simulation.
+     * Creates or updates the portfolio record for the specified user.
+     * This method is typically invoked during simulation setup to ensure
+     * that the user's initial balance is stored in the database. If a
+     * portfolio entry already exists for the user, it is updated; otherwise,
+     * a new record is created.
+     *
+     * @param userId the unique identifier of the user whose portfolio is being saved
+     * @param initialBalance the initial balance to store in the user's portfolio
+     * @throws RuntimeException if the Supabase service role key is missing or not configured
      */
     public void savePortfolio(UUID userId, double initialBalance) {
         // First check if portfolio exists
@@ -121,7 +135,8 @@ public class SupabasePortfolioDataAccessObject {
                         .addHeader("Content-Type", "application/json")
                         .patch(body)
                         .build();
-            } else {
+            }
+            else {
                 // Create new portfolio
                 url = EnvConfig.getSupabaseUrl() + "/rest/v1/portfolio";
                 request = new Request.Builder()
@@ -141,8 +156,9 @@ public class SupabasePortfolioDataAccessObject {
                 }
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save portfolio via Supabase REST API", e);
+        }
+        catch (IOException ex) {
+            throw new RuntimeException("Failed to save portfolio via Supabase REST API", ex);
         }
     }
 }

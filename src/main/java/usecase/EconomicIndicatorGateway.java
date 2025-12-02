@@ -1,15 +1,19 @@
 package usecase;
 
-import entity.EconomicIndicator;
 import java.util.List;
+
+import entity.EconomicIndicator;
 
 /**
  * Gateway interface for fetching economic indicators.
  */
 public interface EconomicIndicatorGateway {
+
     /**
-     * Fetch all economic indicators.
-     * @return List of economic indicators
+     * Fetches all available economic indicators.
+     *
+     * @return a list of economic indicators retrieved from the data source
+     * @throws Exception if indicators cannot be fetched
      */
     List<EconomicIndicator> getEconomicIndicators() throws Exception;
 }

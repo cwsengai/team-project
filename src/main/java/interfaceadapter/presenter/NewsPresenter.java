@@ -29,5 +29,3 @@ public class NewsPresenter implements NewsOutputBoundary {
     }
 
 }
-
-

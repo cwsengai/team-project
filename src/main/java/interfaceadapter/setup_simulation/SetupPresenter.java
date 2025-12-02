@@ -1,9 +1,9 @@
 package interfaceadapter.setup_simulation;
 
-import interfaceadapter.view_model.ViewManagerModel;
 import interfaceadapter.simulated_trading.TradingViewModel;
-import usecase.setup_simulation.SetupOutputBoundary;
+import interfaceadapter.view_model.ViewManagerModel;
 import usecase.setup_simulation.SetupInputData;
+import usecase.setup_simulation.SetupOutputBoundary;
 
 public class SetupPresenter implements SetupOutputBoundary {
 
@@ -11,7 +11,9 @@ public class SetupPresenter implements SetupOutputBoundary {
     protected final TradingViewModel tradingViewModel;
     protected final SetupViewModel setupViewModel;
 
-    public SetupPresenter(ViewManagerModel viewManagerModel, TradingViewModel tradingViewModel, SetupViewModel setupViewModel) {
+    public SetupPresenter(ViewManagerModel viewManagerModel,
+                          TradingViewModel tradingViewModel,
+                          SetupViewModel setupViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.tradingViewModel = tradingViewModel;
         this.setupViewModel = setupViewModel;

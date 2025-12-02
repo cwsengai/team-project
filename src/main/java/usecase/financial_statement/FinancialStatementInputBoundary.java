@@ -1,6 +1,5 @@
 package usecase.financial_statement;
 
-
 /**
  * Handles input for the financial statement use case.
  */

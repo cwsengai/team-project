@@ -1,7 +1,8 @@
 package usecase.search_company;
 
-import entity.Company;
 import java.util.List;
+
+import entity.Company;
 
 public interface SearchCompanyDataAccess {
     /**

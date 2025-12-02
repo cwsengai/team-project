@@ -39,13 +39,13 @@ public class LoginPage extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // === Top Buttons ===
-        JButton loginTab = new JButton("Login");
-        JButton signupTab = new JButton("Sign Up");
+        final JButton loginTab = new JButton("Login");
+        final JButton signupTab = new JButton("Sign Up");
 
         loginTab.setFocusable(false);
         signupTab.setFocusable(false);
 
-        JPanel tabPanel = new JPanel(new GridLayout(1, 2));
+        final JPanel tabPanel = new JPanel(new GridLayout(1, 2));
         tabPanel.add(loginTab);
         tabPanel.add(signupTab);
 
@@ -71,27 +71,27 @@ public class LoginPage extends JDialog {
     // LOGIN PANEL
     // ===============================================================
     private JPanel buildLoginPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+        final JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
-        JLabel title = new JLabel("Log In", SwingConstants.CENTER);
+        final JLabel title = new JLabel("Log In", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
 
-        JTextField emailField = new JTextField();
+        final JTextField emailField = new JTextField();
         emailField.setBorder(BorderFactory.createTitledBorder("Email"));
 
-        JPasswordField passwordField = new JPasswordField();
+        final JPasswordField passwordField = new JPasswordField();
         passwordField.setBorder(BorderFactory.createTitledBorder("Password"));
 
-        JLabel status = new JLabel("", SwingConstants.CENTER);
+        final JLabel status = new JLabel("", SwingConstants.CENTER);
         status.setForeground(Color.RED);
 
-        JButton loginBtn = new JButton("Log In");
+        final JButton loginBtn = new JButton("Log In");
 
-        loginBtn.addActionListener((ActionEvent e) -> {
+        loginBtn.addActionListener((ActionEvent presslogin) -> {
             try {
-                String email = emailField.getText().trim();
-                String password = new String(passwordField.getPassword());
+                final String email = emailField.getText().trim();
+                final String password = new String(passwordField.getPassword());
 
                 if (email.isEmpty() || password.isEmpty()) {
                     status.setText("Missing email or password");
@@ -111,7 +111,8 @@ public class LoginPage extends JDialog {
                 success = true;
                 dispose();
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ex.printStackTrace();
                 status.setText("Login failed.");
             }
@@ -130,27 +131,27 @@ public class LoginPage extends JDialog {
     // SIGNUP PANEL
     // ===============================================================
     private JPanel buildSignupPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+        final JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
-        JLabel title = new JLabel("Create Account", SwingConstants.CENTER);
+        final JLabel title = new JLabel("Create Account", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
 
-        JTextField emailField = new JTextField();
+        final JTextField emailField = new JTextField();
         emailField.setBorder(BorderFactory.createTitledBorder("Email"));
 
-        JPasswordField p1 = new JPasswordField();
+        final JPasswordField p1 = new JPasswordField();
         p1.setBorder(BorderFactory.createTitledBorder("Password"));
 
-        JLabel status = new JLabel("", SwingConstants.CENTER);
+        final JLabel status = new JLabel("", SwingConstants.CENTER);
         status.setForeground(Color.RED);
 
-        JButton signupBtn = new JButton("Sign Up");
+        final JButton signupBtn = new JButton("Sign Up");
 
-        signupBtn.addActionListener(e -> {
+        signupBtn.addActionListener(presssignup -> {
             try {
-                String email = emailField.getText().trim();
-                String password = new String(p1.getPassword());
+                final String email = emailField.getText().trim();
+                final String password = new String(p1.getPassword());
 
                 if (email.isEmpty() || password.isEmpty()) {
                     status.setText("Email and password are required.");
@@ -170,7 +171,8 @@ public class LoginPage extends JDialog {
                 success = true;
                 dispose();
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ex.printStackTrace();
                 status.setText("Signup failed.");
             }
@@ -188,6 +190,11 @@ public class LoginPage extends JDialog {
     // ===============================================================
     // SUCCESS FLAG
     // ===============================================================
+    /**
+     * Indicates whether the operation completed successfully.
+     *
+     * @return true if the operation succeeded; false otherwise
+     */
     public boolean wasSuccessful() {
         return success;
     }

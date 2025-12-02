@@ -1,16 +1,16 @@
 package dataaccess;
 
-import api.Api;
-import entity.MarketIndex;
-import org.json.JSONObject;
-import usecase.MarketIndexGateway;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
+import api.Api;
+import entity.MarketIndex;
+import usecase.MarketIndexGateway;
+
 /**
  * Implementation of MarketIndexGateway using Alpha Vantage API.
- *
  * Uses ETFs that track major indices:
  * - SPY: Tracks S&P 500
  * - QQQ: Tracks NASDAQ-100
@@ -20,9 +20,9 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
     private final Api api;
 
     // ETF symbols that track major indices
-    private static final String SP500_SYMBOL = "SPY";    // S&P 500 ETF
-    private static final String NASDAQ_SYMBOL = "QQQ";   // NASDAQ-100 ETF
-    private static final String DOW_SYMBOL = "DIA";      // Dow Jones ETF
+    private static final String SP500_SYMBOL = "SPY";
+    private static final String NASDAQ_SYMBOL = "QQQ";
+    private static final String DOW_SYMBOL = "DIA";
 
     public AlphaVantageMarketIndexGateway(Api api) {
         this.api = api;
@@ -35,17 +35,18 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         try {
             // Fetch S&P 500
             indices.add(getMarketIndex(SP500_SYMBOL));
-            Thread.sleep(12000); // Rate limit
+            Thread.sleep(12000);
 
             // Fetch NASDAQ
             indices.add(getMarketIndex(NASDAQ_SYMBOL));
-            Thread.sleep(12000); // Rate limit
+            Thread.sleep(12000);
 
             // Fetch Dow Jones
             indices.add(getMarketIndex(DOW_SYMBOL));
 
-        } catch (Exception e) {
-            System.err.println("Error fetching market indices: " + e.getMessage());
+        }
+        catch (Exception ex) {
+            System.err.println("Error fetching market indices: " + ex.getMessage());
             // Return whatever we managed to fetch, or dummy data
             if (indices.isEmpty()) {
                 indices = getDummyIndices();
@@ -90,14 +91,15 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
 
                 String indexSymbol = quote.optString("01. symbol", symbol);
                 double price = quote.optDouble("05. price", 0.0);
-                double change = quote.optDouble("09. change", 0.0);
+                final double change = quote.optDouble("09. change", 0.0);
                 String changePercentStr = quote.optString("10. change percent", "0%");
 
                 // Parse change percent (remove % sign)
                 double changePercent = 0.0;
                 try {
                     changePercent = Double.parseDouble(changePercentStr.replace("%", "").trim());
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException ex) {
                     System.err.println("Could not parse change percent for " + symbol + ": " + changePercentStr);
                     changePercent = 0.0;
                 }
@@ -118,9 +120,10 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
             System.err.println("No 'Global Quote' in response for " + symbol);
             return createDummyIndex(symbol);
 
-        } catch (Exception e) {
-            System.err.println("Error fetching " + symbol + ": " + e.getMessage());
-            e.printStackTrace();
+        }
+        catch (Exception ex) {
+            System.err.println("Error fetching " + symbol + ": " + ex.getMessage());
+            ex.printStackTrace();
             return createDummyIndex(symbol);
         }
     }
@@ -155,7 +158,12 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
     }
 
     /**
-     * Fallback dummy data if all API calls fail.
+     * Returns a predefined list of major market indices used as fallback data
+     * when external API requests fail. These static placeholder values allow
+     * the application to continue displaying meaningful market information
+     * even when real-time data cannot be retrieved.
+     *
+     * @return a list of fallback {@link MarketIndex} objects
      */
     private List<MarketIndex> getDummyIndices() {
         List<MarketIndex> dummyList = new ArrayList<>();

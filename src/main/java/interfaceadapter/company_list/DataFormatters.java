@@ -4,7 +4,7 @@ package interfaceadapter.company_list;
  * Utility class for formatting financial data for presentation.
  * Handles market capitalization and P/E ratio formatting.
  *
- * Location: Interface Adapter Layer (company_list package)
+ * <p>Location: Interface Adapter Layer (company_list package)
  * Purpose: Format data for CompanyDisplayData
  */
 public class DataFormatters {
@@ -17,11 +17,14 @@ public class DataFormatters {
     public static String formatMarketCap(double marketCap) {
         if (marketCap >= 1_000_000_000_000.0) {
             return String.format("$%.1fT", marketCap / 1_000_000_000_000.0);
-        } else if (marketCap >= 1_000_000_000.0) {
+        }
+        else if (marketCap >= 1_000_000_000.0) {
             return String.format("$%.1fB", marketCap / 1_000_000_000.0);
-        } else if (marketCap >= 1_000_000.0) {
+        }
+        else if (marketCap >= 1_000_000.0) {
             return String.format("$%.1fM", marketCap / 1_000_000.0);
-        } else {
+        }
+        else {
             return String.format("$%.0f", marketCap);
         }
     }

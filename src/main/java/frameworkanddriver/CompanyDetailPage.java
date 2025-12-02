@@ -45,7 +45,7 @@ public class CompanyDetailPage extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
+        final JPanel headerPanel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("Company Chart", SwingConstants.LEFT);
         title.setFont(new Font("SansSerif", Font.BOLD, 22));
 
@@ -62,11 +62,11 @@ public class CompanyDetailPage extends JFrame {
         chartPanel.setMinimumSize(new java.awt.Dimension(1000, 600));
 
         // Interval buttons
-        JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        final JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JButton btn5min = new JButton("5min");
         JButton btn1day = new JButton("1 day");
         JButton btn1week = new JButton("1 week");
-        JButton zoomIn = new JButton("Zoom in");
+        final JButton zoomIn = new JButton("Zoom in");
 
         btn5min.addActionListener(e -> {
             if (chartController != null && currentTicker != null) {
@@ -87,7 +87,7 @@ public class CompanyDetailPage extends JFrame {
         // Bind Zoom In button event (this was missing!)
         zoomIn.addActionListener(e -> {
             if (chartPanel != null) {
-                chartPanel.performZoom(); // Call the public method we wrote in ChartPanel
+                chartPanel.performZoom();
             }
         });
 
@@ -107,7 +107,11 @@ public class CompanyDetailPage extends JFrame {
     }
 
     /**
-     * Update company details UI with view model data
+     * Updates the company details section of the UI using the data provided
+     * by the given {@link CompanyDetailViewModel}. If the supplied view model
+     * is {@code null}, no update is performed.
+     *
+     * @param viewModel the view model containing the latest company detail data
      */
     public void updateCompanyDetails(CompanyDetailViewModel viewModel) {
         if (viewModel == null) {
@@ -129,7 +133,10 @@ public class CompanyDetailPage extends JFrame {
     }
 
     /**
-     * Update the chart with new data
+     * Updates the chart display using the provided {@link entity.ChartViewModel}.
+     * If the chart panel has not been initialized, the update request is ignored.
+     *
+     * @param chartViewModel the view model containing the latest chart data
      */
     public void updateChart(entity.ChartViewModel chartViewModel) {
         if (chartPanel != null) {
@@ -138,14 +145,21 @@ public class CompanyDetailPage extends JFrame {
     }
 
     /**
-     * Set the chart controller for time interval changes
+     * Sets the chart controller responsible for handling time interval
+     * selection and related chart update actions.
+     *
+     * @param controller the interval controller to associate with this chart view
      */
     public void setChartController(IntervalController controller) {
         this.chartController = controller;
     }
 
     /**
-     * Display error message
+     * Displays an error message to the user in a modal dialog. This method uses
+     * a standard Swing {@link javax.swing.JOptionPane} to show the message with
+     * an error icon.
+     *
+     * @param message the error message to display
      */
     public void displayError(String message) {
         javax.swing.JOptionPane.showMessageDialog(this, message, "Error", 
@@ -153,7 +167,11 @@ public class CompanyDetailPage extends JFrame {
     }
 
     /**
-     * Get the chart panel for error display
+     * Returns the underlying {@link ChartPanel} used by this view component.
+     * This allows presenters or controllers to send error messages or chart updates
+     * directly to the panel when needed.
+     *
+     * @return the chart panel associated with this view
      */
     public ChartPanel getChartPanel() {
         return chartPanel;
