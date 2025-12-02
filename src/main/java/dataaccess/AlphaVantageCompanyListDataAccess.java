@@ -41,12 +41,7 @@ public class AlphaVantageCompanyListDataAccess implements CompanyListDataAccess 
                 }
 
                 // Rate limit handling
-                if (useSampleData) {
-                    Thread.sleep(12000);
-                }
-                else {
-                    Thread.sleep(12000);
-                }
+                Thread.sleep(12000);
 
             }
             catch (InterruptedException ex) {

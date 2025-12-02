@@ -71,8 +71,7 @@ public class Position {
                 else {
                     realizedPnl = priceDifference * quantity;
 
-                    final int remaining = tradeQty - quantity;
-                    quantity = remaining;
+                    quantity = tradeQty - quantity;
                     isLong = !isLong;
                     avgPrice = tradePrice;
                 }

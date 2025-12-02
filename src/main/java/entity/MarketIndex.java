@@ -44,12 +44,7 @@ public class MarketIndex {
      * @return the formatted price value
      */
     public String getFormattedPrice() {
-        if (price >= 1000) {
-            return String.format("%.2f", price);
-        }
-        else {
-            return String.format("%.2f", price);
-        }
+        return String.format("%.2f", price);
     }
 
     /**

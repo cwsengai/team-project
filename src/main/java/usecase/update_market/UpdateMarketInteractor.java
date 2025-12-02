@@ -108,9 +108,8 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
         }
 
         double currentPrice = currentMinuteTicks.get(tickIndex);
-        String currentTicker = this.simulationTicker;
 
-        double currentEquity = account.calculateTotalEquity(currentPrice, currentTicker);
+        double currentEquity = account.calculateTotalEquity(currentPrice, this.simulationTicker);
 
         Map<String, Position> currentPositions = account.getPositions();
         historyTicksForChart.add(currentPrice);

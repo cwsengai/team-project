@@ -266,8 +266,7 @@ public class Account {
      * @return losing trades count
      */
     public int getLosingTrades() {
-        final int result = totalTrades - winningTrades;
-        return result;
+        return totalTrades - winningTrades;
     }
 
     /**
