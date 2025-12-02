@@ -26,8 +26,6 @@ public class CompanyDetailViewModel {
             formatLargeNumber(financials.getTotalRevenue());
             formatLargeNumber(financials.getNetIncome());
         }
-        else {
-        }
 
     }
 
