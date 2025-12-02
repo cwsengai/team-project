@@ -113,7 +113,6 @@ public class LoginPage extends JDialog {
 
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 status.setText("Login failed.");
             }
         });
@@ -173,7 +172,6 @@ public class LoginPage extends JDialog {
 
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 status.setText("Signup failed.");
             }
         });

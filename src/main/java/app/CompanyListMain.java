@@ -54,7 +54,6 @@ public class CompanyListMain {
                 createAndShowGUI();
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 JOptionPane.showMessageDialog(null,
                         "Error starting application: " + ex.getMessage(),
                         "Error",
@@ -233,7 +232,6 @@ public class CompanyListMain {
             }
             catch (Exception ex) {
                 System.err.println("Error during data loading: " + ex.getMessage());
-                ex.printStackTrace();
             }
             return null;
         }

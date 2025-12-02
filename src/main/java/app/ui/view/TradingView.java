@@ -1,6 +1,12 @@
 package app.ui.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -8,7 +14,19 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -145,7 +163,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             }
             catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Failed to launch Company List: " + ex.getMessage());
-                ex.printStackTrace();
             }
         });
 
@@ -160,7 +177,6 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
                 controller.executeOpenPortfolioSummary();
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Failed to open summary: " + ex.getMessage());
             }
         });

@@ -22,8 +22,7 @@ public class AlphaVantageCompanyGateway implements CompanyGateway {
             jsonString = api.getOverview(symbol);
         }
         catch (Exception ex) {
-            // handle or log as appropriate; returning null for now
-            ex.printStackTrace();
+            System.err.println("Error fetching company overview: " + ex.getMessage());
             return null;
         }
 
