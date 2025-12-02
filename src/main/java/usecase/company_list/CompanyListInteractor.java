@@ -33,7 +33,6 @@ public class CompanyListInteractor implements CompanyListInputBoundary {
      * Executes the Company List use case by retrieving company data,
      * applying business rules, and forwarding the result to the presenter.
      *
-     * @param inputData input data for the use case (unused but required by boundary)
      */
     @Override
     public void execute() {

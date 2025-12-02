@@ -2,43 +2,12 @@ package frameworkanddriver;
 
 import javax.swing.JFrame;
 
-import entity.CompanyDetailViewModel;
-import interfaceadapter.controller.IntervalController;
-
 /**
  * Company detail page UI component that displays stock chart.
  */
 public class CompanyDetailPage extends JFrame {
 
     private ChartPanel chartPanel;
-    private IntervalController chartController;
-    private String currentTicker;
-
-    /**
-     * Updates the company details section of the UI using the data provided
-     * by the given {@link CompanyDetailViewModel}. If the supplied view model
-     * is {@code null}, no update is performed.
-     *
-     * @param viewModel the view model containing the latest company detail data
-     */
-    public void updateCompanyDetails(CompanyDetailViewModel viewModel) {
-        if (viewModel == null) {
-            return;
-        }
-
-        // Store ticker for chart updates
-        this.currentTicker = viewModel.getTicker();
-        
-        // Update chart controller with new ticker
-        if (chartController != null) {
-            chartController.setCurrentTicker(this.currentTicker);
-        }
-        
-        // Tell ChartPanel the current stock ticker, otherwise it won't know which stock to zoom
-        if (chartPanel != null) {
-            chartPanel.enableZoom(this.currentTicker);
-        }
-    }
 
     /**
      * Updates the chart display using the provided {@link entity.ChartViewModel}.
