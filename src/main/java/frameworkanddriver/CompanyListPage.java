@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -739,7 +740,19 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (null != evt.getPropertyName()) {
             switch (evt.getPropertyName()) {
-                case "companies", "searchResults" -> SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
+                case "companies", "searchResults" -> {
+                    final Object newValue = evt.getNewValue();
+                    if (newValue instanceof List<?> rawList) {
+                        final List<CompanyDisplayData> companies = rawList.stream()
+                                .filter(CompanyDisplayData.class::isInstance)
+                                .map(CompanyDisplayData.class::cast)
+                                .collect(Collectors.toList());
+                        SwingUtilities.invokeLater(() -> updateTable(companies));
+                    }
+                    else {
+                        SwingUtilities.invokeLater(() -> updateTable(null));
+                    }
+                }
                 case "error" -> {
                     final String error = (String) evt.getNewValue();
                     SwingUtilities.invokeLater(() -> {
