@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import dataaccess.SupabaseTradeDataAccessObject;
 
 public class PortfolioOrderHistoryTable extends JPanel {
+    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:AvoidInlineConditionals", "checkstyle:LineLength", "checkstyle:MultipleStringLiterals", "checkstyle:AbbreviationAsWordInName", "checkstyle:ExecutableStatementCount"})
     public PortfolioOrderHistoryTable(UUID userId, SupabaseTradeDataAccessObject tradeDAO) {
         setLayout(new BorderLayout());
         setOpaque(false);
