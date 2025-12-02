@@ -109,7 +109,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
 
                     final PricePoint pricePoint = new PricePoint(
                             dateTime,
-                            open, high, low, close, volume
+                            open, high, low, close
                     );
 
                     pricePoints.add(pricePoint);

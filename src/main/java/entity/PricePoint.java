@@ -14,7 +14,7 @@ public class PricePoint {
     private final Double close;
 
     public PricePoint(LocalDateTime timestamp,
-                      Double open, Double high, Double low, Double close, Double volume) {
+                      Double open, Double high, Double low, Double close) {
         this.timestamp = timestamp;
         this.open = open;
         this.high = high;

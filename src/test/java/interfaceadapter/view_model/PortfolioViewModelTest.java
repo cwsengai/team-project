@@ -17,7 +17,6 @@ public class PortfolioViewModelTest {
     @Test
     void testPortfolioViewModelFormatting() {
         LocalDateTime t = LocalDateTime.of(2025, 6, 7, 8, 9, 10);
-        PositionView[] positions = new PositionView[] { new PositionView(2.0, 1.0) };
         PortfolioViewModel vm = new PortfolioViewModel(10.0, 5.0, 15.0, t);
 
         assertEquals("$10.00", vm.getFormattedRealizedGain());
