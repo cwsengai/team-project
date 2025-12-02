@@ -43,7 +43,7 @@ public class CompanyMain {
      */
     public static void main(String[] args) {
         final EnvConfig envConfig = new EnvConfig();
-        final String apiKey = envConfig.getAlphaVantageApiKey();
+        final String apiKey = EnvConfig.getAlphaVantageApiKey();
 
         String preloadedSymbol = null;
 

@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.jetbrains.annotations.NotNull;
 import usecase.auth.AuthService;
 import usecase.session.SessionDataAccessInterface;
 
@@ -150,6 +151,19 @@ public class LoginPage extends JDialog {
         final JLabel status = new JLabel("", SwingConstants.CENTER);
         status.setForeground(Color.RED);
 
+        final JButton signupBtn = getJButton(emailField, p1, status);
+
+        panel.add(title);
+        panel.add(emailField);
+        panel.add(p1);
+        panel.add(signupBtn);
+        panel.add(status);
+
+        return panel;
+    }
+
+    @NotNull
+    private JButton getJButton(JTextField emailField, JPasswordField p1, JLabel status) {
         final JButton signupBtn = new JButton("Sign Up");
 
         signupBtn.addActionListener(presssignup -> {
@@ -184,14 +198,7 @@ public class LoginPage extends JDialog {
                 status.setText("Signup failed.");
             }
         });
-
-        panel.add(title);
-        panel.add(emailField);
-        panel.add(p1);
-        panel.add(signupBtn);
-        panel.add(status);
-
-        return panel;
+        return signupBtn;
     }
 
     // ===============================================================
