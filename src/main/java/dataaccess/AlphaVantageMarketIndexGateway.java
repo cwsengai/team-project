@@ -123,6 +123,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         }
         catch (Exception ex) {
             System.err.println("Error fetching " + symbol + ": " + ex.getMessage());
+            ex.printStackTrace();
             return createDummyIndex(symbol);
         }
     }

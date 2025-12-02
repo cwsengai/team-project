@@ -1,9 +1,8 @@
 package usecase.auth;
 
-import org.json.JSONObject;
-
 import api.SupabaseAuthClient;
 import dataaccess.EnvConfig;
+import org.json.JSONObject;
 
 public class AuthService {
 
@@ -21,7 +20,7 @@ public class AuthService {
             JSONObject result = auth.signIn(email, password);
             return result.optString("access_token", null);
         } catch (Exception e) {
-            System.err.println("Login failed: " + e.getMessage());
+            e.printStackTrace();
             return null; // Login failed
         }
     }
@@ -31,7 +30,7 @@ public class AuthService {
             JSONObject result = auth.signUp(email, password);
             return result.optString("access_token", null);
         } catch (Exception e) {
-            System.err.println("Signup failed: " + e.getMessage());
+            e.printStackTrace();
             return null; // Signup failed
         }
     }

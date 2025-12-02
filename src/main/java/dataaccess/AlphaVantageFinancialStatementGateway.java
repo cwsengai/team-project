@@ -28,6 +28,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
             jsonString_balance = api.getFuncBalanceSheet(symbol);
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
 
@@ -36,6 +37,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
             jsonString_income = api.getFuncIncomeStatement(symbol);
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
 
@@ -44,6 +46,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
             jsonString_cashflow = api.getFuncCashFlow(symbol);
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
 

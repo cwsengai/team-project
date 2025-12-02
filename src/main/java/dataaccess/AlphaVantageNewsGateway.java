@@ -27,7 +27,8 @@ public class AlphaVantageNewsGateway implements NewsGateway {
             jsonString = api.getFuncNewsSentiment(symbol);
         }
         catch (Exception ex) {
-            System.err.println("Error fetching news articles: " + ex.getMessage());
+            // handle or log as appropriate; returning null for now
+            ex.printStackTrace();
             return null;
         }
 

@@ -14,18 +14,18 @@ public class CompanyPresenter implements CompanyOutputBoundary {
 
     @Override
     public void presentCompany(CompanyOutputData data) {
-        viewmodel.setError(null);
-        viewmodel.setSymbol(data.getSymbol());
-        viewmodel.setName(data.getName());
-        viewmodel.setSector(data.getSector());
-        viewmodel.setIndustry(data.getIndustry());
-        viewmodel.setDescription(data.getDescription());
+        viewmodel.error = null;
+        viewmodel.symbol = data.getSymbol();
+        viewmodel.name = data.getName();
+        viewmodel.sector = data.getSector();
+        viewmodel.industry = data.getIndustry();
+        viewmodel.description = data.getDescription();
         viewmodel.notifyListener();
     }
 
     @Override
     public void presentError(String message) {
-        viewmodel.setError(message);
+        viewmodel.error = message;
         viewmodel.notifyListener();
     }
 }

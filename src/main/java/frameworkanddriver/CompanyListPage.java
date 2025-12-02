@@ -822,7 +822,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             try {
                 app.SimulatedMain.main(new String[]{});
             } catch (Exception ex) {
-                System.err.println("Failed to open trading simulator: " + ex.getMessage());
+                ex.printStackTrace();
                 // Show error dialog
                 JOptionPane.showMessageDialog(null,
                         "Failed to open trading simulator: " + ex.getMessage(),
@@ -853,6 +853,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                 // Pass the symbol to CompanyMain
                 app.CompanyMain.main(new String[]{symbol});
             } catch (Exception ex) {
+                ex.printStackTrace();
                 // Show error dialog
                 JOptionPane.showMessageDialog(null,
                         "Failed to open company details: " + ex.getMessage(),
