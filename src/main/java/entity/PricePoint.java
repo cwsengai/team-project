@@ -14,6 +14,9 @@ public record PricePoint(LocalDateTime timestamp, Double open, Double high, Doub
      * @return Close price, or 0.0 if not available
      */
     public double getPrice() {
-        return close != null ? close : 0.0;
+        if (close == null) {
+            return 0.0;
+        }
+        return close;
     }
 }

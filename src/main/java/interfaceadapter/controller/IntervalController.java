@@ -26,21 +26,10 @@ public class IntervalController {
         TimeInterval interval = null;
 
         switch (buttonText) {
-            case "5M":
-            case "5min":
-                interval = TimeInterval.FIVE_MINUTES;
-                break;
-            case "1D":
-            case "1 day":
-                interval = TimeInterval.DAILY;
-                break;
-            case "1W":
-            case "1 week":
-                interval = TimeInterval.WEEKLY;
-                break;
-            default:
-                System.err.println("ERROR: Unsupported time interval button: " + buttonText);
-                break;
+            case "5M", "5min" -> interval = TimeInterval.FIVE_MINUTES;
+            case "1D", "1 day" -> interval = TimeInterval.DAILY;
+            case "1W", "1 week" -> interval = TimeInterval.WEEKLY;
+            default -> System.err.println("ERROR: Unsupported time interval button: " + buttonText);
         }
 
         if (interval != null && currentTicker != null) {
