@@ -10,7 +10,7 @@ import entity.Company;
  * Contains the business logic for loading and displaying company information.
  */
 public record CompanyListInteractor(CompanyListDataAccess dataAccess,
-                                    CompanyListOutputBoundary presenter) implements CompanyListInputBoundary {
+        CompanyListOutputBoundary presenter) implements CompanyListInputBoundary {
 
     /**
      * Maximum number of companies allowed for display.
@@ -52,8 +52,7 @@ public record CompanyListInteractor(CompanyListDataAccess dataAccess,
             CompanyListOutputData outputData = new CompanyListOutputData(companies);
             presenter.presentCompanyList(outputData);
 
-        }
-catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             presenter.presentError("Failed to load companies: " + ex.getMessage());
         }
     }

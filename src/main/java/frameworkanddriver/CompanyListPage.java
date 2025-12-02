@@ -761,8 +761,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                         }
                     });
                 }
-                default -> {
-                }
             }
         }
     }

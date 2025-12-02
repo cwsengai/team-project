@@ -20,8 +20,7 @@ public record AlphaVantageNewsGateway(Api api) implements NewsGateway {
         String jsonString;
         try {
             jsonString = api.getFuncNewsSentiment(symbol);
-        }
-catch (Exception ex) {
+        } catch (Exception ex) {
             // handle or log as appropriate; returning null for now
             System.err.println("AlphaVantageNewsGateway.fetchArticles error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
@@ -47,13 +46,12 @@ catch (Exception ex) {
         for (int i = 0; i < feedArray.length(); i++) {
             JSONObject feedObject = feedArray.getJSONObject(i);
 
-            DateTimeFormatter formatter =
-                    new DateTimeFormatterBuilder()
-                            .appendPattern("yyyyMMdd'T'HHmm")
-                            .optionalStart()
-                            .appendPattern("ss")
-                            .optionalEnd()
-                            .toFormatter();
+            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                    .appendPattern("yyyyMMdd'T'HHmm")
+                    .optionalStart()
+                    .appendPattern("ss")
+                    .optionalEnd()
+                    .toFormatter();
 
             String rawTime = feedObject.optString("time_published");
             LocalDateTime timePublished = LocalDateTime.parse(rawTime, formatter);
@@ -64,8 +62,7 @@ catch (Exception ex) {
                     feedObject.optString("url", "N/A"),
                     timePublished,
                     feedObject.optString("summary", "N/A"),
-                    feedObject.optString("source", "N/A")
-            );
+                    feedObject.optString("source", "N/A"));
             articles.add(article);
         }
 
