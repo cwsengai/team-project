@@ -82,7 +82,8 @@ public class SimulatedMain {
                         try {
                             final UUID userUuid = UUID.fromString(record.userId());
                             tradeDAO.saveTrade(record, userUuid);
-                        } catch (Exception ex) {
+                        }
+catch (Exception ex) {
                             System.err.println("DB Save Failed: " + ex.getMessage());
                         }
                     });

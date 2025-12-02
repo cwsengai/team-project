@@ -42,7 +42,8 @@ public record SearchCompanyInteractor(SearchCompanyDataAccess dataAccess,
             SearchCompanyOutputData outputData =
                     new SearchCompanyOutputData(results);
             presenter.presentSearchResults(outputData);
-        } catch (Exception ex) {
+        }
+catch (Exception ex) {
             presenter.presentError("Search failed: " + ex.getMessage());
         }
     }

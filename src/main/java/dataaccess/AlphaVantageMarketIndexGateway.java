@@ -42,7 +42,8 @@ public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGate
             // Fetch Dow Jones
             indices.add(getMarketIndex(DOW_SYMBOL));
 
-        } catch (Exception ex) {
+        }
+catch (Exception ex) {
             System.err.println("Error fetching market indices: " + ex.getMessage());
             // Return whatever we managed to fetch, or dummy data
             if (indices.isEmpty()) {
@@ -100,7 +101,8 @@ public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGate
                 double changePercent;
                 try {
                     changePercent = Double.parseDouble(changePercentStr.replace("%", "").trim());
-                } catch (NumberFormatException ex) {
+                }
+catch (NumberFormatException ex) {
                     System.err.println("Could not parse change percent for " + symbol + ": " + changePercentStr);
                     changePercent = 0.0;
                 }
@@ -121,7 +123,8 @@ public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGate
             System.err.println("No 'Global Quote' in response for " + symbol);
             return createDummyIndex(symbol);
 
-        } catch (Exception ex) {
+        }
+catch (Exception ex) {
             System.err.println("Error fetching " + symbol + ": " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());

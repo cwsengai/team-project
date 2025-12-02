@@ -52,7 +52,8 @@ public record CompanyListInteractor(CompanyListDataAccess dataAccess,
             CompanyListOutputData outputData = new CompanyListOutputData(companies);
             presenter.presentCompanyList(outputData);
 
-        } catch (RuntimeException ex) {
+        }
+catch (RuntimeException ex) {
             presenter.presentError("Failed to load companies: " + ex.getMessage());
         }
     }

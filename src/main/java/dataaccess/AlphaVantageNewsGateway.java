@@ -20,7 +20,8 @@ public record AlphaVantageNewsGateway(Api api) implements NewsGateway {
         String jsonString;
         try {
             jsonString = api.getFuncNewsSentiment(symbol);
-        } catch (Exception ex) {
+        }
+catch (Exception ex) {
             // handle or log as appropriate; returning null for now
             System.err.println("AlphaVantageNewsGateway.fetchArticles error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {

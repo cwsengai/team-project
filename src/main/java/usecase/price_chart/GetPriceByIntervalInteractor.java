@@ -37,7 +37,8 @@ public record GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway
 
             try {
                 priceData = priceGateway.getPriceHistory(ticker, interval);
-            } catch (Exception ex) {
+            }
+catch (Exception ex) {
 
                 SwingUtilities.invokeLater(() -> pricePresenter.presentError(
                         "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()

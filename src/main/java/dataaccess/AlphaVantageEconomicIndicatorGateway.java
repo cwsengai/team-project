@@ -13,6 +13,8 @@ import usecase.EconomicIndicatorGateway;
 /**
  * Gateway for fetching economic indicators from Alpha Vantage API.
  * Fetches real-time economic data including Fed rates, GDP, unemployment, etc.
+ * 
+ * @param api The API interface for making requests
  */
 public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicIndicatorGateway {
 
@@ -34,8 +36,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
             indicators.add(fetchCPI());
             indicators.add(fetchInflationRate());
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("⚠️ Error fetching economic indicators: " + ex.getMessage());
             // Return partial data if some indicators failed
             if (indicators.isEmpty()) {
@@ -51,12 +52,14 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
      *
      * <p>
      * This method requests the "FEDERAL_FUNDS_RATE" indicator from the API using a
-     * monthly interval. If the API returns valid data, the most recent entry is parsed
+     * monthly interval. If the API returns valid data, the most recent entry is
+     * parsed
      * and returned as an {@link EconomicIndicator}. If the API request fails or the
      * expected data is missing, a predefined fallback value is returned instead.
      *
-     * @return an {@link EconomicIndicator} containing the latest Federal Funds Rate,
-     * or a fallback indicator if the API request fails
+     * @return an {@link EconomicIndicator} containing the latest Federal Funds
+     *         Rate,
+     *         or a fallback indicator if the API request fails
      */
     private EconomicIndicator fetchFederalFundsRate() {
         try {
@@ -75,8 +78,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
                     return new EconomicIndicator(
                             "Federal Funds Rate",
                             value + " %",
-                            date
-                    );
+                            date);
                 }
             }
 
@@ -84,8 +86,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
             System.out.println("    ⚠️ Federal Funds Rate: Using fallback data");
             return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Federal Funds Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
@@ -96,14 +97,18 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
      * Fetches the Real Gross Domestic Product (Real GDP) for the United States.
      *
      * <p>
-     * This method retrieves the "REAL_GDP" indicator from the API using quarterly data.
-     * If valid data is returned, the most recent GDP value (reported in billions of USD)
-     * is converted into trillions of USD and formatted. The result is returned as an
-     * {@link EconomicIndicator}. If the API request fails or contains no usable data,
+     * This method retrieves the "REAL_GDP" indicator from the API using quarterly
+     * data.
+     * If valid data is returned, the most recent GDP value (reported in billions of
+     * USD)
+     * is converted into trillions of USD and formatted. The result is returned as
+     * an
+     * {@link EconomicIndicator}. If the API request fails or contains no usable
+     * data,
      * a predefined fallback GDP value is returned instead.
      *
      * @return an {@link EconomicIndicator} representing the latest Real GDP value,
-     * or a fallback indicator if the API request fails or returns no data
+     *         or a fallback indicator if the API request fails or returns no data
      */
     private EconomicIndicator fetchRealGDP() {
         try {
@@ -127,16 +132,14 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
                     return new EconomicIndicator(
                             "U.S. Real GDP",
                             formatted,
-                            date
-                    );
+                            date);
                 }
             }
 
             System.out.println("    ⚠️ Real GDP: Using fallback data");
             return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Real GDP fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
@@ -148,13 +151,17 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
      *
      * <p>
      * This method requests the "UNEMPLOYMENT" economic indicator from the API
-     * using monthly data. If valid results are returned, the most recent unemployment
-     * rate is extracted and returned as an {@link EconomicIndicator}. If the API call
-     * fails or the data is missing or empty, a predefined fallback unemployment rate
+     * using monthly data. If valid results are returned, the most recent
+     * unemployment
+     * rate is extracted and returned as an {@link EconomicIndicator}. If the API
+     * call
+     * fails or the data is missing or empty, a predefined fallback unemployment
+     * rate
      * is used instead.
      *
-     * @return an {@link EconomicIndicator} representing the latest unemployment rate,
-     * or a fallback indicator if the API request fails or provides no data
+     * @return an {@link EconomicIndicator} representing the latest unemployment
+     *         rate,
+     *         or a fallback indicator if the API request fails or provides no data
      */
     private EconomicIndicator fetchUnemploymentRate() {
         try {
@@ -173,8 +180,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
                     return new EconomicIndicator(
                             "Unemployment Rate",
                             value + " %",
-                            date
-                    );
+                            date);
                 }
             }
 
@@ -198,8 +204,9 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
      * call fails or provides no usable data, a predefined fallback Treasury yield
      * is returned instead.
      *
-     * @return an {@link EconomicIndicator} representing the latest 10-year Treasury yield,
-     * or a fallback indicator if the API request fails or provides no data
+     * @return an {@link EconomicIndicator} representing the latest 10-year Treasury
+     *         yield,
+     *         or a fallback indicator if the API request fails or provides no data
      */
     private EconomicIndicator fetchTreasuryYield() {
         try {
@@ -218,8 +225,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
                     return new EconomicIndicator(
                             "Treasury Yield (10Y)",
                             value + " %",
-                            date
-                    );
+                            date);
                 }
             }
 
@@ -236,7 +242,8 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
     /**
      * Fetch Consumer Price Index (CPI).
      *
-     * @return the CPI, or a fallback indicator if the API request fails or provides no data
+     * @return the CPI, or a fallback indicator if the API request fails or provides
+     *         no data
      */
     private EconomicIndicator fetchCPI() {
         try {
@@ -255,8 +262,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
                     return new EconomicIndicator(
                             "Consumer Price Index",
                             value,
-                            date
-                    );
+                            date);
                 }
             }
 
@@ -273,7 +279,8 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
     /**
      * Fetch Inflation Rate.
      *
-     * @return Economic indicator inflation rate, or a fallback indicator if the API request fails or provides no data
+     * @return Economic indicator inflation rate, or a fallback indicator if the API
+     *         request fails or provides no data
      */
     private EconomicIndicator fetchInflationRate() {
         try {
@@ -292,8 +299,7 @@ public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicI
                     return new EconomicIndicator(
                             "Inflation Rate",
                             value + " %",
-                            date
-                    );
+                            date);
                 }
             }
 
