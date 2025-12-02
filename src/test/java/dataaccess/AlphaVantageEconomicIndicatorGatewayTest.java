@@ -20,7 +20,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
     }
 
     @Test
-    void testGetEconomicIndicators_ReturnsSixIndicators() throws Exception {
+    void testGetEconomicIndicators_ReturnsSixIndicators() {
         // Act
         List<EconomicIndicator> indicators = gateway.getEconomicIndicators();
 
@@ -30,7 +30,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
     }
 
     @Test
-    void testGetEconomicIndicators_ContainsExpectedIndicators() throws Exception {
+    void testGetEconomicIndicators_ContainsExpectedIndicators() {
         // Act
         List<EconomicIndicator> indicators = gateway.getEconomicIndicators();
 
@@ -44,7 +44,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
     }
 
     @Test
-    void testGetEconomicIndicators_AllHaveValidValues() throws Exception {
+    void testGetEconomicIndicators_AllHaveValidValues() {
         // Act
         List<EconomicIndicator> indicators = gateway.getEconomicIndicators();
 
@@ -59,7 +59,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
     }
 
     @Test
-    void testGetEconomicIndicators_ValuesHaveCorrectFormat() throws Exception {
+    void testGetEconomicIndicators_ValuesHaveCorrectFormat() {
         // Act
         List<EconomicIndicator> indicators = gateway.getEconomicIndicators();
 
@@ -75,7 +75,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
     }
 
     @Test
-    void testGetEconomicIndicators_DatesAreNotEmpty() throws Exception {
+    void testGetEconomicIndicators_DatesAreNotEmpty() {
         // Act
         List<EconomicIndicator> indicators = gateway.getEconomicIndicators();
 

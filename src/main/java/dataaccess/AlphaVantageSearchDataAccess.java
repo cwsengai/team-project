@@ -28,12 +28,11 @@ public class AlphaVantageSearchDataAccess implements SearchCompanyDataAccess {
         String lowercaseQuery = query.toLowerCase().trim();
 
         // Search through loaded companies first
-        List<Company> results = new ArrayList<>(cachedCompanies.stream()
+        List<Company> results = cachedCompanies.stream()
                 .filter(company ->
                         company.getName().toLowerCase().contains(lowercaseQuery)
                                 || company.getSymbol().toLowerCase().contains(lowercaseQuery)
-                )
-                .collect(Collectors.toList()));
+                ).collect(Collectors.toList());
 
         // Search through ALL tickers (even not loaded)
         for (String ticker : allTickers) {

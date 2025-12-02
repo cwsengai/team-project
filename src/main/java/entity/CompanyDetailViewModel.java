@@ -10,37 +10,25 @@ public class CompanyDetailViewModel {
     private static final double MILLION_THRESHOLD = 1e6;
 
     private final String ticker;
-    private final String name;
-    private final String sector;
-    private final String marketCapFormatted;
-    // (e.g., $2.8T)
-    private final String peRatioFormatted;
-
-    private final String latestRevenue;
-    private final String latestNetIncome;
-    private final String latestBalanceSheetPeriod;
-
-    private final List<NewsArticle> recentNews;
 
     public CompanyDetailViewModel(Company company, FinancialStatement financials, List<NewsArticle> news) {
         this.ticker = company.getSymbol();
-        this.name = company.getName();
-        this.sector = company.getSector();
-        this.marketCapFormatted = formatLargeNumber(company.getMarketCapitalization());
-        this.peRatioFormatted = String.format("%.2f", company.getPeRatio());
+        String name = company.getName();
+        String sector = company.getSector();
+        String marketCapFormatted = formatLargeNumber(company.getMarketCapitalization());
+        // (e.g., $2.8T)
+        String peRatioFormatted = String.format("%.2f", company.getPeRatio());
 
+        String latestBalanceSheetPeriod;
+        String latestNetIncome;
+        String latestRevenue;
         if (financials != null) {
-            this.latestRevenue = formatLargeNumber(financials.getTotalRevenue());
-            this.latestNetIncome = formatLargeNumber(financials.getNetIncome());
-            this.latestBalanceSheetPeriod = financials.getFiscalDateEnding().toString();
+            formatLargeNumber(financials.getTotalRevenue());
+            formatLargeNumber(financials.getNetIncome());
         }
         else {
-            this.latestRevenue = NOT_AVAILABLE;
-            this.latestNetIncome = NOT_AVAILABLE;
-            this.latestBalanceSheetPeriod = NOT_AVAILABLE;
         }
 
-        this.recentNews = news;
     }
 
     public String getTicker() {

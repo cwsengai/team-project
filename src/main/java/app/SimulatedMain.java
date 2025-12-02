@@ -125,7 +125,6 @@ public class SimulatedMain {
                 final TradingController tradingController = new TradingController(
                         updateMarketInteractor,
                         tradeInteractor,
-                        tradingPresenter,
                         sessionDAO
                 );
 

@@ -27,7 +27,6 @@ public class UpdateMarketOutputData {
 
     private final List<Double> chartData;
     private final Map<String, Position> positions;
-    private final String error;
 
     /**
      * Constructs the output data for the market update.
@@ -66,7 +65,6 @@ public class UpdateMarketOutputData {
 
         this.chartData = chartData;
         this.positions = positions;
-        this.error = error;
     }
 
     /**

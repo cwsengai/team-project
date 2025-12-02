@@ -21,7 +21,6 @@ public class TradingState {
 
     // --- Top-level displayed values ---
     private String availableCash = "$100,000.00";
-    private String ticker = DEFAULT_TICKER;
     private String currentPrice = DEFAULT_LOADING;
     private List<Double> chartData = new ArrayList<>();
 
@@ -38,28 +37,6 @@ public class TradingState {
     // --- Positions and errors ---
     private Map<String, Position> positions = new HashMap<>();
     private String error;
-
-    /**
-     * Creates a new TradingState by copying values from an existing instance.
-     *
-     * @param copy the state instance to copy
-     */
-    public TradingState(TradingState copy) {
-        this.availableCash = copy.availableCash;
-        this.ticker = copy.ticker;
-        this.currentPrice = copy.currentPrice;
-        this.chartData = new ArrayList<>(copy.chartData);
-        this.totalProfit = copy.totalProfit;
-        this.totalReturnRate = copy.totalReturnRate;
-        this.maxDrawdown = copy.maxDrawdown;
-        this.maxGain = copy.maxGain;
-        this.totalTrades = copy.totalTrades;
-        this.winningTrades = copy.winningTrades;
-        this.losingTrades = copy.losingTrades;
-        this.winRate = copy.winRate;
-        this.positions = new HashMap<>(copy.positions);
-        this.error = copy.error;
-    }
 
     /**
      * Constructs a default TradingState.
@@ -91,16 +68,7 @@ public class TradingState {
      * @return the ticker symbol
      */
     public String getTicker() {
-        return ticker;
-    }
-
-    /**
-     * Sets the ticker symbol to display.
-     *
-     * @param ticker the ticker symbol
-     */
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+        return DEFAULT_TICKER;
     }
 
     /**

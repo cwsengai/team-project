@@ -25,12 +25,10 @@ public class TradingController {
      *
      * @param updateMarketInteractor market update interactor
      * @param tradeInteractor        trade execution interactor
-     * @param tradingPresenter       presenter handling UI updates
      * @param sessionDAO             user's session data access
      */
     public TradingController(UpdateMarketInputBoundary updateMarketInteractor,
                              SimulatedTradeInputBoundary tradeInteractor,
-                             TradingPresenter tradingPresenter,
                              InMemorySessionDataAccessObject sessionDAO) {
         this.updateMarketInteractor = updateMarketInteractor;
         this.tradeInteractor = tradeInteractor;

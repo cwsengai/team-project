@@ -4,7 +4,6 @@ import java.util.List;
 
 public class FinancialStatementViewModel {
 
-    private List<String> statements;
     private String formattedOutput;
     private String error;
 
@@ -24,7 +23,6 @@ public class FinancialStatementViewModel {
     }
 
     public void setStatements(List<String> statements) {
-        this.statements = statements;
     }
 
     public String getFormattedOutput() {

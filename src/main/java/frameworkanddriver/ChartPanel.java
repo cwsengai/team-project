@@ -366,7 +366,7 @@ public class ChartPanel extends JPanel {
                 destLabels.add(srcLabels.get(i));
                 destPrices.add(srcPrices.get(i));
             }
-            if (dataSize > 0 && (dataSize - 1) % step != 0) {
+            if ((dataSize - 1) % step != 0) {
                 destLabels.add(srcLabels.get(dataSize - 1));
                 destPrices.add(srcPrices.get(dataSize - 1));
             }

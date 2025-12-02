@@ -11,7 +11,6 @@ import entity.Company;
 public class CompanyListOutputData {
 
     private final List<Company> companies;
-    private final boolean success;
 
     /**
      * Creates a new CompanyListOutputData instance.
@@ -21,7 +20,6 @@ public class CompanyListOutputData {
      */
     public CompanyListOutputData(List<Company> companies, boolean success) {
         this.companies = companies;
-        this.success = success;
     }
 
     /**

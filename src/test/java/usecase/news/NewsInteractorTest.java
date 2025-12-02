@@ -42,7 +42,7 @@ class NewsInteractorTest {
         NewsArticle a = new NewsArticle(
                 "TSLA",
                 "Tesla launches new model",
-                "http://example.com",
+                "https://example.com",
                 LocalDateTime.of(2024, 1, 1, 12, 0),
                 "Some summary",
                 "Reuters"

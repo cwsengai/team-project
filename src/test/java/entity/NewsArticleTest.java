@@ -16,7 +16,7 @@ class NewsArticleTest {
         NewsArticle article = new NewsArticle(
                 "AAPL",
                 "Apple launches new product",
-                "http://example.com/apple",
+                "https://example.com/apple",
                 now,
                 "This is a summary.",
                 "Reuters"
@@ -24,7 +24,7 @@ class NewsArticleTest {
 
         assertEquals("AAPL", article.getSymbol());
         assertEquals("Apple launches new product", article.getTitle());
-        assertEquals("http://example.com/apple", article.getUrl());
+        assertEquals("https://example.com/apple", article.getUrl());
         assertEquals(now, article.getPublishedAt());
         assertEquals("This is a summary.", article.getSummary());
         assertEquals("Reuters", article.getSource());

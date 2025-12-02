@@ -25,7 +25,7 @@ class CompanyTest {
         NewsArticle na = new NewsArticle(
                 "AAPL",
                 "Sample Title",
-                "http://example.com",
+                "https://example.com",
                 LocalDateTime.now(),
                 "Sample summary",
                 "SampleSource"
