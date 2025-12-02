@@ -119,7 +119,8 @@ public class CompanyListMain {
         final String apiKey = dataaccess.EnvConfig.getAlphaVantageApiKey();
         if (apiKey == null || apiKey.isEmpty() || "demo".equals(apiKey)) {
             System.err.println("WARNING: ALPHA_VANTAGE_API_KEY not configured; using demo key from EnvConfig.");
-            System.err.println("Set it in a .env file or as an environment variable: ALPHA_VANTAGE_API_KEY=your_key_here");
+            System.err.println("Set it in a .env file or as an environment variable: "
+                    + "ALPHA_VANTAGE_API_KEY=your_key_here");
         }
         return apiKey;
     }
@@ -173,8 +174,18 @@ public class CompanyListMain {
     }
 
     /**
-     * Start progressive data loading in background.
-     * @param CompanyListPage page.
+     * Initiates progressive data loading in the background.
+     *
+     * <p>
+     * This method creates a {@link CompanyDataLoader} to load company data
+     * asynchronously and immediately starts its execution. A status message
+     * is printed to indicate that the loading process has begun.
+     *
+     * @param page               the UI page that will display the company list
+     * @param api                the API client used to retrieve data
+     * @param companyGateway     the gateway providing access to stored company information
+     * @param companyListPresenter the presenter responsible for updating the UI with results
+     * @param searchDataAccess   the data access object for AlphaVantage symbol search results
      */
     private static void startDataLoading(
             CompanyListPage page,
