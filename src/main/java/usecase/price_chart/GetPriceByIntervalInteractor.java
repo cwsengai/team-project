@@ -27,7 +27,7 @@ public class GetPriceByIntervalInteractor implements PriceInputBoundary {
             final List<PricePoint> priceData = priceGateway.getPriceHistory(ticker, interval);
 
             if (priceData == null || priceData.isEmpty()) {
-                pricePresenter.presentError("No " + interval.name() + " price data found.");
+                pricePresenter.presentError(interval.name() + " price data not found.");
             }
             else {
                 pricePresenter.presentPriceHistory(priceData, ticker, interval);
