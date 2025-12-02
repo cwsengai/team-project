@@ -105,7 +105,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                     final Double high = data.optDouble("2. high", 0.0);
                     final Double low = data.optDouble("3. low", 0.0);
                     final Double close = data.optDouble("4. close", 0.0);
-                    final Double volume = data.optDouble("5. volume", 0.0);
+                    data.optDouble("5. volume", 0.0);
 
                     final PricePoint pricePoint = new PricePoint(
                             dateTime,

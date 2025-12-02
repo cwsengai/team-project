@@ -17,7 +17,6 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
         SimulatedTradeOutputBoundary {
 
     private final TradingViewModel viewModel;
-    private final ViewManagerModel viewManagerModel;
 
     private final DecimalFormat moneyFormat = new DecimalFormat("$#,##0.00");
     private final DecimalFormat pctFormat = new DecimalFormat("0.00%");
@@ -33,15 +32,6 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
                             ViewManagerModel viewManagerModel,
                             SetupViewModel setupViewModel) {
         this.viewModel = viewModel;
-        this.viewManagerModel = viewManagerModel;
-    }
-
-    /**
-     * Switches the application view back to the setup view.
-     */
-    public void prepareGoBackView() {
-        viewManagerModel.setActiveView(SetupViewModel.VIEW_NAME);
-        viewManagerModel.firePropertyChanged();
     }
 
     @Override

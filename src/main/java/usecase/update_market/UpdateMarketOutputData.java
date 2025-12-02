@@ -43,13 +43,12 @@ public class UpdateMarketOutputData {
      * @param winRate win rate across trades
      * @param chartData price history data for charts
      * @param positions open positions indexed by ticker
-     * @param error error message or null if none
      */
     public UpdateMarketOutputData(double currentPrice, double totalEquity, double totalReturnRate,
                                   double maxDrawdown, double availableCash, int totalTrades,
                                   int winningTrades, double maxGain, int losingTrades,
                                   double winRate, List<Double> chartData,
-                                  Map<String, Position> positions, String error) {
+                                  Map<String, Position> positions) {
 
         this.currentPrice = currentPrice;
         this.totalEquity = totalEquity;

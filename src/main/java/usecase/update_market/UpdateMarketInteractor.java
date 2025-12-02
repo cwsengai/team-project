@@ -126,8 +126,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
                 account.getLosingTrades(),
                 account.getWinRate(),
                 historyTicksForChart,
-                currentPositions,
-                null
+                currentPositions
         );
 
         presenter.prepareSuccessView(outputData);
