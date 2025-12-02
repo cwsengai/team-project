@@ -17,6 +17,11 @@ public class IntervalController {
         this.currentTicker = ticker;
     }
 
+    /**
+     * Handles time interval change requests from the UI.
+     *
+     * @param buttonText the button text indicating the desired time interval
+     */
     public void handleTimeChange(String buttonText) {
         TimeInterval interval = null;
 
