@@ -19,7 +19,6 @@ import dataaccess.SimulationMarketDataAccess;
 import dataaccess.SupabasePortfolioDataAccessObject;
 import dataaccess.SupabaseTradeDataAccessObject;
 import entity.Account;
-import entity.SimulatedTradeRecord;
 import interfaceadapter.setup_simulation.SetupController;
 import interfaceadapter.setup_simulation.SetupPresenter;
 import interfaceadapter.setup_simulation.SetupViewModel;
@@ -32,7 +31,6 @@ import usecase.setup_simulation.SetupInputData;
 import usecase.setup_simulation.SetupInteractor;
 import usecase.simulated_trade.SimulatedTradeInteractor;
 import usecase.simulated_trade.SimulationDataAccessInterface;
-import usecase.simulated_trade.TradeClosedListener;
 import usecase.update_market.UpdateMarketInteractor;
 
 public class SimulatedMain {

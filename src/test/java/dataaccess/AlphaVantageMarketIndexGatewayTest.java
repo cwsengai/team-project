@@ -120,7 +120,7 @@ class AlphaVantageMarketIndexGatewayTest {
         }
 
         @Override
-        public String getGlobalQuote(String symbol) throws Exception {
+        public String getGlobalQuote(String symbol) {
             if (shouldReturnEmpty) {
                 return "{}";
             }

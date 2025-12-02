@@ -59,9 +59,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      *
      * @return an {@link EconomicIndicator} containing the latest Federal Funds Rate,
      *         or a fallback indicator if the API request fails
-     * @throws Exception if an unexpected error occurs during the fetch operation
      */
-    private EconomicIndicator fetchFederalFundsRate() throws Exception {
+    private EconomicIndicator fetchFederalFundsRate() {
         try {
             System.out.println("    → Fetching Federal Funds Rate...");
             String jsonString = api.getEconomicIndicator("FEDERAL_FUNDS_RATE", "monthly");
@@ -108,9 +107,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      *
      * @return an {@link EconomicIndicator} representing the latest Real GDP value,
      *         or a fallback indicator if the API request fails or returns no data
-     * @throws Exception if an unexpected error occurs during the fetch or parsing process
      */
-    private EconomicIndicator fetchRealGDP() throws Exception {
+    private EconomicIndicator fetchRealGDP() {
         try {
             System.out.println("    → Fetching Real GDP...");
             String jsonString = api.getEconomicIndicator("REAL_GDP", "quarterly");
@@ -161,9 +159,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      *
      * @return an {@link EconomicIndicator} representing the latest unemployment rate,
      *         or a fallback indicator if the API request fails or provides no data
-     * @throws Exception if an unexpected error occurs during the fetch or JSON parsing
      */
-    private EconomicIndicator fetchUnemploymentRate() throws Exception {
+    private EconomicIndicator fetchUnemploymentRate() {
         try {
             System.out.println("    → Fetching Unemployment Rate...");
             String jsonString = api.getEconomicIndicator("UNEMPLOYMENT", "monthly");
@@ -209,9 +206,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      *
      * @return an {@link EconomicIndicator} representing the latest 10-year Treasury yield,
      *         or a fallback indicator if the API request fails or provides no data
-     * @throws Exception if an unexpected error occurs during the request or JSON parsing
      */
-    private EconomicIndicator fetchTreasuryYield() throws Exception {
+    private EconomicIndicator fetchTreasuryYield() {
         try {
             System.out.println("    → Fetching Treasury Yield...");
             String jsonString = api.getEconomicIndicator("TREASURY_YIELD", "monthly");
@@ -249,9 +245,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      * Fetch Consumer Price Index (CPI).
      *
      * @return the CPI, or a fallback indicator if the API request fails or provides no data
-     * @throws Exception if an unexpected error occurs during the request or JSON parsing
      */
-    private EconomicIndicator fetchCPI() throws Exception {
+    private EconomicIndicator fetchCPI() {
         try {
             System.out.println("    → Fetching CPI...");
             String jsonString = api.getEconomicIndicator("CPI", "monthly");
@@ -288,9 +283,8 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
     /**
      * Fetch Inflation Rate.
      * @return Economic indicator inflation rate, or a fallback indicator if the API request fails or provides no data
-     * @throws Exception if an unexpected error occurs during the request or JSON parsing
      */
-    private EconomicIndicator fetchInflationRate() throws Exception {
+    private EconomicIndicator fetchInflationRate() {
         try {
             System.out.println("    → Fetching Inflation Rate...");
             String jsonString = api.getEconomicIndicator("INFLATION", "annual");

@@ -93,7 +93,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
         }
 
         @Override
-        public String getEconomicIndicator(String function, String interval) throws Exception {
+        public String getEconomicIndicator(String function, String interval) {
             // Return empty data since we use static data in the implementation
             return "{\"data\": []}";
         }

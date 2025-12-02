@@ -234,7 +234,7 @@ public class CompanyListMain {
         }
 
         @Override
-        protected Void doInBackground() throws Exception {
+        protected Void doInBackground() {
             try {
                 loadMarketIndices();
                 loadEconomicIndicators();
@@ -291,7 +291,7 @@ public class CompanyListMain {
             }).start();
         }
 
-        private void loadTop3Companies() throws Exception {
+        private void loadTop3Companies() {
             System.out.println("Loading detailed data for top 3 companies...");
             final List<String> top3Tickers = allTickers.subList(0, Math.min(3, allTickers.size()));
 

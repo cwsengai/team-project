@@ -6,6 +6,7 @@ import java.util.List;
 import entity.Company;
 import frameworkanddriver.CompanyListPage;
 import interfaceadapter.company_list.CompanyDisplayData;
+import interfaceadapter.company_list.DataFormatters;
 import interfaceadapter.view_model.SearchCompanyViewModel;
 import usecase.search_company.SearchCompanyOutputBoundary;
 import usecase.search_company.SearchCompanyOutputData;
@@ -86,9 +87,6 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
     }
 
     private String formatPeRatio(double peRatio) {
-        if (peRatio <= 0) {
-            return "N/A";
-        }
-        return String.format("%.2f", peRatio);
+        return DataFormatters.formatPeRatio(peRatio);
     }
 }
