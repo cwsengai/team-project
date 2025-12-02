@@ -56,7 +56,8 @@ public class PortfolioSummaryMain {
 
         // Fetch trades and calculate statistics via clean assembler/gateways
         final SupabaseTradeGatewayAdapter tradeGateway = new SupabaseTradeGatewayAdapter();
-        final interfaceadapter.view_model.PortfolioSummaryViewModel viewModel = PortfolioSummaryAssembler.buildSummary(userId);
+        final interfaceadapter.view_model.PortfolioSummaryViewModel viewModel =
+                PortfolioSummaryAssembler.buildSummary(userId);
 
         contentPanel.add(new PortfolioSummaryCard(viewModel));
         contentPanel.add(new PortfolioOrderHistoryTable(userId, tradeGateway));

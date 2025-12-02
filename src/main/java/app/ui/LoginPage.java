@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 import usecase.auth.AuthService;
 import usecase.session.SessionDataAccessInterface;
 
-
 public class LoginPage extends JDialog {
 
     private boolean success = false;
