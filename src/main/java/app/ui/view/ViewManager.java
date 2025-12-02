@@ -12,9 +12,17 @@ public class ViewManager implements PropertyChangeListener {
     private final JPanel views;
     private final CardLayout cardLayout;
 
-    public ViewManager(JPanel views, CardLayout cardLayout, ViewManagerModel viewManagerModel) {
+    public ViewManager(JPanel views, CardLayout cardLayout) {
         this.views = views;
         this.cardLayout = cardLayout;
+    }
+
+    /**
+     * Register this ViewManager as a listener with the given model.
+     * Separating registration from construction prevents the `this` reference
+     * from escaping while the object is still being constructed.
+     */
+    public void register(ViewManagerModel viewManagerModel) {
         viewManagerModel.addPropertyChangeListener(this);
     }
 

@@ -199,7 +199,8 @@ catch (Exception ex) {
                 views, cardLayout, tradingViewModel, viewManagerModel
         ));
 
-        new ViewManager(views, cardLayout, viewManagerModel);
+        final ViewManager viewManager = new ViewManager(views, cardLayout);
+        viewManager.register(viewManagerModel);
 
         // Launch
         viewManagerModel.setActiveView(SetupViewModel.VIEW_NAME);
