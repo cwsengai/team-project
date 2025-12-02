@@ -7,6 +7,8 @@ import usecase.news.NewsInputData;
  * Controller responsible for handling news retrieval requests.
  * Receives user actions from the interface layer and forwards them
  * to the news retrieval use case interactor.
+ * 
+ * @param interactor the input boundary for the news retrieval use case
  */
 public record NewsController(NewsInputBoundary interactor) {
     /**

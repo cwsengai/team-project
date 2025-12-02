@@ -9,6 +9,9 @@ import entity.TimeInterval;
 
 /**
  * Interactor for loading price history based on a given time interval.
+ * 
+ * @param priceGateway   the gateway used to fetch price history
+ * @param pricePresenter the presenter that formats and outputs results
  */
 public record GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway,
                                            PriceChartOutputBoundary pricePresenter) implements PriceInputBoundary {

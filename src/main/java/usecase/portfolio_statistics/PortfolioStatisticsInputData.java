@@ -7,6 +7,9 @@ import entity.SimulatedTradeRecord;
 /**
  * Input data for the Portfolio Statistics use case.
  * Contains the user's trade history and initial balance used to calculate statistics.
+ * 
+ * @param trades         a list of completed simulated trades; if null, an empty list is used
+ * @param initialBalance the initial account balance of the user
  */
 public record PortfolioStatisticsInputData(List<SimulatedTradeRecord> trades, double initialBalance) {
 

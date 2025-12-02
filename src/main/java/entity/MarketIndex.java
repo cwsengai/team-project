@@ -2,6 +2,11 @@ package entity;
 
 /**
  * Represents a major stock market index.
+ * 
+ * @param name          the name of the market index
+ * @param price         the current price of the index
+ * @param change        the absolute change in price
+ * @param changePercent the percentage change in price
  */
 public record MarketIndex(String name, double price, double change, double changePercent) {
 

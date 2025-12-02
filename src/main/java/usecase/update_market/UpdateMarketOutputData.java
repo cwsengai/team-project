@@ -11,6 +11,19 @@ import entity.Position;
  * <p>This object stores updated trading statistics, equity values,
  * price history, open positions, and any error message returned
  * by the interactor.</p>
+ * 
+ * @param currentPrice    the latest market price
+ * @param totalEquity     the updated total equity value
+ * @param totalReturnRate the overall return rate
+ * @param maxDrawdown     the maximum drawdown
+ * @param availableCash   available cash balance
+ * @param totalTrades     total closed trades
+ * @param winningTrades   number of winning trades
+ * @param maxGain         highest realized gain
+ * @param losingTrades    number of losing trades
+ * @param winRate         win rate across trades
+ * @param chartData       price history data for charts
+ * @param positions       open positions indexed by ticker
  */
 public record UpdateMarketOutputData(double currentPrice, double totalEquity, double totalReturnRate,
                                      double maxDrawdown, double availableCash, int totalTrades, int winningTrades,

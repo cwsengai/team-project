@@ -6,6 +6,8 @@ import usecase.search_company.SearchCompanyInputData;
 /**
  * Controller for Search Company use case.
  * Handles user actions to search for companies.
+ * 
+ * @param interactor the input boundary for the search company use case
  */
 public record SearchCompanyController(SearchCompanyInputBoundary interactor) {
 

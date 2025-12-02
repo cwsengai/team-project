@@ -1,12 +1,22 @@
 package entity;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDateTime;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a completed simulated trade, including entry/exit data and
  * calculated PnL metrics. Immutable record of a user's executed trade.
+ * 
+ * @param ticker      the stock ticker
+ * @param isLong      true if long, false if short
+ * @param quantity    number of shares
+ * @param entryPrice  trade entry price
+ * @param exitPrice   trade exit price
+ * @param realizedPnL realized profit/loss of the trade
+ * @param entryTime   time the trade was opened
+ * @param exitTime    time the trade was closed
+ * @param userId      the ID of the user who executed the trade
  */
 public record SimulatedTradeRecord(String ticker, boolean isLong, int quantity, double entryPrice, double exitPrice,
                                    double realizedPnL, LocalDateTime entryTime, LocalDateTime exitTime, String userId) {

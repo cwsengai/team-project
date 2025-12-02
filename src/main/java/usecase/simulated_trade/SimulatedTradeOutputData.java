@@ -3,6 +3,9 @@ package usecase.simulated_trade;
 /**
  * Data transfer object representing the output of a simulated trade.
  * Contains the updated account balance and a status message.
+ * 
+ * @param newBalance the updated account balance after the trade
+ * @param message    the status or information message to display
  */
 public record SimulatedTradeOutputData(double newBalance, String message) {
 

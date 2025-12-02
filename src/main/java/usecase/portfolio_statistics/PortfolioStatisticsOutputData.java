@@ -5,6 +5,17 @@ import java.time.LocalDateTime;
 /**
  * Output data object representing calculated portfolio statistics.
  * Contains profit metrics, trade counts, return rates, and trading time span.
+ * 
+ * @param totalProfit     the total profit across all trades
+ * @param maxGain         the maximum single-trade positive return
+ * @param maxDrawdown     the maximum single-trade drawdown
+ * @param totalTrades     the total number of trades executed
+ * @param winningTrades   the number of trades with positive PnL
+ * @param losingTrades    the number of trades with negative PnL
+ * @param winRate         the percentage of trades that were profitable
+ * @param totalReturnRate the overall portfolio return rate
+ * @param earliestTrade   the earliest trade timestamp
+ * @param latestTrade     the latest trade timestamp
  */
 public record PortfolioStatisticsOutputData(double totalProfit, double maxGain, double maxDrawdown, int totalTrades,
                                             int winningTrades, int losingTrades, double winRate, double totalReturnRate,
