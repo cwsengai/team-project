@@ -6,12 +6,7 @@ import usecase.company_list.CompanyListInputBoundary;
  * Controller for Company List use case.
  * Handles user actions to load the top companies list.
  */
-public class CompanyListController {
-    private final CompanyListInputBoundary interactor;
-
-    public CompanyListController(CompanyListInputBoundary interactor) {
-        this.interactor = interactor;
-    }
+public record CompanyListController(CompanyListInputBoundary interactor) {
 
     /**
      * Load the list of top companies.

@@ -33,26 +33,26 @@ class FinancialStatementTest {
                 14L      // dividendPayout
         );
 
-        assertEquals("AAPL", fs.getSymbol());
-        assertEquals("USD", fs.getCurrency());
-        assertEquals(date, fs.getFiscalDateEnding());
+        assertEquals("AAPL", fs.symbol());
+        assertEquals("USD", fs.currency());
+        assertEquals(date, fs.fiscalDateEnding());
 
-        assertEquals(1L, fs.getTotalAssets());
-        assertEquals(2L, fs.getTotalLiabilities());
-        assertEquals(3L, fs.getTotalShareholderEquity());
+        assertEquals(1L, fs.totalAssets());
+        assertEquals(2L, fs.totalLiabilities());
+        assertEquals(3L, fs.totalShareholderEquity());
 
-        assertEquals(4L, fs.getTotalRevenue());
-        assertEquals(5L, fs.getGrossProfit());
-        assertEquals(6L, fs.getCostOfRevenue());
-        assertEquals(7L, fs.getOperatingExpenses());
-        assertEquals(8L, fs.getEbit());
-        assertEquals(9L, fs.getNetIncome());
+        assertEquals(4L, fs.totalRevenue());
+        assertEquals(5L, fs.grossProfit());
+        assertEquals(6L, fs.costOfRevenue());
+        assertEquals(7L, fs.operatingExpenses());
+        assertEquals(8L, fs.ebit());
+        assertEquals(9L, fs.netIncome());
 
-        assertEquals(10L, fs.getOperatingCashFlow());
-        assertEquals(11L, fs.getCapitalExpenditures());
-        assertEquals(12L, fs.getCashFlowFromInvesting());
-        assertEquals(13L, fs.getCashFlowFromFinancing());
-        assertEquals(14L, fs.getDividendPayout());
+        assertEquals(10L, fs.operatingCashFlow());
+        assertEquals(11L, fs.capitalExpenditures());
+        assertEquals(12L, fs.cashFlowFromInvesting());
+        assertEquals(13L, fs.cashFlowFromFinancing());
+        assertEquals(14L, fs.dividendPayout());
     }
 }
 

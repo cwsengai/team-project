@@ -42,14 +42,14 @@ public class PortfolioOrderHistoryTable extends JPanel {
             data = new Object[trades.size()][columns.length];
             for (int i = 0; i < trades.size(); i++) {
                 final var t = trades.get(i);
-                data[i][0] = t.getTicker();
+                data[i][0] = t.ticker();
                 data[i][1] = t.isLong() ? "long" : "short";
-                data[i][2] = t.getQuantity();
-                data[i][3] = t.getEntryTime().toString();
-                data[i][4] = t.getExitTime().toString();
-                data[i][5] = t.getEntryPrice();
-                data[i][6] = t.getExitPrice();
-                data[i][7] = t.getRealizedPnL();
+                data[i][2] = t.quantity();
+                data[i][3] = t.entryTime().toString();
+                data[i][4] = t.exitTime().toString();
+                data[i][5] = t.entryPrice();
+                data[i][6] = t.exitPrice();
+                data[i][7] = t.realizedPnL();
                 data[i][8] = String.format("%.2f%%", t.getReturnRate());
             }
         }

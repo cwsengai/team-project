@@ -35,16 +35,16 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
         // Build JSON body for Supabase REST API
         JsonObject tradeJson = new JsonObject();
         tradeJson.addProperty("user_id", userId.toString());
-        tradeJson.addProperty("ticker", trade.getTicker());
+        tradeJson.addProperty("ticker", trade.ticker());
         tradeJson.addProperty("is_long", trade.isLong());
-        tradeJson.addProperty("quantity", trade.getQuantity());
-        tradeJson.addProperty("entry_price", trade.getEntryPrice());
-        tradeJson.addProperty("exit_price", trade.getExitPrice());
-        tradeJson.addProperty("realized_pnl", trade.getRealizedPnL());
+        tradeJson.addProperty("quantity", trade.quantity());
+        tradeJson.addProperty("entry_price", trade.entryPrice());
+        tradeJson.addProperty("exit_price", trade.exitPrice());
+        tradeJson.addProperty("realized_pnl", trade.realizedPnL());
         // Format timestamps as ISO 8601 for Supabase
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        tradeJson.addProperty("entry_time", trade.getEntryTime().format(formatter));
-        tradeJson.addProperty("exit_time", trade.getExitTime().format(formatter));
+        tradeJson.addProperty("entry_time", trade.entryTime().format(formatter));
+        tradeJson.addProperty("exit_time", trade.exitTime().format(formatter));
 
         String url = EnvConfig.getSupabaseUrl() + "/rest/v1/trades";
         String serviceRoleKey = EnvConfig.getSupabaseServiceRoleKey();

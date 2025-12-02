@@ -11,20 +11,14 @@ import api.Api;
 import entity.FinancialStatement;
 import usecase.financial_statement.FinancialStatementGateway;
 
-public class AlphaVantageFinancialStatementGateway implements FinancialStatementGateway {
-    private final Api api;
-
-    public AlphaVantageFinancialStatementGateway(Api api) {
-        this.api = api;
-    }
+public record AlphaVantageFinancialStatementGateway(Api api) implements FinancialStatementGateway {
 
     @Override
     public List<FinancialStatement> fetchFinancialStatements(String symbol) {
         String jsonString_balance;
         try {
             jsonString_balance = api.getFuncBalanceSheet(symbol);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("AlphaVantageFinancialStatementGateway balance fetch error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -35,8 +29,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
         String jsonString_income;
         try {
             jsonString_income = api.getFuncIncomeStatement(symbol);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("AlphaVantageFinancialStatementGateway income fetch error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -47,8 +40,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
         String jsonString_cashflow;
         try {
             jsonString_cashflow = api.getFuncCashFlow(symbol);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("AlphaVantageFinancialStatementGateway cashflow fetch error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());

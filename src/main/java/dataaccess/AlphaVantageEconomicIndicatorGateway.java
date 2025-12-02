@@ -14,16 +14,11 @@ import usecase.EconomicIndicatorGateway;
  * Gateway for fetching economic indicators from Alpha Vantage API.
  * Fetches real-time economic data including Fed rates, GDP, unemployment, etc.
  */
-public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGateway {
-
-    private final Api api;
-
-    public AlphaVantageEconomicIndicatorGateway(Api api) {
-        this.api = api;
-    }
+public record AlphaVantageEconomicIndicatorGateway(Api api) implements EconomicIndicatorGateway {
 
     /**
      * Fetches a list of economic indicators from the Alpha Vantage API.
+     *
      * @return List of economic indicators fetched from the API
      */
     public List<EconomicIndicator> getEconomicIndicators() {
@@ -39,8 +34,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             indicators.add(fetchCPI());
             indicators.add(fetchInflationRate());
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("⚠️ Error fetching economic indicators: " + ex.getMessage());
             // Return partial data if some indicators failed
             if (indicators.isEmpty()) {
@@ -61,7 +55,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      * expected data is missing, a predefined fallback value is returned instead.
      *
      * @return an {@link EconomicIndicator} containing the latest Federal Funds Rate,
-     *         or a fallback indicator if the API request fails
+     * or a fallback indicator if the API request fails
      */
     private EconomicIndicator fetchFederalFundsRate() {
         try {
@@ -89,8 +83,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.out.println("    ⚠️ Federal Funds Rate: Using fallback data");
             return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Federal Funds Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Federal Funds Rate", "4.33 %", "2025-11-01");
@@ -108,7 +101,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      * a predefined fallback GDP value is returned instead.
      *
      * @return an {@link EconomicIndicator} representing the latest Real GDP value,
-     *         or a fallback indicator if the API request fails or returns no data
+     * or a fallback indicator if the API request fails or returns no data
      */
     private EconomicIndicator fetchRealGDP() {
         try {
@@ -140,8 +133,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.out.println("    ⚠️ Real GDP: Using fallback data");
             return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Real GDP fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("U.S. Real GDP", "27.36 Trillion USD", "2025-04-01");
@@ -159,7 +151,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      * is used instead.
      *
      * @return an {@link EconomicIndicator} representing the latest unemployment rate,
-     *         or a fallback indicator if the API request fails or provides no data
+     * or a fallback indicator if the API request fails or provides no data
      */
     private EconomicIndicator fetchUnemploymentRate() {
         try {
@@ -186,8 +178,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.out.println("    ⚠️ Unemployment Rate: Using fallback data");
             return new EconomicIndicator("Unemployment Rate", "3.7 %", "2025-10-01");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Unemployment Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Unemployment Rate", "3.7 %", "2025-10-01");
@@ -205,7 +196,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
      * is returned instead.
      *
      * @return an {@link EconomicIndicator} representing the latest 10-year Treasury yield,
-     *         or a fallback indicator if the API request fails or provides no data
+     * or a fallback indicator if the API request fails or provides no data
      */
     private EconomicIndicator fetchTreasuryYield() {
         try {
@@ -232,8 +223,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.out.println("    ⚠️ Treasury Yield: Using fallback data");
             return new EconomicIndicator("Treasury Yield (10Y)", "4.5 %", "2025-11-20");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Treasury Yield fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Treasury Yield (10Y)", "4.5 %", "2025-11-20");
@@ -270,8 +260,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.out.println("    ⚠️ CPI: Using fallback data");
             return new EconomicIndicator("Consumer Price Index", "3.2 %", "2025-10-01");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ CPI fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Consumer Price Index", "3.2 %", "2025-10-01");
@@ -280,6 +269,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
     /**
      * Fetch Inflation Rate.
+     *
      * @return Economic indicator inflation rate, or a fallback indicator if the API request fails or provides no data
      */
     private EconomicIndicator fetchInflationRate() {
@@ -307,8 +297,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
             System.out.println("    ⚠️ Inflation Rate: Using fallback data");
             return new EconomicIndicator("Inflation Rate", "2.4 %", "2025-11-20");
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("    ⚠️ Inflation Rate fetch failed: " + ex.getMessage());
             System.out.println("    → Using fallback data");
             return new EconomicIndicator("Inflation Rate", "2.4 %", "2025-11-20");

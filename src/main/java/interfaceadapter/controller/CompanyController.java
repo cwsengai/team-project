@@ -8,18 +8,15 @@ import usecase.company.CompanyInputData;
  * Receives user input from the interface layer and forwards it
  * to the corresponding use case interactor.
  */
-public class CompanyController {
-
-    private final CompanyInputBoundary interactor;
+public record CompanyController(CompanyInputBoundary interactor) {
 
     /**
      * Constructs a CompanyController using the given interactor.
      *
      * @param interactor the input boundary for the company use case
      */
-    public CompanyController(CompanyInputBoundary interactor) {
+    public CompanyController {
 
-        this.interactor = interactor;
     }
 
     /**

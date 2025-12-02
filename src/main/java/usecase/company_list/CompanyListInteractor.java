@@ -9,24 +9,21 @@ import entity.Company;
  * Interactor for the Company List use case.
  * Contains the business logic for loading and displaying company information.
  */
-public class CompanyListInteractor implements CompanyListInputBoundary {
+public record CompanyListInteractor(CompanyListDataAccess dataAccess,
+                                    CompanyListOutputBoundary presenter) implements CompanyListInputBoundary {
 
-    /** Maximum number of companies allowed for display. */
+    /**
+     * Maximum number of companies allowed for display.
+     */
     private static final int MAX_COMPANIES = 100;
-
-    private final CompanyListDataAccess dataAccess;
-    private final CompanyListOutputBoundary presenter;
 
     /**
      * Creates a new CompanyListInteractor.
      *
      * @param dataAccess the data access interface used to retrieve company data
-     * @param presenter the output boundary responsible for formatting the result
+     * @param presenter  the output boundary responsible for formatting the result
      */
-    public CompanyListInteractor(CompanyListDataAccess dataAccess,
-                                 CompanyListOutputBoundary presenter) {
-        this.dataAccess = dataAccess;
-        this.presenter = presenter;
+    public CompanyListInteractor {
     }
 
     /**
@@ -55,8 +52,7 @@ public class CompanyListInteractor implements CompanyListInputBoundary {
             CompanyListOutputData outputData = new CompanyListOutputData(companies);
             presenter.presentCompanyList(outputData);
 
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             presenter.presentError("Failed to load companies: " + ex.getMessage());
         }
     }

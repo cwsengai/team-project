@@ -42,22 +42,22 @@ public class TestFinancialStatementGateway {
         System.out.println("Retrieved " + statements.size() + " statements.\n");
 
         for (FinancialStatement fs : statements) {
-            System.out.println("Year: " + fs.getFiscalDateEnding());
-            System.out.println("Currency: " + fs.getCurrency());
-            System.out.println("Revenue: " + fs.getTotalRevenue());
-            System.out.println("Gross Profit: " + fs.getGrossProfit());
-            System.out.println("Cost of Revenue: " + fs.getCostOfRevenue());
-            System.out.println("Operating Expense: " + fs.getOperatingExpenses());
-            System.out.println("Ebit: " + fs.getEbit());
-            System.out.println("Net Income: " + fs.getNetIncome());
-            System.out.println("Assets: " + fs.getTotalAssets());
-            System.out.println("Liabilities: " + fs.getTotalLiabilities());
-            System.out.println("Equity: " + fs.getTotalShareholderEquity());
-            System.out.println("Operating Cashflow: " + fs.getOperatingCashFlow());
-            System.out.println("Capital Expenditures: " + fs.getCapitalExpenditures());
-            System.out.println("Cash Flow From Investing: " + fs.getCashFlowFromInvesting());
-            System.out.println("Cash Flow From Financing: " + fs.getCashFlowFromFinancing());
-            System.out.println("Dividents Paid: " + fs.getDividendPayout());
+            System.out.println("Year: " + fs.fiscalDateEnding());
+            System.out.println("Currency: " + fs.currency());
+            System.out.println("Revenue: " + fs.totalRevenue());
+            System.out.println("Gross Profit: " + fs.grossProfit());
+            System.out.println("Cost of Revenue: " + fs.costOfRevenue());
+            System.out.println("Operating Expense: " + fs.operatingExpenses());
+            System.out.println("Ebit: " + fs.ebit());
+            System.out.println("Net Income: " + fs.netIncome());
+            System.out.println("Assets: " + fs.totalAssets());
+            System.out.println("Liabilities: " + fs.totalLiabilities());
+            System.out.println("Equity: " + fs.totalShareholderEquity());
+            System.out.println("Operating Cashflow: " + fs.operatingCashFlow());
+            System.out.println("Capital Expenditures: " + fs.capitalExpenditures());
+            System.out.println("Cash Flow From Investing: " + fs.cashFlowFromInvesting());
+            System.out.println("Cash Flow From Financing: " + fs.cashFlowFromFinancing());
+            System.out.println("Dividents Paid: " + fs.dividendPayout());
             System.out.println("-----------------------------------------\n");
         }
 

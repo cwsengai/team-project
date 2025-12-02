@@ -3,34 +3,7 @@ package entity;
 /**
  * Represents a major stock market index.
  */
-public class MarketIndex {
-    private final String name;
-    private final double price;
-    private final double change;
-    private final double changePercent;
-
-    public MarketIndex(String name, double price, double change, double changePercent) {
-        this.name = name;
-        this.price = price;
-        this.change = change;
-        this.changePercent = changePercent;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public double getChange() {
-        return change;
-    }
-
-    public double getChangePercent() {
-        return changePercent;
-    }
+public record MarketIndex(String name, double price, double change, double changePercent) {
 
     /**
      * Returns the price formatted as a string with two decimal places.
@@ -58,7 +31,7 @@ public class MarketIndex {
      * change is zero or greater.
      *
      * @return {@code true} if the percentage change is positive or zero;
-     *         {@code false} if it is negative
+     * {@code false} if it is negative
      */
     public boolean isPositive() {
         return changePercent >= 0;

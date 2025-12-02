@@ -32,18 +32,18 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
     public void prepareSuccessView(UpdateMarketOutputData data) {
         final TradingState state = viewModel.getState();
 
-        state.setCurrentPrice(moneyFormat.format(data.getCurrentPrice()));
-        state.setAvailableCash(moneyFormat.format(data.getAvailableCash()));
-        state.setTotalProfit(moneyFormat.format(data.getTotalEquity()));
-        state.setTotalReturnRate(pctFormat.format(data.getTotalReturnRate()));
-        state.setMaxDrawdown(moneyFormat.format(data.getMaxDrawdown()));
-        state.setTotalTrades(String.valueOf(data.getTotalTrades()));
-        state.setWinningTrades(String.valueOf(data.getWinningTrades()));
-        state.setLosingTrades(String.valueOf(data.getLosingTrades()));
-        state.setMaxGain(moneyFormat.format(data.getMaxGain()));
-        state.setWinRate(pctFormat.format(data.getWinRate()));
-        state.setPositions(data.getPositions());
-        state.setChartData(data.getChartData());
+        state.setCurrentPrice(moneyFormat.format(data.currentPrice()));
+        state.setAvailableCash(moneyFormat.format(data.availableCash()));
+        state.setTotalProfit(moneyFormat.format(data.totalEquity()));
+        state.setTotalReturnRate(pctFormat.format(data.totalReturnRate()));
+        state.setMaxDrawdown(moneyFormat.format(data.maxDrawdown()));
+        state.setTotalTrades(String.valueOf(data.totalTrades()));
+        state.setWinningTrades(String.valueOf(data.winningTrades()));
+        state.setLosingTrades(String.valueOf(data.losingTrades()));
+        state.setMaxGain(moneyFormat.format(data.maxGain()));
+        state.setWinRate(pctFormat.format(data.winRate()));
+        state.setPositions(data.positions());
+        state.setChartData(data.chartData());
         state.setError(null);
 
         viewModel.setState(state);
@@ -53,7 +53,7 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
     @Override
     public void prepareSuccessView(SimulatedTradeOutputData data) {
         final TradingState state = viewModel.getState();
-        state.setAvailableCash(moneyFormat.format(data.getNewBalance()));
+        state.setAvailableCash(moneyFormat.format(data.newBalance()));
 
         viewModel.setState(state);
         viewModel.firePropertyChanged();

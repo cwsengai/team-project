@@ -11,13 +11,7 @@ import entity.TimeInterval;
 import frameworkanddriver.ChartWindow;
 import usecase.price_chart.PriceChartOutputBoundary;
 
-public class PriceChartPresenter implements PriceChartOutputBoundary {
-
-    private final ChartWindow view;
-
-    public PriceChartPresenter(ChartWindow view) {
-        this.view = view;
-    }
+public record PriceChartPresenter(ChartWindow view) implements PriceChartOutputBoundary {
 
     @Override
     public void presentPriceHistory(List<PricePoint> priceData, String ticker, TimeInterval interval) {
@@ -27,34 +21,33 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
         }
 
         List<String> labels = priceData.stream()
-                .map(p -> formatTimestamp(p.getTimestamp(), interval))
+                .map(p -> formatTimestamp(p.timestamp(), interval))
                 .collect(Collectors.toList());
 
         // Check if we have complete OHLC data for candlestick chart
         boolean hasOHLCData = priceData.stream()
-                .allMatch(p -> p.getOpen() != null && p.getHigh() != null
-                        && p.getLow() != null && p.getClose() != null);
+                .allMatch(p -> p.open() != null && p.high() != null
+                        && p.low() != null && p.close() != null);
 
         ChartViewModel viewModel;
-        
+
         if (hasOHLCData && !priceData.isEmpty()) {
             // Create candlestick chart with OHLC data
             List<Double> closePrices = priceData.stream()
-                    .map(p -> p.getClose() != null ? p.getClose() : 0.0)
+                    .map(p -> p.close() != null ? p.close() : 0.0)
                     .collect(Collectors.toList());
 
             viewModel = new ChartViewModel(
-                    ticker + " | " + interval.name(), 
+                    ticker + " | " + interval.name(),
                     labels,
                     closePrices, interval
             );
-        }
-        else {
+        } else {
             // Create simple line chart with close prices
             List<Double> prices = priceData.stream()
-                    .map(p -> p.getClose() != null ? p.getClose()
+                    .map(p -> p.close() != null ? p.close()
                             :
-                             (p.getPrice() != 0.0 ? p.getPrice() : 0.0))
+                            (p.getPrice() != 0.0 ? p.getPrice() : 0.0))
                     .collect(Collectors.toList());
 
             viewModel = new ChartViewModel(ticker + " | " + interval.name(), labels, prices, interval);
@@ -67,19 +60,14 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
         if (timestamp == null) {
             return "";
         }
-        
+
         // Format based on interval for better readability
-        switch (interval) {
-            case FIVE_MINUTES:
-                return timestamp.format(DateTimeFormatter.ofPattern("HH:mm"));
-            case DAILY:
-                return timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            case WEEKLY:
-            case MONTHLY:
-                return timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-            default:
-                return timestamp.toString();
-        }
+        return switch (interval) {
+            case FIVE_MINUTES -> timestamp.format(DateTimeFormatter.ofPattern("HH:mm"));
+            case DAILY -> timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            case WEEKLY, MONTHLY -> timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+            default -> timestamp.toString();
+        };
     }
 
     @Override

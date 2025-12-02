@@ -71,7 +71,7 @@ class EntityLayerTest {
         account.addTradeClosedListener(record -> {
             listenerTriggered[0] = true;
             assertNotNull(record);
-            assertEquals("AAPL", record.getTicker());
+            assertEquals("AAPL", record.ticker());
         });
 
         account.executeTrade("AAPL", false, 10, 120.0, now);
@@ -105,15 +105,15 @@ class EntityLayerTest {
     void testDataObjects() {
         // SimulatedTradeRecord
         SimulatedTradeRecord r = new SimulatedTradeRecord("A", true, 1, 10.0, 11.0, 1.0, LocalDateTime.now(), LocalDateTime.now(), "u1");
-        assertEquals("A", r.getTicker());
+        assertEquals("A", r.ticker());
         assertTrue(r.isLong());
-        assertEquals(1, r.getQuantity());
-        assertEquals(10.0, r.getEntryPrice());
-        assertEquals(11.0, r.getExitPrice());
-        assertEquals(1.0, r.getRealizedPnL());
-        assertNotNull(r.getEntryTime());
-        assertNotNull(r.getExitTime());
-        assertEquals("u1", r.getUserId());
+        assertEquals(1, r.quantity());
+        assertEquals(10.0, r.entryPrice());
+        assertEquals(11.0, r.exitPrice());
+        assertEquals(1.0, r.realizedPnL());
+        assertNotNull(r.entryTime());
+        assertNotNull(r.exitTime());
+        assertEquals("u1", r.userId());
         assertNotNull(r.toString());
 
         // SimulatedOrder (Even if not heavily used, must cover for entity layer)

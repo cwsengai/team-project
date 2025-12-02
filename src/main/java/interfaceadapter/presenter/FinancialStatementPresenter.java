@@ -4,18 +4,13 @@ import interfaceadapter.view_model.FinancialStatementViewModel;
 import usecase.financial_statement.FinancialStatementOutputBoundary;
 import usecase.financial_statement.FinancialStatementOutputData;
 
-public class FinancialStatementPresenter implements FinancialStatementOutputBoundary {
-
-    private final FinancialStatementViewModel viewmodel;
-
-    public FinancialStatementPresenter(FinancialStatementViewModel viewmodel) {
-        this.viewmodel = viewmodel;
-    }
+public record FinancialStatementPresenter(
+        FinancialStatementViewModel viewmodel) implements FinancialStatementOutputBoundary {
 
     @Override
     public void presentFinancialStatement(FinancialStatementOutputData data) {
         viewmodel.setError(null);
-        viewmodel.setFormattedOutput(String.join("\n", data.getStatements()));
+        viewmodel.setFormattedOutput(String.join("\n", data.statements()));
         viewmodel.notifyListener();
     }
 

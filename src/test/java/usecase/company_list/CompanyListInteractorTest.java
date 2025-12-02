@@ -109,7 +109,7 @@ class CompanyListInteractorTest {
         @Override
         public void presentCompanyList(CompanyListOutputData outputData) {
             this.successCalled = true;
-            this.companies = outputData.getCompanies();
+            this.companies = outputData.companies();
         }
 
         @Override

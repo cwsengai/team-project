@@ -124,7 +124,7 @@ class SearchCompanyInteractorTest {
         @Override
         public void presentSearchResults(SearchCompanyOutputData outputData) {
             this.successCalled = true;
-            this.results = outputData.getCompanies();
+            this.results = outputData.companies();
         }
 
         @Override

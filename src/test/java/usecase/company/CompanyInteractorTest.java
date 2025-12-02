@@ -58,7 +58,7 @@ class CompanyInteractorTest {
         interactor.execute(new CompanyInputData("TSLA"));
 
         assertNotNull(captured[0], "Presenter should receive output data");
-        assertEquals("Tesla", captured[0].getName());
-        assertEquals("TSLA", captured[0].getSymbol());
+        assertEquals("Tesla", captured[0].name());
+        assertEquals("TSLA", captured[0].symbol());
     }
 }

@@ -44,13 +44,13 @@ class AlphaVantageMarketIndexGatewayTest {
 
         // All three should have valid prices
         for (MarketIndex index : indices) {
-            assertNotNull(index.getName());
-            assertTrue(index.getPrice() > 0);
+            assertNotNull(index.name());
+            assertTrue(index.price() > 0);
         }
 
         // Should have unique names (not all the same)
         long uniqueNames = indices.stream()
-                .map(MarketIndex::getName)
+                .map(MarketIndex::name)
                 .distinct()
                 .count();
         assertEquals(3, uniqueNames, "Should have 3 different index names");
@@ -63,10 +63,10 @@ class AlphaVantageMarketIndexGatewayTest {
 
         // Assert
         assertNotNull(index);
-        assertTrue(index.getName().contains("S&P 500"));
-        assertEquals(579.32, index.getPrice(), 0.01);
-        assertEquals(0.75, index.getChange(), 0.01);
-        assertEquals(0.13, index.getChangePercent(), 0.01);
+        assertTrue(index.name().contains("S&P 500"));
+        assertEquals(579.32, index.price(), 0.01);
+        assertEquals(0.75, index.change(), 0.01);
+        assertEquals(0.13, index.changePercent(), 0.01);
         assertTrue(index.isPositive());
     }
 
@@ -77,10 +77,10 @@ class AlphaVantageMarketIndexGatewayTest {
 
         // Assert
         assertNotNull(index);
-        assertTrue(index.getName().contains("NASDAQ"));
-        assertEquals(520.15, index.getPrice(), 0.01);
-        assertEquals(-1.09, index.getChange(), 0.01);
-        assertEquals(-0.21, index.getChangePercent(), 0.01);
+        assertTrue(index.name().contains("NASDAQ"));
+        assertEquals(520.15, index.price(), 0.01);
+        assertEquals(-1.09, index.change(), 0.01);
+        assertEquals(-0.21, index.changePercent(), 0.01);
         assertFalse(index.isPositive());
     }
 
@@ -91,10 +91,10 @@ class AlphaVantageMarketIndexGatewayTest {
 
         // Assert
         assertNotNull(index);
-        assertTrue(index.getName().contains("Dow Jones"));
-        assertEquals(438.56, index.getPrice(), 0.01);
-        assertEquals(0.70, index.getChange(), 0.01);
-        assertEquals(0.16, index.getChangePercent(), 0.01);
+        assertTrue(index.name().contains("Dow Jones"));
+        assertEquals(438.56, index.price(), 0.01);
+        assertEquals(0.70, index.change(), 0.01);
+        assertEquals(0.16, index.changePercent(), 0.01);
         assertTrue(index.isPositive());
     }
 
@@ -108,7 +108,7 @@ class AlphaVantageMarketIndexGatewayTest {
 
         // Assert - Should return dummy data when API fails
         assertNotNull(index);
-        assertTrue(index.getPrice() > 0);
+        assertTrue(index.price() > 0);
     }
 
     // Mock Api class that returns different data for each symbol
@@ -130,16 +130,12 @@ class AlphaVantageMarketIndexGatewayTest {
             }
 
             // Return different data based on symbol
-            switch (symbol) {
-                case "SPY":
-                    return createGlobalQuoteJson("SPY", "579.32", "0.75", "0.13%");
-                case "QQQ":
-                    return createGlobalQuoteJson("QQQ", "520.15", "-1.09", "-0.21%");
-                case "DIA":
-                    return createGlobalQuoteJson("DIA", "438.56", "0.70", "0.16%");
-                default:
-                    return createGlobalQuoteJson(symbol, "100.0", "0.5", "0.5%");
-            }
+            return switch (symbol) {
+                case "SPY" -> createGlobalQuoteJson("SPY", "579.32", "0.75", "0.13%");
+                case "QQQ" -> createGlobalQuoteJson("QQQ", "520.15", "-1.09", "-0.21%");
+                case "DIA" -> createGlobalQuoteJson("DIA", "438.56", "0.70", "0.16%");
+                default -> createGlobalQuoteJson(symbol, "100.0", "0.5", "0.5%");
+            };
         }
 
         private String createGlobalQuoteJson(String symbol, String price, String change, String changePercent) {

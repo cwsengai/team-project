@@ -28,7 +28,7 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
     public void presentSearchResults(SearchCompanyOutputData outputData) {
         List<CompanyDisplayData> displayList = new ArrayList<>();
 
-        for (Company company : outputData.getCompanies()) {
+        for (Company company : outputData.companies()) {
             // ✅ Handle companies with no data (market cap = 0)
             String formattedCap;
             String formattedPE;

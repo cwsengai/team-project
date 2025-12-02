@@ -5,36 +5,28 @@ import java.util.List;
 
 import entity.FinancialStatement;
 
-public class FinancialStatementInteractor implements FinancialStatementInputBoundary {
-    private final FinancialStatementGateway gateway;
-    private final FinancialStatementOutputBoundary presenter;
-
-    public FinancialStatementInteractor(FinancialStatementGateway gateway,
-                                        FinancialStatementOutputBoundary presenter) {
-        this.gateway = gateway;
-        this.presenter = presenter;
-    }
+public record FinancialStatementInteractor(FinancialStatementGateway gateway,
+                                           FinancialStatementOutputBoundary presenter) implements FinancialStatementInputBoundary {
 
     @Override
     public void execute(FinancialStatementInputData data) {
-        final String symbol = data.getSymbol();
+        final String symbol = data.symbol();
         final List<FinancialStatement> statements = gateway.fetchFinancialStatements(symbol);
 
         if (statements == null || statements.isEmpty()) {
             presenter.presentError("No financial statements found for: " + symbol);
-        }
-        else {
+        } else {
             final List<String> formatted = new ArrayList<>();
             final String constant = "\n";
             for (FinancialStatement fs : statements) {
                 final String block =
-                        "Fiscal Year: " + fs.getFiscalDateEnding() + constant
-                                + "Revenue: " + fs.getTotalRevenue() + constant
-                                + "Gross Profit: " + fs.getGrossProfit() + constant
-                                + "Net Income: " + fs.getNetIncome() + constant
-                                + "Operating Cash Flow: " + fs.getOperatingCashFlow() + constant
-                                + "CapEx: " + fs.getCapitalExpenditures() + constant
-                                + "Dividend Payout: " + fs.getDividendPayout() + constant
+                        "Fiscal Year: " + fs.fiscalDateEnding() + constant
+                                + "Revenue: " + fs.totalRevenue() + constant
+                                + "Gross Profit: " + fs.grossProfit() + constant
+                                + "Net Income: " + fs.netIncome() + constant
+                                + "Operating Cash Flow: " + fs.operatingCashFlow() + constant
+                                + "CapEx: " + fs.capitalExpenditures() + constant
+                                + "Dividend Payout: " + fs.dividendPayout() + constant
                                 + "----------------------------------";
                 formatted.add(block);
             }

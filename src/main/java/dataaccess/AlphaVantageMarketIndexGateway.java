@@ -16,20 +16,15 @@ import usecase.MarketIndexGateway;
  * - QQQ: Tracks NASDAQ-100
  * - DIA: Tracks Dow Jones Industrial Average
  */
-public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
-    private final Api api;
-
+public record AlphaVantageMarketIndexGateway(Api api) implements MarketIndexGateway {
     // ETF symbols that track major indices
     private static final String SP500_SYMBOL = "SPY";
     private static final String NASDAQ_SYMBOL = "QQQ";
     private static final String DOW_SYMBOL = "DIA";
 
-    public AlphaVantageMarketIndexGateway(Api api) {
-        this.api = api;
-    }
-
     /**
      * Fetches major market indices data from Alpha Vantage API.
+     *
      * @return List of major market indices with their current data
      */
     public List<MarketIndex> getMarketIndices() {
@@ -47,8 +42,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
             // Fetch Dow Jones
             indices.add(getMarketIndex(DOW_SYMBOL));
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("Error fetching market indices: " + ex.getMessage());
             // Return whatever we managed to fetch, or dummy data
             if (indices.isEmpty()) {
@@ -61,6 +55,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
 
     /**
      * Fetches market index data for a given ETF symbol from Alpha Vantage API.
+     *
      * @param symbol ETF symbol representing the market index
      * @return MarketIndex object containing the latest data for the given symbol
      */
@@ -105,8 +100,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
                 double changePercent;
                 try {
                     changePercent = Double.parseDouble(changePercentStr.replace("%", "").trim());
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     System.err.println("Could not parse change percent for " + symbol + ": " + changePercentStr);
                     changePercent = 0.0;
                 }
@@ -127,8 +121,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
             System.err.println("No 'Global Quote' in response for " + symbol);
             return createDummyIndex(symbol);
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("Error fetching " + symbol + ": " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -138,32 +131,24 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
     }
 
     private String getIndexName(String symbol) {
-        switch (symbol.toUpperCase()) {
-            case "SPY":
-                return "S&P 500";
-            case "QQQ":
-                return "NASDAQ";
-            case "DIA":
-                return "Dow Jones";
-            default:
-                return symbol;
-        }
+        return switch (symbol.toUpperCase()) {
+            case "SPY" -> "S&P 500";
+            case "QQQ" -> "NASDAQ";
+            case "DIA" -> "Dow Jones";
+            default -> symbol;
+        };
     }
 
     private MarketIndex createDummyIndex(String symbol) {
         String name = getIndexName(symbol);
 
         // Return realistic dummy data based on actual ranges
-        switch (symbol.toUpperCase()) {
-            case "SPY":
-                return new MarketIndex("S&P 500", 579.32, 0.75, 0.13);
-            case "QQQ":
-                return new MarketIndex("NASDAQ", 520.15, -1.09, -0.21);
-            case "DIA":
-                return new MarketIndex("Dow Jones", 438.56, 0.70, 0.16);
-            default:
-                return new MarketIndex(name, 0.0, 0.0, 0.0);
-        }
+        return switch (symbol.toUpperCase()) {
+            case "SPY" -> new MarketIndex("S&P 500", 579.32, 0.75, 0.13);
+            case "QQQ" -> new MarketIndex("NASDAQ", 520.15, -1.09, -0.21);
+            case "DIA" -> new MarketIndex("Dow Jones", 438.56, 0.70, 0.16);
+            default -> new MarketIndex(name, 0.0, 0.0, 0.0);
+        };
     }
 
     /**

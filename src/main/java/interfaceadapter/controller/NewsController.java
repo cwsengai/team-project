@@ -8,16 +8,13 @@ import usecase.news.NewsInputData;
  * Receives user actions from the interface layer and forwards them
  * to the news retrieval use case interactor.
  */
-public class NewsController {
-    private final NewsInputBoundary interactor;
-
+public record NewsController(NewsInputBoundary interactor) {
     /**
      * Constructs a NewsController with the given interactor.
      *
      * @param interactor the input boundary for the news retrieval use case
      */
-    public NewsController(NewsInputBoundary interactor) {
-        this.interactor = interactor;
+    public NewsController {
     }
 
     /**

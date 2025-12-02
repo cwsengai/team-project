@@ -12,58 +12,28 @@ import entity.Position;
  * price history, open positions, and any error message returned
  * by the interactor.</p>
  */
-public class UpdateMarketOutputData {
-    private final double currentPrice;
-    private final double totalEquity;
-    private final double totalReturnRate;
-    private final double maxDrawdown;
-    private final double availableCash;
-
-    private final int totalTrades;
-    private final int winningTrades;
-    private final double maxGain;
-    private final int losingTrades;
-    private final double winRate;
-
-    private final List<Double> chartData;
-    private final Map<String, Position> positions;
-
+public record UpdateMarketOutputData(double currentPrice, double totalEquity, double totalReturnRate,
+                                     double maxDrawdown, double availableCash, int totalTrades, int winningTrades,
+                                     double maxGain, int losingTrades, double winRate, List<Double> chartData,
+                                     Map<String, Position> positions) {
     /**
      * Constructs the output data for the market update.
      *
-     * @param currentPrice the latest market price
-     * @param totalEquity the updated total equity value
+     * @param currentPrice    the latest market price
+     * @param totalEquity     the updated total equity value
      * @param totalReturnRate the overall return rate
-     * @param maxDrawdown the maximum drawdown
-     * @param availableCash available cash balance
-     * @param totalTrades total closed trades
-     * @param winningTrades number of winning trades
-     * @param maxGain highest realized gain
-     * @param losingTrades number of losing trades
-     * @param winRate win rate across trades
-     * @param chartData price history data for charts
-     * @param positions open positions indexed by ticker
+     * @param maxDrawdown     the maximum drawdown
+     * @param availableCash   available cash balance
+     * @param totalTrades     total closed trades
+     * @param winningTrades   number of winning trades
+     * @param maxGain         highest realized gain
+     * @param losingTrades    number of losing trades
+     * @param winRate         win rate across trades
+     * @param chartData       price history data for charts
+     * @param positions       open positions indexed by ticker
      */
-    public UpdateMarketOutputData(double currentPrice, double totalEquity, double totalReturnRate,
-                                  double maxDrawdown, double availableCash, int totalTrades,
-                                  int winningTrades, double maxGain, int losingTrades,
-                                  double winRate, List<Double> chartData,
-                                  Map<String, Position> positions) {
+    public UpdateMarketOutputData {
 
-        this.currentPrice = currentPrice;
-        this.totalEquity = totalEquity;
-        this.totalReturnRate = totalReturnRate;
-        this.maxDrawdown = maxDrawdown;
-        this.availableCash = availableCash;
-
-        this.totalTrades = totalTrades;
-        this.winningTrades = winningTrades;
-        this.maxGain = maxGain;
-        this.losingTrades = losingTrades;
-        this.winRate = winRate;
-
-        this.chartData = chartData;
-        this.positions = positions;
     }
 
     /**
@@ -71,7 +41,8 @@ public class UpdateMarketOutputData {
      *
      * @return latest market price
      */
-    public double getCurrentPrice() {
+    @Override
+    public double currentPrice() {
         return currentPrice;
     }
 
@@ -80,7 +51,8 @@ public class UpdateMarketOutputData {
      *
      * @return total equity
      */
-    public double getTotalEquity() {
+    @Override
+    public double totalEquity() {
         return totalEquity;
     }
 
@@ -89,7 +61,8 @@ public class UpdateMarketOutputData {
      *
      * @return return rate
      */
-    public double getTotalReturnRate() {
+    @Override
+    public double totalReturnRate() {
         return totalReturnRate;
     }
 
@@ -98,7 +71,8 @@ public class UpdateMarketOutputData {
      *
      * @return max drawdown
      */
-    public double getMaxDrawdown() {
+    @Override
+    public double maxDrawdown() {
         return maxDrawdown;
     }
 
@@ -107,7 +81,8 @@ public class UpdateMarketOutputData {
      *
      * @return available cash
      */
-    public double getAvailableCash() {
+    @Override
+    public double availableCash() {
         return availableCash;
     }
 
@@ -116,7 +91,8 @@ public class UpdateMarketOutputData {
      *
      * @return total closed trades
      */
-    public int getTotalTrades() {
+    @Override
+    public int totalTrades() {
         return totalTrades;
     }
 
@@ -125,7 +101,8 @@ public class UpdateMarketOutputData {
      *
      * @return winning trades
      */
-    public int getWinningTrades() {
+    @Override
+    public int winningTrades() {
         return winningTrades;
     }
 
@@ -134,7 +111,8 @@ public class UpdateMarketOutputData {
      *
      * @return maximum gain
      */
-    public double getMaxGain() {
+    @Override
+    public double maxGain() {
         return maxGain;
     }
 
@@ -143,7 +121,8 @@ public class UpdateMarketOutputData {
      *
      * @return losing trade count
      */
-    public int getLosingTrades() {
+    @Override
+    public int losingTrades() {
         return losingTrades;
     }
 
@@ -152,7 +131,8 @@ public class UpdateMarketOutputData {
      *
      * @return win rate
      */
-    public double getWinRate() {
+    @Override
+    public double winRate() {
         return winRate;
     }
 
@@ -161,7 +141,8 @@ public class UpdateMarketOutputData {
      *
      * @return chart data
      */
-    public List<Double> getChartData() {
+    @Override
+    public List<Double> chartData() {
         return chartData;
     }
 
@@ -170,7 +151,8 @@ public class UpdateMarketOutputData {
      *
      * @return open positions
      */
-    public Map<String, Position> getPositions() {
+    @Override
+    public Map<String, Position> positions() {
         return positions;
     }
 

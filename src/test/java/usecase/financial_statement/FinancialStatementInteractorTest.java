@@ -71,7 +71,7 @@ class FinancialStatementInteractorTest {
         interactor.execute(new FinancialStatementInputData("TSLA"));
 
         assertNotNull(captured[0], "Output should be captured");
-        assertEquals("TSLA", captured[0].getSymbol());
-        assertFalse(captured[0].getStatements().isEmpty());
+        assertEquals("TSLA", captured[0].symbol());
+        assertFalse(captured[0].statements().isEmpty());
     }
 }

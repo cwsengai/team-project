@@ -55,11 +55,11 @@ public class PortfolioSummaryCard extends JPanel {
         tradingSpanLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         card.add(tradingSpanLabel);
         final String tradingSpanString;
-        if (stats.earliest == null || stats.latest == null) {
+        if (stats.earliest() == null || stats.latest() == null) {
             tradingSpanString = "No trades";
         }
         else {
-            tradingSpanString = stats.earliest.toLocalDate() + " to " + stats.latest.toLocalDate();
+            tradingSpanString = stats.earliest().toLocalDate() + " to " + stats.latest().toLocalDate();
         }
         final JLabel tradingSpanValue = new JLabel(tradingSpanString, SwingConstants.CENTER);
         tradingSpanValue.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -77,26 +77,26 @@ public class PortfolioSummaryCard extends JPanel {
         leftCol.setOpaque(false);
         leftCol.setLayout(new GridLayout(4, 2, 8, 8));
         leftCol.add(new JLabel("Total Profit:"));
-        leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.totalProfit)));
+        leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.totalProfit())));
         leftCol.add(new JLabel("Total Return Rate:"));
-        leftCol.add(rightAlignLabel(PERCENT_FORMAT.format(stats.totalReturnRate)));
+        leftCol.add(rightAlignLabel(PERCENT_FORMAT.format(stats.totalReturnRate())));
         leftCol.add(new JLabel("Max Gain:"));
-        leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.maxGain)));
+        leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.maxGain())));
         leftCol.add(new JLabel("Max Drawdown:"));
-        leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.maxDrawdown)));
+        leftCol.add(rightAlignLabel(CURRENCY_FORMAT.format(stats.maxDrawdown())));
 
         // Right column
         final JPanel rightCol = new JPanel();
         rightCol.setOpaque(false);
         rightCol.setLayout(new GridLayout(4, 2, 8, 8));
         rightCol.add(new JLabel("Total Trades#:"));
-        rightCol.add(rightAlignLabel(String.valueOf(stats.tradeCount)));
+        rightCol.add(rightAlignLabel(String.valueOf(stats.tradeCount())));
         rightCol.add(new JLabel("Winning trades#:"));
-        rightCol.add(rightAlignLabel(String.valueOf(stats.winningTrades)));
+        rightCol.add(rightAlignLabel(String.valueOf(stats.winningTrades())));
         rightCol.add(new JLabel("Losing trades#:"));
-        rightCol.add(rightAlignLabel(String.valueOf(stats.losingTrades)));
+        rightCol.add(rightAlignLabel(String.valueOf(stats.losingTrades())));
         rightCol.add(new JLabel("Win Rate:"));
-        rightCol.add(rightAlignLabel(PERCENT_FORMAT.format(stats.winRate)));
+        rightCol.add(rightAlignLabel(PERCENT_FORMAT.format(stats.winRate())));
 
         metricsPanel.add(leftCol);
         metricsPanel.add(rightCol);

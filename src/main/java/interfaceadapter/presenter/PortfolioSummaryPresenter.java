@@ -11,16 +11,16 @@ public class PortfolioSummaryPresenter implements PortfolioStatisticsOutputBound
     @Override
     public void present(PortfolioStatisticsOutputData outputData) {
         this.viewModel = new PortfolioSummaryViewModel(
-            outputData.getTotalProfit(),
-            outputData.getMaxGain(),
-            outputData.getMaxDrawdown(),
-            outputData.getTotalTrades(),
-            outputData.getWinningTrades(),
-            outputData.getLosingTrades(),
-            outputData.getWinRate(),
-            outputData.getTotalReturnRate(),
-            outputData.getEarliestTrade(),
-            outputData.getLatestTrade()
+            outputData.totalProfit(),
+            outputData.maxGain(),
+            outputData.maxDrawdown(),
+            outputData.totalTrades(),
+            outputData.winningTrades(),
+            outputData.losingTrades(),
+            outputData.winRate(),
+            outputData.totalReturnRate(),
+            outputData.earliestTrade(),
+            outputData.latestTrade()
         );
     }
 

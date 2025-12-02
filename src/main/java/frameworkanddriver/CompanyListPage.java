@@ -291,11 +291,11 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             // Show real data
             int row = 2;
             for (MarketIndex index : this.marketIndices) {
-                final String changeStr = String.format("%+.2f", index.getChange());
+                final String changeStr = String.format("%+.2f", index.change());
                 final String changeColor = index.isPositive() ? "positive" : "negative";
 
                 addMarketIndexRowGbColor(this.marketIndicesPanel, gbc, row++,
-                        index.getName(),
+                        index.name(),
                         index.getFormattedPrice(),
                         changeStr,
                         index.getFormattedChangePercent(),
@@ -443,9 +443,9 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             int row = 2;
             for (EconomicIndicator indicator : this.economicIndicators) {
                 addIndicatorRowGb(this.economicIndicatorsPanel, gbc, row++,
-                        indicator.getName(),
-                        indicator.getValue(),
-                        indicator.getLastUpdated());
+                        indicator.name(),
+                        indicator.value(),
+                        indicator.lastUpdated());
             }
         }
 
@@ -767,11 +767,11 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         if (companies != null && !companies.isEmpty()) {
             for (CompanyDisplayData company : companies) {
                 final Object[] row = {
-                    company.getSymbol(),
-                    company.getName(),
-                    company.getCountry(),
-                    company.getFormattedMarketCap(),
-                    company.getFormattedPeRatio(),
+                    company.symbol(),
+                    company.name(),
+                    company.country(),
+                    company.formattedMarketCap(),
+                    company.formattedPeRatio(),
                     BUTTON_TEXT_VIEW,
                 };
                 this.tableModel.addRow(row);

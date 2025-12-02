@@ -44,21 +44,21 @@ class UseCaseLayerTest {
         SimulatedTradeInputData input = new SimulatedTradeInputData("AAPL", true, 1000.0, 100.0);
 
         // Test InputData Getters to ensure coverage
-        assertEquals("AAPL", input.getTicker());
+        assertEquals("AAPL", input.ticker());
         assertTrue(input.isBuyAction());
-        assertEquals(1000.0, input.getAmount());
-        assertEquals(100.0, input.getCurrentPrice());
+        assertEquals(1000.0, input.amount());
+        assertEquals(100.0, input.currentPrice());
 
         // Execute
         interactor.executeTrade(input);
 
         // Verify Results
         assertNotNull(presenter.successData);
-        assertEquals(1000.0, presenter.successData.getNewBalance()); // Balance decreases
-        assertTrue(presenter.successData.getMessage().contains("Bought"));
+        assertEquals(1000.0, presenter.successData.newBalance()); // Balance decreases
+        assertTrue(presenter.successData.message().contains("Bought"));
 
         // Test OutputData Getters
-        assertNotNull(presenter.successData.getMessage());
+        assertNotNull(presenter.successData.message());
     }
 
     // --- 2. Test All Failure Branches ---

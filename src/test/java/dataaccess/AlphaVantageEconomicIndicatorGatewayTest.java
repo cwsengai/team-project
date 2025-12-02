@@ -39,12 +39,12 @@ class AlphaVantageEconomicIndicatorGatewayTest {
         List<EconomicIndicator> indicators = gateway.getEconomicIndicators();
 
         // Assert
-        assertTrue(indicators.stream().anyMatch(i -> i.getName().contains("Federal Funds")));
-        assertTrue(indicators.stream().anyMatch(i -> i.getName().contains("GDP")));
-        assertTrue(indicators.stream().anyMatch(i -> i.getName().contains("Unemployment")));
-        assertTrue(indicators.stream().anyMatch(i -> i.getName().contains("Treasury")));
-        assertTrue(indicators.stream().anyMatch(i -> i.getName().contains("CPI") || i.getName().contains("Price Index")));
-        assertTrue(indicators.stream().anyMatch(i -> i.getName().contains("Inflation")));
+        assertTrue(indicators.stream().anyMatch(i -> i.name().contains("Federal Funds")));
+        assertTrue(indicators.stream().anyMatch(i -> i.name().contains("GDP")));
+        assertTrue(indicators.stream().anyMatch(i -> i.name().contains("Unemployment")));
+        assertTrue(indicators.stream().anyMatch(i -> i.name().contains("Treasury")));
+        assertTrue(indicators.stream().anyMatch(i -> i.name().contains("CPI") || i.name().contains("Price Index")));
+        assertTrue(indicators.stream().anyMatch(i -> i.name().contains("Inflation")));
     }
 
     @Test
@@ -54,11 +54,11 @@ class AlphaVantageEconomicIndicatorGatewayTest {
 
         // Assert
         for (EconomicIndicator indicator : indicators) {
-            assertNotNull(indicator.getName());
-            assertNotNull(indicator.getValue());
-            assertNotNull(indicator.getLastUpdated());
-            assertFalse(indicator.getName().isEmpty());
-            assertFalse(indicator.getValue().isEmpty());
+            assertNotNull(indicator.name());
+            assertNotNull(indicator.value());
+            assertNotNull(indicator.lastUpdated());
+            assertFalse(indicator.name().isEmpty());
+            assertFalse(indicator.value().isEmpty());
         }
     }
 
@@ -69,7 +69,7 @@ class AlphaVantageEconomicIndicatorGatewayTest {
 
         // Assert
         for (EconomicIndicator indicator : indicators) {
-            String value = indicator.getValue();
+            String value = indicator.value();
             // Should contain either %, USD, or numbers
             assertTrue(
                     value.contains("%") || value.contains("USD") || value.matches(".*\\d+.*"),
@@ -85,8 +85,8 @@ class AlphaVantageEconomicIndicatorGatewayTest {
 
         // Assert
         for (EconomicIndicator indicator : indicators) {
-            assertFalse(indicator.getLastUpdated().isEmpty(),
-                    "Last updated date should not be empty for: " + indicator.getName());
+            assertFalse(indicator.lastUpdated().isEmpty(),
+                    "Last updated date should not be empty for: " + indicator.name());
         }
     }
 

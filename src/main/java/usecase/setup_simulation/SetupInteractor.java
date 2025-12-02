@@ -19,11 +19,11 @@ public class SetupInteractor implements SetupInputBoundary {
     public void execute(SetupInputData input) {
 
         final boolean hasInvalidSpeed =
-                input.getSpeedMultiplier() < MIN_SPEED
-                        || input.getSpeedMultiplier() > MAX_SPEED
-                        || input.getSpeedMultiplier() % SPEED_STEP != 0;
+                input.speedMultiplier() < MIN_SPEED
+                        || input.speedMultiplier() > MAX_SPEED
+                        || input.speedMultiplier() % SPEED_STEP != 0;
 
-        final boolean hasInvalidBalance = input.getInitialBalance() <= 0;
+        final boolean hasInvalidBalance = input.initialBalance() <= 0;
 
         if (hasInvalidSpeed) {
             presenter.prepareFailView("Invalid speed. Must be 5x, 10x, 20x, or 30x.");

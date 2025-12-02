@@ -8,17 +8,14 @@ import usecase.financial_statement.FinancialStatementInputData;
  * Receives user actions from the interface layer and forwards them
  * to the financial statement use case interactor.
  */
-public class FinancialStatementController {
-    private final FinancialStatementInputBoundary interactor;
-
+public record FinancialStatementController(FinancialStatementInputBoundary interactor) {
     /**
      * Constructs a FinancialStatementController with the given interactor.
      *
      * @param interactor the input boundary for the financial statement use case
      */
-    public FinancialStatementController(FinancialStatementInputBoundary interactor) {
+    public FinancialStatementController {
 
-        this.interactor = interactor;
     }
 
     /**

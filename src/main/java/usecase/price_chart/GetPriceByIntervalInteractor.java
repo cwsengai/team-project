@@ -10,27 +10,22 @@ import entity.TimeInterval;
 /**
  * Interactor for loading price history based on a given time interval.
  */
-public class GetPriceByIntervalInteractor implements PriceInputBoundary {
-
-    private final PriceDataAccessInterface priceGateway;
-    private final PriceChartOutputBoundary pricePresenter;
+public record GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway,
+                                           PriceChartOutputBoundary pricePresenter) implements PriceInputBoundary {
 
     /**
      * Creates the interactor responsible for retrieving and presenting price data.
      *
-     * @param priceGateway the gateway used to fetch price history
+     * @param priceGateway   the gateway used to fetch price history
      * @param pricePresenter the presenter that formats and outputs results
      */
-    public GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway,
-                                        PriceChartOutputBoundary pricePresenter) {
-        this.priceGateway = priceGateway;
-        this.pricePresenter = pricePresenter;
+    public GetPriceByIntervalInteractor {
     }
 
     /**
      * Loads price history for a given ticker and interval.
      *
-     * @param ticker the stock ticker symbol
+     * @param ticker   the stock ticker symbol
      * @param interval the selected interval range
      */
     @Override
@@ -42,8 +37,7 @@ public class GetPriceByIntervalInteractor implements PriceInputBoundary {
 
             try {
                 priceData = priceGateway.getPriceHistory(ticker, interval);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
 
                 SwingUtilities.invokeLater(() -> pricePresenter.presentError(
                         "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()
@@ -57,8 +51,7 @@ public class GetPriceByIntervalInteractor implements PriceInputBoundary {
                     pricePresenter.presentError(
                             "No " + interval.name() + " price data found (not found)."
                     );
-                }
-                else {
+                } else {
                     pricePresenter.presentPriceHistory(priceData, ticker, interval);
                 }
             });

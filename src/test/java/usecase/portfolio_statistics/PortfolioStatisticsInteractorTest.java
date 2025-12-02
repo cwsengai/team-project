@@ -18,11 +18,11 @@ public class PortfolioStatisticsInteractorTest {
 
         PortfolioStatisticsOutputData out = interactor.calculateStatistics(input);
 
-        assertEquals(0.0, out.getTotalProfit(), 1e-6);
-        assertEquals(0, out.getTotalTrades());
-        assertEquals(0.0, out.getWinRate(), 1e-6);
-        assertNull(out.getEarliestTrade());
-        assertNull(out.getLatestTrade());
+        assertEquals(0.0, out.totalProfit(), 1e-6);
+        assertEquals(0, out.totalTrades());
+        assertEquals(0.0, out.winRate(), 1e-6);
+        assertNull(out.earliestTrade());
+        assertNull(out.latestTrade());
     }
 
     @Test
@@ -41,20 +41,20 @@ public class PortfolioStatisticsInteractorTest {
         PortfolioStatisticsOutputData out = interactor.calculateStatistics(input);
 
         // totalProfit = 50 + (-20) + 30 = 60
-        assertEquals(60.0, out.getTotalProfit(), 1e-6);
+        assertEquals(60.0, out.totalProfit(), 1e-6);
         // maxGain should be highest positive realized PnL = 50
-        assertEquals(50.0, out.getMaxGain(), 1e-6);
+        assertEquals(50.0, out.maxGain(), 1e-6);
         // total trades = 3
-        assertEquals(3, out.getTotalTrades());
+        assertEquals(3, out.totalTrades());
         // winning trades = 2, losing =1
-        assertEquals(2, out.getWinningTrades());
-        assertEquals(1, out.getLosingTrades());
+        assertEquals(2, out.winningTrades());
+        assertEquals(1, out.losingTrades());
         // win rate = 2/3 * 100
-        assertEquals((2.0/3.0)*100.0, out.getWinRate(), 1e-6);
+        assertEquals((2.0/3.0)*100.0, out.winRate(), 1e-6);
         // earliest and latest
-        assertEquals(t1, out.getEarliestTrade());
-        assertEquals(t3, out.getLatestTrade());
+        assertEquals(t1, out.earliestTrade());
+        assertEquals(t3, out.latestTrade());
         // total return rate = totalProfit / initialBalance * 100 = 60/1000*100 = 6%
-        assertEquals(6.0, out.getTotalReturnRate(), 1e-6);
+        assertEquals(6.0, out.totalReturnRate(), 1e-6);
     }
 }

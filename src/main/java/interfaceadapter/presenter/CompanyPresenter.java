@@ -4,22 +4,16 @@ import interfaceadapter.view_model.CompanyViewModel;
 import usecase.company.CompanyOutputBoundary;
 import usecase.company.CompanyOutputData;
 
-public class CompanyPresenter implements CompanyOutputBoundary {
-
-    private final CompanyViewModel viewmodel;
-
-    public CompanyPresenter(CompanyViewModel viewmodel) {
-        this.viewmodel = viewmodel;
-    }
+public record CompanyPresenter(CompanyViewModel viewmodel) implements CompanyOutputBoundary {
 
     @Override
     public void presentCompany(CompanyOutputData data) {
         viewmodel.setError(null);
-        viewmodel.setSymbol(data.getSymbol());
-        viewmodel.setName(data.getName());
-        viewmodel.setSector(data.getSector());
-        viewmodel.setIndustry(data.getIndustry());
-        viewmodel.setDescription(data.getDescription());
+        viewmodel.setSymbol(data.symbol());
+        viewmodel.setName(data.name());
+        viewmodel.setSector(data.sector());
+        viewmodel.setIndustry(data.industry());
+        viewmodel.setDescription(data.description());
         viewmodel.notifyListener();
     }
 

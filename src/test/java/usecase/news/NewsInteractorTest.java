@@ -68,8 +68,8 @@ class NewsInteractorTest {
         interactor.execute(new NewsInputData("TSLA"));
 
         assertNotNull(captured[0], "Presenter should receive output data");
-        assertEquals("TSLA", captured[0].getSymbol());
-        assertFalse(captured[0].getStatements().isEmpty());
+        assertEquals("TSLA", captured[0].symbol());
+        assertFalse(captured[0].statements().isEmpty());
     }
 }
 

@@ -7,15 +7,11 @@ import usecase.search_company.SearchCompanyInputData;
  * Controller for Search Company use case.
  * Handles user actions to search for companies.
  */
-public class SearchCompanyController {
-    private final SearchCompanyInputBoundary interactor;
-
-    public SearchCompanyController(SearchCompanyInputBoundary interactor) {
-        this.interactor = interactor;
-    }
+public record SearchCompanyController(SearchCompanyInputBoundary interactor) {
 
     /**
      * Search for companies matching the query.
+     *
      * @param query Search string (company name or ticker)
      */
     public void searchCompany(String query) {

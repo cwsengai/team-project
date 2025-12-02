@@ -7,19 +7,8 @@ import java.time.format.DateTimeFormatter;
  * View model for portfolio display.
  * Contains formatted data ready for presentation in the UI.
  */
-public class PortfolioViewModel {
-    private final double realizedGain;
-    private final double unrealizedGain;
-    private final double totalGain;
-    private final LocalDateTime snapshotTime;
-
-    public PortfolioViewModel(double realizedGain, double unrealizedGain,
-                              double totalGain, LocalDateTime snapshotTime) {
-        this.realizedGain = realizedGain;
-        this.unrealizedGain = unrealizedGain;
-        this.totalGain = totalGain;
-        this.snapshotTime = snapshotTime;
-    }
+public record PortfolioViewModel(double realizedGain, double unrealizedGain, double totalGain,
+                                 LocalDateTime snapshotTime) {
 
     public String getFormattedRealizedGain() {
         return String.format("$%.2f", realizedGain);

@@ -21,9 +21,9 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
     @Override
     public void executeTrade(SimulatedTradeInputData inputData) {
 
-        final String ticker = inputData.getTicker();
-        final double price = inputData.getCurrentPrice();
-        final double amount = inputData.getAmount();
+        final String ticker = inputData.ticker();
+        final double price = inputData.currentPrice();
+        final double amount = inputData.amount();
         final boolean isBuyAction = inputData.isBuyAction();
         final LocalDateTime tradeTime = LocalDateTime.now();
 

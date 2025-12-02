@@ -13,20 +13,14 @@ import api.Api;
 import entity.NewsArticle;
 import usecase.news.NewsGateway;
 
-public class AlphaVantageNewsGateway implements NewsGateway {
-    private final Api api;
-
-    public AlphaVantageNewsGateway(Api api) {
-        this.api = api;
-    }
+public record AlphaVantageNewsGateway(Api api) implements NewsGateway {
 
     @Override
     public List<NewsArticle> fetchArticles(String symbol) {
         String jsonString;
         try {
             jsonString = api.getFuncNewsSentiment(symbol);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // handle or log as appropriate; returning null for now
             System.err.println("AlphaVantageNewsGateway.fetchArticles error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {

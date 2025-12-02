@@ -34,10 +34,10 @@ public class SimulationMarketDataAccess implements SimulationDataAccessInterface
     public List<Double> generateTicks(PricePoint point, int numberOfTicks) {
         Double[] ticks = new Double[numberOfTicks];
 
-        double open = point.getOpen();
-        double high = point.getHigh();
-        double low = point.getLow();
-        double close = point.getClose();
+        double open = point.open();
+        double high = point.high();
+        double low = point.low();
+        double close = point.close();
 
         // 1. Anchor
         ticks[0] = open;

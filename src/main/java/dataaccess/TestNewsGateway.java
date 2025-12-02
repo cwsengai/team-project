@@ -34,11 +34,11 @@ public class TestNewsGateway {
 
         System.out.println("\n--- NEWS RESULTS ---");
         for (NewsArticle a : articles) {
-            System.out.println("Title: " + a.getTitle());
-            System.out.println("URL: " + a.getUrl());
-            System.out.println("Time: " + a.getPublishedAt());
-            System.out.println("Source: " + a.getSource());
-            System.out.println("Summary: " + a.getSummary());
+            System.out.println("Title: " + a.title());
+            System.out.println("URL: " + a.url());
+            System.out.println("Time: " + a.publishedAt());
+            System.out.println("Source: " + a.source());
+            System.out.println("Summary: " + a.summary());
             System.out.println("---------------------------");
         }
     }

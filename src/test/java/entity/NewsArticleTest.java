@@ -22,12 +22,12 @@ class NewsArticleTest {
                 "Reuters"
         );
 
-        assertEquals("AAPL", article.getSymbol());
-        assertEquals("Apple launches new product", article.getTitle());
-        assertEquals("https://example.com/apple", article.getUrl());
-        assertEquals(now, article.getPublishedAt());
-        assertEquals("This is a summary.", article.getSummary());
-        assertEquals("Reuters", article.getSource());
+        assertEquals("AAPL", article.symbol());
+        assertEquals("Apple launches new product", article.title());
+        assertEquals("https://example.com/apple", article.url());
+        assertEquals(now, article.publishedAt());
+        assertEquals("This is a summary.", article.summary());
+        assertEquals("Reuters", article.source());
     }
 }
 

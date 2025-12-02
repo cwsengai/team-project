@@ -8,17 +8,14 @@ import entity.Company;
  * Output data for the Company List use case.
  * Holds the list of retrieved companies and the success status.
  */
-public class CompanyListOutputData {
-
-    private final List<Company> companies;
+public record CompanyListOutputData(List<Company> companies) {
 
     /**
      * Creates a new CompanyListOutputData instance.
      *
      * @param companies the list of companies retrieved by the use case
      */
-    public CompanyListOutputData(List<Company> companies) {
-        this.companies = companies;
+    public CompanyListOutputData {
     }
 
     /**
@@ -26,7 +23,8 @@ public class CompanyListOutputData {
      *
      * @return the list of retrieved companies
      */
-    public List<Company> getCompanies() {
+    @Override
+    public List<Company> companies() {
         return companies;
     }
 

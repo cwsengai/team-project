@@ -6,47 +6,25 @@ import java.time.LocalDateTime;
  * Output data object representing calculated portfolio statistics.
  * Contains profit metrics, trade counts, return rates, and trading time span.
  */
-public class PortfolioStatisticsOutputData {
-
-    private final double totalProfit;
-    private final double maxGain;
-    private final double maxDrawdown;
-    private final int totalTrades;
-    private final int winningTrades;
-    private final int losingTrades;
-    private final double winRate;
-    private final double totalReturnRate;
-    private final LocalDateTime earliestTrade;
-    private final LocalDateTime latestTrade;
+public record PortfolioStatisticsOutputData(double totalProfit, double maxGain, double maxDrawdown, int totalTrades,
+                                            int winningTrades, int losingTrades, double winRate, double totalReturnRate,
+                                            LocalDateTime earliestTrade, LocalDateTime latestTrade) {
 
     /**
      * Creates a new PortfolioStatisticsOutputData instance.
      *
-     * @param totalProfit the total profit across all trades
-     * @param maxGain the maximum single-trade positive return
-     * @param maxDrawdown the maximum single-trade drawdown
-     * @param totalTrades the total number of trades executed
-     * @param winningTrades the number of trades with positive PnL
-     * @param losingTrades the number of trades with negative PnL
-     * @param winRate the percentage of trades that were profitable
+     * @param totalProfit     the total profit across all trades
+     * @param maxGain         the maximum single-trade positive return
+     * @param maxDrawdown     the maximum single-trade drawdown
+     * @param totalTrades     the total number of trades executed
+     * @param winningTrades   the number of trades with positive PnL
+     * @param losingTrades    the number of trades with negative PnL
+     * @param winRate         the percentage of trades that were profitable
      * @param totalReturnRate the overall portfolio return rate
-     * @param earliestTrade the earliest trade timestamp
-     * @param latestTrade the latest trade timestamp
+     * @param earliestTrade   the earliest trade timestamp
+     * @param latestTrade     the latest trade timestamp
      */
-    public PortfolioStatisticsOutputData(double totalProfit, double maxGain, double maxDrawdown,
-                                         int totalTrades, int winningTrades, int losingTrades,
-                                         double winRate, double totalReturnRate,
-                                         LocalDateTime earliestTrade, LocalDateTime latestTrade) {
-        this.totalProfit = totalProfit;
-        this.maxGain = maxGain;
-        this.maxDrawdown = maxDrawdown;
-        this.totalTrades = totalTrades;
-        this.winningTrades = winningTrades;
-        this.losingTrades = losingTrades;
-        this.winRate = winRate;
-        this.totalReturnRate = totalReturnRate;
-        this.earliestTrade = earliestTrade;
-        this.latestTrade = latestTrade;
+    public PortfolioStatisticsOutputData {
     }
 
     /**
@@ -54,7 +32,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the total profit value
      */
-    public double getTotalProfit() {
+    @Override
+    public double totalProfit() {
         return totalProfit;
     }
 
@@ -63,7 +42,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the maximum gain value
      */
-    public double getMaxGain() {
+    @Override
+    public double maxGain() {
         return maxGain;
     }
 
@@ -72,7 +52,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the maximum drawdown value
      */
-    public double getMaxDrawdown() {
+    @Override
+    public double maxDrawdown() {
         return maxDrawdown;
     }
 
@@ -81,7 +62,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the total trade count
      */
-    public int getTotalTrades() {
+    @Override
+    public int totalTrades() {
         return totalTrades;
     }
 
@@ -90,7 +72,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the count of winning trades
      */
-    public int getWinningTrades() {
+    @Override
+    public int winningTrades() {
         return winningTrades;
     }
 
@@ -99,7 +82,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the count of losing trades
      */
-    public int getLosingTrades() {
+    @Override
+    public int losingTrades() {
         return losingTrades;
     }
 
@@ -108,7 +92,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the win rate as a percentage
      */
-    public double getWinRate() {
+    @Override
+    public double winRate() {
         return winRate;
     }
 
@@ -117,7 +102,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the total return percentage
      */
-    public double getTotalReturnRate() {
+    @Override
+    public double totalReturnRate() {
         return totalReturnRate;
     }
 
@@ -126,7 +112,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the earliest trade time
      */
-    public LocalDateTime getEarliestTrade() {
+    @Override
+    public LocalDateTime earliestTrade() {
         return earliestTrade;
     }
 
@@ -135,7 +122,8 @@ public class PortfolioStatisticsOutputData {
      *
      * @return the latest trade time
      */
-    public LocalDateTime getLatestTrade() {
+    @Override
+    public LocalDateTime latestTrade() {
         return latestTrade;
     }
 

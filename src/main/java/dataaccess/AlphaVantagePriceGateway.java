@@ -62,20 +62,12 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     }
     
     private String getFunctionName(TimeInterval interval) {
-        final String functionName;
-        switch (interval) {
-            case FIVE_MINUTES:
-                functionName = "TIME_SERIES_INTRADAY";
-                break;
-            case DAILY:
-                functionName = "TIME_SERIES_DAILY";
-                break;
-            case WEEKLY:
-                functionName = "TIME_SERIES_WEEKLY";
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported interval: " + interval);
-        }
+        final String functionName = switch (interval) {
+            case FIVE_MINUTES -> "TIME_SERIES_INTRADAY";
+            case DAILY -> "TIME_SERIES_DAILY";
+            case WEEKLY -> "TIME_SERIES_WEEKLY";
+            default -> throw new IllegalArgumentException("Unsupported interval: " + interval);
+        };
         return functionName;
     }
 
@@ -116,7 +108,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 }
 
                 // Sort by timestamp in ascending order (oldest to newest)
-                pricePoints.sort(Comparator.comparing(PricePoint::getTimestamp));
+                pricePoints.sort(Comparator.comparing(PricePoint::timestamp));
             }
         }
 
@@ -142,23 +134,13 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     }
     
     private String getTimeSeriesKey(TimeInterval interval) {
-        final String timeSeriesKey;
-        switch (interval) {
-            case FIVE_MINUTES:
-                timeSeriesKey = "Time Series (5min)";
-                break;
-            case DAILY:
-                timeSeriesKey = "Time Series (Daily)";
-                break;
-            case WEEKLY:
-                timeSeriesKey = "Weekly Time Series";
-                break;
-            case MONTHLY:
-                timeSeriesKey = "Monthly Time Series";
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported interval: " + interval);
-        }
+        final String timeSeriesKey = switch (interval) {
+            case FIVE_MINUTES -> "Time Series (5min)";
+            case DAILY -> "Time Series (Daily)";
+            case WEEKLY -> "Weekly Time Series";
+            case MONTHLY -> "Monthly Time Series";
+            default -> throw new IllegalArgumentException("Unsupported interval: " + interval);
+        };
         return timeSeriesKey;
     }
     
