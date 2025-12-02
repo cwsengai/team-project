@@ -2,12 +2,37 @@
 
 package frameworkanddriver;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -848,44 +873,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                 // Show error dialog
                 JOptionPane.showMessageDialog(null,
                         "Failed to open company details: " + ex.getMessage(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        });
-    }
-
-    /**
-     * Navigate to the Portfolio Summary page.
-     * Keeps current window open and opens PortfolioSummaryMain in a new window.
-     */
-    private void openPortfolioSummaryPage() {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                // Step 1: Create a session object
-                dataaccess.InMemorySessionDataAccessObject sessionDAO =
-                        new dataaccess.InMemorySessionDataAccessObject();
-
-                // Step 2: Open login window
-                app.ui.LoginPage loginWindow = new app.ui.LoginPage(null, sessionDAO);
-                loginWindow.setVisible(true);
-
-                // Step 3: If login failed, stop
-                if (!loginWindow.wasSuccessful()) {
-                    JOptionPane.showMessageDialog(this, "Login cancelled.");
-                    return;
-                }
-
-                // Step 4: Get userId
-                java.util.UUID userId = sessionDAO.getCurrentUserId();
-
-                // Step 5: Open the new Portfolio Summary window
-                app.PortfolioSummaryMain.show(userId, sessionDAO);
-
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this,
-                        "Failed to open portfolio summary: " + ex.getMessage(),
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
