@@ -1,16 +1,27 @@
 package usecase.search_company;
 
 /**
- * Input Data for Search Company Use Case
+ * Input data for the Search Company use case.
+ * Contains the search query entered by the user.
  */
-
 public class SearchCompanyInputData {
+
     private final String query;
 
+    /**
+     * Creates a new SearchCompanyInputData instance with the given query.
+     *
+     * @param query the keyword or text used for searching companies
+     */
     public SearchCompanyInputData(String query) {
         this.query = query;
     }
 
+    /**
+     * Returns the search query.
+     *
+     * @return the search keyword entered by the user
+     */
     public String getQuery() {
         return query;
     }

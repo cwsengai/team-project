@@ -16,22 +16,22 @@ public class TimeIntervalChartMain {
         System.out.println("--- Starting UC4 Price Chart Module (GUI) ---");
 
         // 1. GATEWAY (Implementation of Data Access Port)
-        PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
+        final PriceDataAccessInterface priceGateway = new AlphaVantagePriceGateway();
 
         // 2. VIEW (Frameworks & Drivers)
-        ChartWindow chartWindow = new ChartWindow();
+        final ChartWindow chartWindow = new ChartWindow();
 
         // 3. PRESENTATION (Interface Adapter)
-        PriceChartOutputBoundary pricePresenter = new PriceChartPresenter(chartWindow);
+        final PriceChartOutputBoundary pricePresenter = new PriceChartPresenter(chartWindow);
 
         // 4. INTERACTOR (Use Case)
-        GetPriceByIntervalInteractor interactor = new GetPriceByIntervalInteractor(
+        final GetPriceByIntervalInteractor interactor = new GetPriceByIntervalInteractor(
                 priceGateway,
                 pricePresenter
         );
 
         // 5. CONTROLLER (Interface Adapter)
-        IntervalController intervalController = new IntervalController(interactor);
+        final IntervalController intervalController = new IntervalController(interactor);
 
         // 6. WIRING (Connecting the pieces)
         chartWindow.setController(intervalController);

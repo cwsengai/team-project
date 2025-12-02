@@ -5,7 +5,6 @@ import java.util.List;
 
 import entity.FinancialStatement;
 
-
 public class FinancialStatementInteractor implements FinancialStatementInputBoundary {
     private final FinancialStatementGateway gateway;
     private final FinancialStatementOutputBoundary presenter;
@@ -45,5 +44,4 @@ public class FinancialStatementInteractor implements FinancialStatementInputBoun
 
         }
     }
-
 }

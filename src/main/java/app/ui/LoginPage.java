@@ -17,8 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import api.SupabaseAuthClient;
-import dataaccess.EnvConfig;
+import usecase.auth.AuthService;
 import usecase.session.SessionDataAccessInterface;
 
 @SuppressWarnings({"checkstyle:ClassDataAbstractionCoupling", "checkstyle:LineLength"})
@@ -35,7 +34,7 @@ public class LoginPage extends JDialog {
 
     @SuppressWarnings({"checkstyle:LambdaParameterName", "checkstyle:FinalLocalVariable", "checkstyle:MagicNumber", "checkstyle:TrailingComment", "checkstyle:RegexpSinglelineJava", "checkstyle:AbbreviationAsWordInName", "checkstyle:SuppressWarnings"})
     public LoginPage(JFrame parent, SessionDataAccessInterface sessionDAO) {
-        super(parent, "Billionaire — Login / Signup", true); // true = modal
+        super(parent, "Billionaire — Login / Signup", true);
         this.sessionDAO = sessionDAO;
 
         setSize(420, 360);
@@ -43,17 +42,17 @@ public class LoginPage extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // === Top Buttons ===
-        JButton loginTab = new JButton("Login");
-        JButton signupTab = new JButton("Sign Up");
+        final JButton loginTab = new JButton("Login");
+        final JButton signupTab = new JButton("Sign Up");
 
         loginTab.setFocusable(false);
         signupTab.setFocusable(false);
 
-        JPanel tabPanel = new JPanel(new GridLayout(1, 2));
+        final JPanel tabPanel = new JPanel(new GridLayout(1, 2));
         tabPanel.add(loginTab);
         tabPanel.add(signupTab);
 
-        // === Card Layout (switches between login and signup panels) ===
+        // === Card Layout ===
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
@@ -66,7 +65,7 @@ public class LoginPage extends JDialog {
         add(tabPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
 
-        // Actions
+        // Tab switching
         loginTab.addActionListener(e -> cardLayout.show(mainPanel, "login"));
         signupTab.addActionListener(e -> cardLayout.show(mainPanel, "signup"));
     }
@@ -76,40 +75,36 @@ public class LoginPage extends JDialog {
     // ===============================================================
     @SuppressWarnings({"checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:FinalLocalVariable", "checkstyle:ReturnCount", "checkstyle:LambdaBodyLength", "checkstyle:LambdaParameterName", "checkstyle:MagicNumber", "checkstyle:SuppressWarnings", "checkstyle:LineLength"})
     private JPanel buildLoginPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+        final JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
-        JLabel title = new JLabel("Log In", SwingConstants.CENTER);
+        final JLabel title = new JLabel("Log In", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
 
-        JTextField emailField = new JTextField();
+        final JTextField emailField = new JTextField();
         emailField.setBorder(BorderFactory.createTitledBorder("Email"));
 
-        JPasswordField passwordField = new JPasswordField();
+        final JPasswordField passwordField = new JPasswordField();
         passwordField.setBorder(BorderFactory.createTitledBorder("Password"));
 
-        JLabel status = new JLabel("", SwingConstants.CENTER);
+        final JLabel status = new JLabel("", SwingConstants.CENTER);
         status.setForeground(Color.RED);
 
-        JButton loginBtn = new JButton("Log In");
+        final JButton loginBtn = new JButton("Log In");
 
-        loginBtn.addActionListener((ActionEvent e) -> {
+        loginBtn.addActionListener((ActionEvent presslogin) -> {
             try {
-                String email = emailField.getText().trim();
-                String password = new String(passwordField.getPassword());
+                final String email = emailField.getText().trim();
+                final String password = new String(passwordField.getPassword());
 
                 if (email.isEmpty() || password.isEmpty()) {
                     status.setText("Missing email or password");
                     return;
                 }
 
-                SupabaseAuthClient auth = new SupabaseAuthClient(
-                        EnvConfig.getSupabaseUrl(),
-                        EnvConfig.getSupabaseAnonKey()
-                );
-
-                var result = auth.signIn(email, password);
-                String jwt = result.optString("access_token", null);
+                // === Clean Architecture Interactor ===
+                AuthService auth = new AuthService();
+                String jwt = auth.login(email, password);
 
                 if (jwt == null) {
                     status.setText("Invalid login.");
@@ -120,8 +115,12 @@ public class LoginPage extends JDialog {
                 success = true;
                 dispose();
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            }
+            catch (Exception ex) {
+                System.err.println("LoginPage login error: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
                 status.setText("Login failed.");
             }
         });
@@ -140,41 +139,36 @@ public class LoginPage extends JDialog {
     // ===============================================================
     @SuppressWarnings({"checkstyle:RegexpMultiline", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:EmptyLineSeparator", "checkstyle:FinalLocalVariable", "checkstyle:ReturnCount", "checkstyle:LambdaBodyLength", "checkstyle:LambdaParameterName", "checkstyle:MagicNumber", "checkstyle:SuppressWarnings", "checkstyle:LineLength"})
     private JPanel buildSignupPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+        final JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
-        JLabel title = new JLabel("Create Account", SwingConstants.CENTER);
+        final JLabel title = new JLabel("Create Account", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
 
-        JTextField emailField = new JTextField();
+        final JTextField emailField = new JTextField();
         emailField.setBorder(BorderFactory.createTitledBorder("Email"));
 
-        JPasswordField p1 = new JPasswordField();
+        final JPasswordField p1 = new JPasswordField();
         p1.setBorder(BorderFactory.createTitledBorder("Password"));
 
-        JLabel status = new JLabel("", SwingConstants.CENTER);
+        final JLabel status = new JLabel("", SwingConstants.CENTER);
         status.setForeground(Color.RED);
 
-        JButton signupBtn = new JButton("Sign Up");
+        final JButton signupBtn = new JButton("Sign Up");
 
-        signupBtn.addActionListener(e -> {
+        signupBtn.addActionListener(presssignup -> {
             try {
-                String email = emailField.getText().trim();
-                String password = new String(p1.getPassword());
+                final String email = emailField.getText().trim();
+                final String password = new String(p1.getPassword());
 
                 if (email.isEmpty() || password.isEmpty()) {
                     status.setText("Email and password are required.");
                     return;
                 }
 
-                SupabaseAuthClient auth = new SupabaseAuthClient(
-                        EnvConfig.getSupabaseUrl(),
-                        EnvConfig.getSupabaseAnonKey()
-                );
-
-                var result = auth.signUp(email, password);
-                String jwt = result.optString("access_token", null);
-
+                // === Clean Architecture Interactor ===
+                AuthService auth = new AuthService();
+                String jwt = auth.signup(email, password);
 
                 if (jwt == null) {
                     status.setText("Signup failed (email may already exist)");
@@ -185,10 +179,14 @@ public class LoginPage extends JDialog {
                 success = true;
                 dispose();
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                status.setText("Signup failed.");
             }
+            catch (Exception ex) {
+                    System.err.println("LoginPage signup error: " + ex.getMessage());
+                    for (StackTraceElement ste : ex.getStackTrace()) {
+                        System.err.println("    at " + ste.toString());
+                    }
+                    status.setText("Signup failed.");
+                }
         });
 
         panel.add(title);
@@ -199,7 +197,6 @@ public class LoginPage extends JDialog {
 
         return panel;
     }
-
 
     // ===============================================================
     // SUCCESS FLAG

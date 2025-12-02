@@ -1,12 +1,13 @@
 package dataaccess;
 
-import entity.Company;
-import usecase.search_company.SearchCompanyDataAccess;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import entity.Company;
+import usecase.search_company.SearchCompanyDataAccess;
 
 public class AlphaVantageSearchDataAccess implements SearchCompanyDataAccess {
     private final List<Company> cachedCompanies;
@@ -30,8 +31,8 @@ public class AlphaVantageSearchDataAccess implements SearchCompanyDataAccess {
         // Search through loaded companies first
         results.addAll(cachedCompanies.stream()
                 .filter(company ->
-                        company.getName().toLowerCase().contains(lowercaseQuery) ||
-                                company.getSymbol().toLowerCase().contains(lowercaseQuery)
+                        company.getName().toLowerCase().contains(lowercaseQuery)
+                                || company.getSymbol().toLowerCase().contains(lowercaseQuery)
                 )
                 .collect(Collectors.toList()));
 
@@ -40,12 +41,12 @@ public class AlphaVantageSearchDataAccess implements SearchCompanyDataAccess {
             String companyName = COMPANY_NAMES.getOrDefault(ticker, ticker);
 
             // Check if ticker OR name matches
-            if (ticker.toLowerCase().contains(lowercaseQuery) ||
-                    companyName.toLowerCase().contains(lowercaseQuery)) {
+            if (ticker.toLowerCase().contains(lowercaseQuery)
+                    || companyName.toLowerCase().contains(lowercaseQuery)) {
 
                 // Check if already in results
                 boolean exists = results.stream()
-                        .anyMatch(c -> c.getSymbol().equalsIgnoreCase(ticker));
+                        .anyMatch(company -> company.getSymbol().equalsIgnoreCase(ticker));
 
                 if (!exists) {
                     results.add(createMinimalCompany(ticker, companyName));
@@ -58,14 +59,20 @@ public class AlphaVantageSearchDataAccess implements SearchCompanyDataAccess {
 
     private Company createMinimalCompany(String ticker, String name) {
         return new Company(
-                ticker,      // Symbol
-                name,        // ✅ Use full company name
+                ticker,
+                name,
                 "", "", "", "",
                 0L, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
                 List.of(), List.of()
         );
     }
 
+    /**
+     * Replaces the contents of the internal company cache with the provided list.
+     * If the supplied list is {@code null}, the cache is simply cleared.
+     *
+     * @param companies the new list of companies to cache, or {@code null} to clear the cache
+     */
     public void updateCache(List<Company> companies) {
         cachedCompanies.clear();
         if (companies != null) {

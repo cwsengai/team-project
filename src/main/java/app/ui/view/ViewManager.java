@@ -1,11 +1,12 @@
 package app.ui.view;
 
-import interfaceadapter.view_model.ViewManagerModel;
-
-import javax.swing.JPanel;
 import java.awt.CardLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.JPanel;
+
+import interfaceadapter.view_model.ViewManagerModel;
 
 public class ViewManager implements PropertyChangeListener {
     private final JPanel views;
@@ -23,7 +24,7 @@ public class ViewManager implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("app/ui/view")) {
-            String viewModelName = (String) evt.getNewValue();
+            final String viewModelName = (String) evt.getNewValue();
             cardLayout.show(views, viewModelName);
         }
     }

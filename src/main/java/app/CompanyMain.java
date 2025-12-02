@@ -1,43 +1,32 @@
 package app;
 
-import java.util.Optional;
 import javax.swing.SwingUtilities;
 
 import api.Api;
-import dataaccess.AlphaVantagePriceGateway;
-import io.github.cdimascio.dotenv.Dotenv;
-
-import frameworkanddriver.CompanyPage;
-import frameworkanddriver.ChartViewAdapter;
-
-import interfaceadapter.controller.IntervalController;
-import interfaceadapter.presenter.PriceChartPresenter;
-
-import interfaceadapter.controller.CompanyController;
-import interfaceadapter.controller.FinancialStatementController;
-import interfaceadapter.controller.NewsController;
-
-import interfaceadapter.presenter.CompanyPresenter;
-import interfaceadapter.presenter.FinancialStatementPresenter;
-import interfaceadapter.presenter.NewsPresenter;
-
-import interfaceadapter.view_model.CompanyViewModel;
-import interfaceadapter.view_model.FinancialStatementViewModel;
-import interfaceadapter.view_model.NewsViewModel;
-
 import dataaccess.AlphaVantageCompanyGateway;
 import dataaccess.AlphaVantageFinancialStatementGateway;
 import dataaccess.AlphaVantageNewsGateway;
-
+import dataaccess.AlphaVantagePriceGateway;
+import dataaccess.EnvConfig;
+import frameworkanddriver.ChartViewAdapter;
+import frameworkanddriver.CompanyPage;
+import interfaceadapter.controller.CompanyController;
+import interfaceadapter.controller.FinancialStatementController;
+import interfaceadapter.controller.IntervalController;
+import interfaceadapter.controller.NewsController;
+import interfaceadapter.presenter.CompanyPresenter;
+import interfaceadapter.presenter.FinancialStatementPresenter;
+import interfaceadapter.presenter.NewsPresenter;
+import interfaceadapter.presenter.PriceChartPresenter;
+import interfaceadapter.view_model.CompanyViewModel;
+import interfaceadapter.view_model.FinancialStatementViewModel;
+import interfaceadapter.view_model.NewsViewModel;
 import usecase.company.CompanyInteractor;
 import usecase.financial_statement.FinancialStatementInteractor;
 import usecase.news.NewsInteractor;
 import usecase.price_chart.GetPriceByIntervalInteractor;
-import usecase.price_chart.PriceDataAccessInterface;
 import usecase.price_chart.PriceChartOutputBoundary;
-
-import dataaccess.EnvConfig;
-
+import usecase.price_chart.PriceDataAccessInterface;
 
 @SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class CompanyMain {
@@ -56,74 +45,74 @@ public class CompanyMain {
 
         final String symbolForLambda = preloadedSymbol;
 
-            SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> {
 
             // -----------------------------
             // API + GATEWAYS
             // -----------------------------
-                final Api api = new Api(apiKey);
-                final AlphaVantageCompanyGateway companyGateway =
-                        new AlphaVantageCompanyGateway(api);
+            final Api api = new Api(apiKey);
+            final AlphaVantageCompanyGateway companyGateway =
+                    new AlphaVantageCompanyGateway(api);
 
-                final AlphaVantageFinancialStatementGateway fsGateway =
-                        new AlphaVantageFinancialStatementGateway(api);
+            final AlphaVantageFinancialStatementGateway fsGateway =
+                    new AlphaVantageFinancialStatementGateway(api);
 
-                final AlphaVantageNewsGateway newsGateway =
-                        new AlphaVantageNewsGateway(api);
+            final AlphaVantageNewsGateway newsGateway =
+                    new AlphaVantageNewsGateway(api);
 
-                final PriceDataAccessInterface priceGateway =
-                        new AlphaVantagePriceGateway();
+            final PriceDataAccessInterface priceGateway =
+                    new AlphaVantagePriceGateway();
             // -----------------------------
             // VIEW MODELS
             // -----------------------------
-            CompanyViewModel companyVM = new CompanyViewModel();
-            FinancialStatementViewModel fsVM = new FinancialStatementViewModel();
-            NewsViewModel newsVM = new NewsViewModel();
+            final CompanyViewModel companyVM = new CompanyViewModel();
+            final FinancialStatementViewModel fsVM = new FinancialStatementViewModel();
+            final NewsViewModel newsVM = new NewsViewModel();
 
             // -----------------------------
             // UI
             // -----------------------------
-            CompanyPage ui = new CompanyPage(companyVM, fsVM, newsVM);
+            final CompanyPage ui = new CompanyPage(companyVM, fsVM, newsVM);
 
             // -----------------------------
             // CHART ADAPTER
             // -----------------------------
-            ChartViewAdapter chartAdapter = new ChartViewAdapter(ui);
+            final ChartViewAdapter chartAdapter = new ChartViewAdapter(ui);
 
             // -----------------------------
             // CHART PRESENTER
             // -----------------------------
-            PriceChartOutputBoundary pricePresenter =
+            final PriceChartOutputBoundary pricePresenter =
                     new PriceChartPresenter(chartAdapter);
 
             // -----------------------------
             // INTERACTORS
             // -----------------------------
-            CompanyInteractor companyInteractor =
+            final CompanyInteractor companyInteractor =
                     new CompanyInteractor(companyGateway, new CompanyPresenter(companyVM));
 
-            FinancialStatementInteractor fsInteractor =
+            final FinancialStatementInteractor fsInteractor =
                     new FinancialStatementInteractor(fsGateway, new FinancialStatementPresenter(fsVM));
 
-            NewsInteractor newsInteractor =
+            final NewsInteractor newsInteractor =
                     new NewsInteractor(newsGateway, new NewsPresenter(newsVM));
 
-            GetPriceByIntervalInteractor priceInteractor =
+            final GetPriceByIntervalInteractor priceInteractor =
                     new GetPriceByIntervalInteractor(priceGateway, pricePresenter);
 
             // -----------------------------
             // CONTROLLERS
             // -----------------------------
-            CompanyController companyController =
+            final CompanyController companyController =
                     new CompanyController(companyInteractor);
 
-            FinancialStatementController fsController =
+            final FinancialStatementController fsController =
                     new FinancialStatementController(fsInteractor);
 
-            NewsController newsController =
+            final NewsController newsController =
                     new NewsController(newsInteractor);
 
-            IntervalController intervalController =
+            final IntervalController intervalController =
                     new IntervalController(priceInteractor);
 
             // inject controllers into UI

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,7 +23,7 @@ public class ChartWindow extends JFrame {
     
     // UI Constants
     private final Color ACCENT_BLACK = new Color(20, 20, 20);
-    private final Color BG_GREY = new Color(245, 245, 245); // For buttons
+    private final Color BG_GREY = new Color(245, 245, 245);
 
     public ChartWindow() {
         super("Billionaire - Market Data");
@@ -39,14 +40,16 @@ public class ChartWindow extends JFrame {
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
         // --- 2. Chart Area ---
-        chartPanel = new ChartPanel(); // Use our custom ChartPanel
+        // Use our custom ChartPanel
+        chartPanel = new ChartPanel();
         mainPanel.add(chartPanel, BorderLayout.CENTER);
 
         // --- 3. Bottom Controls (Time Intervals & Back) ---
         JPanel southPanel = createSouthPanel();
         mainPanel.add(southPanel, BorderLayout.SOUTH);
 
-        setSize(1000, 700); // Landscape aspect ratio like screenshot
+        // Landscape aspect ratio like screenshot
+        setSize(1000, 700);
         setLocationRelativeTo(null);
     }
 
@@ -88,7 +91,8 @@ public class ChartWindow extends JFrame {
         rightControlPanel.setBackground(Color.WHITE);
         
         JButton backButton = new JButton("Back");
-        styleButton(backButton, ACCENT_BLACK, Color.WHITE); // Black button
+        // Black button
+        styleButton(backButton, ACCENT_BLACK, Color.WHITE);
         rightControlPanel.add(backButton);
 
         panel.add(intervalPanel, BorderLayout.WEST);
@@ -129,11 +133,24 @@ public class ChartWindow extends JFrame {
         this.controller = controller;
     }
 
+    /**
+     * Updates the chart display using the data provided by the given
+     * {@link ChartViewModel}. This delegates the update to the underlying
+     * chart panel component.
+     *
+     * @param viewModel the view model containing the latest chart data
+     */
     public void updateChart(ChartViewModel viewModel) {
         // Pass data to the ChartPanel
         chartPanel.updateChart(viewModel);
     }
 
+    /**
+     * Displays an error message on the chart panel, typically used when
+     * data retrieval or processing fails.
+     *
+     * @param message the error message to show to the user
+     */
     public void displayError(String message) {
         chartPanel.displayError(message);
     }

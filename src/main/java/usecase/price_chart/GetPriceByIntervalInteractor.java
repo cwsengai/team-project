@@ -1,48 +1,71 @@
 package usecase.price_chart;
 
+import java.util.List;
+
+import javax.swing.SwingUtilities;
+
 import entity.PricePoint;
 import entity.TimeInterval;
 
-import java.util.List;
-import javax.swing.SwingUtilities;
-
+/**
+ * Interactor for loading price history based on a given time interval.
+ */
 public class GetPriceByIntervalInteractor implements PriceInputBoundary {
 
     private final PriceDataAccessInterface priceGateway;
     private final PriceChartOutputBoundary pricePresenter;
 
+    /**
+     * Creates the interactor responsible for retrieving and presenting price data.
+     *
+     * @param priceGateway the gateway used to fetch price history
+     * @param pricePresenter the presenter that formats and outputs results
+     */
     public GetPriceByIntervalInteractor(PriceDataAccessInterface priceGateway,
                                         PriceChartOutputBoundary pricePresenter) {
         this.priceGateway = priceGateway;
         this.pricePresenter = pricePresenter;
     }
 
+    /**
+     * Loads price history for a given ticker and interval.
+     *
+     * @param ticker the stock ticker symbol
+     * @param interval the selected interval range
+     */
     @Override
     public void loadPriceHistory(String ticker, TimeInterval interval) {
-        // Run API call in background thread to prevent UI blocking
-        new Thread(() -> {
+
+        Thread backgroundThread = new Thread(() -> {
+
             List<PricePoint> priceData;
 
             try {
-                // call Gateway attain data (interface) - this may take time
                 priceData = priceGateway.getPriceHistory(ticker, interval);
-            } catch (Exception e) {
-                // report error on EDT
+            }
+            catch (Exception ex) {
+
                 SwingUtilities.invokeLater(() -> {
-                    pricePresenter.presentError("fail to attain " + interval.name() + " price: " + e.getMessage());
+                    pricePresenter.presentError(
+                            "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()
+                    );
                 });
+
                 return;
             }
 
-            // Update UI on EDT (Event Dispatch Thread)
             SwingUtilities.invokeLater(() -> {
                 if (priceData == null || priceData.isEmpty()) {
-                    pricePresenter.presentError("not found " + interval.name() + " data price");
-                } else {
-                    // send to presenter
+                    pricePresenter.presentError(
+                            "No " + interval.name() + " price data found (not found)."
+                    );
+                }
+                else {
                     pricePresenter.presentPriceHistory(priceData, ticker, interval);
                 }
             });
-        }).start();
+        });
+
+        backgroundThread.start();
     }
 }

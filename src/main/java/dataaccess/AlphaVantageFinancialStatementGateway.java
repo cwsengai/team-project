@@ -1,25 +1,23 @@
 package dataaccess;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import api.Api;
-
 import entity.FinancialStatement;
 import usecase.financial_statement.FinancialStatementGateway;
-
 
 public class AlphaVantageFinancialStatementGateway implements FinancialStatementGateway {
     private final Api api;
 
-    public AlphaVantageFinancialStatementGateway(Api api){
+    public AlphaVantageFinancialStatementGateway(Api api) {
         this.api = api;
     }
 
@@ -28,33 +26,49 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
         String jsonString_balance;
         try {
             jsonString_balance = api.getFuncBalanceSheet(symbol);
-        } catch (Exception e) {
-            e.printStackTrace(); return null;
+        }
+        catch (Exception ex) {
+            System.err.println("AlphaVantageFinancialStatementGateway balance fetch error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
+            return null;
         }
 
         String jsonString_income;
         try {
             jsonString_income = api.getFuncIncomeStatement(symbol);
-        } catch (Exception e) {
-            e.printStackTrace(); return null;
+        }
+        catch (Exception ex) {
+            System.err.println("AlphaVantageFinancialStatementGateway income fetch error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
+            return null;
         }
 
         String jsonString_cashflow;
         try {
             jsonString_cashflow = api.getFuncCashFlow(symbol);
-        } catch (Exception e) {
-            e.printStackTrace(); return null;
+        }
+        catch (Exception ex) {
+            System.err.println("AlphaVantageFinancialStatementGateway cashflow fetch error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
+            return null;
         }
 
         Map<LocalDate, JSONObject> balanceMap = extractAnnualReports(jsonString_balance);
-        Map<LocalDate, JSONObject> incomeMap  = extractAnnualReports(jsonString_income);
-        Map<LocalDate, JSONObject> cashMap    = extractAnnualReports(jsonString_cashflow);
+        Map<LocalDate, JSONObject> incomeMap = extractAnnualReports(jsonString_income);
+        Map<LocalDate, JSONObject> cashMap = extractAnnualReports(jsonString_cashflow);
 
         // Get intersection of all available fiscal years
         List<LocalDate> commonDates = balanceMap.keySet().stream()
                 .filter(incomeMap::containsKey)
                 .filter(cashMap::containsKey)
-                .sorted((d1, d2) -> d2.compareTo(d1)) // newest first
+                // newest first
+                .sorted((d1, d2) -> d2.compareTo(d1))
                 .limit(5)
                 .collect(Collectors.toList());
 
@@ -101,7 +115,9 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
         Map<LocalDate, JSONObject> map = new HashMap<>();
 
         JSONObject root = new JSONObject(jsonStr);
-        if (!root.has("annualReports")) return map;
+        if (!root.has("annualReports")) {
+            return map;
+        }
 
         JSONArray arr = root.getJSONArray("annualReports");
 
@@ -113,8 +129,5 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
 
         return map;
     }
-
-
-
 
 }

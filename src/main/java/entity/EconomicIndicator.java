@@ -7,7 +7,7 @@ public class EconomicIndicator {
     private final String name;
     private final String value;
     private final String lastUpdated;
-    private final String apiFunction;  // Alpha Vantage function name
+    private final String apiFunction;
 
     public EconomicIndicator(String name, String value, String lastUpdated, String apiFunction) {
         this.name = name;

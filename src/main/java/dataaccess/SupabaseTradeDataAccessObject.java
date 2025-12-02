@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import entity.SimulatedTradeRecord;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -63,16 +62,32 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
                 String resp;
                 if (responseBody != null) {
                     resp = responseBody.string();
-                } else {
+                }
+                else {
                     resp = "";
                 }
                 throw new IOException("Failed to store trade: " + response.code() + " - " + resp);
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to store trade via Supabase REST API", e);
+        }
+        catch (IOException ex) {
+            throw new RuntimeException("Failed to store trade via Supabase REST API", ex);
         }
     }
 
+    /**
+     * Retrieves all simulated trade records associated with the specified user.
+     * This method queries the Supabase <code>trades</code> table using the user's
+     * unique identifier and converts the resulting JSON response into a list of
+     * {@link SimulatedTradeRecord} objects.
+     *
+     * <p>If no trades are found, an empty list is returned. If the Supabase service
+     * role key is missing, a {@link RuntimeException} is thrown before any request
+     * is sent.</p>
+     *
+     * @param userId the unique identifier of the user whose trade history is requested
+     * @return a list of the user's simulated trade records, or an empty list if none exist
+     * @throws RuntimeException if the Supabase service role key is not configured
+     */
     public List<SimulatedTradeRecord> fetchTradesForUser(UUID userId) {
         List<SimulatedTradeRecord> trades = new ArrayList<>();
         String url = EnvConfig.getSupabaseUrl() + "/rest/v1/trades?user_id=eq." + userId.toString();
@@ -96,7 +111,9 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
                 throw new IOException("Failed to fetch trades: " + response.code() + " - " + errorResp);
             }
             ResponseBody responseBody = response.body();
-            if (responseBody == null) return trades;
+            if (responseBody == null) {
+                return trades;
+            }
             String resp = responseBody.string();
             JsonArray arr = gson.fromJson(resp, JsonArray.class);
             DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
@@ -107,21 +124,24 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
                         obj.get("ticker").getAsString(),
                         obj.get("is_long").getAsBoolean(),
                         obj.get("quantity").getAsInt(),
-                        obj.get("entry_price").getAsDouble(),
+                            obj.get("entry_price").getAsDouble(),
                         obj.get("exit_price").getAsDouble(),
                         obj.get("realized_pnl").getAsDouble(),
-                        java.time.OffsetDateTime.parse(obj.get("entry_time").getAsString(), formatter).toLocalDateTime(),
+                        java.time.OffsetDateTime.parse(obj.get("entry_time").getAsString(),
+                                formatter).toLocalDateTime(),
                         java.time.OffsetDateTime.parse(obj.get("exit_time").getAsString(), formatter).toLocalDateTime(),
                         obj.get("user_id").getAsString()
                     );
                     trades.add(record);
-                } catch (Exception parseEx) {
+                }
+                catch (Exception parseEx) {
                     System.err.println("Failed to parse trade record: " + parseEx.getMessage());
                     // skip malformed record
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to fetch trades via Supabase REST API", e);
+        }
+        catch (IOException ex) {
+            throw new RuntimeException("Failed to fetch trades via Supabase REST API", ex);
         }
         return trades;
     }

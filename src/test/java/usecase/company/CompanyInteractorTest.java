@@ -61,4 +61,46 @@ class CompanyInteractorTest {
         assertEquals("Tesla", captured[0].getName());
         assertEquals("TSLA", captured[0].getSymbol());
     }
+    @Test
+    void testNullNameTriggersError() {
+        CompanyGateway fakeGateway = symbol -> new Company(symbol, null);
+
+        StringBuilder errorCaptured = new StringBuilder();
+
+        CompanyOutputBoundary fakePresenter = new CompanyOutputBoundary() {
+            @Override
+            public void presentCompany(CompanyOutputData data) {
+                fail("Should not present company when name is null");
+            }
+
+            @Override
+            public void presentError(String message) {
+                errorCaptured.append(message);
+            }
+        };
+
+        CompanyInteractor interactor = new CompanyInteractor(fakeGateway, fakePresenter);
+
+        interactor.execute(new CompanyInputData("NULL"));
+
+        assertTrue(errorCaptured.toString().contains("Company not found"));
+    }
+
+    @Test
+    void testGetters() {
+        CompanyOutputData data = new CompanyOutputData(
+                "TSLA",
+                "Tesla",
+                "Automotive",
+                "EV Manufacturing",
+                "Electric vehicle and clean energy company."
+        );
+
+        assertEquals("TSLA", data.getSymbol());
+        assertEquals("Tesla", data.getName());
+        assertEquals("Automotive", data.getSector());
+        assertEquals("EV Manufacturing", data.getIndustry());
+        assertEquals("Electric vehicle and clean energy company.", data.getDescription());
+    }
+
 }

@@ -1,5 +1,24 @@
 package frameworkanddriver;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import interfaceadapter.controller.CompanyController;
 import interfaceadapter.controller.FinancialStatementController;
 import interfaceadapter.controller.IntervalController;
@@ -179,18 +198,28 @@ public class CompanyPage extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
+        final JPanel headerPanel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("Company Chart", SwingConstants.LEFT);
         title.setFont(new Font("SansSerif", Font.BOLD, 22));
 
         JButton tradeButton = new JButton("Trade");
         tradeButton.setBackground(new Color(200, 200, 200));
         tradeButton.setFocusPainted(false);
-        currentTicker = companyVM.symbol;
-        tradeButton.addActionListener( ex -> enterTradingPage(currentTicker));
+        currentTicker = companyVM.getSymbol();
+        tradeButton.addActionListener(ex -> enterTradingPage(currentTicker));
+
+        JButton backButton = new JButton("← Back");
+        backButton.setBackground(new Color(200, 200, 200));
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(ex -> backMainPage());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        buttonPanel.add(tradeButton);
+        buttonPanel.add(backButton);
+
 
         headerPanel.add(title, BorderLayout.WEST);
-        headerPanel.add(tradeButton, BorderLayout.EAST);
+        headerPanel.add(buttonPanel, BorderLayout.EAST);
 
         // Chart panel
         chartPanel = new ChartPanel();
@@ -198,11 +227,11 @@ public class CompanyPage extends JFrame {
         chartPanel.setMinimumSize(new java.awt.Dimension(1000, 600));
 
         // Interval buttons
-        JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        final JPanel intervalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         JButton btn5min = new JButton("5min");
         JButton btn1day = new JButton("1 day");
         JButton btn1week = new JButton("1 week");
-        JButton zoomIn = new JButton("Zoom in");
+        final JButton zoomIn = new JButton("Zoom in");
 
         btn5min.addActionListener(e -> {
             if (chartController != null && currentTicker != null) {
@@ -223,7 +252,7 @@ public class CompanyPage extends JFrame {
         // Bind Zoom In button event
         zoomIn.addActionListener(e -> {
             if (chartPanel != null) {
-                chartPanel.performZoom(); // Call the public method we wrote in ChartPanel
+                chartPanel.performZoom();
             }
         });
 
@@ -307,21 +336,21 @@ public class CompanyPage extends JFrame {
     @SuppressWarnings({"checkstyle:TrailingComment", "checkstyle:ReturnCount", "checkstyle:SuppressWarnings"})
     private void refreshCompany() {
         // 1. Error handling (keep unchanged)
-        if (companyVM.error != null) {
-            errorLabel.setText(companyVM.error);
+        if (companyVM.getError() != null) {
+            errorLabel.setText(companyVM.getError());
             return;
         }
 
         errorLabel.setText("");
 
         // 2. Update text information (keep unchanged)
-        nameLabel.setText("Name: " + companyVM.name);
-        sectorLabel.setText("Sector: " + companyVM.sector);
-        industryLabel.setText("Industry: " + companyVM.industry);
-        descriptionArea.setText(companyVM.description);
+        nameLabel.setText("Name: " + companyVM.getName());
+        sectorLabel.setText("Sector: " + companyVM.getSector());
+        industryLabel.setText("Industry: " + companyVM.getIndustry());
+        descriptionArea.setText(companyVM.getDescription());
 
         // 3. Update current Ticker
-        currentTicker = companyVM.symbol;
+        currentTicker = companyVM.getSymbol();
 
         // --- Core modification start ---
         if (chartController != null) {
@@ -335,7 +364,7 @@ public class CompanyPage extends JFrame {
 
             // Step 3: [Critical!] Force refresh data once (simulate clicking "1 day")
             // Without this line, the chart will never update!
-            System.out.println("Auto refreshing chart data: " + currentTicker); // Debug
+            System.out.println("Auto refreshing chart data: " + currentTicker);
             chartController.handleTimeChange("1D");
         }
         // --- Core modification end ---
@@ -343,12 +372,12 @@ public class CompanyPage extends JFrame {
 
     @SuppressWarnings({"checkstyle:AvoidInlineConditionals", "checkstyle:SuppressWarnings"})
     private void refreshFinancials() {
-        fsArea.setText(fsVM.error != null ? "Error: " + fsVM.error : fsVM.formattedOutput);
+        fsArea.setText(fsVM.getError() != null ? "Error: " + fsVM.getError() : fsVM.getFormattedOutput());
     }
 
     @SuppressWarnings({"checkstyle:AvoidInlineConditionals", "checkstyle:SuppressWarnings"})
     private void refreshNews() {
-        newsArea.setText(newsVM.error != null ? "Error: " + newsVM.error : newsVM.formattedNews);
+        newsArea.setText(newsVM.getError() != null ? "Error: " + newsVM.getError() : newsVM.getFormattedNews());
     }
 
     // chart presenter integration:
@@ -390,14 +419,29 @@ public class CompanyPage extends JFrame {
                 app.SimulatedMain.main(new String[] {symbol});
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                System.err.println("Error launching simulated trading: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
             }
         });
-
     }
 
+    public void backMainPage() {
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                app.CompanyListMain.main(new String[] {});
+            }
+            catch (Exception ex) {
+                System.err.println("Error launching main page: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
+            }
+        });
+    }
 }
-
-
-
-
