@@ -36,7 +36,10 @@ public class AuthService {
         }
         catch (Exception exception) {
             // Login failed
-            exception.printStackTrace();
+            System.err.println("AuthService.login error: " + exception.getMessage());
+            for (StackTraceElement ste : exception.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
     }
@@ -55,7 +58,10 @@ public class AuthService {
         }
         catch (Exception exception) {
             // Signup failed
-            exception.printStackTrace();
+            System.err.println("AuthService.signup error: " + exception.getMessage());
+            for (StackTraceElement ste : exception.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
     }

@@ -54,7 +54,10 @@ public class CompanyListMain {
                 createAndShowGUI();
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                System.err.println("Error starting application: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
                 JOptionPane.showMessageDialog(null,
                         "Error starting application: " + ex.getMessage(),
                         "Error",
@@ -232,7 +235,9 @@ public class CompanyListMain {
             }
             catch (Exception ex) {
                 System.err.println("Error during data loading: " + ex.getMessage());
-                ex.printStackTrace();
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
             }
             return null;
         }

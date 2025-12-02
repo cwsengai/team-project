@@ -425,10 +425,11 @@ public class CompanyPage extends JFrame {
                 app.SimulatedMain.main(new String[] {symbol});
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                System.err.println("Error launching simulated trading: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
             }
         });
-
     }
-
 }
