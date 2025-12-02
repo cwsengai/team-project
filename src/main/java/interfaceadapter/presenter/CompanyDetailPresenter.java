@@ -24,8 +24,7 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
         this.view = view;
     }
 
-    @Override
-    public void presentCompanyDetail(Company companyOverview, FinancialStatement financials, List<NewsArticle> news) {
+    private void presentCompanyDetail(Company companyOverview, FinancialStatement financials, List<NewsArticle> news) {
         CompanyDetailViewModel viewModel = new CompanyDetailViewModel(companyOverview, financials, news);
         view.updateCompanyDetails(viewModel);
     }

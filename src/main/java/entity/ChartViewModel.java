@@ -61,18 +61,6 @@ public class ChartViewModel {
         return prices;
     }
 
-    public List<Double> getOpenPrices() {
-        return openPrices;
-    }
-
-    public List<Double> getHighPrices() {
-        return highPrices;
-    }
-
-    public List<Double> getLowPrices() {
-        return lowPrices;
-    }
-
     public List<Double> getClosePrices() {
         return closePrices;
     }

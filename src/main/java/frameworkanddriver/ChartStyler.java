@@ -72,12 +72,4 @@ public class ChartStyler {
         // Chart fill ratio
     }
 
-    @SuppressWarnings({"checkstyle:MissingJavadocMethod", "checkstyle:SuppressWarnings"})
-    public static void applyCandlestickStyle(CategoryChart chart) {
-        applyDefaultStyle(chart);
-        // For candlestick charts, use similar minimal style
-        chart.getStyler().setDefaultSeriesRenderStyle(CategorySeriesRenderStyle.Line);
-        chart.getStyler().setMarkerSize(0);
-        chart.getStyler().setSeriesColors(new Color[]{FINANCE_BLUE });
-    }
 }
