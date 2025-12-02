@@ -133,7 +133,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 hasError = true;
             }
             else {
-                throw new RuntimeException("API Error: " + root.toString());
+                throw new RuntimeException("API Error: " + root);
             }
         }
         else {

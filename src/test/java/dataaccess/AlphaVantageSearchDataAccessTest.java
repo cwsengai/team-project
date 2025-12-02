@@ -45,7 +45,7 @@ class AlphaVantageSearchDataAccessTest {
 
         // Should find Microsoft (either from cached or from Top100Companies ticker list)
         // The actual number might be 1 or 2 depending on if MSFT is in Top100Companies
-        assertTrue(results.size() >= 1);
+        assertTrue(!results.isEmpty());
         assertTrue(results.stream().anyMatch(c ->
                 c.getSymbol().equals("MSFT") || c.getName().contains("Microsoft")
         ));
@@ -80,7 +80,7 @@ class AlphaVantageSearchDataAccessTest {
         searchDataAccess.updateCache(Arrays.asList(newCompany));
 
         List<Company> results = searchDataAccess.searchCompanies("TSLA");
-        assertTrue(results.size() >= 1);
+        assertTrue(!results.isEmpty());
         assertTrue(results.stream().anyMatch(c -> c.getSymbol().equals("TSLA")));
     }
 

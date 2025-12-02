@@ -62,7 +62,7 @@ public class SupabasePortfolioDataAccessObject {
 
             // Parse the portfolio data
             var jsonArray = gson.fromJson(resp, com.google.gson.JsonArray.class);
-            if (jsonArray.size() > 0) {
+            if (!jsonArray.isEmpty()) {
                 JsonObject portfolio = jsonArray.get(0).getAsJsonObject();
                 // Note: The schema shows cash_balance, but for initial balance we might want to store it separately
                 // For now, we'll use cash_balance as initial balance since that's what's available
@@ -127,7 +127,7 @@ public class SupabasePortfolioDataAccessObject {
 
             if (portfolioExists) {
                 // Update existing portfolio
-                url = EnvConfig.getSupabaseUrl() + "/rest/v1/portfolio?user_id=eq." + userId.toString();
+                url = EnvConfig.getSupabaseUrl() + "/rest/v1/portfolio?user_id=eq." + userId;
                 request = new Request.Builder()
                         .url(url)
                         .addHeader("apikey", serviceRoleKey)

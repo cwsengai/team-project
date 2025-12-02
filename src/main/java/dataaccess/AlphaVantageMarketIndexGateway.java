@@ -84,7 +84,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
                 JSONObject quote = json.getJSONObject("Global Quote");
 
                 // Check if quote is empty
-                if (quote.length() == 0) {
+                if (quote.isEmpty()) {
                     System.err.println("Empty quote data for " + symbol);
                     return createDummyIndex(symbol);
                 }

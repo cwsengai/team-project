@@ -58,7 +58,7 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
 
         ChartViewModel viewModel;
         
-        if (hasOHLCData && priceData.size() > 0) {
+        if (hasOHLCData && !priceData.isEmpty()) {
             // Create candlestick chart with OHLC data
             List<Double> openPrices = priceData.stream()
                     .map(p -> p.getOpen() != null ? p.getOpen() : 0.0)

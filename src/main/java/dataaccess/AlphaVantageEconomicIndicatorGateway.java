@@ -69,7 +69,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
             if (json.has("data")) {
                 JSONArray data = json.getJSONArray("data");
-                if (data.length() > 0) {
+                if (!data.isEmpty()) {
                     JSONObject latest = data.getJSONObject(0);
                     String value = latest.getString("value");
                     String date = latest.getString("date");
@@ -118,7 +118,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
             if (json.has("data")) {
                 JSONArray data = json.getJSONArray("data");
-                if (data.length() > 0) {
+                if (!data.isEmpty()) {
                     JSONObject latest = data.getJSONObject(0);
                     String value = latest.getString("value");
                     String date = latest.getString("date");
@@ -171,7 +171,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
             if (json.has("data")) {
                 JSONArray data = json.getJSONArray("data");
-                if (data.length() > 0) {
+                if (!data.isEmpty()) {
                     JSONObject latest = data.getJSONObject(0);
                     String value = latest.getString("value");
                     String date = latest.getString("date");
@@ -219,7 +219,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
             if (json.has("data")) {
                 JSONArray data = json.getJSONArray("data");
-                if (data.length() > 0) {
+                if (!data.isEmpty()) {
                     JSONObject latest = data.getJSONObject(0);
                     String value = latest.getString("value");
                     String date = latest.getString("date");
@@ -259,7 +259,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
             if (json.has("data")) {
                 JSONArray data = json.getJSONArray("data");
-                if (data.length() > 0) {
+                if (!data.isEmpty()) {
                     JSONObject latest = data.getJSONObject(0);
                     String value = latest.getString("value");
                     String date = latest.getString("date");
@@ -298,7 +298,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
 
             if (json.has("data")) {
                 JSONArray data = json.getJSONArray("data");
-                if (data.length() > 0) {
+                if (!data.isEmpty()) {
                     JSONObject latest = data.getJSONObject(0);
                     String value = latest.getString("value");
                     String date = latest.getString("date");
