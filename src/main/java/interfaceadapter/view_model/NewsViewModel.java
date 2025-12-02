@@ -21,9 +21,6 @@ public class NewsViewModel {
         }
     }
 
-    public void setArticles() {
-    }
-
     public String getFormattedNews() {
         return formattedNews;
     }

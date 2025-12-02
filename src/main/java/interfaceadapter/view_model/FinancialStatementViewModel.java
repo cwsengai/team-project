@@ -20,9 +20,6 @@ public class FinancialStatementViewModel {
         }
     }
 
-    public void setStatements() {
-    }
-
     public String getFormattedOutput() {
         return formattedOutput;
     }
