@@ -25,8 +25,8 @@ class GetPriceByIntervalInteractorTest {
 
         PriceDataAccessInterface successGateway = (ticker, interval) -> {
             List<PricePoint> points = new ArrayList<>();
-            points.add(new PricePoint(null, null, LocalDateTime.now(), interval,
-                    100.0, 110.0, 90.0, 105.0, 1000.0, "MockData"));
+            points.add(new PricePoint(LocalDateTime.now(),
+                    100.0, 110.0, 90.0, 105.0, 1000.0));
             return points;
         };
 

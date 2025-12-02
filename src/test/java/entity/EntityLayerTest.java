@@ -1,10 +1,13 @@
 package entity;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class EntityLayerTest {
 
@@ -113,7 +116,7 @@ class EntityLayerTest {
         assertNotNull(r.toString());
 
         // SimulatedOrder (Even if not heavily used, must cover for entity layer)
-        SimulatedOrder o = new SimulatedOrder("id", "A", true, 1, 10.0, LocalDateTime.now());
+        SimulatedOrder o = new SimulatedOrder("id");
         o.setFilled(true);
         o.setEntryPrice(10.0);
         assertTrue(o.isFilled());

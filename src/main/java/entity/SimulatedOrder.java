@@ -1,14 +1,11 @@
 package entity;
 
-import java.time.LocalDateTime;
-
 public class SimulatedOrder {
     private final String orderId;
     private double entryPrice;
     private boolean isFilled;
 
-    public SimulatedOrder(String orderId, String ticker, boolean isLong, int quantity,
-                          double limitPrice, LocalDateTime entryTime) {
+    public SimulatedOrder(String orderId) {
         this.orderId = orderId;
         this.entryPrice = 0.0;
         this.isFilled = false;
