@@ -52,17 +52,13 @@ public class SimulatedMain {
         private final TradingViewModel tradingViewModel;
         private final ViewManagerModel viewManagerModel;
 
-        private final SetupViewModel setupViewModel;
-
         public TradingViewFactoryListener(JPanel views, CardLayout cardLayout,
                                           TradingViewModel tradingViewModel,
-                                          ViewManagerModel viewManagerModel,
-                                          SetupViewModel setupViewModel) {
+                                          ViewManagerModel viewManagerModel) {
             this.views = views;
             this.cardLayout = cardLayout;
             this.tradingViewModel = tradingViewModel;
             this.viewManagerModel = viewManagerModel;
-            this.setupViewModel = setupViewModel;
         }
 
         @Override
@@ -213,7 +209,7 @@ public class SimulatedMain {
         views.add(tradingPlaceholder, TradingViewModel.VIEW_NAME);
 
         viewManagerModel.addPropertyChangeListener(new TradingViewFactoryListener(
-                views, cardLayout, tradingViewModel, viewManagerModel, setupViewModel
+                views, cardLayout, tradingViewModel, viewManagerModel
         ));
 
         new ViewManager(views, cardLayout, viewManagerModel);

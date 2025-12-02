@@ -1,9 +1,12 @@
 package usecase.simulated_trade;
 
-import entity.Account;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import entity.Account;
 
 class UseCaseLayerTest {
 
@@ -27,6 +30,7 @@ class UseCaseLayerTest {
     private SimulatedTradeInteractor interactor;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         Account account = new Account(2000.0, "user1");
         presenter = new MockPresenter();
