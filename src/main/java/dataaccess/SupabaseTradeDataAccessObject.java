@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import entity.SimulatedTradeRecord;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -25,6 +26,10 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
     private static final Gson gson = new Gson();
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
+    /**
+     * @param trade the simulated trade record to be saved
+     * @param userId the UUID of the user associated with the trade
+     */
     public void saveTrade(SimulatedTradeRecord trade, UUID userId) {
         // Build JSON body for Supabase REST API
         JsonObject tradeJson = new JsonObject();

@@ -28,6 +28,9 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         this.api = api;
     }
 
+    /**
+     * @return List of major market indices with their current data
+     */
     public List<MarketIndex> getMarketIndices() {
         List<MarketIndex> indices = new ArrayList<>();
 
@@ -55,6 +58,10 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
         return indices;
     }
 
+    /**
+     * @param symbol ETF symbol representing the market index
+     * @return MarketIndex object containing the latest data for the given symbol
+     */
     public MarketIndex getMarketIndex(String symbol) {
         try {
             String jsonResponse = api.getGlobalQuote(symbol);

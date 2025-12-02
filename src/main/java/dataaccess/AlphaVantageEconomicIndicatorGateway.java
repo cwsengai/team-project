@@ -22,6 +22,9 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
         this.api = api;
     }
 
+    /**
+     * @return List of economic indicators fetched from the API
+     */
     public List<EconomicIndicator> getEconomicIndicators() {
         List<EconomicIndicator> indicators = new ArrayList<>();
 

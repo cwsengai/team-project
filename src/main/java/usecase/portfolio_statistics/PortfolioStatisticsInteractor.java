@@ -28,6 +28,9 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
         this.outputBoundary = null;
     }
 
+    /**
+     * @param userId the UUID of the user whose portfolio statistics are requested
+     */
     public void requestPortfolioSummary(UUID userId) {
         List<SimulatedTradeRecord> trades = Objects.requireNonNull(tradeGateway).fetchTradesForUser(userId);
         double initialBalance = Objects.requireNonNull(balanceGateway).getInitialBalance(userId);
