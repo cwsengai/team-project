@@ -21,8 +21,7 @@ public record AlphaVantageFinancialStatementGateway(Api api) implements Financia
         String jsonString_balance;
         try {
             jsonString_balance = api.getFuncBalanceSheet(symbol);
-        }
-catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("AlphaVantageFinancialStatementGateway balance fetch error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -33,8 +32,7 @@ catch (Exception ex) {
         String jsonString_income;
         try {
             jsonString_income = api.getFuncIncomeStatement(symbol);
-        }
-catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("AlphaVantageFinancialStatementGateway income fetch error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -45,8 +43,7 @@ catch (Exception ex) {
         String jsonString_cashflow;
         try {
             jsonString_cashflow = api.getFuncCashFlow(symbol);
-        }
-catch (Exception ex) {
+        } catch (Exception ex) {
             System.err.println("AlphaVantageFinancialStatementGateway cashflow fetch error: " + ex.getMessage());
             for (StackTraceElement ste : ex.getStackTrace()) {
                 System.err.println("    at " + ste.toString());
@@ -97,8 +94,7 @@ catch (Exception ex) {
                     cas.optLong("capitalExpenditures", 0),
                     cas.optLong("cashflowFromInvestment", 0),
                     cas.optLong("cashflowFromFinancing", 0),
-                    cas.optLong("dividendPayout", 0)
-            );
+                    cas.optLong("dividendPayout", 0));
 
             list.add(fs);
         }
