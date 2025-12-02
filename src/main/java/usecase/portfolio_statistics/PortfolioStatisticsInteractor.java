@@ -2,6 +2,7 @@ package usecase.portfolio_statistics;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import entity.SimulatedTradeRecord;
@@ -29,12 +30,12 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
 
     @Override
     public void requestPortfolioSummary(UUID userId) {
-        List<SimulatedTradeRecord> trades = tradeGateway.fetchTradesForUser(userId);
-        double initialBalance = balanceGateway.getInitialBalance(userId);
+        List<SimulatedTradeRecord> trades = Objects.requireNonNull(tradeGateway).fetchTradesForUser(userId);
+        double initialBalance = Objects.requireNonNull(balanceGateway).getInitialBalance(userId);
 
         PortfolioStatisticsInputData input = new PortfolioStatisticsInputData(trades, initialBalance);
         PortfolioStatisticsOutputData stats = calculateStatistics(input);
-        outputBoundary.present(stats);
+        Objects.requireNonNull(outputBoundary).present(stats);
     }
 
     /**

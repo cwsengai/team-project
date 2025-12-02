@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,9 +116,7 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
                 }
 
                 // Sort by timestamp in ascending order (oldest to newest)
-                pricePoints.sort((pricePointOne, pricePointTwo) -> {
-                    return pricePointOne.getTimestamp().compareTo(pricePointTwo.getTimestamp());
-                });
+                pricePoints.sort(Comparator.comparing(PricePoint::getTimestamp));
             }
         }
 

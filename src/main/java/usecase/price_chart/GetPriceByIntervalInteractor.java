@@ -45,11 +45,9 @@ public class GetPriceByIntervalInteractor implements PriceInputBoundary {
             }
             catch (Exception ex) {
 
-                SwingUtilities.invokeLater(() -> {
-                    pricePresenter.presentError(
-                            "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()
-                    );
-                });
+                SwingUtilities.invokeLater(() -> pricePresenter.presentError(
+                        "Fail to retrieve " + interval.name() + " price: " + ex.getMessage()
+                ));
 
                 return;
             }

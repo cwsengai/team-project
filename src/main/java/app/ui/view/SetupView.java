@@ -3,6 +3,7 @@ package app.ui.view;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -148,7 +149,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         try {
             final String ticker = tickerField.getText().toUpperCase();
             final double balance = Double.parseDouble(balanceField.getText());
-            final int speed = Integer.parseInt(speedComboBox.getSelectedItem().toString().replace("x", ""));
+            final int speed = Integer.parseInt(Objects.requireNonNull(speedComboBox.getSelectedItem()).toString().replace("x", ""));
 
             controller.execute(ticker, balance, speed);
 

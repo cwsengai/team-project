@@ -84,8 +84,6 @@ public class SimulatedTradeIntegrationTest {
         // Step 3: Sell the exact quantity to close the position at a different price
         double sellAmount = quantity * sellPrice;
         SimulatedTradeInputData sellInput = new SimulatedTradeInputData(ticker, false, sellAmount, sellPrice);
-        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, () -> {
-            tradeInteractor.executeTrade(sellInput);
-        });
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, () -> tradeInteractor.executeTrade(sellInput));
     }
 }

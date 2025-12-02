@@ -45,9 +45,7 @@ public class TimeIntervalChartMain {
 
         // 6. WIRING (Connecting the pieces)
         chartWindow.setController(intervalController);
-        SwingUtilities.invokeLater(() -> {
-            chartWindow.setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> chartWindow.setVisible(true));
 
         System.out.println("GUI Initialization Complete.");
     }

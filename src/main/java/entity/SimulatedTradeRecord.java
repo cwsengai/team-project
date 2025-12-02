@@ -102,7 +102,7 @@ public class SimulatedTradeRecord {
         double result = ZERO;
 
         if (entryPrice != ZERO) {
-            double priceDiff = ZERO;
+            double priceDiff;
 
             if (isLong) {
                 priceDiff = exitPrice - entryPrice;

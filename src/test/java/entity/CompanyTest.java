@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,8 +60,8 @@ class CompanyTest {
         assertEquals(0.8f, c.getDividendPerShare());
         assertEquals(0.006f, c.getDividendYield());
         assertEquals(1.2f, c.getBeta());
-        assertEquals(1, c.getFinancialStatements().size());
-        assertEquals(1, c.getNewsArticles().size());
+        assertEquals(1, Objects.requireNonNull(c.getFinancialStatements()).size());
+        assertEquals(1, Objects.requireNonNull(c.getNewsArticles()).size());
     }
 
 

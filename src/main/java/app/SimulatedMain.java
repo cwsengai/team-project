@@ -97,16 +97,13 @@ public class SimulatedMain {
                 final SupabasePortfolioDataAccessObject portfolioDAO = new SupabasePortfolioDataAccessObject();
                 portfolioDAO.savePortfolio(UUID.fromString(userId), input.getInitialBalance());
 
-                account.addTradeClosedListener(new TradeClosedListener() {
-                    @Override
-                    public void onTradeClosed(SimulatedTradeRecord record) {
-                        try {
-                            final UUID userUuid = UUID.fromString(record.getUserId());
-                            tradeDAO.saveTrade(record, userUuid);
-                        }
-                        catch (Exception ex) {
-                            System.err.println("DB Save Failed: " + ex.getMessage());
-                        }
+                account.addTradeClosedListener(record -> {
+                    try {
+                        final UUID userUuid = UUID.fromString(record.getUserId());
+                        tradeDAO.saveTrade(record, userUuid);
+                    }
+                    catch (Exception ex) {
+                        System.err.println("DB Save Failed: " + ex.getMessage());
                     }
                 });
 

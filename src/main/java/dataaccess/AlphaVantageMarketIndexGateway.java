@@ -95,7 +95,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
                 String changePercentStr = quote.optString("10. change percent", "0%");
 
                 // Parse change percent (remove % sign)
-                double changePercent = 0.0;
+                double changePercent;
                 try {
                     changePercent = Double.parseDouble(changePercentStr.replace("%", "").trim());
                 }

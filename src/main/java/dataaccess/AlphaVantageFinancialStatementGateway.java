@@ -1,10 +1,7 @@
 package dataaccess;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -68,7 +65,7 @@ public class AlphaVantageFinancialStatementGateway implements FinancialStatement
                 .filter(incomeMap::containsKey)
                 .filter(cashMap::containsKey)
                 // newest first
-                .sorted((d1, d2) -> d2.compareTo(d1))
+                .sorted(Comparator.reverseOrder())
                 .limit(5)
                 .collect(Collectors.toList());
 

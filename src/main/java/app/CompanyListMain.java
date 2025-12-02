@@ -308,9 +308,7 @@ public class CompanyListMain {
                         publish(new CompanyUpdate(ticker, company));
                         System.out.println("  ✅ " + company.getName());
 
-                        SwingUtilities.invokeLater(() -> {
-                            searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values()));
-                        });
+                        SwingUtilities.invokeLater(() -> searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values())));
                     }
                     else {
                         System.err.println("  ⚠️ No data for " + ticker);
@@ -348,9 +346,7 @@ public class CompanyListMain {
                 final CompanyListController companyListController =
                         new CompanyListController(companyListInteractor);
 
-                SwingUtilities.invokeLater(() -> {
-                    page.setListController(companyListController);
-                });
+                SwingUtilities.invokeLater(() -> page.setListController(companyListController));
             }
         }
 

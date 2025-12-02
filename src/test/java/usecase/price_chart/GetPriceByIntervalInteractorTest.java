@@ -23,14 +23,11 @@ class GetPriceByIntervalInteractorTest {
     void loadPriceHistory_Success() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        PriceDataAccessInterface successGateway = new PriceDataAccessInterface() {
-            @Override
-            public List<PricePoint> getPriceHistory(String ticker, TimeInterval interval) {
-                List<PricePoint> points = new ArrayList<>();
-                points.add(new PricePoint(null, null, LocalDateTime.now(), interval,
-                        100.0, 110.0, 90.0, 105.0, 1000.0, "MockData"));
-                return points;
-            }
+        PriceDataAccessInterface successGateway = (ticker, interval) -> {
+            List<PricePoint> points = new ArrayList<>();
+            points.add(new PricePoint(null, null, LocalDateTime.now(), interval,
+                    100.0, 110.0, 90.0, 105.0, 1000.0, "MockData"));
+            return points;
         };
 
         TestPricePresenter mockPresenter = new TestPricePresenter(latch);
@@ -56,11 +53,8 @@ class GetPriceByIntervalInteractorTest {
     void loadPriceHistory_Failure_Exception() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        PriceDataAccessInterface failGateway = new PriceDataAccessInterface() {
-            @Override
-            public List<PricePoint> getPriceHistory(String ticker, TimeInterval interval) throws Exception {
-                throw new RuntimeException("API Connection Failed");
-            }
+        PriceDataAccessInterface failGateway = (ticker, interval) -> {
+            throw new RuntimeException("API Connection Failed");
         };
 
         TestPricePresenter mockPresenter = new TestPricePresenter(latch);
@@ -84,12 +78,7 @@ class GetPriceByIntervalInteractorTest {
     void loadPriceHistory_Failure_EmptyData() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        PriceDataAccessInterface emptyGateway = new PriceDataAccessInterface() {
-            @Override
-            public List<PricePoint> getPriceHistory(String ticker, TimeInterval interval) {
-                return Collections.emptyList();
-            }
-        };
+        PriceDataAccessInterface emptyGateway = (ticker, interval) -> Collections.emptyList();
 
         TestPricePresenter mockPresenter = new TestPricePresenter(latch);
         GetPriceByIntervalInteractor interactor = new GetPriceByIntervalInteractor(emptyGateway, mockPresenter);
@@ -132,12 +121,7 @@ class GetPriceByIntervalInteractorTest {
     void loadPriceHistory_Failure_NullData() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        PriceDataAccessInterface nullGateway = new PriceDataAccessInterface() {
-            @Override
-            public List<PricePoint> getPriceHistory(String ticker, TimeInterval interval) {
-                return null;
-            }
-        };
+        PriceDataAccessInterface nullGateway = (ticker, interval) -> null;
 
         TestPricePresenter mockPresenter = new TestPricePresenter(latch);
         GetPriceByIntervalInteractor interactor = new GetPriceByIntervalInteractor(nullGateway, mockPresenter);

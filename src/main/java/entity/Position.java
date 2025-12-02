@@ -91,7 +91,7 @@ public class Position {
 
     public double getUnrealizedPnL(double currentPrice) {
 
-        double result = 0.0;
+        double result;
 
         if (quantity == 0) {
             result = 0.0;
