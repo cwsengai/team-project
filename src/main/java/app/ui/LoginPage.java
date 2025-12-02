@@ -17,9 +17,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import api.SupabaseAuthClient;
-import dataaccess.EnvConfig;
+import usecase.auth.AuthService;
 import usecase.session.SessionDataAccessInterface;
+
 
 public class LoginPage extends JDialog {
 
@@ -31,7 +31,7 @@ public class LoginPage extends JDialog {
     private CardLayout cardLayout;
 
     public LoginPage(JFrame parent, SessionDataAccessInterface sessionDAO) {
-        super(parent, "Billionaire — Login / Signup", true); // true = modal
+        super(parent, "Billionaire — Login / Signup", true);
         this.sessionDAO = sessionDAO;
 
         setSize(420, 360);
@@ -49,7 +49,7 @@ public class LoginPage extends JDialog {
         tabPanel.add(loginTab);
         tabPanel.add(signupTab);
 
-        // === Card Layout (switches between login and signup panels) ===
+        // === Card Layout ===
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
@@ -62,7 +62,7 @@ public class LoginPage extends JDialog {
         add(tabPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
 
-        // Actions
+        // Tab switching
         loginTab.addActionListener(e -> cardLayout.show(mainPanel, "login"));
         signupTab.addActionListener(e -> cardLayout.show(mainPanel, "signup"));
     }
@@ -98,13 +98,9 @@ public class LoginPage extends JDialog {
                     return;
                 }
 
-                SupabaseAuthClient auth = new SupabaseAuthClient(
-                        EnvConfig.getSupabaseUrl(),
-                        EnvConfig.getSupabaseAnonKey()
-                );
-
-                var result = auth.signIn(email, password);
-                String jwt = result.optString("access_token", null);
+                // === Clean Architecture Interactor ===
+                AuthService auth = new AuthService();
+                String jwt = auth.login(email, password);
 
                 if (jwt == null) {
                     status.setText("Invalid login.");
@@ -161,14 +157,9 @@ public class LoginPage extends JDialog {
                     return;
                 }
 
-                SupabaseAuthClient auth = new SupabaseAuthClient(
-                        EnvConfig.getSupabaseUrl(),
-                        EnvConfig.getSupabaseAnonKey()
-                );
-
-                var result = auth.signUp(email, password);
-                String jwt = result.optString("access_token", null);
-
+                // === Clean Architecture Interactor ===
+                AuthService auth = new AuthService();
+                String jwt = auth.signup(email, password);
 
                 if (jwt == null) {
                     status.setText("Signup failed (email may already exist)");
@@ -193,7 +184,6 @@ public class LoginPage extends JDialog {
 
         return panel;
     }
-
 
     // ===============================================================
     // SUCCESS FLAG
