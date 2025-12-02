@@ -11,6 +11,7 @@ import usecase.price_chart.PriceChartOutputBoundary;
 import usecase.price_chart.PriceDataAccessInterface;
 
 public class TimeIntervalChartMain {
+    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:UncommentedMain", "checkstyle:MissingJavadocMethod"})
     public static void main(String[] args) {
         System.out.println("--- Starting UC4 Price Chart Module (GUI) ---");
 
