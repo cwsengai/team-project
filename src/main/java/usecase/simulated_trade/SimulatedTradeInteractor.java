@@ -7,16 +7,8 @@ import entity.Account;
 /**
  * Interactor responsible for executing a simulated trade.
  */
-public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
-
-    private final SimulatedTradeOutputBoundary presenter;
-    private final Account account;
-
-    public SimulatedTradeInteractor(SimulatedTradeOutputBoundary presenter,
-                                    Account account) {
-        this.presenter = presenter;
-        this.account = account;
-    }
+public record SimulatedTradeInteractor(SimulatedTradeOutputBoundary presenter,
+                                       Account account) implements SimulatedTradeInputBoundary {
 
     @Override
     public void executeTrade(SimulatedTradeInputData inputData) {
@@ -60,16 +52,14 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
                 );
 
                 success = true;
-            }
-            else {
+            } else {
                 errorMessage = "Insufficient funds.";
             }
         }
 
         if (success) {
             presenter.prepareSuccessView(outputData);
-        }
-        else {
+        } else {
             presenter.prepareFailView(errorMessage);
         }
     }
@@ -78,7 +68,7 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
      * Validates trade parameters.
      *
      * @param amount trade amount
-     * @param price current market price
+     * @param price  current market price
      * @return error message string or null if valid
      */
     private String validateInput(double amount, double price) {
@@ -87,8 +77,7 @@ public class SimulatedTradeInteractor implements SimulatedTradeInputBoundary {
         final boolean nonPositiveAmount = amount <= 0;
         if (nonPositiveAmount) {
             error = "Amount must be positive.";
-        }
-        else {
+        } else {
             final int quantity = (int) (amount / price);
             final boolean tooSmallQuantity = quantity <= 0;
             if (tooSmallQuantity) {

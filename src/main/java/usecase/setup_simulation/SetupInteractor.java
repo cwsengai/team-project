@@ -3,17 +3,11 @@ package usecase.setup_simulation;
 /**
  * Interactor for handling the setup simulation use case.
  */
-public class SetupInteractor implements SetupInputBoundary {
+public record SetupInteractor(SetupOutputBoundary presenter) implements SetupInputBoundary {
 
     private static final int MIN_SPEED = 5;
     private static final int MAX_SPEED = 30;
     private static final int SPEED_STEP = 5;
-
-    private final SetupOutputBoundary presenter;
-
-    public SetupInteractor(SetupOutputBoundary presenter) {
-        this.presenter = presenter;
-    }
 
     @Override
     public void execute(SetupInputData input) {
@@ -27,11 +21,9 @@ public class SetupInteractor implements SetupInputBoundary {
 
         if (hasInvalidSpeed) {
             presenter.prepareFailView("Invalid speed. Must be 5x, 10x, 20x, or 30x.");
-        }
-        else if (hasInvalidBalance) {
+        } else if (hasInvalidBalance) {
             presenter.prepareFailView("Initial balance must be positive.");
-        }
-        else {
+        } else {
             presenter.prepareSuccessView(input);
         }
     }

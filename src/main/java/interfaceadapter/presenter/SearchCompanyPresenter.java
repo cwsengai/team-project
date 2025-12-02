@@ -15,14 +15,8 @@ import usecase.search_company.SearchCompanyOutputData;
  * Presenter for Search Company use case.
  * Formats search results for display in the UI.
  */
-public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
-    private final CompanyListPage page;
-    private final SearchCompanyViewModel viewModel;
-
-    public SearchCompanyPresenter(CompanyListPage page, SearchCompanyViewModel viewModel) {
-        this.page = page;
-        this.viewModel = viewModel;
-    }
+public record SearchCompanyPresenter(CompanyListPage page,
+                                     SearchCompanyViewModel viewModel) implements SearchCompanyOutputBoundary {
 
     @Override
     public void presentSearchResults(SearchCompanyOutputData outputData) {
@@ -39,8 +33,7 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
                 formattedCap = formatMarketCap(company.getMarketCapitalization());
                 formattedPE = formatPeRatio(company.getPeRatio());
                 country = company.getCountry();
-            }
-            else {
+            } else {
                 // Company has minimal data (just ticker)
                 formattedCap = "-";
                 formattedPE = "-";
@@ -74,14 +67,11 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
     private String formatMarketCap(double marketCap) {
         if (marketCap >= 1_000_000_000_000.0) {
             return String.format("$%.1fT", marketCap / 1_000_000_000_000.0);
-        }
-        else if (marketCap >= 1_000_000_000.0) {
+        } else if (marketCap >= 1_000_000_000.0) {
             return String.format("$%.1fB", marketCap / 1_000_000_000.0);
-        }
-        else if (marketCap >= 1_000_000.0) {
+        } else if (marketCap >= 1_000_000.0) {
             return String.format("$%.1fM", marketCap / 1_000_000.0);
-        }
-        else {
+        } else {
             return String.format("$%.0f", marketCap);
         }
     }
