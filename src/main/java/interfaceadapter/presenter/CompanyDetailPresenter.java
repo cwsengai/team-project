@@ -62,7 +62,7 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
             List<Double> openPrices = priceData.stream()
                     .map(p -> p.getOpen() != null ? p.getOpen() : 0.0)
                     .collect(Collectors.toList());
-            List<Double> highPrices = priceData.stream()
+            priceData.stream()
                     .map(p -> p.getHigh() != null ? p.getHigh() : 0.0)
                     .collect(Collectors.toList());
             List<Double> lowPrices = priceData.stream()
@@ -74,8 +74,8 @@ public class CompanyDetailPresenter implements CompanyDetailOutputBoundary, Pric
 
             viewModel = new ChartViewModel(
                     ticker + " | " + interval.name(), 
-                    labels, 
-                    openPrices, lowPrices, closePrices, interval
+                    labels,
+                    closePrices, interval
             );
         }
         else {

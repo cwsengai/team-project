@@ -26,19 +26,6 @@ public class ChartViewModel {
         this.isCandlestick = false;
     }
 
-    // Constructor for candlestick chart (OHLC data)
-    public ChartViewModel(String title, List<String> labels, 
-                         List<Double> openPrices,
-                          List<Double> lowPrices, List<Double> closePrices, TimeInterval interval) {
-        this.title = title;
-        this.labels = labels;
-        this.prices = null;
-        // Not used for candlestick
-        this.interval = interval;
-        this.closePrices = closePrices;
-        this.isCandlestick = true;
-    }
-
     public String getTitle() {
         return title;
     }

@@ -54,8 +54,8 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
 
             viewModel = new ChartViewModel(
                     ticker + " | " + interval.name(), 
-                    labels, 
-                    openPrices, lowPrices, closePrices, interval
+                    labels,
+                    closePrices, interval
             );
         }
         else {

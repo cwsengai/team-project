@@ -30,7 +30,6 @@ public class Api {
     private static final String FUNC_LABEL = "?function=";
     private static final String SYMBOL_LABEL = "&symbol=";
     private static final String API_LABEL = "&apikey=";
-    private static final String MONTHLY_LABEL = "monthly";
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey;
