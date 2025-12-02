@@ -16,7 +16,7 @@ public class AlphaVantageSearchDataAccess implements SearchCompanyDataAccess {
 
     public AlphaVantageSearchDataAccess(List<Company> companies) {
         this.cachedCompanies = companies != null ? new ArrayList<>(companies) : new ArrayList<>();
-        this.allTickers = Top100Companies.getAll();
+        this.allTickers = Top100Companies.TICKERS;
     }
 
     @Override

@@ -228,15 +228,6 @@ public class Top100Companies {
     );
 
     /**
-     * Returns the full list of the top 100 company ticker symbols.
-     *
-     * @return an unmodifiable list containing all 100 ticker symbols
-     */
-    public static List<String> getAll() {
-        return TICKERS;
-    }
-
-    /**
      * Returns a subset of the top company ticker symbols for testing purposes.
      * This is useful when avoiding API rate limits by reducing the number of
      * external requests.

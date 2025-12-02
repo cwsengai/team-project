@@ -147,7 +147,7 @@ public class CompanyListMain {
      * @param page the UI page whose table will be updated
      */
     private static void displayInitialTable(CompanyListPage page) {
-        final List<String> allTickers = Top100Companies.getAll();
+        final List<String> allTickers = Top100Companies.TICKERS;
         final List<CompanyDisplayData> initialDisplay = new ArrayList<>();
 
         for (int i = 0; i < allTickers.size(); i++) {
@@ -230,7 +230,7 @@ public class CompanyListMain {
             this.companyGateway = companyGateway;
             this.companyListPresenter = companyListPresenter;
             this.searchDataAccess = searchDataAccess;
-            this.allTickers = Top100Companies.getAll();
+            this.allTickers = Top100Companies.TICKERS;
         }
 
         @Override

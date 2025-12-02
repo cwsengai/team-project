@@ -28,15 +28,6 @@ public class TradingViewModel {
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /**
-     * Returns the view name used to identify this screen.
-     *
-     * @return the view name
-     */
-    public String getViewName() {
-        return VIEW_NAME;
-    }
-
-    /**
      * Updates the stored state for this ViewModel.
      *
      * @param state the new trading state

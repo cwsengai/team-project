@@ -147,7 +147,7 @@ public class SimulatedMain {
     public static class FinalSetupPresenter extends SetupPresenter {
         public FinalSetupPresenter(ViewManagerModel viewManagerModel, TradingViewModel tradingViewModel,
                                    SetupViewModel setupViewModel) {
-            super(viewManagerModel, tradingViewModel, setupViewModel);
+            super(viewManagerModel, setupViewModel);
         }
 
         @Override

@@ -8,20 +8,17 @@ import usecase.setup_simulation.SetupOutputBoundary;
 public class SetupPresenter implements SetupOutputBoundary {
 
     protected final ViewManagerModel viewManagerModel;
-    protected final TradingViewModel tradingViewModel;
     protected final SetupViewModel setupViewModel;
 
     public SetupPresenter(ViewManagerModel viewManagerModel,
-                          TradingViewModel tradingViewModel,
                           SetupViewModel setupViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.tradingViewModel = tradingViewModel;
         this.setupViewModel = setupViewModel;
     }
 
     @Override
     public void prepareSuccessView(SetupInputData input) {
-        viewManagerModel.setActiveView(tradingViewModel.getViewName());
+        viewManagerModel.setActiveView(TradingViewModel.VIEW_NAME);
         viewManagerModel.firePropertyChanged();
     }
 

@@ -25,7 +25,7 @@ public class AlphaVantageCompanyListDataAccess implements CompanyListDataAccess 
     public List<Company> getCompanyList() {
         final List<String> tickers = useSampleData
                 ? Top100Companies.getSample(20)
-                : Top100Companies.getAll();
+                : Top100Companies.TICKERS;
 
         final List<Company> companies = new ArrayList<>();
 
