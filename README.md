@@ -1,17 +1,5 @@
 # BILLIONAIRE: Stock Analysis and Trading Simulation Platform
 
-Please keep this up-to-date with information about your project throughout the term.
-
-The readme should include information such as:
-- a summary of what your application is all about
-- a list of the user stories, along with who is responsible for each one
-- information about the API(s) that your project uses 
-- screenshots or animations demonstrating current functionality
-
-By keeping this README up-to-date,
-your team will find it easier to prepare for the final presentation
-at the end of the term.
-
 Billionaire is a comprehensive stock analysis and trading simulation platform designed to help users make informed investment decisions. The application provides real-time stock data, advanced analytics, and a simulated trading environment where users can practice their trading strategies without financial risk.
 
 We built this application using Java, Javaswing for the GUI, and integrated various APIs for real-time stock data and news.
@@ -99,7 +87,7 @@ Noticed: these are just the main user stories that split between the team. There
   - Base URL: The endpoint for the API requests.
   - Function Name: Specifies the type of data being requested (e.g., TIME_SERIES_DAILY, OVERVIEW, NEWS_SENTIMENT).
   - Parameters: Additional parameters such as stock symbol, interval.
-  - API key 
+  - API key: Noticed that we have to sign up for free API key and the limit is 5 requests per minute and 500 requests per day.
 
  These are the functions that are used in our project:
 #### Time Series Stock Data APIs
