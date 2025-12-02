@@ -45,6 +45,11 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
             return new PortfolioStatisticsOutputData(0, 0, 0, 0, 0, 0, 0, 0, null, null);
         }
 
+        return computeStatisticsFromTrades(trades, initialBalance);
+    }
+
+    private PortfolioStatisticsOutputData computeStatisticsFromTrades(List<SimulatedTradeRecord> trades,
+                                                                       double initialBalance) {
         // Calculate total profit
         double totalProfit = trades.stream()
             .mapToDouble(SimulatedTradeRecord::getRealizedPnL)
@@ -58,18 +63,15 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
             .orElse(0.0);
 
         // Calculate max drawdown (most negative PnL, but show as positive for display)
-        double maxDrawdownValue = trades.stream()
+        double maxDrawdown = Math.abs(trades.stream()
             .mapToDouble(SimulatedTradeRecord::getRealizedPnL)
             .filter(pnl -> pnl < 0)
             .min()
-            .orElse(0.0);
-        double maxDrawdown = Math.abs(maxDrawdownValue); // Show as positive
+            .orElse(0.0));
 
-        // Count winning and losing trades
         int winningTrades = (int) trades.stream()
             .filter(t -> t.getRealizedPnL() > 0)
             .count();
-
         int losingTrades = (int) trades.stream()
             .filter(t -> t.getRealizedPnL() < 0)
             .count();
