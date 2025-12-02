@@ -1,19 +1,22 @@
 package dataaccess;
 
-import entity.Company;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import entity.Company;
 
 class AlphaVantageSearchDataAccessTest {
 
     private AlphaVantageSearchDataAccess searchDataAccess;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         List<Company> testCompanies = Arrays.asList(
                 createCompany("AAPL", "Apple Inc"),

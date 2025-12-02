@@ -19,6 +19,7 @@ class CompanyListInteractorTest {
     private MockCompanyListPresenter presenter;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         dataAccess = new MockCompanyListDataAccess();
         presenter = new MockCompanyListPresenter();

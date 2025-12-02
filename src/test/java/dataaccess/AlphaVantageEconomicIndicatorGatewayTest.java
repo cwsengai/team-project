@@ -1,19 +1,23 @@
 package dataaccess;
 
-import api.Api;
-import entity.EconomicIndicator;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import api.Api;
+import entity.EconomicIndicator;
 
 class AlphaVantageEconomicIndicatorGatewayTest {
 
     private AlphaVantageEconomicIndicatorGateway gateway;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         MockApi mockApi = new MockApi();
         gateway = new AlphaVantageEconomicIndicatorGateway(mockApi);

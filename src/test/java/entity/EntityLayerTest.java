@@ -14,6 +14,7 @@ class EntityLayerTest {
     private Account account;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         account = new Account(10000.0, "user123");
     }

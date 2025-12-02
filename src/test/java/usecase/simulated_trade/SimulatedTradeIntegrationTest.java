@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import interfaceadapter.view_model.ViewManagerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +13,7 @@ import dataaccess.SupabaseTradeDataAccessObject;
 import entity.Account;
 import interfaceadapter.simulated_trading.TradingPresenter;
 import interfaceadapter.simulated_trading.TradingViewModel;
+import interfaceadapter.view_model.ViewManagerModel;
 import usecase.session.SessionDataAccessInterface;
 
 
@@ -24,6 +23,7 @@ public class SimulatedTradeIntegrationTest {
     private SimulatedTradeInteractor tradeInteractor;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setup() throws IOException {
         // Generate a unique email for each test run
         long rand = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
