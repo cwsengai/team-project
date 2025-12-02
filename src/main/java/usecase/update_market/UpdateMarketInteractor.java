@@ -79,7 +79,7 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
 
         if (allCandles != null && !allCandles.isEmpty()) {
             int ticksNeeded = calculateTicksPerCandle();
-            this.currentMinuteTicks = dataAccess.generateTicks(allCandles.get(0), ticksNeeded);
+            this.currentMinuteTicks = dataAccess.generateTicks(allCandles.getFirst(), ticksNeeded);
 
             SwingUtilities.invokeLater(this::executeExecuteTick);
         }

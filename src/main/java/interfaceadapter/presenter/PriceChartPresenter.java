@@ -66,7 +66,6 @@ public record PriceChartPresenter(ChartWindow view) implements PriceChartOutputB
             case FIVE_MINUTES -> timestamp.format(DateTimeFormatter.ofPattern("HH:mm"));
             case DAILY -> timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             case WEEKLY, MONTHLY -> timestamp.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-            default -> timestamp.toString();
         };
     }
 

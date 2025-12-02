@@ -39,7 +39,7 @@ class SearchCompanyInteractorTest {
         // Assert
         assertTrue(presenter.wasSuccessCalled());
         assertEquals(1, presenter.getResults().size());
-        assertEquals("AAPL", presenter.getResults().get(0).getSymbol());
+        assertEquals("AAPL", presenter.getResults().getFirst().getSymbol());
     }
 
     @Test

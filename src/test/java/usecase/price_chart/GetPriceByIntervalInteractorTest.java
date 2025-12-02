@@ -42,7 +42,7 @@ class GetPriceByIntervalInteractorTest {
         assertNull(mockPresenter.capturedError, "Should not return error on success");
         assertNotNull(mockPresenter.capturedData, "Data should be presented");
         assertEquals(1, mockPresenter.capturedData.size());
-        assertEquals(105.0, mockPresenter.capturedData.get(0).close());
+        assertEquals(105.0, mockPresenter.capturedData.getFirst().close());
     }
 
     /**

@@ -202,8 +202,8 @@ public class ChartPanel extends JPanel {
         }
 
         if (prices != null && !prices.isEmpty()) {
-            final double currentPrice = prices.get(prices.size() - 1);
-            double startPrice = prices.get(0);
+            final double currentPrice = prices.getLast();
+            double startPrice = prices.getFirst();
             if (prices.size() > 1) {
                 startPrice = prices.get(prices.size() - 2);
             }

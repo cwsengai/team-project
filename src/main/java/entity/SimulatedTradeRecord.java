@@ -1,5 +1,7 @@
 package entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 
 /**
@@ -58,6 +60,7 @@ public record SimulatedTradeRecord(String ticker, boolean isLong, int quantity, 
         return result;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "SimulatedTradingRecord{"

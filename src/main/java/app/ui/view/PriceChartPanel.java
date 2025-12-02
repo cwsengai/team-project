@@ -71,7 +71,7 @@ public class PriceChartPanel extends JPanel {
 
         // 4. Draw current price label
         g2.setColor(Color.BLACK);
-        final double lastPrice = priceHistory.get(priceHistory.size() - 1);
+        final double lastPrice = priceHistory.getLast();
         g2.drawString(String.format("Current: %.2f", lastPrice), width - 120, 20);
     }
 }

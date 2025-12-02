@@ -40,7 +40,7 @@ class CompanyListInteractorTest {
         assertTrue(presenter.wasSuccessCalled());
         assertFalse(presenter.wasFailureCalled());
         assertEquals(2, presenter.getCompanies().size());
-        assertEquals("AAPL", presenter.getCompanies().get(0).getSymbol());
+        assertEquals("AAPL", presenter.getCompanies().getFirst().getSymbol());
     }
 
     @Test

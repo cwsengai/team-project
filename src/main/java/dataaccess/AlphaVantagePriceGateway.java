@@ -62,13 +62,12 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     }
     
     private String getFunctionName(TimeInterval interval) {
-        final String functionName = switch (interval) {
+        return switch (interval) {
             case FIVE_MINUTES -> "TIME_SERIES_INTRADAY";
             case DAILY -> "TIME_SERIES_DAILY";
             case WEEKLY -> "TIME_SERIES_WEEKLY";
             default -> throw new IllegalArgumentException("Unsupported interval: " + interval);
         };
-        return functionName;
     }
 
     private List<PricePoint> parseJsonToPricePoints(String jsonResponse, TimeInterval interval) {
@@ -134,14 +133,12 @@ public class AlphaVantagePriceGateway implements PriceDataAccessInterface {
     }
     
     private String getTimeSeriesKey(TimeInterval interval) {
-        final String timeSeriesKey = switch (interval) {
+        return switch (interval) {
             case FIVE_MINUTES -> "Time Series (5min)";
             case DAILY -> "Time Series (Daily)";
             case WEEKLY -> "Weekly Time Series";
             case MONTHLY -> "Monthly Time Series";
-            default -> throw new IllegalArgumentException("Unsupported interval: " + interval);
         };
-        return timeSeriesKey;
     }
     
     private LocalDateTime parseTimestamp(String timestamp, TimeInterval interval) {

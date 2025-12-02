@@ -59,7 +59,7 @@ public record AlphaVantageFinancialStatementGateway(Api api) implements Financia
                 // newest first
                 .sorted(Comparator.reverseOrder())
                 .limit(5)
-                .collect(Collectors.toList());
+                .toList();
 
         List<FinancialStatement> list = new ArrayList<>();
 

@@ -31,7 +31,7 @@ class AlphaVantageSearchDataAccessTest {
         List<Company> results = searchDataAccess.searchCompanies("AAPL");
 
         assertEquals(1, results.size());
-        assertEquals("AAPL", results.get(0).getSymbol());
+        assertEquals("AAPL", results.getFirst().getSymbol());
     }
 
     @Test
@@ -39,7 +39,7 @@ class AlphaVantageSearchDataAccessTest {
         List<Company> results = searchDataAccess.searchCompanies("Apple");
 
         assertEquals(1, results.size());
-        assertEquals("Apple Inc", results.get(0).getName());
+        assertEquals("Apple Inc", results.getFirst().getName());
     }
 
     @Test
@@ -59,7 +59,7 @@ class AlphaVantageSearchDataAccessTest {
         List<Company> results = searchDataAccess.searchCompanies("apple");
 
         assertEquals(1, results.size());
-        assertEquals("AAPL", results.get(0).getSymbol());
+        assertEquals("AAPL", results.getFirst().getSymbol());
     }
 
     @Test
@@ -92,7 +92,7 @@ class AlphaVantageSearchDataAccessTest {
         List<Company> results = searchDataAccess.searchCompanies("GOOGL");
 
         assertEquals(1, results.size());
-        assertEquals("GOOGL", results.get(0).getSymbol());
+        assertEquals("GOOGL", results.getFirst().getSymbol());
     }
 
     private Company createCompany(String symbol, String name) {
