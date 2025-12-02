@@ -12,11 +12,9 @@ public class SetupInteractor implements SetupInputBoundary {
     private static final int SPEED_STEP = 5;
 
     private final SetupOutputBoundary presenter;
-    private final SimulationDataAccessInterface dataAccess;
 
     public SetupInteractor(SetupOutputBoundary presenter, SimulationDataAccessInterface dataAccess) {
         this.presenter = presenter;
-        this.dataAccess = dataAccess;
     }
 
     @Override

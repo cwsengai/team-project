@@ -57,17 +57,11 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
 
     // Wallet Table Components
     private final DefaultTableModel walletTableModel;
-    private final JTable walletTable;
 
     private final JTextField amountField = new JTextField(10);
     private final JButton buyButton = new JButton(TradingViewModel.BUY_BUTTON_LABEL);
     private final JButton sellButton = new JButton(TradingViewModel.SELL_BUTTON_LABEL);
     private final PriceChartPanel chartPanel = new PriceChartPanel();
-
-    private final JButton backButton = new JButton("Back");
-    private final JButton orderHistoryButton = new JButton("View All Order History");
-
-    private final Timer timer = new Timer(1000, this);
 
     public TradingView(TradingController controller, TradingViewModel viewModel) {
         this.controller = controller;
@@ -84,7 +78,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
             "Unrealized Profit",
             "Unrealized Return Rate"};
         walletTableModel = new DefaultTableModel(columnNames, 0);
-        walletTable = new JTable(walletTableModel);
+        JTable walletTable = new JTable(walletTableModel);
 
         this.setLayout(new BorderLayout());
 
@@ -102,6 +96,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         tickerPanel.add(tickerLabel);
 
         final JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton backButton = new JButton("Back");
         rightHeader.add(backButton);
 
         headerPanel.add(cashPanel, BorderLayout.WEST);
@@ -131,6 +126,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         walletTitle.setBorder(new EmptyBorder(0, 5, 5, 0));
 
         // Style History Button
+        JButton orderHistoryButton = new JButton("View All Order History");
         orderHistoryButton.setForeground(Color.BLUE);
         orderHistoryButton.setBorderPainted(false);
         orderHistoryButton.setContentAreaFilled(false);
@@ -190,6 +186,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         });
 
         if (this.controller != null) {
+            Timer timer = new Timer(1000, this);
             timer.start();
         }
     }

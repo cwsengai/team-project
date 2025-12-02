@@ -18,7 +18,6 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
 
     private final TradingViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
-    private final SetupViewModel setupViewModel;
 
     private final DecimalFormat moneyFormat = new DecimalFormat("$#,##0.00");
     private final DecimalFormat pctFormat = new DecimalFormat("0.00%");
@@ -35,7 +34,6 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
                             SetupViewModel setupViewModel) {
         this.viewModel = viewModel;
         this.viewManagerModel = viewManagerModel;
-        this.setupViewModel = setupViewModel;
     }
 
     /**

@@ -23,13 +23,12 @@ class UseCaseLayerTest {
         }
     }
 
-    private Account account;
     private MockPresenter presenter;
     private SimulatedTradeInteractor interactor;
 
     @BeforeEach
     void setUp() {
-        account = new Account(2000.0, "user1");
+        Account account = new Account(2000.0, "user1");
         presenter = new MockPresenter();
         interactor = new SimulatedTradeInteractor(presenter, account);
     }

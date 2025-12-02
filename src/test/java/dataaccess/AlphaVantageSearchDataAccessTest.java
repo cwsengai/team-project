@@ -12,11 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class AlphaVantageSearchDataAccessTest {
 
     private AlphaVantageSearchDataAccess searchDataAccess;
-    private List<Company> testCompanies;
 
     @BeforeEach
     void setUp() {
-        testCompanies = Arrays.asList(
+        List<Company> testCompanies = Arrays.asList(
                 createCompany("AAPL", "Apple Inc"),
                 createCompany("MSFT", "Microsoft Corporation"),
                 createCompany("GOOGL", "Alphabet Inc")

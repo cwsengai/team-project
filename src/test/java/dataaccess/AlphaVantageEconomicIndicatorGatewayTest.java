@@ -12,11 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class AlphaVantageEconomicIndicatorGatewayTest {
 
     private AlphaVantageEconomicIndicatorGateway gateway;
-    private MockApi mockApi;
 
     @BeforeEach
     void setUp() {
-        mockApi = new MockApi();
+        MockApi mockApi = new MockApi();
         gateway = new AlphaVantageEconomicIndicatorGateway(mockApi);
     }
 

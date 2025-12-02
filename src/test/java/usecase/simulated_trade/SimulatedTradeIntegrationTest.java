@@ -22,10 +22,6 @@ public class SimulatedTradeIntegrationTest {
     private SessionDataAccessInterface sessionDAO;
     private SupabaseTradeDataAccessObject tradeDAO;
     private SimulatedTradeInteractor tradeInteractor;
-    private Account account;
-    private TradingPresenter presenter;
-    private String testEmail;
-    private String testPassword;
     // For propagating exceptions from listener to test
     private RuntimeException listenerException;
 
@@ -33,14 +29,14 @@ public class SimulatedTradeIntegrationTest {
     void setup() throws IOException {
         // Generate a unique email for each test run
         long rand = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
-        testEmail = "testuser" + rand + "@example.com";
-        testPassword = "TestPassword123!";
+        String testEmail = "testuser" + rand + "@example.com";
+        String testPassword = "TestPassword123!";
         String jwt = SupabaseTestUtils.createUserAndGetJwt(testEmail, testPassword);
         sessionDAO = new InMemorySessionDataAccessObject();
         sessionDAO.setJwtToken(jwt);
         tradeDAO = new SupabaseTradeDataAccessObject();
         String userId = sessionDAO.getCurrentUserId().toString();
-        account = new Account(10000.0, userId); // Pass userId to Account
+        Account account = new Account(10000.0, userId); // Pass userId to Account
         // Register the trade save observer (mimic SimulatedMain)
         account.addTradeClosedListener(record -> {
             try {
@@ -51,10 +47,10 @@ public class SimulatedTradeIntegrationTest {
                 throw e;
             }
         });
-        presenter = new TradingPresenter(
-            new TradingViewModel(),
-            new ViewManagerModel(),
-            new interfaceadapter.setup_simulation.SetupViewModel()
+        TradingPresenter presenter = new TradingPresenter(
+                new TradingViewModel(),
+                new ViewManagerModel(),
+                new interfaceadapter.setup_simulation.SetupViewModel()
         );
         tradeInteractor = new SimulatedTradeInteractor(presenter, account);
     }

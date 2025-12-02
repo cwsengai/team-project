@@ -68,12 +68,10 @@ public class ChartPanel extends JPanel {
     private JLabel infoLabel;
     private String linkedTicker;
 
-    private final Color textColor = new Color(GRAY_COLOR_R, GRAY_COLOR_G, GRAY_COLOR_B);
-    private final Color bgColor = Color.WHITE;
-
     public ChartPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        Color bgColor = Color.WHITE;
         setBackground(bgColor);
 
         chartContainer = new JPanel(new BorderLayout());
@@ -85,6 +83,7 @@ public class ChartPanel extends JPanel {
 
         infoLabel = new JLabel(EMPTY_STRING);
         infoLabel.setFont(new Font("Monospaced", Font.PLAIN, FONT_SIZE_MONOSPACED));
+        Color textColor = new Color(GRAY_COLOR_R, GRAY_COLOR_G, GRAY_COLOR_B);
         infoLabel.setForeground(textColor);
         infoLabel.setBorder(BorderFactory.createEmptyBorder(
             BORDER_TOP, BORDER_LEFT, BORDER_BOTTOM, BORDER_RIGHT));

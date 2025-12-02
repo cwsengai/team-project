@@ -21,17 +21,12 @@ public class SetupView extends JPanel implements PropertyChangeListener {
     private final JTextField tickerField = new JTextField(10);
     private final JTextField balanceField = new JTextField("100000.00", 10);
     private final JComboBox<String> speedComboBox;
-    private final JButton startButton = new JButton(SetupViewModel.START_BUTTON_LABEL);
     private final JLabel errorLabel = new JLabel(" ");
 
-    private final Color BG_COLOR = new Color(245, 247, 250);
-    private final Color CARD_COLOR = Color.WHITE;
-    private final Color PRIMARY_COLOR = new Color(46, 204, 113);
     private final Color TEXT_COLOR = new Color(52, 73, 94);
 
     private final Font LABEL_FONT = new Font("SansSerif", Font.BOLD, 18);
     private final Font INPUT_FONT = new Font("SansSerif", Font.PLAIN, 16);
-    private final Font HINT_FONT = new Font("SansSerif", Font.ITALIC, 14);
 
     public SetupView(SetupController controller, SetupViewModel viewModel) {
         this.controller = controller;
@@ -39,6 +34,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.viewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BorderLayout());
+        Color BG_COLOR = new Color(245, 247, 250);
         this.setBackground(BG_COLOR);
 
         // --- TOP HEADER (Logo + Error) ---
@@ -71,6 +67,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         centerWrapper.setOpaque(false);
 
         final JPanel formPanel = new JPanel(new GridLayout(4, 2, 30, 35));
+        Color CARD_COLOR = Color.WHITE;
         formPanel.setBackground(CARD_COLOR);
         formPanel.setBorder(new CompoundBorder(
                 new LineBorder(new Color(220, 220, 220), 2, true),
@@ -98,6 +95,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         final JLabel hintSpacer = new JLabel("");
         final JLabel speedHint = new JLabel("<html><body style='width: 200px'>Note: 10x speed means 1 minute "
                 + "in real life equals 10 minutes in simulation.</body></html>");
+        Font HINT_FONT = new Font("SansSerif", Font.ITALIC, 14);
         speedHint.setFont(HINT_FONT);
         speedHint.setForeground(Color.GRAY);
 
@@ -112,8 +110,10 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(new EmptyBorder(30, 0, 80, 0));
 
+        JButton startButton = new JButton(SetupViewModel.START_BUTTON_LABEL);
         startButton.setFont(new Font("SansSerif", Font.BOLD, 22));
         startButton.setPreferredSize(new Dimension(250, 65));
+        Color PRIMARY_COLOR = new Color(46, 204, 113);
         startButton.setBackground(PRIMARY_COLOR);
         startButton.setForeground(Color.WHITE);
         startButton.setFocusPainted(false);
