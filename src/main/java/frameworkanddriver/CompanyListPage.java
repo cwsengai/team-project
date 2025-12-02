@@ -170,7 +170,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                 PADDING_MEDIUM, PADDING_XXLARGE, PADDING_MEDIUM, PADDING_XXLARGE));
         tradeButton.setOpaque(true);
         tradeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        tradeButton.addActionListener(e -> {
+        tradeButton.addActionListener(_ -> {
             // Navigate to SimulateMain
             openSimulatePage();
         });
@@ -508,13 +508,13 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         this.searchField = new JTextField(SEARCH_FIELD_COLUMNS);
         this.searchField.setFont(new Font(FONT_SANS_SERIF, Font.PLAIN, FONT_SIZE_MEDIUM));
         this.searchField.setBorder(BorderFactory.createLineBorder(new Color(RGB_200, RGB_200, RGB_200)));
-        this.searchField.addActionListener(e -> performSearch());
+        this.searchField.addActionListener(_ -> performSearch());
 
         final JButton searchButton = new JButton("Search");
         searchButton.setFont(new Font(FONT_SANS_SERIF, Font.PLAIN, FONT_SIZE_MEDIUM));
         searchButton.setBackground(Color.WHITE);
         searchButton.setBorder(BorderFactory.createLineBorder(new Color(RGB_200, RGB_200, RGB_200)));
-        searchButton.addActionListener(e -> performSearch());
+        searchButton.addActionListener(_ -> performSearch());
         searchButton.setFocusPainted(false);
         searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -522,7 +522,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         clearButton.setFont(new Font(FONT_SANS_SERIF, Font.PLAIN, FONT_SIZE_MEDIUM));
         clearButton.setBackground(Color.WHITE);
         clearButton.setBorder(BorderFactory.createLineBorder(new Color(RGB_200, RGB_200, RGB_200)));
-        clearButton.addActionListener(e -> clearSearch());
+        clearButton.addActionListener(_ -> clearSearch());
         clearButton.setFocusPainted(false);
         clearButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -530,7 +530,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         magnifyingGlassButton.setFont(new Font(FONT_SANS_SERIF, Font.PLAIN, FONT_SIZE_MEDIUM));
         magnifyingGlassButton.setBackground(Color.WHITE);
         magnifyingGlassButton.setBorder(BorderFactory.createLineBorder(new Color(RGB_200, RGB_200, RGB_200)));
-        magnifyingGlassButton.addActionListener(e -> performSearch());
+        magnifyingGlassButton.addActionListener(_ -> performSearch());
         magnifyingGlassButton.setFocusPainted(false);
         magnifyingGlassButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -637,7 +637,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             this.button.setBorder(BorderFactory.createEmptyBorder(
                     PADDING_SMALL, PADDING_MEDIUM, PADDING_SMALL, PADDING_MEDIUM));
 
-            this.button.addActionListener(e -> fireEditingStopped());
+            this.button.addActionListener(_ -> fireEditingStopped());
         }
 
         @Override
