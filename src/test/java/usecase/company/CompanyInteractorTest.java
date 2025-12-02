@@ -1,9 +1,12 @@
 package usecase.company;
 
-import entity.Company;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import entity.Company;
 
 class CompanyInteractorTest {
 
@@ -96,11 +99,11 @@ class CompanyInteractorTest {
                 "Electric vehicle and clean energy company."
         );
 
-        assertEquals("TSLA", data.getSymbol());
-        assertEquals("Tesla", data.getName());
-        assertEquals("Automotive", data.getSector());
-        assertEquals("EV Manufacturing", data.getIndustry());
-        assertEquals("Electric vehicle and clean energy company.", data.getDescription());
+        assertEquals("TSLA", data.symbol());
+        assertEquals("Tesla", data.name());
+        assertEquals("Automotive", data.sector());
+        assertEquals("EV Manufacturing", data.industry());
+        assertEquals("Electric vehicle and clean energy company.", data.description());
     }
 
 }

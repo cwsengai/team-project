@@ -141,9 +141,9 @@ class FinancialStatementInteractorTest {
         interactor.execute(new FinancialStatementInputData("TSLA"));
 
         assertNotNull(captured[0], "Output should not be null");
-        assertEquals("TSLA", captured[0].getSymbol());
-        assertEquals(2, captured[0].getStatements().size(),
-                "Presenter should receive both formatted statements");
+        assertEquals("TSLA", captured[0].symbol());
+        assertEquals(2, captured[0].statements().size(),
+            "Presenter should receive both formatted statements");
     }
 
 }
