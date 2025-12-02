@@ -23,7 +23,7 @@ public class PortfolioSummaryCard extends JPanel {
     private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("#0.00'%'");
 
     @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:MultipleStringLiterals", "checkstyle:JavaNCSS", "checkstyle:ExecutableStatementCount"})
-    public PortfolioSummaryCard(PortfolioStatisticsOutputData stats) {
+    public PortfolioSummaryCard(PortfolioSummaryViewModel stats) {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(24, 0, 24, 0));

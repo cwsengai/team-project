@@ -35,10 +35,6 @@ import usecase.simulated_trade.SimulationDataAccessInterface;
 import usecase.simulated_trade.TradeClosedListener;
 import usecase.update_market.UpdateMarketInteractor;
 
-import app.ui.view.SetupView;
-import app.ui.view.TradingView;
-import app.ui.view.ViewManager;
-
 @SuppressWarnings({"checkstyle:SummaryJavadoc", "checkstyle:ClassDataAbstractionCoupling"})
 public class SimulatedMain {
 

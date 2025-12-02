@@ -55,9 +55,6 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     private static final int RGB_230 = 230;
     private static final int RGB_120 = 120;
     private static final int RGB_215 = 215;
-    private static final int RGB_133 = 133;
-    private static final int RGB_165 = 165;
-    private static final int RGB_168 = 168;
     private static final int RGB_220 = 220;
     private static final int RGB_250 = 250;
 
