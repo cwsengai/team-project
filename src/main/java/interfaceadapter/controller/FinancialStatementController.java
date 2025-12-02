@@ -7,6 +7,7 @@ import usecase.financial_statement.FinancialStatementInputData;
  * Controller responsible for handling financial statement requests.
  * Receives user actions from the interface layer and forwards them
  * to the financial statement use case interactor.
+ * @param interactor the input boundary for the financial statement use case
  */
 public record FinancialStatementController(FinancialStatementInputBoundary interactor) {
     /**

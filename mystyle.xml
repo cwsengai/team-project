@@ -426,7 +426,6 @@
             -->
             <property name="severity" value="ignore"/>
         </module>
-        <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
         <module name="MultipleStringLiterals">
             <property name="allowedDuplicates" value="20"/>

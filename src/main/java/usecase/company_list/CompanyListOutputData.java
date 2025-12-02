@@ -7,6 +7,7 @@ import entity.Company;
 /**
  * Output data for the Company List use case.
  * Holds the list of retrieved companies and the success status.
+ * @param companies the list of companies retrieved by the use case
  */
 public record CompanyListOutputData(List<Company> companies) {
 
