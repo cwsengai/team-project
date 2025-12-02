@@ -190,8 +190,17 @@ public class CompanyPage extends JFrame {
         currentTicker = companyVM.symbol;
         tradeButton.addActionListener(ex -> enterTradingPage(currentTicker));
 
+        JButton backButton = new JButton("← Back");
+        backButton.setBackground(new Color(200, 200, 200));
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(ex -> backMainPage());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        buttonPanel.add(tradeButton);
+        buttonPanel.add(backButton);
+
         headerPanel.add(title, BorderLayout.WEST);
-        headerPanel.add(tradeButton, BorderLayout.EAST);
+        headerPanel.add(buttonPanel, BorderLayout.EAST);
 
         // Chart panel
         chartPanel = new ChartPanel();
@@ -414,6 +423,24 @@ public class CompanyPage extends JFrame {
             }
         });
 
+    }
+
+    public void backMainPage() {
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                app.CompanyListMain.main(new String[] {});
+            }
+            catch (Exception ex) {
+                System.err.println("Error launching main page: " + ex.getMessage());
+                for (StackTraceElement ste : ex.getStackTrace()) {
+                    System.err.println("    at " + ste.toString());
+                }
+            }
+        });
     }
 
 }
