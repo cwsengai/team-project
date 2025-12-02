@@ -308,7 +308,9 @@ public class CompanyListMain {
                         publish(new CompanyUpdate());
                         System.out.println("  ✅ " + company.getName());
 
-                        SwingUtilities.invokeLater(() -> searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values())));
+                        SwingUtilities.invokeLater(() ->
+                                searchDataAccess.updateCache(new ArrayList<>(loadedCompanies.values()))
+                        );
                     }
                     else {
                         System.err.println("  ⚠️ No data for " + ticker);

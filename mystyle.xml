@@ -565,29 +565,6 @@
             <property name="influenceFormat" value="3"/>
         </module>
 
-        <!-- Imports -->
-        <module name="AvoidStaticImport"/>
-        <module name="CustomImportOrder">
-            <property name="customImportOrderRules"
-                      value="STATIC###STANDARD_JAVA_PACKAGE###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE"/>
-            <property name="standardPackageRegExp" value="^java\."/>
-            <property name="specialImportsRegExp" value="^javax\."/>
-            <property name="thirdPartyPackageRegExp" value="^org\."/>
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="true"/>
-        </module>
-        <module name="IllegalImport"/>
-
-        <module name="ImportOrder">
-            <property name="groups" value="/^java\./,javax,org"/>
-            <property name="ordered" value="true"/>
-            <property name="separated" value="true"/>
-            <property name="option" value="top"/>
-            <property name="sortStaticImportsAlphabetically" value="true"/>
-        </module>
-        <module name="RedundantImport"/>
-        <module name="UnusedImports"/>
-
         <!-- Javadoc Comments -->
         <module name="AtclauseOrder"/>
         <module name="InvalidJavadocPosition"/>

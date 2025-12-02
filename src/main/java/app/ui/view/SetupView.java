@@ -148,7 +148,9 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         try {
             final String ticker = tickerField.getText().toUpperCase();
             final double balance = Double.parseDouble(balanceField.getText());
-            final int speed = Integer.parseInt(Objects.requireNonNull(speedComboBox.getSelectedItem()).toString().replace("x", ""));
+            final int speed = Integer.parseInt(
+                    Objects.requireNonNull(speedComboBox.getSelectedItem()).toString().replace("x", "")
+            );
 
             controller.execute(ticker, balance, speed);
 
