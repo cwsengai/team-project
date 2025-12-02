@@ -23,7 +23,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
     }
 
     @Override
-    public List<EconomicIndicator> getEconomicIndicators() throws Exception {
+    public List<EconomicIndicator> getEconomicIndicators() {
         List<EconomicIndicator> indicators = new ArrayList<>();
 
         try {

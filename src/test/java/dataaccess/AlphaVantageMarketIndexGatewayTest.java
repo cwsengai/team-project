@@ -21,7 +21,7 @@ class AlphaVantageMarketIndexGatewayTest {
     }
 
     @Test
-    void testGetMarketIndices_ReturnsThreeIndices() throws Exception {
+    void testGetMarketIndices_ReturnsThreeIndices() {
         // Act
         List<MarketIndex> indices = gateway.getMarketIndices();
 
@@ -31,7 +31,7 @@ class AlphaVantageMarketIndexGatewayTest {
     }
 
     @Test
-    void testGetMarketIndices_ContainsCorrectIndices() throws Exception {
+    void testGetMarketIndices_ContainsCorrectIndices() {
         // Act
         List<MarketIndex> indices = gateway.getMarketIndices();
 
@@ -53,7 +53,7 @@ class AlphaVantageMarketIndexGatewayTest {
     }
 
     @Test
-    void testGetMarketIndex_SPY_ValidResponse() throws Exception {
+    void testGetMarketIndex_SPY_ValidResponse() {
         // Act
         MarketIndex index = gateway.getMarketIndex("SPY");
 
@@ -67,7 +67,7 @@ class AlphaVantageMarketIndexGatewayTest {
     }
 
     @Test
-    void testGetMarketIndex_QQQ_ValidResponse() throws Exception {
+    void testGetMarketIndex_QQQ_ValidResponse() {
         // Act
         MarketIndex index = gateway.getMarketIndex("QQQ");
 
@@ -81,7 +81,7 @@ class AlphaVantageMarketIndexGatewayTest {
     }
 
     @Test
-    void testGetMarketIndex_DIA_ValidResponse() throws Exception {
+    void testGetMarketIndex_DIA_ValidResponse() {
         // Act
         MarketIndex index = gateway.getMarketIndex("DIA");
 
@@ -95,7 +95,7 @@ class AlphaVantageMarketIndexGatewayTest {
     }
 
     @Test
-    void testGetMarketIndex_EmptyResponse_ReturnsDummyData() throws Exception {
+    void testGetMarketIndex_EmptyResponse_ReturnsDummyData() {
         // Arrange - Force empty response
         mockApi.setShouldReturnEmpty(true);
 

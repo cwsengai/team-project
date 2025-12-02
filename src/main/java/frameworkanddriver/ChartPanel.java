@@ -289,7 +289,7 @@ public class ChartPanel extends JPanel {
 
         final List<String> sampledLabels = new ArrayList<>();
         final List<Double> sampledPrices = new ArrayList<>();
-        sampleData(labels, prices, sampledLabels, sampledPrices, MAX_POINTS);
+        sampleData(labels, prices, sampledLabels, sampledPrices);
 
         final List<String> formattedLabels = new ArrayList<>();
         for (String raw : sampledLabels) {
@@ -358,11 +358,10 @@ public class ChartPanel extends JPanel {
     }
 
     private void sampleData(List<String> srcLabels, List<Double> srcPrices,
-                            List<String> destLabels, List<Double> destPrices,
-                            int maxPoints) {
+                            List<String> destLabels, List<Double> destPrices) {
         final int dataSize = srcLabels.size();
-        if (dataSize > maxPoints) {
-            final int step = (int) Math.ceil((double) dataSize / maxPoints);
+        if (dataSize > ChartPanel.MAX_POINTS) {
+            final int step = (int) Math.ceil((double) dataSize / ChartPanel.MAX_POINTS);
             for (int i = 0; i < dataSize; i += step) {
                 destLabels.add(srcLabels.get(i));
                 destPrices.add(srcPrices.get(i));

@@ -296,12 +296,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         if (this.marketIndices == null || this.marketIndices.isEmpty()) {
             // Show loading
             int row = 2;
-            addMarketIndexRowGb(this.marketIndicesPanel, gbc, row++, "S&P 500",
-                    "Loading...", "...", "...");
-            addMarketIndexRowGb(this.marketIndicesPanel, gbc, row++, "NASDAQ",
-                    "Loading...", "...", "...");
-            addMarketIndexRowGb(this.marketIndicesPanel, gbc, row, "Dow Jones",
-                    "Loading...", "...", "...");
+            addMarketIndexRowGb(this.marketIndicesPanel, gbc, row++, "S&P 500"
+            );
+            addMarketIndexRowGb(this.marketIndicesPanel, gbc, row++, "NASDAQ"
+            );
+            addMarketIndexRowGb(this.marketIndicesPanel, gbc, row, "Dow Jones"
+            );
         }
         else {
             // Show real data
@@ -325,8 +325,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     private void addMarketIndexRowGb(JPanel panel, GridBagConstraints gbc, int row,
-                                     String name, String price, String change, String changePercent) {
-        addMarketIndexRowGbColor(panel, gbc, row, name, price, change, changePercent, "neutral");
+                                     String name) {
+        addMarketIndexRowGbColor(panel, gbc, row, name, "Loading...", "...", "...", "neutral");
     }
 
     /**
