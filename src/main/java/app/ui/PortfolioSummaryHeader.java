@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PortfolioSummaryHeader extends JPanel {
+    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:MagicNumber", "checkstyle:RegexpSinglelineJava"})
     public PortfolioSummaryHeader() {
         setLayout(new BorderLayout());
         setOpaque(false);
