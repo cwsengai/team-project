@@ -42,7 +42,7 @@ public class PortfolioStatisticsInteractorTest {
 
         // totalProfit = 50 + (-20) + 30 = 60
         assertEquals(60.0, out.totalProfit(), 1e-6);
-        // maxGain should be highest positive realized PnL = 50
+        // maxGain should be the highest positive realized PnL = 50
         assertEquals(50.0, out.maxGain(), 1e-6);
         // total trades = 3
         assertEquals(3, out.totalTrades());
