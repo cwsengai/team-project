@@ -285,7 +285,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         // Separator
         gbc.gridy = 1;
         gbc.gridx = 0;
-        gbc.gridwidth = 4; // Changed from 5 to 4 (removed Details column)
+        gbc.gridwidth = 4;
         final JSeparator separator = new JSeparator();
         separator.setForeground(new Color(RGB_230, RGB_230, RGB_230));
         this.marketIndicesPanel.add(separator, gbc);
@@ -302,7 +302,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                     "Loading...", "...", "...");
             addMarketIndexRowGb(this.marketIndicesPanel, gbc, row, "Dow Jones",
                     "Loading...", "...", "...");
-        } else {
+        }
+        else {
             // Show real data
             int row = 2;
             for (MarketIndex index : this.marketIndices) {
@@ -329,7 +330,19 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Add market index row with color (View Details button removed).
+     * Adds a row representing a market index to the panel with color-coded styling.
+     *
+     * <p>
+     * Note: The "View Details" button is excluded from this specific row layout.
+     *
+     * @param panel         The parent JPanel to which the row components are added.
+     * @param gbc           The GridBagConstraints used for positioning components in the grid.
+     * @param row           The specific grid row index (y-coordinate) where this entry will be placed.
+     * @param name          The display name of the market index (e.g., "S&P 500", "NASDAQ").
+     * @param price         The current price of the index formatted as a String.
+     * @param change        The numerical change in price formatted as a String.
+     * @param changePercent The percentage change formatted as a String.
+     * @param colorType     A string indicating the color theme(e.g.,"positive","negative") based on market performance.
      */
     private void addMarketIndexRowGbColor(JPanel panel, GridBagConstraints gbc, int row,
                                           String name, String price, String change,
@@ -427,7 +440,7 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         // Separator
         gbc.gridy = 1;
         gbc.gridx = 0;
-        gbc.gridwidth = 3; // Reduced gridwidth since we removed a column
+        gbc.gridwidth = 3;
         final JSeparator separator = new JSeparator();
         separator.setForeground(new Color(RGB_230, RGB_230, RGB_230));
         this.economicIndicatorsPanel.add(separator, gbc);
@@ -440,7 +453,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             int row = 2;
             addIndicatorRowGb(this.economicIndicatorsPanel, gbc, row,
                     "Loading economic data...", "...", "...");
-        } else {
+        }
+        else {
             // Show real data
             int row = 2;
             for (EconomicIndicator indicator : this.economicIndicators) {
@@ -719,12 +733,14 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
                     }
                 }.execute();
             }
-        } else if (query.length() < 2) {
+        }
+        else if (query.length() < 2) {
             JOptionPane.showMessageDialog(this,
                     "Please enter at least 2 characters to search.",
                     "Search",
                     JOptionPane.INFORMATION_MESSAGE);
-        } else {
+        }
+        else {
             this.searchController.searchCompany(query);
         }
     }
@@ -749,7 +765,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         }
         else if ("searchResults".equals(evt.getPropertyName())) {
             SwingUtilities.invokeLater(() -> updateTable((List<CompanyDisplayData>) evt.getNewValue()));
-        } else if ("error".equals(evt.getPropertyName())) {
+        }
+        else if ("error".equals(evt.getPropertyName())) {
             final String error = (String) evt.getNewValue();
             SwingUtilities.invokeLater(() -> {
                 if (error != null && !error.isEmpty()) {
@@ -769,16 +786,17 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         if (companies != null && !companies.isEmpty()) {
             for (CompanyDisplayData company : companies) {
                 final Object[] row = {
-                        company.getSymbol(),
-                        company.getName(),
-                        company.getCountry(),
-                        company.getFormattedMarketCap(),
-                        company.getFormattedPeRatio(),
-                        BUTTON_TEXT_VIEW,
+                    company.getSymbol(),
+                    company.getName(),
+                    company.getCountry(),
+                    company.getFormattedMarketCap(),
+                    company.getFormattedPeRatio(),
+                    BUTTON_TEXT_VIEW,
                 };
                 this.tableModel.addRow(row);
             }
-        } else {
+        }
+        else {
             final Object[] emptyRow = {"", "No companies found", "", "", "", ""};
             this.tableModel.addRow(emptyRow);
         }
@@ -821,7 +839,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
         SwingUtilities.invokeLater(() -> {
             try {
                 app.SimulatedMain.main(new String[]{});
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 System.err.println("Failed to open trading simulator: " + ex.getMessage());
                 for (StackTraceElement ste : ex.getStackTrace()) {
                     System.err.println("    at " + ste.toString());
@@ -855,7 +874,8 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             try {
                 // Pass the symbol to CompanyMain
                 app.CompanyMain.main(new String[]{symbol});
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 System.err.println("Failed to open company details: " + ex.getMessage());
                 for (StackTraceElement ste : ex.getStackTrace()) {
                     System.err.println("    at " + ste.toString());
@@ -889,10 +909,12 @@ public class CompanyListPage extends JPanel implements PropertyChangeListener {
             // Alternating row colors (makes table easier to read)
             if (isSelected) {
                 component.setBackground(table.getSelectionBackground());
-            } else if (row % 2 == 0) {
-                component.setBackground(HEADER_BG_COLOR);           // White
-            } else {
-                component.setBackground(new Color(RGB_250, RGB_250, RGB_250));  // Light gray
+            }
+            else if (row % 2 == 0) {
+                component.setBackground(HEADER_BG_COLOR);
+            }
+            else {
+                component.setBackground(new Color(RGB_250, RGB_250, RGB_250));
             }
 
             return component;
