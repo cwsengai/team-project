@@ -160,6 +160,20 @@ We have implemented unit tests for critical components of the application to ens
 We also used Checkstyle to maintain code quality and adhere to coding standards throughout the project. 
 - **Goal achieved: Zero Checkstyle violations across the entire codebase.**
 
+## Screenshots
+### Top 100 Companies Page
+![Top 100 Companies Page](screenshots/top_100_companies.png)
+### Company Details Page
+![Company Details Page](screenshots/company_details_page.png)
+### Stock Chart Viewer
+![Stock Chart Viewer](screenshots/stock_chart_viewer.png)
+### Simulated Trading Interface
+![Simulated Trading Interface](screenshots/simulated_trading_interface.png)
+### User Authentication Page
+![User Authentication Page](screenshots/user_authentication_page.png)
+### Portfolio Performance Tracking
+![Portfolio Performance Tracking](screenshots/portfolio_performance_tracking.png)
+
 
 
 
