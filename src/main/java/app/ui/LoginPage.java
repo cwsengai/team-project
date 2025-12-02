@@ -64,8 +64,8 @@ public class LoginPage extends JDialog {
         add(mainPanel, BorderLayout.CENTER);
 
         // Tab switching
-        loginTab.addActionListener(e -> cardLayout.show(mainPanel, "login"));
-        signupTab.addActionListener(e -> cardLayout.show(mainPanel, "signup"));
+        loginTab.addActionListener(_ -> cardLayout.show(mainPanel, "login"));
+        signupTab.addActionListener(_ -> cardLayout.show(mainPanel, "signup"));
     }
 
     // ===============================================================
@@ -89,7 +89,7 @@ public class LoginPage extends JDialog {
 
         final JButton loginBtn = new JButton("Log In");
 
-        loginBtn.addActionListener((ActionEvent presslogin) -> {
+        loginBtn.addActionListener((ActionEvent _) -> {
             try {
                 final String email = emailField.getText().trim();
                 final String password = new String(passwordField.getPassword());
@@ -167,7 +167,7 @@ public class LoginPage extends JDialog {
     private JButton getJButton(JTextField emailField, JPasswordField p1, JLabel status) {
         final JButton signupBtn = new JButton("Sign Up");
 
-        signupBtn.addActionListener(presssignup -> {
+        signupBtn.addActionListener(_ -> {
             try {
                 final String email = emailField.getText().trim();
                 final String password = new String(p1.getPassword());

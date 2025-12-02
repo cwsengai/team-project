@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -106,7 +105,7 @@ public class ChartWindow extends JFrame {
         // Style: Light Grey background, Black text (like screenshot unselected state)
         styleButton(button, BG_GREY, Color.BLACK);
         
-        button.addActionListener((ActionEvent e) -> {
+        button.addActionListener(_ -> {
             if (controller != null) {
                 // Visual feedback could be added here (change color to black when selected)
                 controller.handleTimeChange(command);

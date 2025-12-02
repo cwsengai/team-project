@@ -139,7 +139,7 @@ public class SetupView extends JPanel implements PropertyChangeListener {
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         // Bind Action
-        startButton.addActionListener(pressstart -> handleStart());
+        startButton.addActionListener(_ -> handleStart());
 
         // Defer registering this view as a property change listener until after construction
         SwingUtilities.invokeLater(() -> viewModel.addPropertyChangeListener(this));

@@ -137,7 +137,7 @@ public class CompanyPage extends JFrame {
         symbolField = new JTextField(12);
         JButton searchButton = new JButton("Search");
 
-        searchButton.addActionListener(e -> {
+        searchButton.addActionListener(_ -> {
             String symbol = symbolField.getText().trim();
             if (symbol.isEmpty()) return;
 
@@ -201,7 +201,7 @@ public class CompanyPage extends JFrame {
         tradeButton.setBackground(new Color(200, 200, 200));
         tradeButton.setFocusPainted(false);
         currentTicker = companyVM.getSymbol();
-        tradeButton.addActionListener(ex -> enterTradingPage(currentTicker));
+        tradeButton.addActionListener(_ -> enterTradingPage(currentTicker));
 
         headerPanel.add(title, BorderLayout.WEST);
         headerPanel.add(tradeButton, BorderLayout.EAST);
@@ -218,24 +218,24 @@ public class CompanyPage extends JFrame {
         JButton btn1week = new JButton("1 week");
         final JButton zoomIn = new JButton("Zoom in");
 
-        btn5min.addActionListener(e -> {
+        btn5min.addActionListener(_ -> {
             if (chartController != null && currentTicker != null) {
                 chartController.handleTimeChange("5M");
             }
         });
-        btn1day.addActionListener(e -> {
+        btn1day.addActionListener(_ -> {
             if (chartController != null && currentTicker != null) {
                 chartController.handleTimeChange("1D");
             }
         });
-        btn1week.addActionListener(e -> {
+        btn1week.addActionListener(_ -> {
             if (chartController != null && currentTicker != null) {
                 chartController.handleTimeChange("1W");
             }
         });
 
         // Bind Zoom In button event
-        zoomIn.addActionListener(e -> {
+        zoomIn.addActionListener(_ -> {
             if (chartPanel != null) {
                 chartPanel.performZoom();
             }

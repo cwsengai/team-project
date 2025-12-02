@@ -34,7 +34,7 @@ public class PortfolioSummaryNavBar extends JPanel {
         backButton.setPreferredSize(new Dimension(100, 40));
         backButton.setMaximumSize(new Dimension(160, 40));
         // Close window for demo
-        backButton.addActionListener(pressback -> frame.dispose());
+        backButton.addActionListener(_ -> frame.dispose());
 
         // Make button pill-shaped
         backButton.setBorder(BorderFactory.createCompoundBorder(

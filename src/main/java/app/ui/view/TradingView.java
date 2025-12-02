@@ -148,7 +148,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         // --- 4. BOTTOM PANEL (Summary Stats) ---
         this.add(createSummaryPanel(), BorderLayout.SOUTH);
 
-        backButton.addActionListener(pressback -> {
+        backButton.addActionListener(_ -> {
             final java.awt.Window currentWindow = SwingUtilities.getWindowAncestor(this);
             if (currentWindow != null) {
                 currentWindow.dispose();
@@ -167,7 +167,7 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         });
 
         // Simplified: delegate to controller, which knows session + userId
-        orderHistoryButton.addActionListener(pressorder -> {
+        orderHistoryButton.addActionListener(_ -> {
             if (controller == null) {
                 JOptionPane.showMessageDialog(this, "Simulation not fully initialized.",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -211,8 +211,8 @@ public class TradingView extends JPanel implements ActionListener, PropertyChang
         sellButton.setForeground(Color.BLACK);
         sellButton.setOpaque(true);
 
-        buyButton.addActionListener(pressbuy -> handleTrade(true));
-        sellButton.addActionListener(presssell -> handleTrade(false));
+        buyButton.addActionListener(_ -> handleTrade(true));
+        sellButton.addActionListener(_ -> handleTrade(false));
 
         panel.add(buyButton);
         panel.add(Box.createVerticalStrut(10));
