@@ -212,7 +212,8 @@ public class SimulatedMain {
                 views, cardLayout, tradingViewModel, viewManagerModel
         ));
 
-        new ViewManager(views, cardLayout, viewManagerModel);
+        @SuppressWarnings("unused")
+        final ViewManager viewManager = new ViewManager(views, cardLayout, viewManagerModel);
 
         // Launch
         viewManagerModel.setActiveView(SetupViewModel.VIEW_NAME);
