@@ -13,10 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import dataaccess.SupabaseTradeDataAccessObject;
+import usecase.portfolio_statistics.PortfolioTradeGateway;
 
 public class PortfolioOrderHistoryTable extends JPanel {
-    public PortfolioOrderHistoryTable(UUID userId, SupabaseTradeDataAccessObject tradeDAO) {
+    public PortfolioOrderHistoryTable(UUID userId, PortfolioTradeGateway tradeGateway) {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(24, 0, 0, 0));
@@ -38,7 +38,7 @@ public class PortfolioOrderHistoryTable extends JPanel {
 
         Object[][] data;
         try {
-            final var trades = tradeDAO.fetchTradesForUser(userId);
+            final var trades = tradeGateway.fetchTradesForUser(userId);
             data = new Object[trades.size()][columns.length];
             for (int i = 0; i < trades.size(); i++) {
                 final var t = trades.get(i);
