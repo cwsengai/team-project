@@ -52,7 +52,7 @@ public class CompanyListInteractor implements CompanyListInputBoundary {
                     .collect(Collectors.toList());
 
             // Prepare output data
-            CompanyListOutputData outputData = new CompanyListOutputData(companies, true);
+            CompanyListOutputData outputData = new CompanyListOutputData(companies);
             presenter.presentCompanyList(outputData);
 
         }

@@ -33,7 +33,6 @@ class CompanyListInteractorTest {
         dataAccess.setCompanies(Arrays.asList(company1, company2));
 
         // Act
-        CompanyListInputData inputData = new CompanyListInputData();
         interactor.execute();
 
         // Assert
@@ -49,7 +48,6 @@ class CompanyListInteractorTest {
         dataAccess.setCompanies(List.of());
 
         // Act
-        CompanyListInputData inputData = new CompanyListInputData();
         interactor.execute();
 
         // Assert
@@ -63,7 +61,6 @@ class CompanyListInteractorTest {
         dataAccess.setShouldThrowException(true);
 
         // Act
-        CompanyListInputData inputData = new CompanyListInputData();
         interactor.execute();
 
         // Assert

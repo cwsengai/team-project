@@ -16,9 +16,8 @@ public class CompanyListOutputData {
      * Creates a new CompanyListOutputData instance.
      *
      * @param companies the list of companies retrieved by the use case
-     * @param success whether the retrieval operation was successful
      */
-    public CompanyListOutputData(List<Company> companies, boolean success) {
+    public CompanyListOutputData(List<Company> companies) {
         this.companies = companies;
     }
 

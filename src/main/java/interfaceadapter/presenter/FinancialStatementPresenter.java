@@ -15,14 +15,14 @@ public class FinancialStatementPresenter implements FinancialStatementOutputBoun
     @Override
     public void presentFinancialStatement(FinancialStatementOutputData data) {
         viewmodel.setError(null);
-        viewmodel.setStatements(data.getStatements());
+        viewmodel.setStatements();
         viewmodel.setFormattedOutput(String.join("\n", data.getStatements()));
         viewmodel.notifyListener();
     }
 
     @Override
     public void presentError(String message) {
-        viewmodel.setStatements(null);
+        viewmodel.setStatements();
         viewmodel.setFormattedOutput("");
         viewmodel.setError(message);
         viewmodel.notifyListener();

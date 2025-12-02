@@ -1,7 +1,5 @@
 package interfaceadapter.view_model;
 
-import java.util.List;
-
 public class FinancialStatementViewModel {
 
     private String formattedOutput;
@@ -22,7 +20,7 @@ public class FinancialStatementViewModel {
         }
     }
 
-    public void setStatements(List<String> statements) {
+    public void setStatements() {
     }
 
     public String getFormattedOutput() {
