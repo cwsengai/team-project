@@ -13,7 +13,6 @@ import dataaccess.SupabaseTradeDataAccessObject;
 import entity.Account;
 import interfaceadapter.simulated_trading.TradingPresenter;
 import interfaceadapter.simulated_trading.TradingViewModel;
-import interfaceadapter.view_model.ViewManagerModel;
 import usecase.session.SessionDataAccessInterface;
 
 
@@ -41,9 +40,7 @@ public class SimulatedTradeIntegrationTest {
             tradeDAO.saveTrade(record, userUuid);
         });
         TradingPresenter presenter = new TradingPresenter(
-                new TradingViewModel(),
-                new ViewManagerModel(),
-                new interfaceadapter.setup_simulation.SetupViewModel()
+                new TradingViewModel()
         );
         tradeInteractor = new SimulatedTradeInteractor(presenter, account);
     }

@@ -108,9 +108,7 @@ public class SimulatedMain {
                 // --- 3. Clean Architecture Assembly ---
 
                 final TradingPresenter tradingPresenter = new TradingPresenter(
-                        tradingViewModel,
-                        viewManagerModel,
-                        setupViewModel
+                        tradingViewModel
                 );
 
                 final UpdateMarketInteractor updateMarketInteractor = new UpdateMarketInteractor(

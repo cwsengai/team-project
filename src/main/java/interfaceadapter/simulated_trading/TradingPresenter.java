@@ -2,8 +2,6 @@ package interfaceadapter.simulated_trading;
 
 import java.text.DecimalFormat;
 
-import interfaceadapter.setup_simulation.SetupViewModel;
-import interfaceadapter.view_model.ViewManagerModel;
 import usecase.simulated_trade.SimulatedTradeOutputBoundary;
 import usecase.simulated_trade.SimulatedTradeOutputData;
 import usecase.update_market.UpdateMarketOutputBoundary;
@@ -25,12 +23,8 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
      * Constructs a TradingPresenter.
      *
      * @param viewModel        the trading view model
-     * @param viewManagerModel manages which view is active
-     * @param setupViewModel   view model for returning to setup
      */
-    public TradingPresenter(TradingViewModel viewModel,
-                            ViewManagerModel viewManagerModel,
-                            SetupViewModel setupViewModel) {
+    public TradingPresenter(TradingViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
