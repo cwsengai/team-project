@@ -29,6 +29,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
     }
 
     /**
+     * Fetches major market indices data from Alpha Vantage API.
      * @return List of major market indices with their current data
      */
     public List<MarketIndex> getMarketIndices() {
@@ -59,6 +60,7 @@ public class AlphaVantageMarketIndexGateway implements MarketIndexGateway {
     }
 
     /**
+     * Fetches market index data for a given ETF symbol from Alpha Vantage API.
      * @param symbol ETF symbol representing the market index
      * @return MarketIndex object containing the latest data for the given symbol
      */

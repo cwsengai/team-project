@@ -29,6 +29,7 @@ public class PortfolioStatisticsInteractor implements PortfolioStatisticsInputBo
     }
 
     /**
+     * Handles the request to calculate and present portfolio statistics for a user.
      * @param userId the UUID of the user whose portfolio statistics are requested
      */
     public void requestPortfolioSummary(UUID userId) {

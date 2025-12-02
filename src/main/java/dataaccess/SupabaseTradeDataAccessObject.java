@@ -27,8 +27,10 @@ public class SupabaseTradeDataAccessObject implements SimulatedTradeDataAccessIn
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     /**
+     * Saves a simulated trade record to the Supabase backend.
      * @param trade the simulated trade record to be saved
      * @param userId the UUID of the user associated with the trade
+     * @throws RuntimeException if the Supabase service role key is not configured
      */
     public void saveTrade(SimulatedTradeRecord trade, UUID userId) {
         // Build JSON body for Supabase REST API

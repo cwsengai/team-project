@@ -23,6 +23,7 @@ public class AlphaVantageEconomicIndicatorGateway implements EconomicIndicatorGa
     }
 
     /**
+     * Fetches a list of economic indicators from the Alpha Vantage API.
      * @return List of economic indicators fetched from the API
      */
     public List<EconomicIndicator> getEconomicIndicators() {
