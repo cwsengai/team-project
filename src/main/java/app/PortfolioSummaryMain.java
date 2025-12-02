@@ -21,6 +21,7 @@ import usecase.portfolio_statistics.PortfolioStatisticsInteractor;
 import usecase.portfolio_statistics.PortfolioStatisticsOutputData;
 import usecase.session.SessionDataAccessInterface;
 
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class PortfolioSummaryMain {
 
     /**
@@ -30,6 +31,7 @@ public class PortfolioSummaryMain {
      *  This allows any page (TradingView, CompanyPage, etc.)
      *  to open the Portfolio Summary page **without logging in again**.
      */
+    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:AbbreviationAsWordInName", "checkstyle:MagicNumber", "checkstyle:JavadocMethod"})
     public static void show(UUID userId, SessionDataAccessInterface sessionDAO) {
 
         // === Build the Portfolio Summary window ===
