@@ -32,8 +32,8 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
 
         // Check if we have complete OHLC data for candlestick chart
         boolean hasOHLCData = priceData.stream()
-                .allMatch(p -> p.getOpen() != null && p.getHigh() != null && 
-                              p.getLow() != null && p.getClose() != null);
+                .allMatch(p -> p.getOpen() != null && p.getHigh() != null
+                        && p.getLow() != null && p.getClose() != null);
 
         ChartViewModel viewModel;
         
@@ -57,10 +57,12 @@ public class PriceChartPresenter implements PriceChartOutputBoundary {
                     labels, 
                     openPrices, highPrices, lowPrices, closePrices, interval
             );
-        } else {
+        }
+        else {
             // Create simple line chart with close prices
             List<Double> prices = priceData.stream()
-                    .map(p -> p.getClose() != null ? p.getClose() : 
+                    .map(p -> p.getClose() != null ? p.getClose()
+                            :
                              (p.getPrice() != 0.0 ? p.getPrice() : 0.0))
                     .collect(Collectors.toList());
 

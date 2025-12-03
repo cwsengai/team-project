@@ -2,7 +2,17 @@ package entity;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a completed simulated trade, including entry/exit data and
+ * calculated PnL metrics. Immutable record of a user's executed trade.
+ */
 public class SimulatedTradeRecord {
+
+    /** Constant for representing zero to avoid magic numbers. */
+    private static final double ZERO = 0.0;
+
+    /** Constant representing 100.0 for percentage calculations. */
+    private static final double HUNDRED = 100.0;
 
     private final String ticker;
     private final boolean isLong;
@@ -14,6 +24,19 @@ public class SimulatedTradeRecord {
     private final LocalDateTime exitTime;
     private final String userId;
 
+    /**
+     * Creates a new immutable simulated trade record.
+     *
+     * @param ticker the stock ticker
+     * @param isLong true if long, false if short
+     * @param quantity number of shares
+     * @param entryPrice trade entry price
+     * @param exitPrice trade exit price
+     * @param realizedPnL realized profit/loss of the trade
+     * @param entryTime time the trade was opened
+     * @param exitTime time the trade was closed
+     * @param userId the ID of the user who executed the trade
+     */
     public SimulatedTradeRecord(String ticker,
                                 boolean isLong,
                                 int quantity,
@@ -71,19 +94,27 @@ public class SimulatedTradeRecord {
     }
 
     /**
-     * Calculate the return rate (ROI) for this trade as a percentage.
-     * For long positions: ((exitPrice - entryPrice) / entryPrice) * 100
-     * For short positions: ((entryPrice - exitPrice) / entryPrice) * 100
+     * Calculates the percentage return rate (ROI) for this trade.
+     *
+     * @return the return rate as a percentage; returns zero if entry price is zero
      */
     public double getReturnRate() {
-        if (entryPrice == 0) {
-            return 0.0; // Avoid division by zero
+        double result = ZERO;
+
+        if (entryPrice != ZERO) {
+            double priceDiff = ZERO;
+
+            if (isLong) {
+                priceDiff = exitPrice - entryPrice;
+            }
+            else {
+                priceDiff = entryPrice - exitPrice;
+            }
+
+            result = (priceDiff / entryPrice) * HUNDRED;
         }
-        if (isLong) {
-            return ((exitPrice - entryPrice) / entryPrice) * 100;
-        } else {
-            return ((entryPrice - exitPrice) / entryPrice) * 100;
-        }
+
+        return result;
     }
 
     @Override
@@ -100,14 +131,3 @@ public class SimulatedTradeRecord {
                 + '}';
     }
 }
-
-// SimulatedTradingRecord rec = new SimulatedTradingRecord(
-//        "TSLA",
-//        true,            // true = buy/long    false = sell/short
-//        5,               // quantity
-//        245.30,          // entry price
-//        251.80,          // close price
-//        32.50,           // total profit
-//        LocalDateTime.of(2025, 1, 1, 10, 5), //entry time
-//        LocalDateTime.of(2025, 1, 1, 10, 21)  // exit time
-//        );

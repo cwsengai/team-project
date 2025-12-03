@@ -1,36 +1,31 @@
 package interfaceadapter.presenter;
 
-import usecase.company.CompanyOutputBoundary;
-import entity.Company;
 import interfaceadapter.view_model.CompanyViewModel;
+import usecase.company.CompanyOutputBoundary;
+import usecase.company.CompanyOutputData;
 
 public class CompanyPresenter implements CompanyOutputBoundary {
 
-    private final CompanyViewModel vm;
+    private final CompanyViewModel viewmodel;
 
-    public CompanyPresenter(CompanyViewModel vm) {
-        this.vm = vm;
+    public CompanyPresenter(CompanyViewModel viewmodel) {
+        this.viewmodel = viewmodel;
     }
 
     @Override
-    public void presentCompany(Company overview) {
-        vm.error = null;
-        vm.name = overview.getName();
-        vm.symbol = overview.getSymbol();
-        vm.sector = overview.getSector();
-        vm.industry = overview.getIndustry();
-        vm.description = overview.getDescription();
-
-        // Notify UI via the listener set by CompanyPage
-        vm.notifyListener();
+    public void presentCompany(CompanyOutputData data) {
+        viewmodel.setError(null);
+        viewmodel.setSymbol(data.getSymbol());
+        viewmodel.setName(data.getName());
+        viewmodel.setSector(data.getSector());
+        viewmodel.setIndustry(data.getIndustry());
+        viewmodel.setDescription(data.getDescription());
+        viewmodel.notifyListener();
     }
 
     @Override
     public void presentError(String message) {
-        vm.error = message;
-
-        // Notify UI via listener
-        vm.notifyListener();
+        viewmodel.setError(message);
+        viewmodel.notifyListener();
     }
 }
-

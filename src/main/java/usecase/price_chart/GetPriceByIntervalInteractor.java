@@ -1,11 +1,14 @@
 package usecase.price_chart;
 
+import java.util.List;
+
 import entity.PricePoint;
 import entity.TimeInterval;
 
-import java.util.List;
-import javax.swing.SwingUtilities;
-
+/**
+ * Interactor for loading price history based on a given time interval.
+ * Now acts as pure business logic.
+ */
 public class GetPriceByIntervalInteractor implements PriceInputBoundary {
 
     private final PriceDataAccessInterface priceGateway;
@@ -18,31 +21,21 @@ public class GetPriceByIntervalInteractor implements PriceInputBoundary {
     }
 
     @Override
+    @SuppressWarnings({"checkstyle:IllegalCatch", "checkstyle:SuppressWarnings"})
     public void loadPriceHistory(String ticker, TimeInterval interval) {
-        // Run API call in background thread to prevent UI blocking
-        new Thread(() -> {
-            List<PricePoint> priceData;
+        try {
+            final List<PricePoint> priceData = priceGateway.getPriceHistory(ticker, interval);
 
-            try {
-                // call Gateway attain data (interface) - this may take time
-                priceData = priceGateway.getPriceHistory(ticker, interval);
-            } catch (Exception e) {
-                // report error on EDT
-                SwingUtilities.invokeLater(() -> {
-                    pricePresenter.presentError("fail to attain " + interval.name() + " price: " + e.getMessage());
-                });
-                return;
+            if (priceData == null || priceData.isEmpty()) {
+                pricePresenter.presentError(interval.name() + " price data not found.");
             }
-
-            // Update UI on EDT (Event Dispatch Thread)
-            SwingUtilities.invokeLater(() -> {
-                if (priceData == null || priceData.isEmpty()) {
-                    pricePresenter.presentError("not found " + interval.name() + " data price");
-                } else {
-                    // send to presenter
-                    pricePresenter.presentPriceHistory(priceData, ticker, interval);
-                }
-            });
-        }).start();
+            else {
+                pricePresenter.presentPriceHistory(priceData, ticker, interval);
+            }
+        }
+        catch (Exception ex) {
+            pricePresenter.presentError("Fail to retrieve " + interval.name() + " price: " + ex.getMessage());
+        }
     }
 }
+

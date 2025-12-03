@@ -1,14 +1,14 @@
 package interfaceadapter.presenter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import entity.Company;
+import frameworkanddriver.CompanyListPage;
 import interfaceadapter.company_list.CompanyDisplayData;
 import interfaceadapter.view_model.SearchCompanyViewModel;
 import usecase.search_company.SearchCompanyOutputBoundary;
 import usecase.search_company.SearchCompanyOutputData;
-import frameworkanddriver.CompanyListPage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Presenter for Search Company use case.
@@ -38,11 +38,12 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
                 formattedCap = formatMarketCap(company.getMarketCapitalization());
                 formattedPE = formatPeRatio(company.getPeRatio());
                 country = company.getCountry();
-            } else {
+            }
+            else {
                 // Company has minimal data (just ticker)
-                formattedCap = "—";
-                formattedPE = "—";
-                country = "—";
+                formattedCap = "-";
+                formattedPE = "-";
+                country = "-";
             }
 
             displayList.add(new CompanyDisplayData(
@@ -57,30 +58,37 @@ public class SearchCompanyPresenter implements SearchCompanyOutputBoundary {
         viewModel.setSearchResults(displayList);
         page.updateTable(displayList);
 
-        System.out.println("✅ Search found " + displayList.size() + " results");  // ✅ Added log
+        // Log search results
+        System.out.println("Search found " + displayList.size() + " results");
     }
 
     @Override
     public void presentError(String errorMessage) {
         viewModel.setErrorMessage(errorMessage);
         page.displayError(errorMessage);
-        System.err.println("❌ Search error: " + errorMessage);  // ✅ Added log
+        // Log search error
+        System.err.println("Search error: " + errorMessage);
     }
 
     private String formatMarketCap(double marketCap) {
         if (marketCap >= 1_000_000_000_000.0) {
             return String.format("$%.1fT", marketCap / 1_000_000_000_000.0);
-        } else if (marketCap >= 1_000_000_000.0) {
+        }
+        else if (marketCap >= 1_000_000_000.0) {
             return String.format("$%.1fB", marketCap / 1_000_000_000.0);
-        } else if (marketCap >= 1_000_000.0) {
+        }
+        else if (marketCap >= 1_000_000.0) {
             return String.format("$%.1fM", marketCap / 1_000_000.0);
-        } else {
+        }
+        else {
             return String.format("$%.0f", marketCap);
         }
     }
 
     private String formatPeRatio(double peRatio) {
-        if (peRatio <= 0) return "N/A";
+        if (peRatio <= 0) {
+            return "N/A";
+        }
         return String.format("%.2f", peRatio);
     }
 }

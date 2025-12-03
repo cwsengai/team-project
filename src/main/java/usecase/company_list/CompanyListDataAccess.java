@@ -1,7 +1,8 @@
 package usecase.company_list;
 
-import entity.Company;
 import java.util.List;
+
+import entity.Company;
 
 /**
  * Data access interface for Company List use case.

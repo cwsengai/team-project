@@ -1,14 +1,15 @@
 package usecase.company_list;
 
 /**
- * The company list use case
+ * Interface for the Company List Input Boundary.
+ * Defines the use case for retrieving a list of companies.
  */
-
 public interface CompanyListInputBoundary {
-    
-//    /**
-//     * Execute the Company List Use Case
-//     * @param CompanyListInputData the input data for this use case
-//     */
+
+    /**
+     * Executes the Company List use case using the provided input data.
+     *
+     * @param inputData the input data for requesting the company list
+     */
     void execute(CompanyListInputData inputData);
 }

@@ -12,12 +12,24 @@ public class CompanyInteractor implements CompanyInputBoundary {
     }
 
     @Override
-    public void fetchCompany(String symbol) {
-        Company company = gateway.fetchOverview(symbol);
-        if (company == null) {
-            presenter.presentError("Unable to fetch company: " + symbol);
-            return;
+    public void execute(CompanyInputData data) {
+        final String symbol = data.getSymbol();
+        final Company company = gateway.fetchOverview(symbol);
+
+        if (company.getName() == null || company.getName().isBlank()) {
+            presenter.presentError("Company not found: " + symbol);
         }
-        presenter.presentCompany(company);
+        else {
+            final CompanyOutputData output = new CompanyOutputData(
+                    company.getSymbol(),
+                    company.getName(),
+                    company.getSector(),
+                    company.getIndustry(),
+                    company.getDescription()
+            );
+
+            presenter.presentCompany(output);
+        }
     }
+
 }

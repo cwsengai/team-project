@@ -6,7 +6,8 @@ import usecase.price_chart.PriceInputBoundary;
 public class IntervalController {
 
     private final PriceInputBoundary priceInteractor;
-    private String currentTicker = "AAPL"; // Default ticker
+    private String currentTicker = "AAPL";
+    // Default ticker
 
     public IntervalController(PriceInputBoundary interactor) {
         this.priceInteractor = interactor;
@@ -16,6 +17,11 @@ public class IntervalController {
         this.currentTicker = ticker;
     }
 
+    /**
+     * Handles time interval change requests from the UI.
+     *
+     * @param buttonText the button text indicating the desired time interval
+     */
     public void handleTimeChange(String buttonText) {
         TimeInterval interval = null;
 

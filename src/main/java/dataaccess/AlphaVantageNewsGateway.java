@@ -1,17 +1,15 @@
 package dataaccess;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import api.Api;
-
 import entity.NewsArticle;
 import usecase.news.NewsGateway;
 
@@ -27,9 +25,13 @@ public class AlphaVantageNewsGateway implements NewsGateway {
         String jsonString;
         try {
             jsonString = api.getFuncNewsSentiment(symbol);
-        } catch (Exception e) {
+        }
+        catch (Exception ex) {
             // handle or log as appropriate; returning null for now
-            e.printStackTrace();
+            System.err.println("AlphaVantageNewsGateway.fetchArticles error: " + ex.getMessage());
+            for (StackTraceElement ste : ex.getStackTrace()) {
+                System.err.println("    at " + ste.toString());
+            }
             return null;
         }
 
@@ -40,13 +42,14 @@ public class AlphaVantageNewsGateway implements NewsGateway {
         JSONObject json = new JSONObject(jsonString);
 
         if (!json.has("feed")) {
-            return List.of();  // no news
+            // no news
+            return List.of();
         }
 
         JSONArray feedArray = json.getJSONArray("feed");
         List<NewsArticle> articles = new ArrayList<>();
 
-        for (int i=0; i < feedArray.length(); i++) {
+        for (int i = 0; i < feedArray.length(); i++) {
             JSONObject feedObject = feedArray.getJSONObject(i);
 
             DateTimeFormatter formatter =
@@ -60,8 +63,6 @@ public class AlphaVantageNewsGateway implements NewsGateway {
             String rawTime = feedObject.optString("time_published");
             LocalDateTime timePublished = LocalDateTime.parse(rawTime, formatter);
 
-
-
             NewsArticle article = new NewsArticle(
                     symbol,
                     feedObject.optString("title", "N/A"),
@@ -74,9 +75,6 @@ public class AlphaVantageNewsGateway implements NewsGateway {
         }
 
         return articles;
-
-
-
     }
 
 }

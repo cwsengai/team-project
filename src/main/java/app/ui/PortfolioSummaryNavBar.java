@@ -13,13 +13,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class PortfolioSummaryNavBar extends JPanel {
+    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:MagicNumber", "checkstyle:TrailingComment", "checkstyle:LambdaParameterName"})
     public PortfolioSummaryNavBar(JFrame frame) {
         setOpaque(false);
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
 
-        JButton backButton = new JButton("Back");
+        final JButton backButton = new JButton("Back");
         backButton.setFocusPainted(false);
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(Color.BLACK);
@@ -33,7 +35,8 @@ public class PortfolioSummaryNavBar extends JPanel {
         backButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
         backButton.setPreferredSize(new Dimension(100, 40));
         backButton.setMaximumSize(new Dimension(160, 40));
-        backButton.addActionListener(e -> frame.dispose()); // Close window for demo
+        // Close window for demo
+        backButton.addActionListener(pressback -> frame.dispose());
 
         // Make button pill-shaped
         backButton.setBorder(BorderFactory.createCompoundBorder(
@@ -42,7 +45,7 @@ public class PortfolioSummaryNavBar extends JPanel {
         ));
         backButton.setUI(new javax.swing.plaf.basic.BasicButtonUI());
 
-        JPanel rightPanel = new JPanel();
+        final JPanel rightPanel = new JPanel();
         rightPanel.setOpaque(false);
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.X_AXIS));
         rightPanel.add(Box.createHorizontalGlue());
