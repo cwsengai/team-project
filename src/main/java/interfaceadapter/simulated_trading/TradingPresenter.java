@@ -63,6 +63,7 @@ public class TradingPresenter implements UpdateMarketOutputBoundary,
         state.setPositions(data.getPositions());
         state.setChartData(data.getChartData());
         state.setError(null);
+        state.setTicker(data.getTicker());
 
         viewModel.setState(state);
         viewModel.firePropertyChanged();

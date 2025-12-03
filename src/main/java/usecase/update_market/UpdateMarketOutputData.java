@@ -10,6 +10,7 @@ public class UpdateMarketOutputData {
     private final double totalReturnRate;
     private final double maxDrawdown;
     private final double availableCash;
+    private final String ticker;
 
     // --- Stats (Raw Counts and Calculated Values) ---
     private final int totalTrades;
@@ -27,13 +28,13 @@ public class UpdateMarketOutputData {
     public UpdateMarketOutputData(double currentPrice, double totalEquity, double totalReturnRate, double maxDrawdown,
                                   double availableCash, int totalTrades, int winningTrades, double maxGain,
                                   int losingTrades, double winRate, List<Double> chartData, Map<String,
-                    Position> positions, String error) {
+                    Position> positions, String error, String ticker) {
         this.currentPrice = currentPrice;
         this.totalEquity = totalEquity;
         this.totalReturnRate = totalReturnRate;
         this.maxDrawdown = maxDrawdown;
         this.availableCash = availableCash;
-
+        this.ticker = ticker;
         this.totalTrades = totalTrades;
         this.winningTrades = winningTrades;
         this.maxGain = maxGain;
@@ -61,4 +62,5 @@ public class UpdateMarketOutputData {
     public List<Double> getChartData() { return chartData; }
     public Map<String, Position> getPositions() { return positions; }
     public String getError() { return error; }
+    public String getTicker() { return ticker; }
 }

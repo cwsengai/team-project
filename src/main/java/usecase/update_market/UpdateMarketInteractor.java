@@ -15,7 +15,6 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
     private final SimulationDataAccessInterface dataAccess;
     private final UpdateMarketOutputBoundary presenter;
     private final Account account;
-
     private final String simulationTicker;
 
     // Simulation State
@@ -98,7 +97,8 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
 
                 historyTicksForChart,
                 currentPositions,
-                null // Error string
+                null, // Error string
+                this.simulationTicker
         );
 
         presenter.prepareSuccessView(outputData);
