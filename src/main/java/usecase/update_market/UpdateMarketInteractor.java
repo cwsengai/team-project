@@ -100,7 +100,6 @@ public class UpdateMarketInteractor implements UpdateMarketInputBoundary {
                 null, // Error string
                 this.simulationTicker
         );
-
         presenter.prepareSuccessView(outputData);
 
         // Advance Time
