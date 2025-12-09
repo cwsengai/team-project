@@ -214,7 +214,6 @@ public class CompanyPage extends JFrame {
         buttonPanel.add(tradeButton);
         buttonPanel.add(backButton);
 
-
         headerPanel.add(title, BorderLayout.WEST);
         headerPanel.add(buttonPanel, BorderLayout.EAST);
 
@@ -443,6 +442,9 @@ public class CompanyPage extends JFrame {
         });
     }
 
+    /**
+     * Get user back to main page.
+     */
     public void backMainPage() {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (parentFrame != null) {
