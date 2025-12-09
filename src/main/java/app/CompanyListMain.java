@@ -39,10 +39,15 @@ import usecase.search_company.SearchCompanyInteractor;
  * Main entry point for the Company List application.
  * Follows Single Responsibility Principle - handles application startup and dependency wiring.
  */
-@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class CompanyListMain {
 
-    @SuppressWarnings({"checkstyle:CatchParameterName", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:LambdaBodyLength", "checkstyle:UncommentedMain", "checkstyle:MissingJavadocMethod"})
+    /**
+     * Entry point for the application. Initializes the GUI on the Swing
+     * event-dispatch thread and displays the main window. If an unexpected
+     * exception occurs during startup, an error dialog is shown.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -61,7 +66,6 @@ public class CompanyListMain {
         });
     }
 
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:VariableDeclarationUsageDistance", "checkstyle:AbbreviationAsWordInName"})
     private static void createAndShowGUI() {
         // Setup UI components
         final CompanyListPage page = new CompanyListPage();
@@ -111,7 +115,6 @@ public class CompanyListMain {
      *
      * @return the configured API key, or "demo" if none is set
      */
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:ReturnCount", "checkstyle:JavadocMethod"})
     private static String getApiKey() {
         final String apiKey = dataaccess.EnvConfig.getAlphaVantageApiKey();
         if (apiKey == null || apiKey.isEmpty() || "demo".equals(apiKey)) {
@@ -128,7 +131,6 @@ public class CompanyListMain {
      * @param page the main UI page to display in the frame
      * @return a configured {@link JFrame} instance
      */
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:JavadocMethod"})
     private static JFrame createFrame(CompanyListPage page) {
         final JFrame frame = new JFrame("Billionaire - Stock Market Database");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,7 +146,6 @@ public class CompanyListMain {
      *
      * @param page the UI page whose table will be updated
      */
-    @SuppressWarnings({"checkstyle:RegexpSinglelineJava", "checkstyle:RightCurly", "checkstyle:MultipleStringLiterals", "checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:JavadocMethod"})
     private static void displayInitialTable(CompanyListPage page) {
         final List<String> allTickers = Top100Companies.getAll();
         final List<CompanyDisplayData> initialDisplay = new ArrayList<>();
@@ -186,7 +187,6 @@ public class CompanyListMain {
      * @param companyListPresenter the presenter responsible for updating the UI with results
      * @param searchDataAccess   the data access object for AlphaVantage symbol search results
      */
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:JavadocMethod"})
     private static void startDataLoading(
             CompanyListPage page,
             Api api,
@@ -209,7 +209,6 @@ public class CompanyListMain {
      * <p></p>
      * This is an inner class because it's only used by CompanyListMain during startup.
      */
-    @SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
     private static class CompanyDataLoader extends SwingWorker<Void, Object> {
 
         private final CompanyListPage page;
@@ -220,7 +219,6 @@ public class CompanyListMain {
         private final List<String> allTickers;
         private final Map<String, Company> loadedCompanies = new HashMap<>();
 
-        @SuppressWarnings("checkstyle:RedundantModifier")
         public CompanyDataLoader(
                 CompanyListPage page,
                 Api api,
@@ -235,7 +233,6 @@ public class CompanyListMain {
             this.allTickers = Top100Companies.getAll();
         }
 
-        @SuppressWarnings({"checkstyle:CatchParameterName", "checkstyle:IllegalCatch", "checkstyle:RightCurly"})
         @Override
         protected Void doInBackground() throws Exception {
             try {
@@ -256,7 +253,6 @@ public class CompanyListMain {
             return null;
         }
 
-        @SuppressWarnings({"checkstyle:CatchParameterName", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:FinalLocalVariable", "checkstyle:RegexpSinglelineJava", "checkstyle:LambdaBodyLength"})
         private void loadMarketIndices() {
             new Thread(() -> {
                 try {
@@ -276,7 +272,6 @@ public class CompanyListMain {
             }).start();
         }
 
-        @SuppressWarnings({"checkstyle:CatchParameterName", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:FinalLocalVariable", "checkstyle:LambdaBodyLength"})
         private void loadEconomicIndicators() {
             new Thread(() -> {
                 try {
@@ -296,7 +291,6 @@ public class CompanyListMain {
             }).start();
         }
 
-        @SuppressWarnings({"checkstyle:CatchParameterName", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:MagicNumber", "checkstyle:RegexpSinglelineJava", "checkstyle:FinalLocalVariable"})
         private void loadTop3Companies() throws Exception {
             System.out.println("Loading detailed data for top 3 companies...");
             final List<String> top3Tickers = allTickers.subList(0, Math.min(3, allTickers.size()));
@@ -338,7 +332,6 @@ public class CompanyListMain {
             }
         }
 
-        @SuppressWarnings("checkstyle:FinalLocalVariable")
         private void setupCompanyListController() {
             if (!loadedCompanies.isEmpty()) {
                 final AlphaVantageCompanyListDataAccess companyListDataAccess =
@@ -370,7 +363,6 @@ public class CompanyListMain {
             }
         }
 
-        @SuppressWarnings({"checkstyle:RegexpSinglelineJava", "checkstyle:RightCurly", "checkstyle:MagicNumber", "checkstyle:FinalLocalVariable"})
         private void updateTableWithLoadedData() {
             final List<CompanyDisplayData> currentDisplay = new ArrayList<>();
 
@@ -419,9 +411,7 @@ public class CompanyListMain {
          * Helper class for passing company updates.
          */
         private static class CompanyUpdate {
-            @SuppressWarnings("checkstyle:VisibilityModifier")
             final String ticker;
-            @SuppressWarnings("checkstyle:VisibilityModifier")
             final Company company;
 
             CompanyUpdate(String ticker, Company company) {
