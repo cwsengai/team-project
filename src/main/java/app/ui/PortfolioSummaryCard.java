@@ -17,12 +17,10 @@ import javax.swing.SwingConstants;
 
 import interfaceadapter.view_model.PortfolioSummaryViewModel;
 
-@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class PortfolioSummaryCard extends JPanel {
     private static final DecimalFormat CURRENCY_FORMAT = new DecimalFormat("$#,##0.00");
     private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("#0.00'%'");
 
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:MultipleStringLiterals", "checkstyle:JavaNCSS", "checkstyle:ExecutableStatementCount"})
     public PortfolioSummaryCard(PortfolioSummaryViewModel stats) {
         setLayout(new BorderLayout());
         setOpaque(false);

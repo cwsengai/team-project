@@ -35,12 +35,9 @@ import usecase.simulated_trade.SimulationDataAccessInterface;
 import usecase.simulated_trade.TradeClosedListener;
 import usecase.update_market.UpdateMarketInteractor;
 
-@SuppressWarnings({"checkstyle:SummaryJavadoc", "checkstyle:ClassDataAbstractionCoupling"})
 public class SimulatedMain {
 
-    @SuppressWarnings("checkstyle:ConstantName")
     private static final PriceDataAccessInterface baseGateway = new AlphaVantagePriceGateway();
-    @SuppressWarnings("checkstyle:ConstantName")
     private static final SimulationDataAccessInterface simulationDAO = new SimulationMarketDataAccess(baseGateway);
     private static Optional<SetupInputData> setupInput = Optional.empty();
 
@@ -50,7 +47,6 @@ public class SimulatedMain {
      * and the TradingViewModel, constructing the TradingView when the appropriate
      * property change event is fired.
      */
-    @SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
     private static class TradingViewFactoryListener implements PropertyChangeListener {
 
         private final JPanel views;
@@ -60,7 +56,6 @@ public class SimulatedMain {
 
         private final SetupViewModel setupViewModel;
 
-        @SuppressWarnings("checkstyle:RedundantModifier")
         public TradingViewFactoryListener(JPanel views, CardLayout cardLayout,
                                           TradingViewModel tradingViewModel,
                                           ViewManagerModel viewManagerModel,
@@ -72,7 +67,6 @@ public class SimulatedMain {
             this.setupViewModel = setupViewModel;
         }
 
-        @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:TrailingComment", "checkstyle:AbbreviationAsWordInName", "checkstyle:VariableDeclarationUsageDistance"})
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (viewManagerModel.getActiveView().equals(TradingViewModel.VIEW_NAME) && setupInput.isPresent()) {
@@ -104,7 +98,6 @@ public class SimulatedMain {
                 portfolioDAO.savePortfolio(UUID.fromString(userId), input.getInitialBalance());
 
                 account.addTradeClosedListener(new TradeClosedListener() {
-                    @SuppressWarnings({"checkstyle:CatchParameterName", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:FinalLocalVariable"})
                     @Override
                     public void onTradeClosed(SimulatedTradeRecord record) {
                         try {
@@ -163,7 +156,6 @@ public class SimulatedMain {
     }
 
     // Final Setup Presenter
-    @SuppressWarnings("checkstyle:LineLength")
     public static class FinalSetupPresenter extends SetupPresenter {
         public FinalSetupPresenter(ViewManagerModel viewManagerModel, TradingViewModel tradingViewModel,
                                    SetupViewModel setupViewModel) {
@@ -178,7 +170,17 @@ public class SimulatedMain {
     }
 
     // Main Entry Point
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:MissingJavadocMethod", "checkstyle:InnerTypeLast"})
+    /**
+     * Entry point for the UC4 Price Chart module. Initializes all components of the
+     * price chart feature—including data access, presenter, interactor, controller,
+     * and the chart window—and then launches the GUI on the Swing event-dispatch thread.
+     *
+     * <p>This method performs all required wiring for the Clean Architecture layers:
+     * the data gateway, presenter, interactor, and controller are connected before
+     * the chart window is displayed.</p>
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
 
         String preloadedSymbol = null;

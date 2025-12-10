@@ -13,9 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-@SuppressWarnings("checkstyle:ClassDataAbstractionCoupling")
 public class PortfolioSummaryNavBar extends JPanel {
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:MagicNumber", "checkstyle:TrailingComment", "checkstyle:LambdaParameterName"})
     public PortfolioSummaryNavBar(JFrame frame) {
         setOpaque(false);
         setLayout(new BorderLayout());

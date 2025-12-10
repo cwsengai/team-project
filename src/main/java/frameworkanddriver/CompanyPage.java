@@ -27,18 +27,11 @@ import interfaceadapter.view_model.CompanyViewModel;
 import interfaceadapter.view_model.FinancialStatementViewModel;
 import interfaceadapter.view_model.NewsViewModel;
 
-import javax.swing.*;
-import java.awt.*;
-
-@SuppressWarnings({"checkstyle:RegexpMultiline", "checkstyle:ClassDataAbstractionCoupling", "checkstyle:LineLength", "checkstyle:SuppressWarnings"})
 public class CompanyPage extends JFrame {
 
     // ViewModels
-    @SuppressWarnings({"checkstyle:AbbreviationAsWordInName", "checkstyle:SuppressWarnings"})
     private final CompanyViewModel companyVM;
-    @SuppressWarnings({"checkstyle:AbbreviationAsWordInName", "checkstyle:SuppressWarnings"})
     private final FinancialStatementViewModel fsVM;
-    @SuppressWarnings({"checkstyle:AbbreviationAsWordInName", "checkstyle:SuppressWarnings"})
     private final NewsViewModel newsVM;
 
     // Controllers
@@ -67,7 +60,6 @@ public class CompanyPage extends JFrame {
     private JTextArea fsArea;
     private JTextArea newsArea;
 
-    @SuppressWarnings({"checkstyle:AbbreviationAsWordInName", "checkstyle:SuppressWarnings"})
     public CompanyPage(CompanyViewModel companyVM,
                        FinancialStatementViewModel fsVM,
                        NewsViewModel newsVM) {
@@ -83,7 +75,17 @@ public class CompanyPage extends JFrame {
         buildUI();
     }
 
-    @SuppressWarnings({"checkstyle:HiddenField", "checkstyle:MissingJavadocMethod", "checkstyle:SuppressWarnings"})
+    /**
+     * Assigns the various controllers used by this view to handle user actions
+     * related to company data, financial statements, news retrieval, and chart
+     * interval updates. This method wires the view to its corresponding
+     * application logic components.
+     *
+     * @param companyController the controller responsible for company-related actions
+     * @param fsController the controller for fetching financial statement data
+     * @param newsController the controller for retrieving news articles
+     * @param chartController the controller handling chart interval changes
+     */
     public void setControllers(CompanyController companyController,
                                FinancialStatementController fsController,
                                NewsController newsController,
@@ -98,7 +100,6 @@ public class CompanyPage extends JFrame {
     // UI BUILDING
     // ---------------------------------------------------------
 
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:MagicNumber", "checkstyle:AbbreviationAsWordInName", "checkstyle:SuppressWarnings"})
     private void buildUI() {
         setTitle("Stock Analysis Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,7 +119,6 @@ public class CompanyPage extends JFrame {
         setVisible(true);
     }
 
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:RegexpSinglelineJava", "checkstyle:SuppressWarnings"})
     private JPanel createTopPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -133,7 +133,6 @@ public class CompanyPage extends JFrame {
         return panel;
     }
 
-    @SuppressWarnings({"checkstyle:NeedBraces", "checkstyle:FinalLocalVariable", "checkstyle:ReturnCount", "checkstyle:LambdaBodyLength", "checkstyle:LambdaParameterName", "checkstyle:MagicNumber", "checkstyle:SuppressWarnings"})
     private JPanel buildSearchPanel() {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -159,7 +158,6 @@ public class CompanyPage extends JFrame {
         return p;
     }
 
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:SuppressWarnings"})
     private JPanel buildMainPanel() {
         JPanel main = new JPanel(new BorderLayout());
 
@@ -191,7 +189,6 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     // LEFT SIDE — CHART PANEL (from teammate)
     // ---------------------------------------------------------
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:TrailingComment", "checkstyle:LambdaParameterName", "checkstyle:VariableDeclarationUsageDistance", "checkstyle:MagicNumber", "checkstyle:ParenPad", "checkstyle:ExecutableStatementCount", "checkstyle:SuppressWarnings", "checkstyle:LineLength"})
     private JPanel buildChartPanel() {
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -216,7 +213,6 @@ public class CompanyPage extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonPanel.add(tradeButton);
         buttonPanel.add(backButton);
-
 
         headerPanel.add(title, BorderLayout.WEST);
         headerPanel.add(buttonPanel, BorderLayout.EAST);
@@ -274,7 +270,6 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     // OVERVIEW PANEL
     // ---------------------------------------------------------
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:SuppressWarnings"})
     private JPanel buildOverviewPanel() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -303,7 +298,6 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     // FINANCIAL PANEL
     // ---------------------------------------------------------
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:SuppressWarnings"})
     private JPanel buildFinancialPanel() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder("Financial Statements"));
@@ -318,7 +312,6 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     // NEWS PANEL
     // ---------------------------------------------------------
-    @SuppressWarnings({"checkstyle:FinalLocalVariable", "checkstyle:SuppressWarnings"})
     private JPanel buildNewsPanel() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createTitledBorder("Latest News"));
@@ -333,7 +326,6 @@ public class CompanyPage extends JFrame {
     // ---------------------------------------------------------
     // REFRESH METHODS
     // ---------------------------------------------------------
-    @SuppressWarnings({"checkstyle:TrailingComment", "checkstyle:ReturnCount", "checkstyle:SuppressWarnings"})
     private void refreshCompany() {
         // 1. Error handling (keep unchanged)
         if (companyVM.getError() != null) {
@@ -370,23 +362,33 @@ public class CompanyPage extends JFrame {
         // --- Core modification end ---
     }
 
-    @SuppressWarnings({"checkstyle:AvoidInlineConditionals", "checkstyle:SuppressWarnings"})
     private void refreshFinancials() {
         fsArea.setText(fsVM.getError() != null ? "Error: " + fsVM.getError() : fsVM.getFormattedOutput());
     }
 
-    @SuppressWarnings({"checkstyle:AvoidInlineConditionals", "checkstyle:SuppressWarnings"})
     private void refreshNews() {
         newsArea.setText(newsVM.getError() != null ? "Error: " + newsVM.getError() : newsVM.getFormattedNews());
     }
 
     // chart presenter integration:
-    @SuppressWarnings({"checkstyle:ParameterName", "checkstyle:MissingJavadocMethod", "checkstyle:SuppressWarnings"})
+    /**
+     * Updates the displayed chart using the data provided in the given
+     * This delegates the update to the chart panel,
+     * which handles rendering and visual refresh.
+     *
+     * @param vm the chart view model containing the data to render
+     */
     public void updateChart(entity.ChartViewModel vm) {
         chartPanel.updateChart(vm);
     }
 
-    @SuppressWarnings({"checkstyle:MissingJavadocMethod", "checkstyle:SuppressWarnings"})
+    /**
+     * Displays an error message to the user in a modal dialog using
+     * The dialog is shown relative to this
+     * component and includes the default error icon.
+     *
+     * @param message the error message to display
+     */
     public void displayError(String message) {
         javax.swing.JOptionPane.showMessageDialog(this, message, "Error",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -396,7 +398,13 @@ public class CompanyPage extends JFrame {
         return chartPanel;
     }
 
-    @SuppressWarnings({"checkstyle:NeedBraces", "checkstyle:MissingJavadocMethod", "checkstyle:SuppressWarnings"})
+    /**
+     * Sets the initial ticker symbol in the symbol input field and triggers all
+     * relevant controllers to load their corresponding data. This method is used
+     * to initialize the dashboard with a preselected company symbol.
+     *
+     * @param symbol the ticker symbol to load and display
+     */
     public void setInitialSymbol(String symbol) {
         symbolField.setText(symbol);
 
@@ -406,7 +414,14 @@ public class CompanyPage extends JFrame {
         if (chartController != null) chartController.setCurrentTicker(symbol);
     }
 
-    @SuppressWarnings({"checkstyle:IllegalCatch", "checkstyle:FinalLocalVariable", "checkstyle:MissingJavadocMethod", "checkstyle:SuppressWarnings"})
+    /**
+     * Transitions the user from the current dashboard to the trading simulator page.
+     * The parent window is closed, and the trading module is launched on the Swing
+     * event-dispatch thread. The specified symbol is forwarded to the simulator as
+     * the preloaded ticker.
+     *
+     * @param symbol the ticker symbol to initialize the trading simulator with
+     */
     public void enterTradingPage(String symbol) {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
@@ -427,6 +442,9 @@ public class CompanyPage extends JFrame {
         });
     }
 
+    /**
+     * Get user back to main page.
+     */
     public void backMainPage() {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (parentFrame != null) {

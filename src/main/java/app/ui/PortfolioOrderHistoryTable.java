@@ -16,8 +16,7 @@ import javax.swing.JTable;
 import usecase.portfolio_statistics.PortfolioTradeGateway;
 
 public class PortfolioOrderHistoryTable extends JPanel {
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:FinalLocalVariable", "checkstyle:IllegalCatch", "checkstyle:RightCurly", "checkstyle:AvoidInlineConditionals", "checkstyle:LineLength", "checkstyle:MultipleStringLiterals", "checkstyle:AbbreviationAsWordInName", "checkstyle:ExecutableStatementCount"})
-    public PortfolioOrderHistoryTable(UUID userId, PortfolioTradeGateway tradeDAO) {
+    public PortfolioOrderHistoryTable(UUID userId, PortfolioTradeGateway tradeGateway) {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(BorderFactory.createEmptyBorder(24, 0, 0, 0));
@@ -39,7 +38,7 @@ public class PortfolioOrderHistoryTable extends JPanel {
 
         Object[][] data;
         try {
-            final var trades = tradeDAO.fetchTradesForUser(userId);
+            final var trades = tradeGateway.fetchTradesForUser(userId);
             data = new Object[trades.size()][columns.length];
             for (int i = 0; i < trades.size(); i++) {
                 final var t = trades.get(i);
